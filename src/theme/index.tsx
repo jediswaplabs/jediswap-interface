@@ -34,11 +34,31 @@ const mediaWidthTemplates: { [width in keyof typeof MEDIA_WIDTHS]: typeof css } 
 const white = '#FFFFFF'
 const black = '#000000'
 
+const jediBlue = '#50D5FF'
+const jediPink = '#FF00E9'
+const jediWhite = white
+const jediGrey = '#959595'
+const jediNavyBlue = '#141451'
+
+const signalRed = '#FF3257'
+const signalGreen = '#21E70F'
+
 export function colors(darkMode: boolean): Colors {
   return {
     // base
     white,
     black,
+
+    // Jedi Colors
+    jediBlue,
+    jediPink,
+    jediWhite,
+    jediGrey,
+    jediNavyBlue,
+
+    // Signal Colors
+    signalRed,
+    signalGreen,
 
     // text
     text1: darkMode ? '#FFFFFF' : '#000000',
@@ -59,8 +79,14 @@ export function colors(darkMode: boolean): Colors {
     advancedBG: darkMode ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.6)',
 
     //primary colors
-    primary1: darkMode ? '#2172E5' : '#ff007a',
-    primary2: darkMode ? '#3680E7' : '#FF8CC3',
+    // primary1: darkMode ? '#2172E5' : '#ff007a',
+    // primary2: darkMode ? '#3680E7' : '#FF8CC3',
+    // primary3: darkMode ? '#4D8FEA' : '#FF99C9',
+    // primary4: darkMode ? '#376bad70' : '#F6DDE8',
+    // primary5: darkMode ? '#153d6f70' : '#FDEAF1',
+
+    primary1: jediBlue,
+    primary2: jediPink,
     primary3: darkMode ? '#4D8FEA' : '#FF99C9',
     primary4: darkMode ? '#376bad70' : '#F6DDE8',
     primary5: darkMode ? '#153d6f70' : '#FDEAF1',
@@ -74,9 +100,9 @@ export function colors(darkMode: boolean): Colors {
     secondary3: darkMode ? '#17000b26' : '#FDEAF1',
 
     // other
-    red1: '#FF6871',
-    red2: '#F82D3A',
-    green1: '#27AE60',
+    red1: signalRed,
+    red2: signalRed,
+    green1: signalGreen,
     yellow1: '#FFE270',
     yellow2: '#F3841E',
     blue1: '#2172E5'
@@ -177,12 +203,14 @@ export const TYPE = {
 
 export const FixedGlobalStyle = createGlobalStyle`
 html, input, textarea, button {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Soloist Title', sans-serif;
   font-display: fallback;
+  letter-spacing: -0.1em;
 }
 @supports (font-variation-settings: normal) {
   html, input, textarea, button {
-    font-family: 'Inter var', sans-serif;
+    font-family: 'Soloist Title', sans-serif;
+    letter-spacing: -0.1em;
   }
 }
 

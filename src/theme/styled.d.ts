@@ -6,6 +6,17 @@ export interface Colors {
   white: Color
   black: Color
 
+  // Jedi Colors
+  jediBlue: Color
+  jediPink: Color
+  jediWhite: Color
+  jediGrey: Color
+  jediNavyBlue: Color
+
+  // Signal Colors
+  signalRed: Color
+  signalGreen: Color
+
   // text
   text1: Color
   text2: Color
