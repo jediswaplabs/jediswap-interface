@@ -1,6 +1,6 @@
 import { ChainId, TokenAmount, JSBI } from '@uniswap/sdk'
 import React, { useState } from 'react'
-import { Text } from 'rebass'
+// import { Text } from 'rebass'
 import { NavLink, withRouter } from 'react-router-dom'
 import { darken } from 'polished'
 import { useTranslation } from 'react-i18next'
@@ -11,16 +11,19 @@ import Logo from '../../assets/svg/logo.svg'
 // import LogoDark from '../../assets/svg/logo_white.svg'
 import { useActiveWeb3React } from '../../hooks'
 // import { useDarkModeManager } from '../../state/user/hooks'
-import { useETHBalances, useAggregateUniBalance } from '../../state/wallet/hooks'
+import { useAggregateUniBalance } from '../../state/wallet/hooks'
+// import { useETHBalances } from '../../state/wallet/hooks'
 import { CardNoise } from '../earn/styled'
 import { CountUp } from 'use-count-up'
-import { TYPE, ExternalLink } from '../../theme'
+import { TYPE } from '../../theme'
+// import { ExternalLink } from '../../theme'
 
 import { YellowCard } from '../Card'
-import Settings from '../Settings'
-import Menu from '../Menu'
+// import Settings from '../Settings'
+// import Menu from '../Menu'
 
-import Row, { RowFixed } from '../Row'
+import Row from '../Row'
+// import { RowFixed } from '../Row'
 import Web3Status from '../Web3Status'
 import ClaimModal from '../claim/ClaimModal'
 import { useToggleSelfClaimModal, useShowClaimPopup } from '../../state/application/hooks'
@@ -30,21 +33,25 @@ import { Dots } from '../swap/styleds'
 import Modal from '../Modal'
 import UniBalanceContent from './UniBalanceContent'
 import usePrevious from '../../hooks/usePrevious'
+import { transparentize } from 'polished'
 
 const HeaderFrame = styled.div`
   display: grid;
-  grid-template-columns: 1fr 120px;
+  grid-template-columns: 1fr 1fr 1fr;
   align-items: center;
   justify-content: space-between;
   align-items: center;
   flex-direction: row;
   width: 100%;
+  height: 76px;
   top: 0;
   position: relative;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  padding: 1rem;
+  border-bottom: 1.25px solid ${({ theme }) => transparentize(0.75, theme.jediGrey)};
   z-index: 2;
+  padding: 1rem 64px;
+
   ${({ theme }) => theme.mediaWidth.upToMedium`
+  // justify-content: flex-start;
     grid-template-columns: 1fr;
     padding: 0 1rem;
     width: calc(100%);
@@ -61,7 +68,7 @@ const HeaderControls = styled.div`
   flex-direction: row;
   align-items: center;
   justify-self: flex-end;
-
+  gap: 30px;
   ${({ theme }) => theme.mediaWidth.upToMedium`
     flex-direction: row;
     justify-content: space-between;
@@ -91,30 +98,33 @@ const HeaderElement = styled.div`
   `};
 `
 
-const HeaderElementWrap = styled.div`
-  display: flex;
-  align-items: center;
-`
+// const HeaderElementWrap = styled.div`
+//   display: flex;
+//   align-items: center;
+// `
 
-const HeaderRow = styled(RowFixed)`
-  ${({ theme }) => theme.mediaWidth.upToMedium`
-   width: 100%;
-  `};
-`
+// const HeaderRow = styled(RowFixed)`
+//   ${({ theme }) => theme.mediaWidth.upToMedium`
+//    width: 100%;
+//   `};
+//   // width: 400px;
+//   justify-content: center;
+// `
 
 const HeaderLinks = styled(Row)`
   justify-content: center;
   ${({ theme }) => theme.mediaWidth.upToMedium`
-    padding: 1rem 0 1rem 1rem;
-    justify-content: flex-end;
+    // padding: 1rem 0 1rem 1rem;
+    justify-content: flex-start;
 `};
+  gap: 38px;
 `
 
 const AccountElement = styled.div<{ active: boolean }>`
   display: flex;
   flex-direction: row;
   align-items: center;
-  background-color: ${({ theme, active }) => (!active ? theme.bg1 : theme.bg3)};
+  // background-color: ${({ theme, active }) => (!active ? theme.bg1 : theme.bg3)};
   border-radius: 12px;
   white-space: nowrap;
   width: 100%;
@@ -170,11 +180,11 @@ const NetworkCard = styled(YellowCard)`
   `};
 `
 
-const BalanceText = styled(Text)`
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    display: none;
-  `};
-`
+// const BalanceText = styled(Text)`
+//   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+//     display: none;
+//   `};
+// `
 
 const Title = styled.a`
   display: flex;
@@ -204,57 +214,105 @@ const StyledNavLink = styled(NavLink).attrs({
 })`
   ${({ theme }) => theme.flexRowNoWrap}
   align-items: left;
-  border-radius: 3rem;
+  // border-radius: 3rem;
   outline: none;
   cursor: pointer;
   text-decoration: none;
-  color: ${({ theme }) => theme.text2};
+  color: ${({ theme }) => theme.white};
   font-size: 1rem;
   width: fit-content;
   margin: 0 12px;
-  font-weight: 500;
+  padding: 12px 0;
+
+font-weight: 400;
+line-height: 16px;
+letter-spacing: -0.1em;
+text-align: center;
+
 
   &.${activeClassName} {
-    border-radius: 12px;
+ 
     font-weight: 600;
-    color: ${({ theme }) => theme.text1};
+    color:rgba(255, 255, 255, 0.8);
+    /* border-bottom: 2px solid rgba(49, 255, 156, 0.5); */
+    /* display: block; */
+    position: relative;
+
+
+    &::after {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    bottom: -1px;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(0deg, rgba(255, 255, 255, 0.8), 
+              rgba(255, 255, 255, 0.8)), 
+              linear-gradient(180deg, #FFFFFF 0%, rgba(255, 255, 255, 0) 100%);
+
+
+    box-shadow: 0px 0px 18.9113px rgba(49, 255, 156, 0.7), 
+                0px 0px 73.2115px rgba(49, 255, 156, 0.5), 
+                inset 0px 0px 7.32115px rgba(49, 255, 156, 0.5);
+    }
+
+    text-shadow: 0px 0px 18.9113px rgba(49, 255, 156, 0.7), 
+                 0px 0px 73.2115px rgba(49, 255, 156, 0.5);
   }
 
   :hover,
   :focus {
-    color: ${({ theme }) => darken(0.1, theme.text1)};
+    // color: ${({ theme }) => darken(0.1, theme.text1)};
+    color:rgba(255, 255, 255, 0.8);
   }
 `
 
-const StyledExternalLink = styled(ExternalLink).attrs({
-  activeClassName
-})<{ isActive?: boolean }>`
-  ${({ theme }) => theme.flexRowNoWrap}
-  align-items: left;
-  border-radius: 3rem;
-  outline: none;
-  cursor: pointer;
-  text-decoration: none;
-  color: ${({ theme }) => theme.text2};
-  font-size: 1rem;
-  width: fit-content;
-  margin: 0 12px;
-  font-weight: 500;
+// const StyledExternalLink = styled(ExternalLink).attrs({
+//   activeClassName
+// })<{ isActive?: boolean }>`
+//   ${({ theme }) => theme.flexRowNoWrap}
+//   align-items: left;
+//   border-radius: 3rem;
+//   outline: none;
+//   cursor: pointer;
+//   text-decoration: none;
+//   color: ${({ theme }) => theme.white};
+//   font-size: 1rem;
+//   width: fit-content;
+//   margin: 0 12px;
+//   font-weight: 500;
 
-  &.${activeClassName} {
-    border-radius: 12px;
-    font-weight: 600;
-    color: ${({ theme }) => theme.text1};
-  }
+//   &.${activeClassName} {
+//     border-radius: 12px;
+//     font-weight: 600;
+//     color: ${({ theme }) => theme.text1};
+//   }
 
-  :hover,
-  :focus {
-    color: ${({ theme }) => darken(0.1, theme.text1)};
-  }
+//   :hover,
+//   :focus {
+//     color: ${({ theme }) => darken(0.1, theme.text1)};
+//   }
 
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-      display: none;
-`}
+//   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+//       display: none;
+// `}
+// `
+const StarkNetCard = styled.div`
+  height: 38px;
+  width: 124px;
+  background: ${({ theme }) => theme.jediNavyBlue};
+  color: ${({ theme }) => theme.white};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  font-family: DM Sans;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 0px;
+  // text-align: center;
 `
 
 const NETWORK_LABELS: { [chainId in ChainId]?: string } = {
@@ -268,7 +326,7 @@ function Header({ history }: { history: any }) {
   const { account, chainId } = useActiveWeb3React()
   const { t } = useTranslation()
 
-  const userEthBalance = useETHBalances(account ? [account] : [])?.[account ?? '']
+  // const userEthBalance = useETHBalances(account ? [account] : [])?.[account ?? '']
   // const [isDark] = useDarkModeManager()
 
   const toggleClaimModal = useToggleSelfClaimModal()
@@ -291,43 +349,51 @@ function Header({ history }: { history: any }) {
       <Modal isOpen={showUniBalanceModal} onDismiss={() => setShowUniBalanceModal(false)}>
         <UniBalanceContent setShowUniBalanceModal={setShowUniBalanceModal} />
       </Modal>
-      <HeaderRow>
-        <Title href="." style={{}}>
-          <JediIcon>
-            <img width={'195px'} height={'32px'} src={Logo} alt="logo" />
-          </JediIcon>
-        </Title>
-        <HeaderLinks>
-          <StyledNavLink id={`swap-nav-link`} to={'/swap'} isActive={() => history.location.pathname.includes('/swap')}>
-            {t('swap')}
-          </StyledNavLink>
-          <StyledNavLink
-            id={`pool-nav-link`}
-            to={'/pool'}
-            isActive={() =>
-              history.location.pathname.includes('/pool') ||
-              history.location.pathname.includes('/add') ||
-              history.location.pathname.includes('/remove')
-            }
-          >
-            {t('pool')}
-          </StyledNavLink>
-          <StyledNavLink id={`stake-nav-link`} to={'/uni'} isActive={() => history.location.pathname.includes('/uni')}>
+
+      <Title href="." style={{}}>
+        <JediIcon>
+          <img width={'195px'} height={'32px'} src={Logo} alt="logo" />
+        </JediIcon>
+      </Title>
+      {/* <HeaderRow> */}
+      <HeaderLinks>
+        <StyledNavLink id={`swap-nav-link`} to={'/swap'} isActive={() => history.location.pathname.includes('/swap')}>
+          {t('Trade')}
+        </StyledNavLink>
+        <StyledNavLink
+          id={`pool-nav-link`}
+          to={'/pool'}
+          isActive={() =>
+            history.location.pathname.includes('/pool') ||
+            history.location.pathname.includes('/add') ||
+            history.location.pathname.includes('/remove')
+          }
+        >
+          {t('pool')}
+        </StyledNavLink>
+        <StyledNavLink id={`swap-nav-link`} to={'/swap'} isActive={() => history.location.pathname.includes('/lend')}>
+          {t('Lend')}
+        </StyledNavLink>
+        <StyledNavLink id={`swap-nav-link`} to={'/swap'} isActive={() => history.location.pathname.includes('/stake')}>
+          {t('stake')}
+        </StyledNavLink>
+        {/* <StyledNavLink id={`stake-nav-link`} to={'/uni'} isActive={() => history.location.pathname.includes('/uni')}>
             UNI
-          </StyledNavLink>
-          <StyledNavLink
+          </StyledNavLink> */}
+        {/* <StyledNavLink
             id={`stake-nav-link`}
             to={'/vote'}
             isActive={() => history.location.pathname.includes('/vote')}
           >
             Vote
-          </StyledNavLink>
-          <StyledExternalLink id={`stake-nav-link`} href={'https://uniswap.info'}>
+          </StyledNavLink> */}
+        {/* <StyledExternalLink id={`stake-nav-link`} href={'https://uniswap.info'}>
             Charts <span style={{ fontSize: '11px' }}>↗</span>
-          </StyledExternalLink>
-        </HeaderLinks>
-      </HeaderRow>
+          </StyledExternalLink> */}
+      </HeaderLinks>
+      {/* </HeaderRow> */}
       <HeaderControls>
+        <StarkNetCard>Starknet</StarkNetCard>
         <HeaderElement>
           <HideSmall>
             {chainId && NETWORK_LABELS[chainId] && (
@@ -369,18 +435,18 @@ function Header({ history }: { history: any }) {
             </UNIWrapper>
           )}
           <AccountElement active={!!account} style={{ pointerEvents: 'auto' }}>
-            {account && userEthBalance ? (
+            {/* {account && userEthBalance ? (
               <BalanceText style={{ flexShrink: 0 }} pl="0.75rem" pr="0.5rem" fontWeight={500}>
                 {userEthBalance?.toSignificant(4)} ETH
               </BalanceText>
-            ) : null}
+            ) : null} */}
             <Web3Status />
           </AccountElement>
         </HeaderElement>
-        <HeaderElementWrap>
+        {/* <HeaderElementWrap>
           <Settings />
           <Menu />
-        </HeaderElementWrap>
+        </HeaderElementWrap> */}
       </HeaderControls>
     </HeaderFrame>
   )
