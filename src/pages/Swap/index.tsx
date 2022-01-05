@@ -284,17 +284,18 @@ export default function Swap() {
     color: ${({ theme }) => theme.jediWhite};
     // margin-bottom: 30px;
   `
-  const Icon = styled.img<{ unlimited?: boolean }>`
+  const Icon = styled.img<{ unlimited?: boolean; noMargin?: boolean }>`
     width: 100%;
     height: auto;
     max-width: ${({ unlimited }) => (unlimited ? 'auto' : '27px')};
-    margin-bottom: 30px;
+    margin-bottom: ${({ noMargin }) => (!noMargin ? '30px' : 0)};
   `
   const IconWrapper = styled.div`
     width: 100%;
     height: auto;
     max-width: 40px;
     margin-top: 24px;
+    margin-bottom: -5px;
   `
   const BalanceText = styled.div`
     font-family: DM Sans;
@@ -375,21 +376,13 @@ export default function Swap() {
             <AutoColumn justify="space-between">
               <AutoRow justify={isExpertMode ? 'space-between' : 'center'} style={{ padding: '0 1rem' }}>
                 <ArrowWrapper clickable>
-                  {/* <ArrowDown
-                    size="16"
-                    onClick={() => {
-                      setApprovalSubmitted(false) // reset 2 step UI for approvals
-                      onSwitchTokens()
-                    }}
-                    color={currencies[Field.INPUT] && currencies[Field.OUTPUT] ? theme.primary1 : theme.text2}
-                  /> */}
                   <IconWrapper
                     onClick={() => {
                       setApprovalSubmitted(false) // reset 2 step UI for approvals
                       onSwitchTokens()
                     }}
                   >
-                    <Icon unlimited src={SwapWidget} />
+                    <Icon noMargin unlimited src={SwapWidget} />
                   </IconWrapper>
                 </ArrowWrapper>
                 {recipient === null && !showWrap && isExpertMode ? (
