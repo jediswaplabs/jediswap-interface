@@ -336,8 +336,8 @@ export default function Swap() {
       <AppBody>
         <Backdrop top={'0'} left={'503px'} borderTop />
         <Backdrop top={'30px'} left={'493px'} borderTop style={{ height: '60px' }} />
-        <Backdrop top={'430px'} left={'-36px'} borderBottom style={{ height: '60px' }} />
-        <Backdrop top={'400px'} left={'-46px'} borderBottom />
+        <Backdrop top={'380px'} left={'-35px'} borderBottom style={{ height: '60px' }} />
+        <Backdrop top={'390px'} left={'-45px'} borderBottom />
         <SwapPoolTabs active={'swap'} />
         <Wrapper id="swap-page">
           <ConfirmSwapModal
