@@ -45,6 +45,11 @@ import AppBody from '../AppBody'
 import { ClickableText } from '../Pool/styleds'
 import Loader from '../../components/Loader'
 
+import styled from 'styled-components'
+import HeaderIcon from '../../assets/jedi/SwapPanel_headerItem.svg'
+import SwapWidget from '../../assets/jedi/SwapWidget.svg'
+// import BackdropImage from '../../assets/jedi/Backdrop.svg'
+
 export default function Swap() {
   const loadedUrlParams = useDefaultsFromURLSearch()
 
@@ -264,6 +269,60 @@ export default function Swap() {
     onCurrencySelection
   ])
 
+  const HeaderRow = styled.div`
+    display: flex;
+    // font-family: Soloist Title;
+    font-size: 24px;
+    // font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: -0.1em;
+    text-align: center;
+    justify-content: space-between;
+    color: ${({ theme }) => theme.jediWhite};
+    // margin-bottom: 30px;
+  `
+  const Icon = styled.img<{ unlimited?: boolean }>`
+    width: 100%;
+    height: auto;
+    max-width: ${({ unlimited }) => (unlimited ? 'auto' : '27px')};
+    margin-bottom: 30px;
+  `
+  const IconWrapper = styled.div`
+    width: 100%;
+    height: auto;
+    max-width: 40px;
+    margin-top: 24px;
+  `
+  const BalanceText = styled.div`
+    font-family: DM Sans;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16px;
+    letter-spacing: 0em;
+    text-align: center;
+    color: ${({ theme }) => theme.jediWhite};
+    margin-bottom: 16px;
+  `
+  const Backdrop = styled.div<{ top?: string; left?: string; borderTop?: boolean; borderBottom?: boolean }>`
+    position: absolute;
+    width: 10px;
+    height: 80px;
+    left: ${({ left }) => left};
+    top: ${({ top }) => top};
+
+    background: linear-gradient(0deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8)),
+      linear-gradient(180deg, #ffffff 0%, rgba(255, 255, 255, 0) 100%);
+    box-shadow: 0px 0px 18.9113px rgba(49, 255, 156, 0.7), 0px 0px 73.2115px rgba(49, 255, 156, 0.5),
+      inset 0px 0px 7.32115px rgba(49, 255, 156, 0.5);
+    filter: blur(1.3508px);
+    border-radius: 30px;
+    border-top-left-radius: ${({ borderTop }) => (borderTop ? '0px' : null)};
+    border-bottom-right-radius: ${({ borderBottom }) => (borderBottom ? '0px' : null)};
+
+    transform: matrix(0, 1, 1, 0, 0, 0);
+  `
   return (
     <>
       <TokenWarningModal
@@ -272,6 +331,10 @@ export default function Swap() {
         onConfirm={handleConfirmTokenWarning}
       />
       <AppBody>
+        <Backdrop top={'0'} left={'503px'} borderTop />
+        <Backdrop top={'25px'} left={'503px'} borderTop />
+        <Backdrop top={'400px'} left={'-48px'} borderBottom />
+        <Backdrop top={'425px'} left={'-48px'} borderBottom />
         <SwapPoolTabs active={'swap'} />
         <Wrapper id="swap-page">
           <ConfirmSwapModal
@@ -287,10 +350,17 @@ export default function Swap() {
             swapErrorMessage={swapErrorMessage}
             onDismiss={handleConfirmDismiss}
           />
-
-          <AutoColumn gap={'md'}>
+          <HeaderRow>
+            Swap
+            <Icon src={HeaderIcon} />
+          </HeaderRow>
+          <HeaderRow>
+            <BalanceText>Swap From</BalanceText>
+            <BalanceText>Balance: 0</BalanceText>
+          </HeaderRow>
+          <AutoColumn>
             <CurrencyInputPanel
-              label={independentField === Field.OUTPUT && !showWrap && trade ? 'From (estimated)' : 'From'}
+              // label={independentField === Field.OUTPUT && !showWrap && trade ? 'From (estimated)' : 'From'}
               value={formattedAmounts[Field.INPUT]}
               showMaxButton={!atMaxAmountInput}
               currency={currencies[Field.INPUT]}
@@ -303,14 +373,22 @@ export default function Swap() {
             <AutoColumn justify="space-between">
               <AutoRow justify={isExpertMode ? 'space-between' : 'center'} style={{ padding: '0 1rem' }}>
                 <ArrowWrapper clickable>
-                  <ArrowDown
+                  {/* <ArrowDown
                     size="16"
                     onClick={() => {
                       setApprovalSubmitted(false) // reset 2 step UI for approvals
                       onSwitchTokens()
                     }}
                     color={currencies[Field.INPUT] && currencies[Field.OUTPUT] ? theme.primary1 : theme.text2}
-                  />
+                  /> */}
+                  <IconWrapper
+                    onClick={() => {
+                      setApprovalSubmitted(false) // reset 2 step UI for approvals
+                      onSwitchTokens()
+                    }}
+                  >
+                    <Icon unlimited src={SwapWidget} />
+                  </IconWrapper>
                 </ArrowWrapper>
                 {recipient === null && !showWrap && isExpertMode ? (
                   <LinkStyledButton id="add-recipient-button" onClick={() => onChangeRecipient('')}>
@@ -319,10 +397,14 @@ export default function Swap() {
                 ) : null}
               </AutoRow>
             </AutoColumn>
+            <HeaderRow>
+              <BalanceText>Swap To (est.)</BalanceText>
+              <BalanceText>Balance: 0</BalanceText>
+            </HeaderRow>
             <CurrencyInputPanel
               value={formattedAmounts[Field.OUTPUT]}
               onUserInput={handleTypeOutput}
-              label={independentField === Field.INPUT && !showWrap && trade ? 'To (estimated)' : 'To'}
+              // label={independentField === Field.INPUT && !showWrap && trade ? 'To (estimated)' : 'To'}
               showMaxButton={false}
               currency={currencies[Field.OUTPUT]}
               onCurrencySelect={handleOutputSelect}
@@ -345,7 +427,7 @@ export default function Swap() {
             ) : null}
 
             {showWrap ? null : (
-              <Card padding={'.25rem .75rem 0 .75rem'} borderRadius={'20px'}>
+              <Card padding={'.25rem .75rem 0 .75rem'} borderRadius={'2px'}>
                 <AutoColumn gap="4px">
                   {Boolean(trade) && (
                     <RowBetween align="center">
