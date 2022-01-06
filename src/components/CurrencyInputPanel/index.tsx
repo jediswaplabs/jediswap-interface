@@ -2,7 +2,7 @@ import { Currency, Pair } from '@uniswap/sdk'
 import React, { useState, useContext, useCallback } from 'react'
 import styled, { ThemeContext } from 'styled-components'
 import { darken } from 'polished'
-import { useCurrencyBalance } from '../../state/wallet/hooks'
+// import { useCurrencyBalance } from '../../state/wallet/hooks'
 import CurrencySearchModal from '../SearchModal/CurrencySearchModal'
 import CurrencyLogo from '../CurrencyLogo'
 import DoubleCurrencyLogo from '../DoubleLogo'
@@ -110,18 +110,24 @@ const StyledTokenName = styled.span<{ active?: boolean }>`
 `
 
 const StyledBalanceMax = styled.button`
+  position: absolute;
+  right: 13px;
   height: 28px;
-  background-color: ${({ theme }) => theme.primary5};
-  border: 1px solid ${({ theme }) => theme.primary5};
-  border-radius: 0.5rem;
-  font-size: 0.875rem;
-
-  font-weight: 500;
+  /* background-color: ${({ theme }) => theme.primary5}; */
+  background: transparent;
+  font-family: 'DM Sans';
+  border: 1px solid #FFFFFF;
+  border-radius: 4px;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 100%;
+  letter-spacing: 0ch;
+  padding: 6px 11px;
   cursor: pointer;
   margin-right: 0.5rem;
-  color: ${({ theme }) => theme.primaryText1};
+  color: ${({ theme }) => theme.jediWhite};
   :hover {
-    border: 1px solid ${({ theme }) => theme.primary1};
+    border: 1px solid ${({ theme }) => theme.jediBlue};
   }
   :focus {
     border: 1px solid ${({ theme }) => theme.primary1};
@@ -160,19 +166,19 @@ export default function CurrencyInputPanel({
   onCurrencySelect,
   currency,
   disableCurrencySelect = false,
-  hideBalance = false,
+  // hideBalance = false,
   pair = null, // used for double token logo
   hideInput = false,
   otherCurrency,
   id,
-  showCommonBases,
-  customBalanceText
-}: CurrencyInputPanelProps) {
+  showCommonBases
+}: // customBalanceText
+CurrencyInputPanelProps) {
   const { t } = useTranslation()
 
   const [modalOpen, setModalOpen] = useState(false)
   const { account } = useActiveWeb3React()
-  const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, currency ?? undefined)
+  // const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, currency ?? undefined)
   const theme = useContext(ThemeContext)
 
   const handleDismissSearch = useCallback(() => {
@@ -196,9 +202,9 @@ export default function CurrencyInputPanel({
                   fontSize={14}
                   style={{ display: 'inline', cursor: 'pointer' }}
                 >
-                  {!hideBalance && !!currency && selectedCurrencyBalance
+                  {/* {!hideBalance && !!currency && selectedCurrencyBalance
                     ? (customBalanceText ?? 'Balance: ') + selectedCurrencyBalance?.toSignificant(6)
-                    : ' -'}
+                    : ' -'} */}
                 </TYPE.body>
               )}
             </RowBetween>
