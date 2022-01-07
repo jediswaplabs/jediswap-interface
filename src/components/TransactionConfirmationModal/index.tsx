@@ -16,19 +16,29 @@ import { useActiveWeb3React } from '../../hooks'
 
 const Wrapper = styled.div`
   width: 100%;
+  background-color: ${({ theme }) => theme.jediNavyBlue};
+  color: ${({ theme }) => theme.jediWhite};
+  font-family: 'DM Sans';
+  letter-spacing: 0ch;
+  border-radius: 8px;
 `
 const Section = styled(AutoColumn)`
-  padding: 24px;
+  padding: 16px 32px;
 `
 
 const BottomSection = styled(Section)`
-  background-color: ${({ theme }) => theme.bg2};
-  border-bottom-left-radius: 20px;
-  border-bottom-right-radius: 20px;
+  /* background-color: ${({ theme }) => theme.bg2}; */
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
 `
 
 const ConfirmedIcon = styled(ColumnCenter)`
   padding: 60px 0;
+`
+const TextWrapper = styled.div`
+  margin-top: 24px;
+  /* display: flex;
+  justify-content: center; */
 `
 
 function ConfirmationPendingContent({ onDismiss, pendingText }: { onDismiss: () => void; pendingText: string }) {
@@ -117,12 +127,14 @@ export function ConfirmationModalContent({
   return (
     <Wrapper>
       <Section>
-        <RowBetween>
-          <Text fontWeight={500} fontSize={20}>
-            {title}
-          </Text>
-          <CloseIcon onClick={onDismiss} />
-        </RowBetween>
+        <TextWrapper>
+          <RowBetween>
+            <Text fontWeight={400} fontSize={20} fontFamily={'Soloist Title'} letterSpacing={'-0.1em'}>
+              {title}
+            </Text>
+            <CloseIcon onClick={onDismiss} />
+          </RowBetween>
+        </TextWrapper>
         {topContent()}
       </Section>
       <BottomSection gap="12px">{bottomContent()}</BottomSection>
