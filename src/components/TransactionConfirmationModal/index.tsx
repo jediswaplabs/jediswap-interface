@@ -9,7 +9,7 @@ import { RowBetween } from '../Row'
 import { AlertTriangle, ArrowUpCircle } from 'react-feather'
 import { ButtonPrimary } from '../Button'
 import { AutoColumn, ColumnCenter } from '../Column'
-import Circle from '../../assets/images/blue-loader.svg'
+import Circle from '../../assets/jedi/loadingCircle.svg'
 
 import { getEtherscanLink } from '../../utils'
 import { useActiveWeb3React } from '../../hooks'
@@ -38,7 +38,7 @@ const BottomSection = styled(Section)`
 `
 
 const ConfirmedIcon = styled(ColumnCenter)`
-  padding: 60px 0;
+  padding: 0px 0 40px;
 `
 const TextWrapper = styled.div`
   margin-top: 24px;
@@ -48,23 +48,38 @@ function ConfirmationPendingContent({ onDismiss, pendingText }: { onDismiss: () 
   return (
     <Wrapper>
       <Section>
-        <RowBetween>
+        {/* <RowBetween>
           <div />
           <CloseIcon onClick={onDismiss} />
-        </RowBetween>
+        </RowBetween> */}
         <ConfirmedIcon>
-          <CustomLightSpinner src={Circle} alt="loader" size={'90px'} />
+          <CustomLightSpinner src={Circle} alt="loader" size={'80px'} />
         </ConfirmedIcon>
         <AutoColumn gap="12px" justify={'center'}>
-          <Text fontWeight={500} fontSize={20}>
+          <Text fontWeight={700} fontSize={24} fontFamily={'DM Sans'} color="#F2F2F2" letterSpacing={'0ch'}>
             Waiting For Confirmation
           </Text>
           <AutoColumn gap="12px" justify={'center'}>
-            <Text fontWeight={600} fontSize={14} color="" textAlign="center">
+            <Text
+              fontWeight={400}
+              fontSize={16}
+              color="#F2F2F2"
+              textAlign="center"
+              fontFamily={'DM Sans'}
+              letterSpacing={'0ch'}
+            >
               {pendingText}
             </Text>
           </AutoColumn>
-          <Text fontSize={12} color="#565A69" textAlign="center">
+          <Text
+            fontSize={16}
+            fontWeight={400}
+            color="#F2F2F2"
+            textAlign="center"
+            fontFamily={'DM Sans'}
+            letterSpacing={'0ch'}
+            marginTop={'50px'}
+          >
             Confirm this transaction in your wallet
           </Text>
         </AutoColumn>
