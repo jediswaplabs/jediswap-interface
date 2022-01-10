@@ -257,6 +257,24 @@ const ButtonErrorStyle = styled(Base)`
   }
 `
 
+export const ButtonGradient = styled(Base)`
+  background: linear-gradient(95.64deg, #29aafd 8.08%, #ff00e9 105.91%);
+  border: none;
+  color: ${({ theme }) => theme.jediWhite};
+  border-radius: 8px;
+  padding: 22px 0;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: -0.1em;
+  text-align: center;
+
+  :hover,
+  :focus {
+    background: linear-gradient(95.64deg, #ff00e9 8.08%, #29aafd 105.91%);
+  }
+`
+
 export function ButtonConfirmed({
   confirmed,
   altDisabledStyle,
