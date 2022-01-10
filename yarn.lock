@@ -3263,10 +3263,10 @@
   dependencies:
     "@web3-starknet-react/types" "^0.2.0"
 
-"@web3-starknet-react/argentx-connector@^0.2.6":
-  version "0.2.6"
-  resolved "https://registry.yarnpkg.com/@web3-starknet-react/argentx-connector/-/argentx-connector-0.2.6.tgz#be6457e34c5121559e4c22e8ef9f8fbec2b591cc"
-  integrity sha512-YOiCoyscChzUhYcfRgHK1V05s1QFDF7XeusWPPizoRwCsOwaKBD4AWSmgUOU0vsRNfJBigiwl5AU1qJgEQDV+g==
+"@web3-starknet-react/argentx-connector@^0.2.7":
+  version "0.2.7"
+  resolved "https://registry.yarnpkg.com/@web3-starknet-react/argentx-connector/-/argentx-connector-0.2.7.tgz#7675d055fe98b73e8a0b05737d259f95726eed95"
+  integrity sha512-HII5G+iI5U2k+wM31kzlmTdLQHwdkTz/ET//6ihOyHmQf8jtr9tbdH/bP9GjFpFuWmwyJNS6ILdmGE6oXwP4ig==
   dependencies:
     "@web3-starknet-react/abstract-connector" "^0.2.0"
     "@web3-starknet-react/types" "^0.2.0"
