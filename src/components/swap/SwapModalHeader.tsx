@@ -23,6 +23,8 @@ const RowWrapper = styled.div`
   box-shadow: inset 0px -63.1213px 52.3445px -49.2654px rgba(96, 68, 145, 0.3),
     inset 0px 75.4377px 76.9772px -36.9491px rgba(202, 172, 255, 0.3),
     inset 0px 3.07909px 13.8559px rgba(154, 146, 210, 0.3), inset 0px 0.769772px 30.7909px rgba(227, 222, 255, 0.2);
+  /* border-top-right-radius: 8px; */
+  /* border-top-left-radius: 8px; */
   border-radius: 8px;
   width: 100%;
   padding: 13px 24px;
@@ -31,16 +33,22 @@ const ArrowWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  position: absolute;
   width: 40px;
   height: 40px;
   border-radius: 50%;
   background: ${({ theme }) => theme.jediNavyBlue};
   color: ${({ theme }) => theme.jediWhite};
+`
+const ArrowBorder = styled.div`
   left: 0;
   right: 0;
   margin-left: auto;
   margin-right: auto;
+  position: absolute;
+  width: max-content;
+  padding: 2px;
+  border-radius: 50%;
+  background: linear-gradient(to top right, #50d5ff, #ef35ff);
 `
 const Column = styled.div`
   display: flex;
@@ -96,9 +104,11 @@ export default function SwapModalHeader({
         </Column>
       </RowWrapper>
       <RowFixed>
-        <ArrowWrapper>
-          <ArrowDown size="16" /*color={theme.text2}*/ style={{ /*marginLeft: '4px',*/ minWidth: '16px' }} />
-        </ArrowWrapper>
+        <ArrowBorder>
+          <ArrowWrapper>
+            <ArrowDown size="16" /*color={theme.text2}*/ style={{ /*marginLeft: '4px',*/ minWidth: '16px' }} />
+          </ArrowWrapper>
+        </ArrowBorder>
       </RowFixed>
       <RowWrapper>
         <Column>

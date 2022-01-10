@@ -16,14 +16,19 @@ import { useActiveWeb3React } from '../../hooks'
 
 const Wrapper = styled.div`
   width: 100%;
-  background-color: ${({ theme }) => theme.jediNavyBlue};
+  background: linear-gradient(to top right, #50d5ff, #ef35ff);
   color: ${({ theme }) => theme.jediWhite};
   font-family: 'DM Sans';
   letter-spacing: 0ch;
-  border-radius: 8px;
+  /* border-radius: 8px; */
+  padding: 2px;
 `
 const Section = styled(AutoColumn)`
   padding: 16px 32px;
+  background-color: ${({ theme }) => theme.jediNavyBlue};
+  /* border-radius: 8px; */
+  /* border-top-right-radius: 8px;
+  border-top-left-radius: 8px; */
 `
 
 const BottomSection = styled(Section)`
