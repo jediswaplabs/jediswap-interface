@@ -5,6 +5,7 @@ import { TYPE, ExternalLink } from '../../theme'
 import { useBlockNumber } from '../../state/application/hooks'
 import { getEtherscanLink } from '../../utils'
 import { useActiveStarknetReact } from '../../hooks'
+import { useBlockHash } from '../../hooks/useBlockHashCallback'
 
 const StyledPolling = styled.div`
   position: fixed;
@@ -63,9 +64,12 @@ const Spinner = styled.div`
 `
 
 export default function Polling() {
-  const { chainId } = useActiveStarknetReact()
+  const { chainId, library } = useActiveStarknetReact()
 
   const blockNumber = useBlockNumber()
+  const blockHash = useBlockHash(blockNumber)
+  console.log('🚀 ~ file: Polling.tsx ~ line 71 ~ Polling ~ blockHash', blockHash)
+  // console.log('🚀 ~ file: Polling.tsx ~ line 69 ~ Polling ~ blockNumber', blockNumber)
 
   const [isMounted, setIsMounted] = useState(true)
 
@@ -84,7 +88,7 @@ export default function Polling() {
   )
 
   return (
-    <ExternalLink href={chainId && blockNumber ? getEtherscanLink(chainId, blockNumber.toString(), 'block') : ''}>
+    <ExternalLink href={chainId && blockHash ? getEtherscanLink(chainId, blockHash, 'block') : ''}>
       <StyledPolling>
         <TYPE.small style={{ opacity: isMounted ? '0.2' : '0.6' }}>{blockNumber}</TYPE.small>
         <StyledPollingDot>{!isMounted && <Spinner />}</StyledPollingDot>

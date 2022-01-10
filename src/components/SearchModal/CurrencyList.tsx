@@ -96,6 +96,7 @@ function CurrencyRow({
   const { account, chainId } = useActiveStarknetReact()
   const key = currencyKey(currency)
   const selectedTokenList = useSelectedTokenList()
+  console.log('🚀 ~ file: CurrencyList.tsx ~ line 99 ~ selectedTokenList', selectedTokenList)
   const isOnSelectedList = isTokenOnList(selectedTokenList, currency)
   const customAdded = useIsUserAddedToken(currency)
   const balance = useCurrencyBalance(account ?? undefined, currency)

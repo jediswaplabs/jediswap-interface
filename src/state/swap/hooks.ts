@@ -275,6 +275,7 @@ export function useDefaultsFromURLSearch():
   useEffect(() => {
     if (!chainId) return
     const parsed = queryParametersToSwapState(parsedQs)
+    console.log('🚀 ~ file: hooks.ts ~ line 278 ~ useEffect ~ parsed', parsed)
 
     dispatch(
       replaceSwapState({

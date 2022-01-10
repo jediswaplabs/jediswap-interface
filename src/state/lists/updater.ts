@@ -13,6 +13,7 @@ export default function Updater(): null {
   const { library } = useActiveStarknetReact()
   const dispatch = useDispatch<AppDispatch>()
   const lists = useSelector<AppState, AppState['lists']['byUrl']>(state => state.lists.byUrl)
+  console.log('🚀 ~ file: updater.ts ~ line 16 ~ Updater ~ lists', lists)
 
   const isWindowVisible = useIsWindowVisible()
 
