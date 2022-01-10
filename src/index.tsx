@@ -1,4 +1,4 @@
-import { createWeb3ReactRoot, Web3ReactProvider } from '@web3-react/core'
+// import { createWeb3ReactRoot, Web3ReactProvider } from 'web3-starknet-react'
 import 'inter-ui'
 import React, { StrictMode } from 'react'
 import { isMobile } from 'react-device-detect'
@@ -12,13 +12,14 @@ import App from './pages/App'
 import store from './state'
 import ApplicationUpdater from './state/application/updater'
 import ListsUpdater from './state/lists/updater'
-import MulticallUpdater from './state/multicall/updater'
+// import MulticallUpdater from './state/multicall/updater'
 import TransactionUpdater from './state/transactions/updater'
 import UserUpdater from './state/user/updater'
 import ThemeProvider, { FixedGlobalStyle, ThemedGlobalStyle } from './theme'
 import getLibrary from './utils/getLibrary'
+import { StarknetReactProvider, createStarknetReactRoot } from '@web3-starknet-react/core'
 
-const Web3ProviderNetwork = createWeb3ReactRoot(NetworkContextName)
+const StarknetProviderNetwork = createStarknetReactRoot(NetworkContextName)
 
 if ('ethereum' in window) {
   ;(window.ethereum as any).autoRefreshOnNetworkChange = false
@@ -48,7 +49,7 @@ function Updaters() {
       <UserUpdater />
       <ApplicationUpdater />
       <TransactionUpdater />
-      <MulticallUpdater />
+      {/* <MulticallUpdater /> */}
     </>
   )
 }
@@ -56,8 +57,8 @@ function Updaters() {
 ReactDOM.render(
   <StrictMode>
     <FixedGlobalStyle />
-    <Web3ReactProvider getLibrary={getLibrary}>
-      <Web3ProviderNetwork getLibrary={getLibrary}>
+    <StarknetReactProvider getLibrary={getLibrary}>
+      <StarknetProviderNetwork getLibrary={getLibrary}>
         <Provider store={store}>
           <Updaters />
           <ThemeProvider>
@@ -67,8 +68,8 @@ ReactDOM.render(
             </HashRouter>
           </ThemeProvider>
         </Provider>
-      </Web3ProviderNetwork>
-    </Web3ReactProvider>
+      </StarknetProviderNetwork>
+    </StarknetReactProvider>
   </StrictMode>,
   document.getElementById('root')
 )

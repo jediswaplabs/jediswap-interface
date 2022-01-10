@@ -1,5 +1,5 @@
-import { AbstractConnector } from '@web3-react/abstract-connector'
-import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core'
+import { AbstractConnector } from '@web3-starknet-react/abstract-connector'
+import { UnsupportedChainIdError, useStarknetReact } from '@web3-starknet-react/core'
 import { darken, lighten } from 'polished'
 import React, { useMemo } from 'react'
 // import { Activity } from 'react-feather'
@@ -9,10 +9,9 @@ import CoinbaseWalletIcon from '../../assets/images/coinbaseWalletIcon.svg'
 import FortmaticIcon from '../../assets/images/fortmaticIcon.png'
 import PortisIcon from '../../assets/images/portisIcon.png'
 import WalletConnectIcon from '../../assets/images/walletConnectIcon.svg'
-import { fortmatic, injected, portis, walletconnect, walletlink } from '../../connectors'
+import ArgentXIcon from '../../assets/images/argentx.png'
+import { argentX } from '../../connectors'
 import { NetworkContextName } from '../../constants'
-import useENSName from '../../hooks/useENSName'
-import { useHasSocks } from '../../hooks/useSocksBalance'
 import { useWalletModalToggle } from '../../state/application/hooks'
 import { isTransactionRecent, useAllTransactions } from '../../state/transactions/hooks'
 import { TransactionDetails } from '../../state/transactions/reducer'
@@ -25,6 +24,7 @@ import Loader from '../Loader'
 import { RowBetween } from '../Row'
 import WalletModal from '../WalletModal'
 import WrongNetwork from '../../assets/jedi/WrongNetwork.svg'
+import { useActiveStarknetReact } from '../../hooks'
 
 const IconWrapper = styled.div<{ size?: number }>`
   ${({ theme }) => theme.flexColumnNoWrap};
@@ -150,30 +150,37 @@ const SOCK = (
 
 // eslint-disable-next-line react/prop-types
 function StatusIcon({ connector }: { connector: AbstractConnector }) {
-  if (connector === injected) {
-    return <Identicon />
-  } else if (connector === walletconnect) {
+  // if (connector === injected) {
+  //   return <Identicon />
+  // } else if (connector === walletconnect) {
+  //   return (
+  //     <IconWrapper size={16}>
+  //       <img src={WalletConnectIcon} alt={''} />
+  //     </IconWrapper>
+  //   )
+  // } else if (connector === walletlink) {
+  //   return (
+  //     <IconWrapper size={16}>
+  //       <img src={CoinbaseWalletIcon} alt={''} />
+  //     </IconWrapper>
+  //   )
+  // } else if (connector === fortmatic) {
+  //   return (
+  //     <IconWrapper size={16}>
+  //       <img src={FortmaticIcon} alt={''} />
+  //     </IconWrapper>
+  //   )
+  // } else if (connector === portis) {
+  //   return (
+  //     <IconWrapper size={16}>
+  //       <img src={PortisIcon} alt={''} />
+  //     </IconWrapper>
+  //   )
+  // }
+  if (connector === argentX) {
     return (
       <IconWrapper size={16}>
-        <img src={WalletConnectIcon} alt={''} />
-      </IconWrapper>
-    )
-  } else if (connector === walletlink) {
-    return (
-      <IconWrapper size={16}>
-        <img src={CoinbaseWalletIcon} alt={''} />
-      </IconWrapper>
-    )
-  } else if (connector === fortmatic) {
-    return (
-      <IconWrapper size={16}>
-        <img src={FortmaticIcon} alt={''} />
-      </IconWrapper>
-    )
-  } else if (connector === portis) {
-    return (
-      <IconWrapper size={16}>
-        <img src={PortisIcon} alt={''} />
+        <img src={ArgentXIcon} alt="ArgentX" />
       </IconWrapper>
     )
   }
@@ -182,9 +189,9 @@ function StatusIcon({ connector }: { connector: AbstractConnector }) {
 
 function Web3StatusInner() {
   const { t } = useTranslation()
-  const { account, connector, error } = useWeb3React()
+  const { account, connector, error } = useActiveStarknetReact()
 
-  const { ENSName } = useENSName(account ?? undefined)
+  // const { ENSName } = useENSName(account ?? undefined)
 
   const allTransactions = useAllTransactions()
 
@@ -196,7 +203,7 @@ function Web3StatusInner() {
   const pending = sortedRecentTransactions.filter(tx => !tx.receipt).map(tx => tx.hash)
 
   const hasPendingTransactions = !!pending.length
-  const hasSocks = useHasSocks()
+  // const hasSocks = useHasSocks()
   const toggleWalletModal = useWalletModalToggle()
 
   if (account) {
@@ -208,10 +215,7 @@ function Web3StatusInner() {
             <Text>{pending?.length} Pending</Text> <Loader stroke="white" />
           </RowBetween>
         ) : (
-          <>
-            {hasSocks ? SOCK : null}
-            <Text>{ENSName || shortenAddress(account)}</Text>
-          </>
+          <Text>{shortenAddress(account)}</Text>
         )}
       </Web3StatusConnected>
     )
@@ -224,7 +228,7 @@ function Web3StatusInner() {
     )
   } else {
     return (
-      <Web3StatusConnect id="connect-wallet" onClick={toggleWalletModal} faded={!account}>
+      <Web3StatusConnect id="connect-wallet" onClick={toggleWalletModal}>
         <ConnectStateText>{t('Connect wallet')}</ConnectStateText>
       </Web3StatusConnect>
     )
@@ -232,10 +236,10 @@ function Web3StatusInner() {
 }
 
 export default function Web3Status() {
-  const { active, account } = useWeb3React()
-  const contextNetwork = useWeb3React(NetworkContextName)
+  const { active, account } = useStarknetReact()
+  const contextNetwork = useStarknetReact(NetworkContextName)
 
-  const { ENSName } = useENSName(account ?? undefined)
+  // const { ENSName } = useENSName(account ?? undefined)
 
   const allTransactions = useAllTransactions()
 
@@ -247,14 +251,14 @@ export default function Web3Status() {
   const pending = sortedRecentTransactions.filter(tx => !tx.receipt).map(tx => tx.hash)
   const confirmed = sortedRecentTransactions.filter(tx => tx.receipt).map(tx => tx.hash)
 
-  if (!contextNetwork.active && !active) {
-    return null
-  }
+  // if (!contextNetwork.active && !active) {
+  //   return null
+  // }
 
   return (
     <>
       <Web3StatusInner />
-      <WalletModal ENSName={ENSName ?? undefined} pendingTransactions={pending} confirmedTransactions={confirmed} />
+      <WalletModal pendingTransactions={pending} confirmedTransactions={confirmed} />
     </>
   )
 }

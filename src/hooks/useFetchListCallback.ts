@@ -8,10 +8,10 @@ import { AppDispatch } from '../state'
 import { fetchTokenList } from '../state/lists/actions'
 import getTokenList from '../utils/getTokenList'
 import resolveENSContentHash from '../utils/resolveENSContentHash'
-import { useActiveWeb3React } from './index'
+import { useActiveStarknetReact } from './index'
 
 export function useFetchListCallback(): (listUrl: string) => Promise<TokenList> {
-  const { chainId, library } = useActiveWeb3React()
+  const { chainId, library } = useActiveStarknetReact()
   const dispatch = useDispatch<AppDispatch>()
 
   const ensResolver = useCallback(
@@ -25,7 +25,7 @@ export function useFetchListCallback(): (listUrl: string) => Promise<TokenList> 
         }
         throw new Error('Could not construct mainnet ENS resolver')
       }
-      return resolveENSContentHash(ensName, library)
+      return resolveENSContentHash(ensName, library as any)
     },
     [chainId, library]
   )

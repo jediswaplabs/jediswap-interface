@@ -1,8 +1,8 @@
-import { useActiveWeb3React } from '.'
+import { useActiveStarknetReact } from '.'
 import { useState, useEffect } from 'react'
 
 export function useTimestampFromBlock(block: number | undefined): number | undefined {
-  const { library } = useActiveWeb3React()
+  const { library } = useActiveStarknetReact()
   const [timestamp, setTimestamp] = useState<number>()
   useEffect(() => {
     async function fetchTimestamp() {

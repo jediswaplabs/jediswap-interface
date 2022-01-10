@@ -2,7 +2,7 @@ import { ChainId, Currency, currencyEquals, JSBI, Price, WETH } from '@uniswap/s
 import { useMemo } from 'react'
 import { USDC } from '../constants'
 import { PairState, usePairs } from '../data/Reserves'
-import { useActiveWeb3React } from '../hooks'
+import { useActiveStarknetReact } from '../hooks'
 import { wrappedCurrency } from './wrappedCurrency'
 
 /**
@@ -10,7 +10,7 @@ import { wrappedCurrency } from './wrappedCurrency'
  * @param currency currency to compute the USDC price of
  */
 export default function useUSDCPrice(currency?: Currency): Price | undefined {
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useActiveStarknetReact()
   const wrapped = wrappedCurrency(currency, chainId)
   const tokenPairs: [Currency | undefined, Currency | undefined][] = useMemo(
     () => [

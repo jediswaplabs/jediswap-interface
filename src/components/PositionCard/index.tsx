@@ -7,14 +7,14 @@ import { Text } from 'rebass'
 import styled from 'styled-components'
 import { useTotalSupply } from '../../data/TotalSupply'
 
-import { useActiveWeb3React } from '../../hooks'
+import { useActiveStarknetReact } from '../../hooks'
 import { useTokenBalance } from '../../state/wallet/hooks'
 import { ExternalLink, TYPE } from '../../theme'
 import { currencyId } from '../../utils/currencyId'
 import { unwrappedToken } from '../../utils/wrappedCurrency'
 import { ButtonPrimary, ButtonSecondary, ButtonEmpty } from '../Button'
 import { transparentize } from 'polished'
-import { CardNoise } from '../earn/styled'
+import noise from '../../assets/images/noise.png'
 
 import { useColor } from '../../hooks/useColor'
 
@@ -27,6 +27,20 @@ import { Dots } from '../swap/styleds'
 
 export const FixedHeightRow = styled(RowBetween)`
   height: 24px;
+`
+
+export const CardNoise = styled.span`
+  background: url(${noise});
+  background-size: cover;
+  mix-blend-mode: overlay;
+  border-radius: 12px;
+  width: 100%;
+  height: 100%;
+  opacity: 0.15;
+  position: absolute;
+  top: 0;
+  left: 0;
+  user-select: none;
 `
 
 export const HoverCard = styled(Card)`
@@ -50,7 +64,7 @@ interface PositionCardProps {
 }
 
 export function MinimalPositionCard({ pair, showUnwrapped = false, border }: PositionCardProps) {
-  const { account } = useActiveWeb3React()
+  const { account } = useActiveStarknetReact()
 
   const currency0 = showUnwrapped ? pair.token0 : unwrappedToken(pair.token0)
   const currency1 = showUnwrapped ? pair.token1 : unwrappedToken(pair.token1)
@@ -158,7 +172,7 @@ export function MinimalPositionCard({ pair, showUnwrapped = false, border }: Pos
 }
 
 export default function FullPositionCard({ pair, border }: PositionCardProps) {
-  const { account } = useActiveWeb3React()
+  const { account } = useActiveStarknetReact()
 
   const currency0 = unwrappedToken(pair.token0)
   const currency1 = unwrappedToken(pair.token1)

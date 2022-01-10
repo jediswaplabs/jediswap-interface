@@ -1,7 +1,9 @@
-import { Web3Provider } from '@ethersproject/providers'
+// import { Web3Provider } from '@ethersproject/providers'
+import { Provider } from 'starknet'
 
-export default function getLibrary(provider: any): Web3Provider {
-  const library = new Web3Provider(provider, 'any')
-  library.pollingInterval = 15000
+export default function getLibrary(provider: any): Provider {
+  const library = new Provider(provider)
+  console.log('🚀 ~ file: getLibrary.ts ~ line 5 ~ getLibrary ~ library', library)
+  // library.pollingInterval = 15000
   return library
 }

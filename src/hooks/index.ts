@@ -1,34 +1,36 @@
-import { Web3Provider } from '@ethersproject/providers'
+import { Provider as Web3Provider } from 'starknet'
 import { ChainId } from '@uniswap/sdk'
-import { useWeb3React as useWeb3ReactCore } from '@web3-react/core'
-import { Web3ReactContextInterface } from '@web3-react/core/dist/types'
+import { useStarknetReact as useStarknetReactCore } from '@web3-starknet-react/core'
+import { StarknetReactContextInterface } from '@web3-starknet-react/core/dist/types'
 import { useEffect, useState } from 'react'
 import { isMobile } from 'react-device-detect'
-import { injected } from '../connectors'
+import { argentX } from '../connectors'
 import { NetworkContextName } from '../constants'
 
-export function useActiveWeb3React(): Web3ReactContextInterface<Web3Provider> & { chainId?: ChainId } {
-  const context = useWeb3ReactCore<Web3Provider>()
-  const contextNetwork = useWeb3ReactCore<Web3Provider>(NetworkContextName)
+export function useActiveStarknetReact(): StarknetReactContextInterface<Web3Provider> & { chainId?: ChainId } {
+  const context = useStarknetReactCore<Web3Provider>()
+  const contextNetwork = useStarknetReactCore<Web3Provider>(NetworkContextName)
   return context.active ? context : contextNetwork
 }
 
 export function useEagerConnect() {
-  const { activate, active } = useWeb3ReactCore() // specifically using useWeb3ReactCore because of what this hook does
+  const { activate, active } = useStarknetReactCore() // specifically using useStarknetReactCore because of what this hook does
   const [tried, setTried] = useState(false)
 
   useEffect(() => {
-    injected.isAuthorized().then(isAuthorized => {
+    argentX.isAuthorized().then(isAuthorized => {
       if (isAuthorized) {
-        activate(injected, undefined, true).catch(() => {
+        activate(argentX, undefined, true).catch(() => {
           setTried(true)
         })
       } else {
-        if (isMobile && window.ethereum) {
-          activate(injected, undefined, true).catch(() => {
+        if (isMobile && window.starknet) {
+          activate(argentX, undefined, true).catch(() => {
             setTried(true)
           })
         } else {
+          console.log('🚀 ~ file: index.ts ~ line 23 ~ argentX.isAuthorized ~ isAuthorized', isAuthorized)
+
           setTried(true)
         }
       }
@@ -46,19 +48,19 @@ export function useEagerConnect() {
 }
 
 /**
- * Use for network and injected - logs user in
+ * Use for network and argentX - logs user in
  * and out after checking what network theyre on
  */
 export function useInactiveListener(suppress = false) {
-  const { active, error, activate } = useWeb3ReactCore() // specifically using useWeb3React because of what this hook does
+  const { active, error, activate } = useStarknetReactCore() // specifically using useStarknetReact because of what this hook does
 
   useEffect(() => {
-    const { ethereum } = window
+    const { starknet } = window
 
-    if (ethereum && ethereum.on && !active && !error && !suppress) {
+    if (starknet && starknet.on && !active && !error && !suppress) {
       const handleChainChanged = () => {
         // eat errors
-        activate(injected, undefined, true).catch(error => {
+        activate(argentX, undefined, true).catch(error => {
           console.error('Failed to activate after chain changed', error)
         })
       }
@@ -66,19 +68,19 @@ export function useInactiveListener(suppress = false) {
       const handleAccountsChanged = (accounts: string[]) => {
         if (accounts.length > 0) {
           // eat errors
-          activate(injected, undefined, true).catch(error => {
+          activate(argentX, undefined, true).catch(error => {
             console.error('Failed to activate after accounts changed', error)
           })
         }
       }
 
-      ethereum.on('chainChanged', handleChainChanged)
-      ethereum.on('accountsChanged', handleAccountsChanged)
+      // starknet.on('chainChanged', handleChainChanged)
+      starknet.on('accountsChanged', handleAccountsChanged)
 
       return () => {
-        if (ethereum.removeListener) {
-          ethereum.removeListener('chainChanged', handleChainChanged)
-          ethereum.removeListener('accountsChanged', handleAccountsChanged)
+        if (starknet) {
+          // ethereum.removeListener('chainChanged', handleChainChanged)
+          starknet.off('accountsChanged', handleAccountsChanged)
         }
       }
     }
