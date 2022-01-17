@@ -1,5 +1,5 @@
 import { BigNumber } from '@ethersproject/bignumber'
-import { Token, TokenAmount } from '@uniswap/sdk'
+import { Token, TokenAmount } from '@jediswap/sdk'
 import { useTokenContract } from '../hooks/useContract'
 import { useStarknetCall } from '../hooks/useStarknet'
 

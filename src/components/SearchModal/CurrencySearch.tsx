@@ -1,4 +1,4 @@
-import { Currency, ETHER, Token } from '@uniswap/sdk'
+import { Currency, TOKEN0, Token } from '@jediswap/sdk'
 import React, { KeyboardEvent, RefObject, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import ReactGA from 'react-ga'
 import { useTranslation } from 'react-i18next'
@@ -57,11 +57,11 @@ export function CurrencySearch({
 
   useEffect(() => {
     if (isAddressSearch) {
-      ReactGA.event({
-        category: 'Currency Select',
-        action: 'Search by address',
-        label: isAddressSearch
-      })
+      // ReactGA.event({
+      //   category: 'Currency Select',
+      //   action: 'Search by address',
+      //   label: isAddressSearch
+      // })
     }
   }, [isAddressSearch])
 
@@ -121,7 +121,7 @@ export function CurrencySearch({
       if (e.key === 'Enter') {
         const s = searchQuery.toLowerCase().trim()
         if (s === 'eth') {
-          handleCurrencySelect(ETHER)
+          handleCurrencySelect(TOKEN0)
         } else if (filteredSortedTokens.length > 0) {
           if (
             filteredSortedTokens[0].symbol?.toLowerCase() === searchQuery.trim().toLowerCase() ||

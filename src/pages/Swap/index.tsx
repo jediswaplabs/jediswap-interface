@@ -1,4 +1,4 @@
-import { CurrencyAmount, JSBI, Token, Trade } from '@uniswap/sdk'
+import { CurrencyAmount, JSBI, Token, Trade } from '@jediswap/sdk'
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { ArrowDown } from 'react-feather'
 import ReactGA from 'react-ga'
@@ -55,14 +55,14 @@ export default function Swap() {
     useCurrency(loadedUrlParams?.inputCurrencyId),
     useCurrency(loadedUrlParams?.outputCurrencyId)
   ]
-  const [dismissTokenWarning, setDismissTokenWarning] = useState<boolean>(false)
-  const urlLoadedTokens: Token[] = useMemo(
-    () => [loadedInputCurrency, loadedOutputCurrency]?.filter((c): c is Token => c instanceof Token) ?? [],
-    [loadedInputCurrency, loadedOutputCurrency]
-  )
-  const handleConfirmTokenWarning = useCallback(() => {
-    setDismissTokenWarning(true)
-  }, [])
+  // const [dismissTokenWarning, setDismissTokenWarning] = useState<boolean>(false)
+  // const urlLoadedTokens: Token[] = useMemo(
+  //   () => [loadedInputCurrency, loadedOutputCurrency]?.filter((c): c is Token => c instanceof Token) ?? [],
+  //   [loadedInputCurrency, loadedOutputCurrency]
+  // )
+  // const handleConfirmTokenWarning = useCallback(() => {
+  //   setDismissTokenWarning(true)
+  // }, [])
 
   const { account } = useActiveStarknetReact()
   const theme = useContext(ThemeContext)
@@ -140,6 +140,7 @@ export default function Swap() {
   }
 
   const route = trade?.route
+  console.log('🚀 ~ file: index.tsx ~ line 143 ~ Swap ~ trade', trade)
   const userHasSpecifiedInputOutput = Boolean(
     currencies[Field.INPUT] && currencies[Field.OUTPUT] && parsedAmounts[independentField]?.greaterThan(JSBI.BigInt(0))
   )
@@ -245,11 +246,11 @@ export default function Swap() {
 
   return (
     <>
-      <TokenWarningModal
+      {/* <TokenWarningModal
         isOpen={urlLoadedTokens.length > 0 && !dismissTokenWarning}
         tokens={urlLoadedTokens}
         onConfirm={handleConfirmTokenWarning}
-      />
+      /> */}
       <AppBody>
         <SwapPoolTabs active={'swap'} />
         <Wrapper id="swap-page">

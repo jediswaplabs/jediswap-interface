@@ -1,4 +1,4 @@
-import { ChainId } from '@uniswap/sdk'
+import { ChainId } from '@jediswap/sdk'
 import { ArgentXConnector } from '@web3-starknet-react/argentx-connector'
 import { Web3Provider } from '@ethersproject/providers'
 import { InjectedConnector } from '@web3-react/injected-connector'

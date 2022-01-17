@@ -1,5 +1,5 @@
 import { Provider as Web3Provider } from 'starknet'
-import { ChainId } from '@uniswap/sdk'
+import { ChainId } from '@jediswap/sdk'
 import { useStarknetReact as useStarknetReactCore } from '@web3-starknet-react/core'
 import { StarknetReactContextInterface } from '@web3-starknet-react/core/dist/types'
 import { useEffect, useState } from 'react'

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Text } from 'rebass'
-import { ChainId, Currency, currencyEquals, ETHER, Token } from '@uniswap/sdk'
+import { ChainId, Currency, currencyEquals, TOKEN0, Token } from '@jediswap/sdk'
 import styled from 'styled-components'
 
 import { SUGGESTED_BASES } from '../../constants'
@@ -45,13 +45,13 @@ export default function CommonBases({
       <AutoRow gap="4px">
         <BaseWrapper
           onClick={() => {
-            if (!selectedCurrency || !currencyEquals(selectedCurrency, ETHER)) {
-              onSelect(ETHER)
+            if (!selectedCurrency || !currencyEquals(selectedCurrency, TOKEN0)) {
+              onSelect(TOKEN0)
             }
           }}
-          disable={selectedCurrency === ETHER}
+          disable={selectedCurrency === TOKEN0}
         >
-          <CurrencyLogo currency={ETHER} style={{ marginRight: 8 }} />
+          <CurrencyLogo currency={TOKEN0} style={{ marginRight: 8 }} />
           <Text fontWeight={500} fontSize={16}>
             ETH
           </Text>

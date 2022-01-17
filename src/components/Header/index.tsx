@@ -1,4 +1,4 @@
-import { ChainId, TokenAmount, JSBI } from '@uniswap/sdk'
+import { ChainId, TokenAmount, JSBI } from '@jediswap/sdk'
 import React, { useState } from 'react'
 // import { Text } from 'rebass'
 import { NavLink, withRouter } from 'react-router-dom'
