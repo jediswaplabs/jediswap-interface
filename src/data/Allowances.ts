@@ -1,3 +1,4 @@
+import { uint256 } from 'starknet'
 import { Token, TokenAmount } from '@jediswap/sdk'
 import { useMemo } from 'react'
 
@@ -8,9 +9,13 @@ export function useTokenAllowance(token?: Token, owner?: string, spender?: strin
   const contract = useTokenContract(token?.address, false)
 
   const inputs = useMemo(() => [owner, spender], [owner, spender])
-  // const allowance = useSingleCallResult(contract, 'allowance', inputs).result
-  const allowance = useStarknetCall(contract, 'allowance', inputs).remaining as string
-  // console.log('🚀 ~ file: Allowances.ts ~ line 14 ~ useTokenAllowance ~ allowance ', allowance)
 
-  return useMemo(() => (token && allowance ? new TokenAmount(token, allowance) : undefined), [token, allowance])
+  const allowanceResult = useStarknetCall(contract, 'allowance', inputs).remaining
+
+  const allowance = allowanceResult ? uint256.uint256ToBN(allowanceResult as any) : undefined
+
+  return useMemo(() => (token && allowance ? new TokenAmount(token, allowance.toString()) : undefined), [
+    token,
+    allowance
+  ])
 }
