@@ -5,11 +5,12 @@ import ERC20_ABI from '../constants/abis/erc20.json'
 import { getContract } from '../utils'
 import { useActiveStarknetReact } from './index'
 import REGISTRY_ABI from '../constants/abis/Registry.json'
-import { REGISTRY_ADDRESS } from '../constants'
+import { REGISTRY_ADDRESS, ROUTER_ADDRESS } from '../constants'
+import JediSwapRouterABI from '../constants/abis/Router.json'
 
 // returns null on errors
 function useContract(address: string | undefined, ABI: any, withSignerIfPossible = true): Contract | null {
-  const { library, account } = useActiveStarknetReact()
+  const { library, account, connector } = useActiveStarknetReact()
 
   return useMemo(() => {
     if (!address || !ABI || !library) {
@@ -22,7 +23,13 @@ function useContract(address: string | undefined, ABI: any, withSignerIfPossible
       return null
     }
     try {
-      const contract = getContract(address, ABI, library, withSignerIfPossible && account ? account : undefined)
+      const contract = getContract(
+        address,
+        ABI,
+        library,
+        connector,
+        withSignerIfPossible && account ? account : undefined
+      )
 
       return contract
     } catch (error) {
@@ -33,13 +40,17 @@ function useContract(address: string | undefined, ABI: any, withSignerIfPossible
 }
 
 export function useTokenContract(tokenAddress?: string, withSignerIfPossible?: boolean): Contract | null {
-  return useContract(tokenAddress, ERC20_ABI)
+  return useContract(tokenAddress, ERC20_ABI, withSignerIfPossible)
 }
 
-export function usePairContract(pairAddress?: string): Contract | null {
-  return useContract(pairAddress, JediswapPairABI)
+export function usePairContract(pairAddress?: string, withSignerIfPossible?: boolean): Contract | null {
+  return useContract(pairAddress, JediswapPairABI, withSignerIfPossible)
 }
 
-export function useRegistryContract(): Contract | null {
-  return useContract(REGISTRY_ADDRESS, REGISTRY_ABI)
+export function useRegistryContract(withSignerIfPossible?: boolean): Contract | null {
+  return useContract(REGISTRY_ADDRESS, REGISTRY_ABI, withSignerIfPossible)
+}
+
+export function useRouterContract(): Contract | null {
+  return useContract(ROUTER_ADDRESS, JediSwapRouterABI, true)
 }

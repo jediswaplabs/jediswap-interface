@@ -1,12 +1,12 @@
+import { AbstractConnector } from '@web3-starknet-react/abstract-connector'
 import { useMemo } from 'react'
 // import { Contract } from '@ethersproject/contracts'
-import { Abi, Contract, ec, Provider, Signer } from 'starknet'
+import { Abi, Contract, Provider, Signer, SignerInterface } from 'starknet'
 import { getAddress } from '@ethersproject/address'
 import { AddressZero } from '@ethersproject/constants'
 import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers'
 import { BigNumber } from '@ethersproject/bignumber'
-import { abi as IUniswapV2Router02ABI } from '@uniswap/v2-periphery/build/IUniswapV2Router02.json'
-import { ROUTER_ADDRESS, TOKEN1 } from '../constants'
+import { TOKEN1 } from '../constants'
 import { ChainId, JSBI, Percent, Token, CurrencyAmount, Currency, TOKEN0 } from '@jediswap/sdk'
 import { TokenAddressMap } from '../state/lists/hooks'
 
@@ -84,30 +84,37 @@ export function calculateSlippageAmount(value: CurrencyAmount, slippage: number)
   ]
 }
 
-// account is not optional
-export function getSigner(library: Provider, account: string): any {
-  const ecKp = ec.genKeyPair()
-  return new Signer(library, account, ecKp)
+// account is optional
+export function getProviderOrSigner(
+  library: Provider,
+  connector?: AbstractConnector,
+  account?: string
+): Provider | undefined {
+  return account && connector ? connector.getSigner() : library
 }
 
 // account is optional
-export function getProviderOrSigner(library: Provider, account?: string): Provider | any {
-  return account ? getSigner(library, account) : library
-}
-
-// account is optional
-export function getContract(address: string, ABI: any, library: any, account?: string): Contract {
+export function getContract(
+  address: string,
+  ABI: any,
+  library: Provider,
+  connector?: AbstractConnector,
+  account?: string
+): Contract {
   if (!isAddress(address) || address === AddressZero) {
     throw Error(`Invalid 'address' parameter '${address}'.`)
   }
+  console.log('Library: ', library)
 
-  return new Contract(ABI as Abi[], address)
+  const providerOrSigner = getProviderOrSigner(library, connector, account)
+
+  return new Contract(ABI as Abi[], address, providerOrSigner)
 }
 
 // account is optional
-export function getRouterContract(_: number, library: any, account?: string): Contract {
-  return getContract(ROUTER_ADDRESS, IUniswapV2Router02ABI, library, account)
-}
+// export function getRouterContract(_: number, library: any, account?: string): Contract {
+//   return getContract(ROUTER_ADDRESS, JediSwapRouterABI, library, account)
+// }
 
 export function escapeRegExp(string: string): string {
   return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') // $& means the whole matched string
