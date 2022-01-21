@@ -4,7 +4,7 @@ import { AbstractConnector } from '@web3-starknet-react/abstract-connector'
 // import { fortmatic, injected, portis, walletconnect, walletlink, argentX } from '../connectors'
 import { argentX } from '../connectors'
 
-export const ROUTER_ADDRESS = '0x00b9f9711f0c8867218b4571c7bcd6f450d40c8ff6201a260a3a78f406d2a727'
+export const ROUTER_ADDRESS = '0x0b9f9711f0c8867218b4571c7bcd6f450d40c8ff6201a260a3a78f406d2a727'
 
 export const TOKEN0_ADDRESS = '0x11526cc0f7883d396ca270f5151ff5e76829d855e9787d91e3fafe520fbfcc8'
 export const TOKEN1_ADDRESS = '0x709f8d7990b9f9b7cb25e4fde4c4f568906a4120eb0200d45eb8170bf752929'
