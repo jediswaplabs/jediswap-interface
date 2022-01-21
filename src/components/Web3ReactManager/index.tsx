@@ -40,15 +40,15 @@ export default function Web3ReactManager({ children }: { children: JSX.Element }
 
   // handle delayed loader state
   const [showLoader, setShowLoader] = useState(false)
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      setShowLoader(true)
-    }, 600)
+  // useEffect(() => {
+  //   const timeout = setTimeout(() => {
+  //     setShowLoader(false)
+  //   }, 600)
 
-    return () => {
-      clearTimeout(timeout)
-    }
-  }, [])
+  //   return () => {
+  //     clearTimeout(timeout)
+  //   }
+  // }, [])
 
   // on page load, do nothing until we've tried to connect to the injected connector
   if (!triedEager) {
@@ -65,13 +65,15 @@ export default function Web3ReactManager({ children }: { children: JSX.Element }
   }
 
   // if neither context is active, spin
-  if (!active && !networkActive) {
-    return showLoader ? (
-      <MessageWrapper>
-        <Loader />
-      </MessageWrapper>
-    ) : null
-  }
+  // if (!active && !networkActive) {
+  //   return showLoader ? (
+  //     <MessageWrapper>
+  //       <Loader />
+  //     </MessageWrapper>
+  //   ) : (
+  //     children
+  //   )
+  // }
 
   return children
 }
