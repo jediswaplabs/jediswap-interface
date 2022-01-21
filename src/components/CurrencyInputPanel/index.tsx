@@ -21,9 +21,12 @@ const InputRow = styled.div<{ selected: boolean }>`
 `
 
 const CurrencySelect = styled.button<{ selected: boolean }>`
-  align-items: left;
+ display: flex;
+ align-items: center;
+ justify-content: center;
   height: 2.2rem;
-  width:113px;
+  min-width:130px;
+  max-width: 132px;
   font-size: 12px;
   font-family: 'DM Sans';
   font-weight: 700;
@@ -58,7 +61,7 @@ const LabelRow = styled.div`
   }
 `
 
-const Aligner = styled.span`
+const Aligner = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -66,8 +69,8 @@ const Aligner = styled.span`
 `
 
 const StyledDropDown = styled(DropDown)<{ selected: boolean }>`
-  margin: 0 0.25rem 0 0.5rem;
-  height: 35%;
+  margin: 0 0.5rem 0 0.5rem;
+  width: 16px;
 
   path {
     /* stroke: ${({ selected, theme }) => (selected ? theme.text1 : theme.white)}; */
@@ -99,14 +102,15 @@ const Container = styled.div<{ hideInput: boolean }>`
 `
 
 const StyledTokenName = styled.span<{ active?: boolean }>`
-  ${({ active }) => (active ? '  margin: 0 0.25rem 0 0.75rem;' : '  margin: 0;')}
+  ${({ active }) => (active ? 'margin: 0 0.25rem 0 0.75rem;' : 'margin: 0;')}
   /* margin: 5px; */
   font-size: ${({ active }) => (active ? '20px' : '12px')};
   text-transform: uppercase;
   text-align: left;
   display: flex;
   align-items: center;
-  /* letter-spacing: 0ch; */
+  white-space: nowrap;
+  letter-spacing: 0.1px;
 `
 
 const StyledBalanceMax = styled.button`
