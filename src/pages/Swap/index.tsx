@@ -308,7 +308,7 @@ export default function Swap() {
     color: ${({ theme }) => theme.jediWhite};
     margin-bottom: 16px;
   `
-  const Backdrop = styled.div<{ top?: string; left?: string; borderTop?: boolean; borderBottom?: boolean }>`
+  const Backdrop = styled.div<{ top?: string; left?: string; curveRight?: boolean; curveLeft?: boolean }>`
     position: absolute;
     width: 10px;
     height: 80px;
@@ -319,10 +319,8 @@ export default function Swap() {
       linear-gradient(180deg, #ffffff 0%, rgba(255, 255, 255, 0) 100%);
     box-shadow: 0px 0px 18.9113px rgba(49, 255, 156, 0.7), 0px 0px 73.2115px rgba(49, 255, 156, 0.5),
       inset 0px 0px 7.32115px rgba(49, 255, 156, 0.5);
-    filter: blur(1.3508px);
-    border-radius: 30px;
-    border-top-left-radius: ${({ borderTop }) => (borderTop ? '0px' : null)};
-    border-bottom-right-radius: ${({ borderBottom }) => (borderBottom ? '0px' : null)};
+
+    border-radius: ${({ curveRight }) => (curveRight ? '30px 30px 0 0' : '0 0 30px 30px')};
 
     transform: matrix(0, 1, 1, 0, 0, 0);
   `
@@ -334,10 +332,10 @@ export default function Swap() {
         onConfirm={handleConfirmTokenWarning}
       />
       <AppBody>
-        <Backdrop top={'0'} left={'503px'} borderTop />
-        <Backdrop top={'30px'} left={'493px'} borderTop style={{ height: '60px' }} />
-        <Backdrop top={'380px'} left={'-35px'} borderBottom style={{ height: '60px' }} />
-        <Backdrop top={'390px'} left={'-45px'} borderBottom />
+        <Backdrop top={'0'} left={'503px'} curveRight />
+        <Backdrop top={'30px'} left={'493px'} curveRight style={{ height: '60px' }} />
+        <Backdrop top={'380px'} left={'-35px'} curveLeft style={{ height: '60px' }} />
+        <Backdrop top={'390px'} left={'-45px'} curveLeft />
         <SwapPoolTabs active={'swap'} />
         <Wrapper id="swap-page">
           <ConfirmSwapModal
