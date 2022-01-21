@@ -1,10 +1,11 @@
 import { BigNumber } from '@ethersproject/bignumber'
-import { Contract, Args } from 'starknet'
+import { Contract, Args, uint256, compileCalldata } from 'starknet'
 import { JSBI, Percent, Router, SwapParameters, Trade, TradeType } from '@jediswap/sdk'
 import { useMemo } from 'react'
 import { BIPS_BASE, INITIAL_ALLOWED_SLIPPAGE } from '../constants'
 import { useTransactionAdder } from '../state/transactions/hooks'
-import { getRouterContract, isAddress, shortenAddress } from '../utils'
+import { isAddress, shortenAddress } from '../utils'
+import { useRouterContract } from './useContract'
 import isZero from '../utils/isZero'
 import { useActiveStarknetReact } from './index'
 import useTransactionDeadline from './useTransactionDeadline'
@@ -48,13 +49,27 @@ function useSwapCallArguments(
   const { account, chainId, library } = useActiveStarknetReact()
 
   // const { address: recipientAddress } = useENS(recipientAddressOrName)
-  const recipient = recipientAddressOrName
+  const recipient = recipientAddressOrName === null ? account : recipientAddressOrName
+
   const deadline = useTransactionDeadline()
 
-  return useMemo(() => {
-    if (!trade || !recipient || !library || !account || !chainId || !deadline) return []
+  const contract: Contract | null = useRouterContract()
 
-    const contract: Contract | null = getRouterContract(chainId, library, account)
+  return useMemo(() => {
+    if (!trade || !recipient || !library || !account || !chainId || !deadline) {
+      // console.log(
+      //   '🚀 ~ file: useSwapCallback.ts ~ line 56 ~ returnuseMemo ~ !trade || !recipient || !library || !account || !chainId || !deadline',
+      //   trade,
+      //   recipient,
+      //   library,
+      //   account,
+      //   chainId,
+      //   deadline
+      // )
+      return []
+    }
+
+    // console.log('🚀 ~ file: useSwapCallback.ts ~ line 58 ~ returnuseMemo ~ contract', contract)
     if (!contract) {
       return []
     }
@@ -94,11 +109,12 @@ export function useSwapCallback(
   const { account, chainId, library } = useActiveStarknetReact()
 
   const swapCalls = useSwapCallArguments(trade, allowedSlippage, recipientAddressOrName)
+  console.log('🚀 ~ file: useSwapCallback.ts ~ line 97 ~ swapCalls', swapCalls)
 
   const addTransaction = useTransactionAdder()
+  const recipient = recipientAddressOrName === null ? account : recipientAddressOrName
 
   // const { address: recipientAddress } = useENS(recipientAddressOrName)
-  const recipient = recipientAddressOrName
 
   return useMemo(() => {
     if (!trade || !library || !account || !chainId) {
@@ -159,35 +175,50 @@ export function useSwapCallback(
         )
 
         // a successful estimation is a bignumber gas estimate and the next call is also a bignumber gas estimate
-        const successfulEstimation = estimatedCalls.find(
-          (el, ix, list): el is SuccessfulCall =>
-            'gasEstimate' in el && (ix === list.length - 1 || 'gasEstimate' in list[ix + 1])
-        )
+        // const successfulEstimation = estimatedCalls.find(
+        //   (el, ix, list): el is SuccessfulCall =>
+        //     'gasEstimate' in el && (ix === list.length - 1 || 'gasEstimate' in list[ix + 1])
+        // )
 
-        if (!successfulEstimation) {
-          const errorCalls = estimatedCalls.filter((call): call is FailedCall => 'error' in call)
-          if (errorCalls.length > 0) throw errorCalls[errorCalls.length - 1].error
-          throw new Error('Unexpected error. Please contact support: none of the calls threw an error')
-        }
+        // if (!successfulEstimation) {
+        //   const errorCalls = estimatedCalls.filter((call): call is FailedCall => 'error' in call)
+        //   if (errorCalls.length > 0) throw errorCalls[errorCalls.length - 1].error
+        //   throw new Error('Unexpected error. Please contact support: none of the calls threw an error')
+        // }
+
+        // console.log('Estimated Calls: ', estimatedCalls)
 
         const {
           call: {
             contract,
             parameters: { methodName, args, value }
-          },
-          gasEstimate
-        } = successfulEstimation
+          }
+        } = estimatedCalls[0]
 
         const [amountIn, amountOut, path, to, deadline] = args
+        // console.log('🚀 ~ file: useSwapCallback.ts ~ line 199 ~ onSwap ~ path', path)
+
+        const uint256AmountIn = uint256.bnToUint256(amountIn as string)
+        const uint256AmountOut = uint256.bnToUint256(amountOut as string)
+
+        const swapArgs: Args = {
+          amountIn: { type: 'struct', ...uint256AmountIn },
+          amountOutMin: { type: 'struct', ...uint256AmountOut },
+          path,
+          to,
+          deadline
+        }
+
+        // console.log('Calldata: ', compileCalldata(swapArgs))
 
         return (
           contract
-            .invoke(methodName, { amountIn, amountOut, path, to, deadline })
+            .invoke(methodName, swapArgs)
             //   (...args, {
             //   gasLimit: gasEstimate ? calculateGasMargin(gasEstimate) : undefined,
             //   ...(value && !isZero(value) ? { value, from: account } : { from: account })
             // })
-            .then((response: any) => {
+            .then(response => {
               const inputSymbol = trade.inputAmount.currency.symbol
               const outputSymbol = trade.outputAmount.currency.symbol
               const inputAmount = trade.inputAmount.toSignificant(3)
@@ -207,7 +238,7 @@ export function useSwapCallback(
                 summary: withRecipient
               })
 
-              return response.hash
+              return response.transaction_hash
             })
             .catch((error: any) => {
               // if the user rejected the tx, pass this along
