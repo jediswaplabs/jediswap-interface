@@ -24,11 +24,10 @@ const Wrapper = styled.div`
   /* border-radius: 8px; */
   padding: 2px;
 `
-const Section = styled(AutoColumn)`
+const Section = styled(AutoColumn)<{ withBorderBottom?: boolean }>`
   padding: 16px 32px;
   background-color: ${({ theme }) => theme.jediNavyBlue};
-  border-top-right-radius: 8px;
-  border-top-left-radius: 8px;
+  border-radius: ${({ withBorderBottom }) => (withBorderBottom ? '8px' : '8px 8px 0 0')};
 `
 
 const BottomSection = styled(Section)`
@@ -54,7 +53,7 @@ const Row = styled.div`
 function ConfirmationPendingContent({ onDismiss, pendingText }: { onDismiss: () => void; pendingText: string }) {
   return (
     <Wrapper>
-      <Section>
+      <Section style={{ padding: '35px 32px 32px' }} withBorderBottom>
         {/* <RowBetween>
           <div />
           <CloseIcon onClick={onDismiss} />
@@ -108,7 +107,7 @@ function TransactionSubmittedContent({
 
   return (
     <Wrapper>
-      <Section style={{ padding: '18px' }}>
+      <Section style={{ padding: '18px' }} withBorderBottom>
         <RowBetween>
           <div />
           <CloseIcon onClick={onDismiss} />
