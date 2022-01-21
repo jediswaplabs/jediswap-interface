@@ -294,7 +294,7 @@ export function ButtonError({ error, ...rest }: { error?: boolean } & ButtonProp
   if (error) {
     return <ButtonErrorStyle {...rest} />
   } else {
-    return <ButtonPrimary {...rest} />
+    return <ButtonGradient {...rest} />
   }
 }
 
