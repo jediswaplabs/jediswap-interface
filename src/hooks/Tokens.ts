@@ -79,14 +79,14 @@ export function useToken(tokenAddress?: string): Token | undefined | null {
   const address = isAddress(tokenAddress)
 
   const tokenContract = useTokenContract(address ? address : undefined)
-  // console.log('🚀 ~ file: Tokens.ts ~ line 70 ~ useToken ~ tokenContract', tokenContract)
+  console.log('🚀 ~ file: Tokens.ts ~ line 70 ~ useToken ~ tokenContract', tokenContract)
   // const tokenContractBytes32 = useBytes32TokenContract(address ? address : undefined, false)
   // const token: Token | undefined = address ? tokens[address] : undefined
 
   const { name: tokenName } = useStarknetCall(tokenContract, 'name', undefined, NEVER_RELOAD)
 
   const { symbol } = useStarknetCall(tokenContract, 'symbol', undefined, NEVER_RELOAD)
-  // console.log('🚀 ~ file: Tokens.ts ~ line 89 ~ useToken ~ symbol', parseStringFromArgs(symbol))
+  console.log('🚀 ~ file: Tokens.ts ~ line 89 ~ useToken ~ symbol', parseStringFromArgs(symbol))
 
   // const symbolBytes32 = useSingleCallResult(token ? undefined : tokenContractBytes32, 'symbol', undefined, NEVER_RELOAD)
   const { decimals } = useStarknetCall(tokenContract, 'decimals', undefined, NEVER_RELOAD)
@@ -123,7 +123,7 @@ export function useToken(tokenAddress?: string): Token | undefined | null {
 
 export function useCurrency(currencyId: string | undefined): Currency | null | undefined {
   const isTOKEN0 = currencyId?.toUpperCase() === 'TOKEN0'
+  // const isTOKEN1 = currencyId === TOKEN1.address
   const token = useToken(isTOKEN0 ? undefined : currencyId)
-  console.log('🚀 ~ file: Tokens.ts ~ line 113 ~ useCurrency ~ token', token)
   return isTOKEN0 ? TOKEN0 : token
 }
