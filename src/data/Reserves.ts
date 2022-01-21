@@ -1,14 +1,13 @@
-import { TokenAmount, Pair, Currency } from '@uniswap/sdk'
+import { TokenAmount, Pair, Currency, JSBI } from '@jediswap/sdk'
 import { useMemo } from 'react'
-import { abi as IUniswapV2PairABI } from '@uniswap/v2-core/build/IUniswapV2Pair.json'
+import JediswapPairABI from '../constants/abis/Pair.json'
 import { Interface } from '@ethersproject/abi'
 import { useActiveStarknetReact } from '../hooks'
 import { useMultipleStarknetCallSingleData } from '../hooks/useStarknet'
 
 import { wrappedCurrency } from '../utils/wrappedCurrency'
-import { Abi } from 'starknet'
-
-// const PAIR_INTERFACE = new Interface(IUniswapV2PairABI)
+import { Abi, uint256 } from 'starknet'
+import { usePairAddresses } from '../hooks/usePairAddress'
 
 export enum PairState {
   LOADING,
@@ -28,31 +27,44 @@ export function usePairs(currencies: [Currency | undefined, Currency | undefined
       ]),
     [chainId, currencies]
   )
+  // console.log('🚀 ~ file: Reserves.ts ~ line 32 ~ usePairs ~ tokens', tokens, currencies)
 
-  const pairAddresses = useMemo(
-    () =>
-      tokens.map(([tokenA, tokenB]) => {
-        return tokenA && tokenB && !tokenA.equals(tokenB) ? Pair.getAddress(tokenA, tokenB) : undefined
-      }),
-    [tokens]
-  )
+  const pairAddresses = usePairAddresses(tokens)
+  // console.log('🚀 ~ file: Reserves.ts ~ line 34 ~ usePairs ~ pairAddresses', pairAddresses)
 
-  const results = useMultipleStarknetCallSingleData(pairAddresses, IUniswapV2PairABI as Abi[], 'get_reserves')
+  // const pairAddresses = useMemo(
+  //   () =>
+  //     tokens.map(([tokenA, tokenB]) => {
+  //       return tokenA && tokenB && !tokenA.equals(tokenB) ? Pair.getAddress(tokenA, tokenB) : undefined
+  //     }),
+  //   [tokens]
+  // )
+
+  const results = useMultipleStarknetCallSingleData(pairAddresses, JediswapPairABI as Abi[], 'get_reserves')
+  // console.log('🚀 ~ file: Reserves.ts ~ line 44 ~ usePairs ~ results', results)
 
   return useMemo(() => {
     return results.map((reserves, i) => {
       // const { result: reserves, loading } = result
-      const tokenA = tokens[i][0]
-      const tokenB = tokens[i][1]
+      const tokenA = tokens?.[i]?.[0]
+      const tokenB = tokens?.[i]?.[1]
 
       // if (!r) return [PairState.LOADING, null]
       if (!tokenA || !tokenB || tokenA.equals(tokenB)) return [PairState.INVALID, null]
       if (!reserves) return [PairState.NOT_EXISTS, null]
       const { reserve0, reserve1 } = reserves
       const [token0, token1] = tokenA.sortsBefore(tokenB) ? [tokenA, tokenB] : [tokenB, tokenA]
+
+      const reserve0Amount = JSBI.BigInt(uint256.uint256ToBN(reserve0 as any).toString())
+      const reserve1Amount = JSBI.BigInt(uint256.uint256ToBN(reserve1 as any).toString())
+
       return [
         PairState.EXISTS,
-        new Pair(new TokenAmount(token0, reserve0.toString()), new TokenAmount(token1, reserve1.toString()))
+        new Pair(
+          new TokenAmount(token0, reserve0Amount.toString()),
+          new TokenAmount(token1, reserve1Amount.toString()),
+          pairAddresses[i]
+        )
       ]
     })
   }, [results, tokens])
