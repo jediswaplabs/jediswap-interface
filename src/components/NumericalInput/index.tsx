@@ -5,8 +5,9 @@ import { escapeRegExp } from '../../utils'
 const StyledInput = styled.input<{ error?: boolean; fontSize?: string; align?: string }>`
    /* color: ${({ error, theme }) => (error ? theme.red1 : theme.text1)}; */
   color:${({ theme }) => theme.jediWhite};
-  width: 237px;
+  width: 100%;
   height: 48px;
+  border-radius: 4px;
   position: relative;
   font-weight: 500;
   outline: none;
