@@ -6,13 +6,14 @@ import { ExternalLink } from '../../theme'
 import { Text } from 'rebass'
 import { CloseIcon, CustomLightSpinner } from '../../theme/components'
 import { RowBetween } from '../Row'
-import { AlertTriangle, ArrowUpCircle } from 'react-feather'
-import { ButtonPrimary } from '../Button'
+import { AlertTriangle, ArrowUp } from 'react-feather'
+import { ButtonGradient, ButtonPrimary } from '../Button'
 import { AutoColumn, ColumnCenter } from '../Column'
-import Circle from '../../assets/images/blue-loader.svg'
+import Circle from '../../assets/jedi/loadingCircle.svg'
 
 import { getEtherscanLink } from '../../utils'
 import { useActiveWeb3React } from '../../hooks'
+import openInBrowser from '../../assets/jedi/openInBrowser.svg'
 
 const Wrapper = styled.div`
   width: 100%;
@@ -23,11 +24,10 @@ const Wrapper = styled.div`
   /* border-radius: 8px; */
   padding: 2px;
 `
-const Section = styled(AutoColumn)`
+const Section = styled(AutoColumn)<{ withBorderBottom?: boolean }>`
   padding: 16px 32px;
   background-color: ${({ theme }) => theme.jediNavyBlue};
-  border-top-right-radius: 8px;
-  border-top-left-radius: 8px;
+  border-radius: ${({ withBorderBottom }) => (withBorderBottom ? '8px' : '8px 8px 0 0')};
 `
 
 const BottomSection = styled(Section)`
@@ -38,33 +38,54 @@ const BottomSection = styled(Section)`
 `
 
 const ConfirmedIcon = styled(ColumnCenter)`
-  padding: 60px 0;
+  padding: 0px 0 40px;
 `
 const TextWrapper = styled.div`
   margin-top: 24px;
 `
 
+const Row = styled.div`
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+`
 function ConfirmationPendingContent({ onDismiss, pendingText }: { onDismiss: () => void; pendingText: string }) {
   return (
     <Wrapper>
-      <Section>
-        <RowBetween>
+      <Section style={{ padding: '35px 32px 32px' }} withBorderBottom>
+        {/* <RowBetween>
           <div />
           <CloseIcon onClick={onDismiss} />
-        </RowBetween>
+        </RowBetween> */}
         <ConfirmedIcon>
-          <CustomLightSpinner src={Circle} alt="loader" size={'90px'} />
+          <CustomLightSpinner src={Circle} alt="loader" size={'80px'} />
         </ConfirmedIcon>
         <AutoColumn gap="12px" justify={'center'}>
-          <Text fontWeight={500} fontSize={20}>
+          <Text fontWeight={700} fontSize={24} fontFamily={'DM Sans'} color="#F2F2F2" letterSpacing={'0ch'}>
             Waiting For Confirmation
           </Text>
           <AutoColumn gap="12px" justify={'center'}>
-            <Text fontWeight={600} fontSize={14} color="" textAlign="center">
+            <Text
+              fontWeight={400}
+              fontSize={16}
+              color="#F2F2F2"
+              textAlign="center"
+              fontFamily={'DM Sans'}
+              letterSpacing={'0ch'}
+            >
               {pendingText}
             </Text>
           </AutoColumn>
-          <Text fontSize={12} color="#565A69" textAlign="center">
+          <Text
+            fontSize={16}
+            fontWeight={400}
+            color="#F2F2F2"
+            textAlign="center"
+            fontFamily={'DM Sans'}
+            letterSpacing={'0ch'}
+            marginTop={'50px'}
+          >
             Confirm this transaction in your wallet
           </Text>
         </AutoColumn>
@@ -86,30 +107,40 @@ function TransactionSubmittedContent({
 
   return (
     <Wrapper>
-      <Section>
+      <Section style={{ padding: '18px' }} withBorderBottom>
         <RowBetween>
           <div />
           <CloseIcon onClick={onDismiss} />
         </RowBetween>
         <ConfirmedIcon>
-          <ArrowUpCircle strokeWidth={0.5} size={90} color={theme.primary1} />
+          <ArrowUp strokeWidth={1} size={90} color={theme.jediWhite} />
         </ConfirmedIcon>
         <AutoColumn gap="12px" justify={'center'}>
-          <Text fontWeight={500} fontSize={20}>
+          <Text fontWeight={700} fontSize={24} fontFamily={'DM Sans'} color={'#FFFFFF'} letterSpacing={'0ch'}>
             Transaction Submitted
           </Text>
+
           {chainId && hash && (
             <ExternalLink href={getEtherscanLink(chainId, hash, 'transaction')}>
-              <Text fontWeight={500} fontSize={14} color={theme.primary1}>
-                View on Etherscan
-              </Text>
+              <Row>
+                <img src={openInBrowser} alt="open" />
+                <Text
+                  fontWeight={500}
+                  fontSize={14}
+                  color={theme.jediWhite}
+                  fontFamily={'DM Sans'}
+                  letterSpacing={'0ch'}
+                >
+                  Open in browser
+                </Text>
+              </Row>
             </ExternalLink>
           )}
-          <ButtonPrimary onClick={onDismiss} style={{ margin: '20px 0 0 0' }}>
+          <ButtonGradient onClick={onDismiss} style={{ margin: '20px 0 0 0' }}>
             <Text fontWeight={500} fontSize={20}>
               Close
             </Text>
-          </ButtonPrimary>
+          </ButtonGradient>
         </AutoColumn>
       </Section>
     </Wrapper>
