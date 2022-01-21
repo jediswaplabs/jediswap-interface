@@ -26,13 +26,13 @@ const Wrapper = styled.div`
 const Section = styled(AutoColumn)`
   padding: 16px 32px;
   background-color: ${({ theme }) => theme.jediNavyBlue};
-  /* border-radius: 8px; */
-  /* border-top-right-radius: 8px;
-  border-top-left-radius: 8px; */
+  border-top-right-radius: 8px;
+  border-top-left-radius: 8px;
 `
 
 const BottomSection = styled(Section)`
-  /* background-color: ${({ theme }) => theme.bg2}; */
+  border-top-right-radius: 0px;
+  border-top-left-radius: 0px;
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;
 `
@@ -42,8 +42,6 @@ const ConfirmedIcon = styled(ColumnCenter)`
 `
 const TextWrapper = styled.div`
   margin-top: 24px;
-  /* display: flex;
-  justify-content: center; */
 `
 
 function ConfirmationPendingContent({ onDismiss, pendingText }: { onDismiss: () => void; pendingText: string }) {
