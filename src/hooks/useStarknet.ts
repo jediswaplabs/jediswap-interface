@@ -1,8 +1,11 @@
 import { useCallback, useEffect, useState } from 'react'
-import { Abi, Args, Contract } from 'starknet'
+import { Abi, Args, compileCalldata, Contract } from 'starknet'
+import { getSelectorFromName } from 'starknet/dist/utils/stark'
 import { useActiveStarknetReact } from '.'
 import { useBlockNumber } from '../state/application/hooks'
 import { useTransactionAdder } from '../state/transactions/hooks'
+import { retry } from '../utils/retry'
+import useDeepCompareEffect from 'use-deep-compare-effect'
 
 export interface ListenerOptions {
   // how often this data should be fetched, by default 1
@@ -25,8 +28,8 @@ export const NEVER_RELOAD: ListenerOptions = {
 }
 
 export function useStarknetCall(
-  contract: Contract | null | undefined,
-  methodName: string | undefined,
+  contract: Contract | null,
+  methodName: string,
   args?: any,
   options?: ListenerOptions
 ): Args {
@@ -35,15 +38,35 @@ export function useStarknetCall(
 
   const refetchOnBlock = options !== NEVER_RELOAD ? blockNumber : null
 
-  const callContract = useCallback(async () => {
-    if (contract && methodName) {
-      contract.call(methodName, args).then(res => setValue(res))
-    }
-  }, [contract, methodName, args])
+  const callContract = useCallback(
+    (contract: Contract) => {
+      try {
+        return contract.call(methodName, args)
+      } catch (error) {
+        throw new Error('Failed Contract call')
+      }
+    },
+    [methodName, args]
+  )
 
   useEffect(() => {
-    callContract()
-  }, [callContract, refetchOnBlock])
+    let isCancelled = false
+
+    if (!contract || !methodName) return
+
+    if (!isCancelled) {
+      const { promise, cancel } = retry(() => callContract(contract), {
+        n: Infinity,
+        minWait: 2500,
+        maxWait: 3500
+      })
+
+      promise.then(call => setValue(call))
+    }
+    return () => {
+      isCancelled = true
+    }
+  }, [blockNumber, contract, methodName])
 
   return value
 }
@@ -59,29 +82,42 @@ export function useMultipleStarknetCallSingleData(
   const blockNumber = useBlockNumber()
   const [calls, setCalls] = useState<(Args | undefined)[]>([])
 
-  const callResults = useCallback(async () => {
-    const callStates = await Promise.all(
-      addresses.map(address => {
-        if (!address || !contractInterface || !methodName) return undefined
-        else {
+  // console.log(`Running ${methodName} for ${addresses}`)
+
+  const callResults = useCallback(
+    (addresses: (string | undefined)[], contractInterface: Abi[], methodName: string, args?: Args | undefined) => {
+      return Promise.all(
+        addresses.map(async address => {
           const contract = new Contract(contractInterface, address)
+          // console.log('🚀 ~ file: useStarknet.ts ~ line 70 ~ callResults ~ contract', contract)
+          const result = await contract?.call(methodName, args)
+          return result
+        })
+      )
+    },
+    []
+  )
 
-          return contract?.call(methodName, args)
-        }
-        // if (addresses && contractInterface && methodName) {
-        //   const contract = new Contract(contractInterface, address)
+  useDeepCompareEffect(() => {
+    let isCancelled = false
 
-        //   return contract?.call(methodName, args)
-        // }
+    if (!contractInterface || !methodName || !addresses) return
+
+    if (!isCancelled) {
+      const { promise, cancel } = retry(() => callResults(addresses, contractInterface, methodName, args), {
+        n: Infinity,
+        minWait: 2500,
+        maxWait: 3500
       })
-    )
 
-    setCalls(callStates)
-  }, [])
+      promise.then(call => setCalls(call)).catch(error => console.error('Error in: ', error))
+    }
 
-  useEffect(() => {
-    callResults()
-  }, [callResults, blockNumber])
+    return () => {
+      isCancelled = true
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [contractInterface, callResults, addresses, blockNumber])
 
   return calls
 }
