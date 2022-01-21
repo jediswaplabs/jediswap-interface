@@ -179,18 +179,19 @@ export default function Swap() {
       .then(hash => {
         setSwapState({ attemptingTxn: false, tradeToConfirm, showConfirm, swapErrorMessage: undefined, txHash: hash })
 
-        ReactGA.event({
-          category: 'Swap',
-          action:
-            recipient === null
-              ? 'Swap w/o Send'
-              : (recipientAddress ?? recipient) === account
-              ? 'Swap w/o Send + recipient'
-              : 'Swap w/ Send',
-          label: [trade?.inputAmount?.currency?.symbol, trade?.outputAmount?.currency?.symbol, Version.v2].join('/')
-        })
+        // ReactGA.event({
+        //   category: 'Swap',
+        //   action:
+        //     recipient === null
+        //       ? 'Swap w/o Send'
+        //       : (recipientAddress ?? recipient) === account
+        //       ? 'Swap w/o Send + recipient'
+        //       : 'Swap w/ Send',
+        //   label: [trade?.inputAmount?.currency?.symbol, trade?.outputAmount?.currency?.symbol, Version.v2].join('/')
+        // })
       })
       .catch(error => {
+        console.error(error)
         setSwapState({
           attemptingTxn: false,
           tradeToConfirm,
