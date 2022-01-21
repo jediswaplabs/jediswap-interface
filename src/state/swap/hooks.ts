@@ -1,6 +1,6 @@
 import { Version } from '../../hooks/useToggledVersion'
 import { parseUnits } from '@ethersproject/units'
-import { Currency, CurrencyAmount, ETHER, JSBI, Token, TokenAmount, Trade } from '@uniswap/sdk'
+import { Currency, CurrencyAmount, TOKEN0, JSBI, Token, TokenAmount, Trade } from '@jediswap/sdk'
 import { ParsedQs } from 'qs'
 import { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -32,10 +32,11 @@ export function useSwapActionHandlers(): {
   const dispatch = useDispatch<AppDispatch>()
   const onCurrencySelection = useCallback(
     (field: Field, currency: Currency) => {
+      // console.log('🚀 ~ file: hooks.ts ~ line 35 ~ useSwapActionHandlers ~ currency', field, currency)
       dispatch(
         selectCurrency({
           field,
-          currencyId: currency instanceof Token ? currency.address : currency === ETHER ? 'ETH' : ''
+          currencyId: currency instanceof Token ? currency.address : currency === TOKEN0 ? 'TOKEN0' : ''
         })
       )
     },
@@ -78,7 +79,7 @@ export function tryParseAmount(value?: string, currency?: Currency): CurrencyAmo
     if (typedValueParsed !== '0') {
       return currency instanceof Token
         ? new TokenAmount(currency, JSBI.BigInt(typedValueParsed))
-        : CurrencyAmount.ether(JSBI.BigInt(typedValueParsed))
+        : CurrencyAmount.token0(JSBI.BigInt(typedValueParsed))
     }
   } catch (error) {
     // should fail if the user specifies too many decimal places of precision (or maybe exceed max uint?)
@@ -116,8 +117,6 @@ export function useDerivedSwapInfo(): {
 } {
   const { account } = useActiveStarknetReact()
 
-  const toggledVersion = useToggledVersion()
-
   const {
     independentField,
     typedValue,
@@ -135,11 +134,18 @@ export function useDerivedSwapInfo(): {
     inputCurrency ?? undefined,
     outputCurrency ?? undefined
   ])
+  // console.log('🚀 ~ file: hooks.ts ~ line 137 ~ useDerivedSwapInfo ~ relevantTokenBalances', relevantTokenBalances)
 
   const isExactIn: boolean = independentField === Field.INPUT
   const parsedAmount = tryParseAmount(typedValue, (isExactIn ? inputCurrency : outputCurrency) ?? undefined)
 
   const bestTradeExactIn = useTradeExactIn(isExactIn ? parsedAmount : undefined, outputCurrency ?? undefined)
+  // console.log(
+  //   '🚀 ~ file: hooks.ts ~ line 147 ~ useDerivedSwapInfo ~ bestTradeExactIn ',
+  //   bestTradeExactIn,
+  //   parsedAmount,
+  //   outputCurrency
+  // )
   const bestTradeExactOut = useTradeExactOut(inputCurrency ?? undefined, !isExactIn ? parsedAmount : undefined)
 
   const v2Trade = isExactIn ? bestTradeExactIn : bestTradeExactOut
@@ -148,6 +154,7 @@ export function useDerivedSwapInfo(): {
     [Field.INPUT]: relevantTokenBalances[0],
     [Field.OUTPUT]: relevantTokenBalances[1]
   }
+  // console.log('🚀 ~ file: hooks.ts ~ line 151 ~ useDerivedSwapInfo ~ currencyBalances', currencyBalances)
 
   const currencies: { [field in Field]?: Currency } = {
     [Field.INPUT]: inputCurrency ?? undefined,
@@ -210,10 +217,10 @@ function parseCurrencyFromURLParameter(urlParam: any): string {
   if (typeof urlParam === 'string') {
     const valid = isAddress(urlParam)
     if (valid) return valid
-    if (urlParam.toUpperCase() === 'ETH') return 'ETH'
-    if (valid === false) return 'ETH'
+    if (urlParam.toUpperCase() === 'TOKEN0') return 'TOKEN0'
+    if (valid === false) return 'TOKEN0'
   }
-  return 'ETH' ?? ''
+  return 'TOKEN0' ?? ''
 }
 
 function parseTokenAmountURLParameter(urlParam: any): string {
@@ -237,6 +244,7 @@ function validatedRecipient(recipient: any): string | null {
 
 export function queryParametersToSwapState(parsedQs: ParsedQs): SwapState {
   let inputCurrency = parseCurrencyFromURLParameter(parsedQs.inputCurrency)
+  // console.log('🚀 ~ file: hooks.ts ~ line 240 ~ queryParametersToSwapState ~ inputCurrency', inputCurrency)
   let outputCurrency = parseCurrencyFromURLParameter(parsedQs.outputCurrency)
   if (inputCurrency === outputCurrency) {
     if (typeof parsedQs.outputCurrency === 'string') {
