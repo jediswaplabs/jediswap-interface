@@ -3228,33 +3228,33 @@
     "@web3-react/types" "^6.0.7"
     walletlink "^2.2.6"
 
-"@web3-starknet-react/abstract-connector@^0.2.0":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@web3-starknet-react/abstract-connector/-/abstract-connector-0.2.0.tgz#f0e9e27c5eb480ada946855739fd222fd6f7b8cf"
-  integrity sha512-iVyLRF9ppGUL3RWK2suQWnYRsxkoZMCCl9a57eHB2GqLF3efHDctB0vcK/XeR3CqAFXEvyjXDtSgBkgD3HbSTQ==
+"@web3-starknet-react/abstract-connector@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@web3-starknet-react/abstract-connector/-/abstract-connector-0.3.0.tgz#46b2880d50799cfa34d850c228942d1497823839"
+  integrity sha512-525F5euGwGD+iZLZQHRBuBnBHtQ7hIZuNHeEKZLoNDGq2TxbDN7UyPGEwEP9HUZgjRp7EP2xDEoI1tAQCbN07w==
   dependencies:
-    "@web3-starknet-react/types" "^0.2.0"
+    "@web3-starknet-react/types" "^0.3.0"
 
-"@web3-starknet-react/argentx-connector@^0.2.7":
-  version "0.2.7"
-  resolved "https://registry.yarnpkg.com/@web3-starknet-react/argentx-connector/-/argentx-connector-0.2.7.tgz#7675d055fe98b73e8a0b05737d259f95726eed95"
-  integrity sha512-HII5G+iI5U2k+wM31kzlmTdLQHwdkTz/ET//6ihOyHmQf8jtr9tbdH/bP9GjFpFuWmwyJNS6ILdmGE6oXwP4ig==
+"@web3-starknet-react/argentx-connector@^0.3.1":
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/@web3-starknet-react/argentx-connector/-/argentx-connector-0.3.1.tgz#1beb0ef862b0de86e6615127913b256df40d0132"
+  integrity sha512-7LrffqRm4yEKEHjwwicgC+VjPSiKsbfeewG/lp1xWoES5TxZxEoAEwiBaUXShVomwkm2ZR8PkkejjEaseMiMUA==
   dependencies:
-    "@web3-starknet-react/abstract-connector" "^0.2.0"
-    "@web3-starknet-react/types" "^0.2.0"
+    "@web3-starknet-react/abstract-connector" "^0.3.0"
+    "@web3-starknet-react/types" "^0.3.0"
 
-"@web3-starknet-react/core@^0.2.0":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@web3-starknet-react/core/-/core-0.2.0.tgz#c456e3f68f8965f63dcf6f549174a85fec6f9552"
-  integrity sha512-nznA9pNzOCDBKND+0nZeIwnys+fKkZczo6iGfC8NPvHFpGmwwoMcYNgxJ0IfMiLKYMUm9l8Mcr033BsLheNQuQ==
+"@web3-starknet-react/core@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@web3-starknet-react/core/-/core-0.3.0.tgz#79236e292189de9eb436131affcb87f38fc4b59b"
+  integrity sha512-Kupzrya5iomkWY28BbOodZAmbFr6PQP0o24nBpdTPBA8DrN8/DYO/uLNMFaYJbsI6tXJ9RKYIzgz8BoJjhwkzA==
   dependencies:
-    "@web3-starknet-react/abstract-connector" "^0.2.0"
-    "@web3-starknet-react/types" "^0.2.0"
+    "@web3-starknet-react/abstract-connector" "^0.3.0"
+    "@web3-starknet-react/types" "^0.3.0"
 
-"@web3-starknet-react/types@^0.2.0":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@web3-starknet-react/types/-/types-0.2.0.tgz#819162c5a9c93185b4798c6a8740b616a7b52b76"
-  integrity sha512-jqU/ckrSiXyjD7vP5k5lT58vV4FzYbRx6vGX7bri0xpTffVmUWER5uBKqrAw9XQGXdSg+G58lDjUXn53xGr7kw==
+"@web3-starknet-react/types@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@web3-starknet-react/types/-/types-0.3.0.tgz#23a78e21a30592712c2dc9f20a08ce40a33a37a0"
+  integrity sha512-s5NGs4nfIrACzmZDo/CPpaOONsn2Zc3FwLI9lumqxPnO+y8KdgVRem6ceiTg2hGzb2I0f+P/W4C1a+LO77RiZg==
 
 "@webassemblyjs/ast@1.8.5":
   version "1.8.5"
@@ -5975,6 +5975,11 @@ depd@~1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/depd/-/depd-1.1.2.tgz#9bcd52e14c097763e749b274c4346ed2e560b5a9"
   integrity sha1-m81S4UwJd2PnSbJ0xDRu0uVgtak=
+
+dequal@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/dequal/-/dequal-2.0.2.tgz#85ca22025e3a87e65ef75a7a437b35284a7e319d"
+  integrity sha512-q9K8BlJVxK7hQYqa6XISGmBZbtQQWVXSrRrWreHC94rMt1QL/Impruc+7p2CYSYuVIUr+YCt6hjrs1kkdJRTug==
 
 des.js@^1.0.0:
   version "1.0.1"
@@ -15402,6 +15407,14 @@ use-count-up@^2.2.5:
   integrity sha512-nFXUiweeHDYovM0boDk0/CTa/VW7Gzh9G/l8NVNPleqmDJbDuDO3j8qSODTbyFQrKKHN7XJd2f9hy8FUgocIvw==
   dependencies:
     use-elapsed-time "^2.1.6"
+
+use-deep-compare-effect@^1.8.1:
+  version "1.8.1"
+  resolved "https://registry.yarnpkg.com/use-deep-compare-effect/-/use-deep-compare-effect-1.8.1.tgz#ef0ce3b3271edb801da1ec23bf0754ef4189d0c6"
+  integrity sha512-kbeNVZ9Zkc0RFGpfMN3MNfaKNvcLNyxOAAd9O4CBZ+kCBXXscn9s/4I+8ytUER4RDpEYs5+O6Rs4PqiZ+rHr5Q==
+  dependencies:
+    "@babel/runtime" "^7.12.5"
+    dequal "^2.0.2"
 
 use-elapsed-time@^2.1.6:
   version "2.1.8"
