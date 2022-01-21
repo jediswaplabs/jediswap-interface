@@ -22,7 +22,7 @@ const store = configureStore({
     // burn,
     lists
   },
-  middleware: getDefaultMiddleware => getDefaultMiddleware({ thunk: true }).concat(save({ states: PERSISTED_KEYS })),
+  middleware: getDefaultMiddleware => getDefaultMiddleware({ thunk: false }).concat(save({ states: PERSISTED_KEYS })),
   preloadedState: load({ states: PERSISTED_KEYS })
 })
 
