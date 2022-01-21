@@ -1,6 +1,6 @@
 import { MaxUint256 } from '@ethersproject/constants'
 import { TransactionResponse } from '@ethersproject/providers'
-import { Trade, TokenAmount, CurrencyAmount, TOKEN0 } from '@jediswap/sdk'
+import { Trade, TokenAmount, CurrencyAmount, TOKEN0, WTOKEN0, Token } from '@jediswap/sdk'
 import { useCallback, useMemo } from 'react'
 import { ROUTER_ADDRESS } from '../constants'
 import { useTokenAllowance } from '../data/Allowances'
@@ -12,7 +12,7 @@ import { calculateGasMargin } from '../utils'
 import { useTokenContract } from './useContract'
 import { useActiveStarknetReact } from './index'
 import { Version } from './useToggledVersion'
-import { AddTransactionResponse } from 'starknet'
+import { AddTransactionResponse, Args, compileCalldata, Signer, uint256 } from 'starknet'
 
 export enum ApprovalState {
   UNKNOWN,
@@ -26,15 +26,21 @@ export function useApproveCallback(
   amountToApprove?: CurrencyAmount,
   spender?: string
 ): [ApprovalState, () => Promise<void>] {
-  const { account } = useActiveStarknetReact()
-  const token = amountToApprove instanceof TokenAmount ? amountToApprove.token : undefined
+  const { account, chainId, library } = useActiveStarknetReact()
+  const token: Token | undefined =
+    amountToApprove instanceof TokenAmount
+      ? amountToApprove.token
+      : amountToApprove?.currency === TOKEN0
+      ? WTOKEN0[chainId ?? 5]
+      : undefined
+  // console.log('🚀 ~ file: useApproveCallback.ts ~ line 31 ~ token', token)
   const currentAllowance = useTokenAllowance(token, account ?? undefined, spender)
   const pendingApproval = useHasPendingApproval(token?.address, spender)
 
   // check the current approval status
   const approvalState: ApprovalState = useMemo(() => {
     if (!amountToApprove || !spender) return ApprovalState.UNKNOWN
-    if (amountToApprove.currency === TOKEN0) return ApprovalState.APPROVED
+    // if (amountToApprove.currency === TOKEN0) return ApprovalState.APPROVED
     // we might not have enough data to know whether or not we need to approve
     if (!currentAllowance) return ApprovalState.UNKNOWN
 
@@ -81,8 +87,15 @@ export function useApproveCallback(
     //   return tokenContract.estimateGas.approve(spender, amountToApprove.raw.toString())
     // })
 
+    const uint256AmountToApprove = uint256.bnToUint256(amountToApprove.raw.toString())
+
+    const approveArgs: Args = {
+      spender,
+      amount: useExact ? { type: 'struct', ...uint256AmountToApprove } : MaxUint256.toString()
+    }
+
     return tokenContract
-      .invoke('approve', { spender, amount: useExact ? amountToApprove.raw.toString() : MaxUint256.toString() })
+      .invoke('approve', approveArgs)
       .then((response: AddTransactionResponse) => {
         addTransaction(response, {
           summary: 'Approve ' + amountToApprove.currency.symbol,
@@ -104,5 +117,6 @@ export function useApproveCallbackFromTrade(trade?: Trade, allowedSlippage = 0) 
     () => (trade ? computeSlippageAdjustedAmounts(trade, allowedSlippage)[Field.INPUT] : undefined),
     [trade, allowedSlippage]
   )
+
   return useApproveCallback(amountToApprove, ROUTER_ADDRESS)
 }
