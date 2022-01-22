@@ -14,6 +14,11 @@ variables:
   ENVIRONMENT: ''
   CI: ''
 
+cache:
+  paths:
+    - node_modules/
+    - .yarn
+
 build:
   stage: build
   image: node:14
