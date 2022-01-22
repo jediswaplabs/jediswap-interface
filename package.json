@@ -108,7 +108,7 @@
     "eject": "react-scripts eject",
     "production-build": "PUBLIC_URL=https://app.jediswap.xyz REACT_APP_ENVIRONMENT=production react-scripts build",
     "postproduction-build": "npm run create-new-dir",
-    "staging-build": "PUBLIC_URL=https://staging.jediswap.xyz REACT_APP_ENVIRONMENT=production react-scripts build",
+    "staging-build": "PUBLIC_URL=https://app.staging.jediswap.xyz REACT_APP_ENVIRONMENT=production react-scripts build",
     "poststaging-build": "npm run create-new-dir",
     "create-new-dir": "rm -rf ~/src_maps/$(git rev-parse HEAD) && mkdir ~/src_maps/$(git rev-parse HEAD)",
     "postcreate-new-dir": "npm run move-js-src-maps",
