@@ -17,11 +17,13 @@ variables:
 build:
   stage: build
   image: node:14
+  before_script:
+    - yarn config set cache-folder .yarn
+    - rm -rf node_modules && yarn install --frozen-lockfile
+    - yarn install
   script:
-    - npm i --package-lock-only
-    - npm ci
     - mkdir ~/src_maps
-    - npm run build
+    - yarn build
   artifacts:
     paths:
       - build/
