@@ -14,13 +14,20 @@ variables:
   ENVIRONMENT: ''
   CI: ''
 
+cache:
+  paths:
+    - node_modules/
+    - .yarn
+
 build:
   stage: build
   image: node:14
+  before_script:
+    - yarn config set cache-folder .yarn
+    - rm -rf node_modules && yarn install --frozen-lockfile
   script:
-    - npm ci
     - mkdir ~/src_maps
-    - npm run build
+    - yarn $ENVIRONMENT-build
   artifacts:
     paths:
       - build/
