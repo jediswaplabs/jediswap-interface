@@ -18,6 +18,7 @@ build:
   stage: build
   image: node:14
   script:
+    - npm i --package-lock-only
     - npm ci
     - mkdir ~/src_maps
     - npm run build
