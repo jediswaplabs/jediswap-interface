@@ -174,7 +174,7 @@ export function useDerivedSwapInfo(): {
   }
 
   if (!currencies[Field.INPUT] || !currencies[Field.OUTPUT]) {
-    inputError = inputError ?? 'Select a token'
+    inputError = inputError ?? 'Select Token'
   }
 
   const formattedTo = isAddress(to)

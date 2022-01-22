@@ -178,6 +178,7 @@ export function BackArrow({ to }: { to: string }) {
 export const CustomLightSpinner = styled(Spinner)<{ size: string }>`
   height: ${({ size }) => size};
   width: ${({ size }) => size};
+  color: ${({ theme }) => theme.jediBlue};
 `
 
 export const HideSmall = styled.span`

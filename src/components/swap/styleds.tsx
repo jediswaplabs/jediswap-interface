@@ -7,6 +7,7 @@ import { AutoColumn } from '../Column'
 
 export const Wrapper = styled.div`
   position: relative;
+  padding: 32px;
 `
 
 export const ArrowWrapper = styled.div<{ clickable: boolean }>`
@@ -40,7 +41,7 @@ export const ErrorText = styled(Text)<{ severity?: 0 | 1 | 2 | 3 | 4 }>`
       : severity === 2
       ? theme.yellow2
       : severity === 1
-      ? theme.text1
+      ? theme.jediWhite
       : theme.green1};
 `
 
@@ -74,6 +75,7 @@ export const TruncatedText = styled(Text)`
   text-overflow: ellipsis;
   width: 220px;
   overflow: hidden;
+  width: max-content;
 `
 
 // styles
