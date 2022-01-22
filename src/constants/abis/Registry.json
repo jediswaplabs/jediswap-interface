@@ -1,0 +1,104 @@
+[
+  {
+    "inputs": [
+      {
+        "name": "initial_owner",
+        "type": "felt"
+      }
+    ],
+    "name": "constructor",
+    "outputs": [],
+    "type": "constructor"
+  },
+  {
+    "inputs": [
+      {
+        "name": "token0",
+        "type": "felt"
+      },
+      {
+        "name": "token1",
+        "type": "felt"
+      }
+    ],
+    "name": "get_pair_for",
+    "outputs": [
+      {
+        "name": "pair",
+        "type": "felt"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "fee_to",
+    "outputs": [
+      {
+        "name": "address",
+        "type": "felt"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "owner",
+    "outputs": [
+      {
+        "name": "address",
+        "type": "felt"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "name": "token0",
+        "type": "felt"
+      },
+      {
+        "name": "token1",
+        "type": "felt"
+      },
+      {
+        "name": "pair",
+        "type": "felt"
+      }
+    ],
+    "name": "set_pair",
+    "outputs": [],
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "name": "new_fee_to",
+        "type": "felt"
+      }
+    ],
+    "name": "update_fee_to",
+    "outputs": [],
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "name": "new_owner",
+        "type": "felt"
+      }
+    ],
+    "name": "transfer_ownership",
+    "outputs": [
+      {
+        "name": "new_owner",
+        "type": "felt"
+      }
+    ],
+    "type": "function"
+  }
+]

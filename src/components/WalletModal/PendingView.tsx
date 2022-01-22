@@ -1,9 +1,9 @@
-import { AbstractConnector } from '@web3-react/abstract-connector'
+import { AbstractConnector } from '@web3-starknet-react/abstract-connector'
 import React from 'react'
 import styled from 'styled-components'
 import Option from './Option'
 import { SUPPORTED_WALLETS } from '../../constants'
-import { injected } from '../../connectors'
+// import { injected } from '../../connectors'
 import { darken } from 'polished'
 import Loader from '../Loader'
 
@@ -103,14 +103,14 @@ export default function PendingView({
       {Object.keys(SUPPORTED_WALLETS).map(key => {
         const option = SUPPORTED_WALLETS[key]
         if (option.connector === connector) {
-          if (option.connector === injected) {
-            if (isMetamask && option.name !== 'MetaMask') {
-              return null
-            }
-            if (!isMetamask && option.name === 'MetaMask') {
-              return null
-            }
-          }
+          // if (option.connector === injected) {
+          //   if (isMetamask && option.name !== 'MetaMask') {
+          //     return null
+          //   }
+          //   if (!isMetamask && option.name === 'MetaMask') {
+          //     return null
+          //   }
+          // }
           return (
             <Option
               id={`connect-${key}`}

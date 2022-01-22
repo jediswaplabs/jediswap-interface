@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useState } from 'react'
-import { useActiveWeb3React } from '../../hooks'
+import { useActiveStarknetReact } from '../../hooks'
 import useDebounce from '../../hooks/useDebounce'
 import useIsWindowVisible from '../../hooks/useIsWindowVisible'
 import { updateBlockNumber } from './actions'
 import { useDispatch } from 'react-redux'
 
 export default function Updater(): null {
-  const { library, chainId } = useActiveWeb3React()
+  const { library, chainId } = useActiveStarknetReact()
   const dispatch = useDispatch()
 
   const windowVisible = useIsWindowVisible()
@@ -36,13 +36,13 @@ export default function Updater(): null {
     setState({ chainId, blockNumber: null })
 
     library
-      .getBlockNumber()
-      .then(blockNumberCallback)
+      .getBlock()
+      .then(block => blockNumberCallback(block.block_number))
       .catch(error => console.error(`Failed to get block number for chainId: ${chainId}`, error))
 
-    library.on('block', blockNumberCallback)
+    // library.on('block', blockNumberCallback)
     return () => {
-      library.removeListener('block', blockNumberCallback)
+      // library.removeListener('block', blockNumberCallback)
     }
   }, [dispatch, chainId, library, blockNumberCallback, windowVisible])
 

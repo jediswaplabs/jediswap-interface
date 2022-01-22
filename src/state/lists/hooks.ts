@@ -1,4 +1,4 @@
-import { ChainId, Token } from '@uniswap/sdk'
+import { ChainId, Token } from '@jediswap/sdk'
 import { Tags, TokenInfo, TokenList } from '@uniswap/token-lists'
 import { useMemo } from 'react'
 import { useSelector } from 'react-redux'
@@ -72,6 +72,7 @@ export function listToTokenMap(list: TokenList): TokenAddressMap {
 
 export function useTokenList(url: string | undefined): TokenAddressMap {
   const lists = useSelector<AppState, AppState['lists']['byUrl']>(state => state.lists.byUrl)
+  console.log('🚀 ~ file: hooks.ts ~ line 75 ~ useTokenList ~ lists ', lists)
   return useMemo(() => {
     if (!url) return EMPTY_LIST
     const current = lists[url]?.current

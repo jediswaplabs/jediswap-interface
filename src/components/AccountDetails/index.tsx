@@ -1,7 +1,7 @@
 import React, { useCallback, useContext } from 'react'
 import { useDispatch } from 'react-redux'
 import styled, { ThemeContext } from 'styled-components'
-import { useActiveWeb3React } from '../../hooks'
+import { useActiveStarknetReact } from '../../hooks'
 import { AppDispatch } from '../../state'
 import { clearAllTransactions } from '../../state/transactions/actions'
 import { shortenAddress } from '../../utils'
@@ -12,7 +12,9 @@ import Transaction from './Transaction'
 import { SUPPORTED_WALLETS } from '../../constants'
 import { ReactComponent as Close } from '../../assets/images/x.svg'
 import { getEtherscanLink } from '../../utils'
-import { injected, walletconnect, walletlink, fortmatic, portis } from '../../connectors'
+import argentXIcon from '../../assets/images/argentx.png'
+// import { fortmatic, injected, portis, walletconnect, walletlink } from '../../connectors'
+import { argentX } from '../../connectors'
 import CoinbaseWalletIcon from '../../assets/images/coinbaseWalletIcon.svg'
 import WalletConnectIcon from '../../assets/images/walletConnectIcon.svg'
 import FortmaticIcon from '../../assets/images/fortmaticIcon.png'
@@ -225,7 +227,7 @@ export default function AccountDetails({
   ENSName,
   openOptions
 }: AccountDetailsProps) {
-  const { chainId, account, connector } = useActiveWeb3React()
+  const { chainId, account, connector } = useActiveStarknetReact()
   const theme = useContext(ThemeContext)
   const dispatch = useDispatch<AppDispatch>()
 
@@ -235,51 +237,58 @@ export default function AccountDetails({
     const name = Object.keys(SUPPORTED_WALLETS)
       .filter(
         k =>
-          SUPPORTED_WALLETS[k].connector === connector && (connector !== injected || isMetaMask === (k === 'METAMASK'))
+          SUPPORTED_WALLETS[k].connector === connector && (connector !== argentX || isMetaMask === (k === 'METAMASK'))
       )
       .map(k => SUPPORTED_WALLETS[k].name)[0]
     return <WalletName>Connected with {name}</WalletName>
   }
 
   function getStatusIcon() {
-    if (connector === injected) {
+    // if (connector === injected) {
+    //   return (
+    //     <IconWrapper size={16}>
+    //       <Identicon />
+    //     </IconWrapper>
+    //   )
+    // } else if (connector === walletconnect) {
+    //   return (
+    //     <IconWrapper size={16}>
+    //       <img src={WalletConnectIcon} alt={'wallet connect logo'} />
+    //     </IconWrapper>
+    //   )
+    // } else if (connector === walletlink) {
+    //   return (
+    //     <IconWrapper size={16}>
+    //       <img src={CoinbaseWalletIcon} alt={'coinbase wallet logo'} />
+    //     </IconWrapper>
+    //   )
+    // } else if (connector === fortmatic) {
+    //   return (
+    //     <IconWrapper size={16}>
+    //       <img src={FortmaticIcon} alt={'fortmatic logo'} />
+    //     </IconWrapper>
+    //   )
+    // } else if (connector === portis) {
+    //   return (
+    //     <>
+    //       <IconWrapper size={16}>
+    //         <img src={PortisIcon} alt={'portis logo'} />
+    //         <MainWalletAction
+    //           onClick={() => {
+    //             portis.portis.showPortis()
+    //           }}
+    //         >
+    //           Show Portis
+    //         </MainWalletAction>
+    //       </IconWrapper>
+    //     </>
+    //   )
+    // }
+    if (connector === argentX) {
       return (
         <IconWrapper size={16}>
-          <Identicon />
+          <img src={argentXIcon} alt="argentX" />
         </IconWrapper>
-      )
-    } else if (connector === walletconnect) {
-      return (
-        <IconWrapper size={16}>
-          <img src={WalletConnectIcon} alt={'wallet connect logo'} />
-        </IconWrapper>
-      )
-    } else if (connector === walletlink) {
-      return (
-        <IconWrapper size={16}>
-          <img src={CoinbaseWalletIcon} alt={'coinbase wallet logo'} />
-        </IconWrapper>
-      )
-    } else if (connector === fortmatic) {
-      return (
-        <IconWrapper size={16}>
-          <img src={FortmaticIcon} alt={'fortmatic logo'} />
-        </IconWrapper>
-      )
-    } else if (connector === portis) {
-      return (
-        <>
-          <IconWrapper size={16}>
-            <img src={PortisIcon} alt={'portis logo'} />
-            <MainWalletAction
-              onClick={() => {
-                portis.portis.showPortis()
-              }}
-            >
-              Show Portis
-            </MainWalletAction>
-          </IconWrapper>
-        </>
       )
     }
     return null
@@ -302,7 +311,7 @@ export default function AccountDetails({
               <AccountGroupingRow>
                 {formatConnectorName()}
                 <div>
-                  {connector !== injected && connector !== walletlink && (
+                  {connector !== argentX && (
                     <WalletAction
                       style={{ fontSize: '.825rem', fontWeight: 400, marginRight: '8px' }}
                       onClick={() => {

@@ -1,9 +1,9 @@
-import { Currency, CurrencyAmount, currencyEquals, ETHER, Token } from '@uniswap/sdk'
-import React, { CSSProperties, MutableRefObject, useCallback, useMemo } from 'react'
+import { Currency, CurrencyAmount, currencyEquals, TOKEN0, Token } from '@jediswap/sdk'
+import React, { CSSProperties, MutableRefObject, useCallback, useEffect, useMemo } from 'react'
 import { FixedSizeList } from 'react-window'
 import { Text } from 'rebass'
 import styled from 'styled-components'
-import { useActiveWeb3React } from '../../hooks'
+import { useActiveStarknetReact } from '../../hooks'
 import { useSelectedTokenList, WrappedTokenInfo } from '../../state/lists/hooks'
 import { useAddUserToken, useRemoveUserAddedToken } from '../../state/user/hooks'
 import { useCurrencyBalance } from '../../state/wallet/hooks'
@@ -18,7 +18,7 @@ import Loader from '../Loader'
 import { isTokenOnList } from '../../utils'
 
 function currencyKey(currency: Currency): string {
-  return currency instanceof Token ? currency.address : currency === ETHER ? 'ETHER' : ''
+  return currency instanceof Token ? currency.address : currency === TOKEN0 ? 'TOKEN0' : ''
 }
 
 const StyledBalanceText = styled(Text)`
@@ -93,9 +93,10 @@ function CurrencyRow({
   otherSelected: boolean
   style: CSSProperties
 }) {
-  const { account, chainId } = useActiveWeb3React()
+  const { account, chainId } = useActiveStarknetReact()
   const key = currencyKey(currency)
   const selectedTokenList = useSelectedTokenList()
+  console.log('🚀 ~ file: CurrencyList.tsx ~ line 99 ~ selectedTokenList', selectedTokenList)
   const isOnSelectedList = isTokenOnList(selectedTokenList, currency)
   const customAdded = useIsUserAddedToken(currency)
   const balance = useCurrencyBalance(account ?? undefined, currency)
@@ -171,7 +172,7 @@ export default function CurrencyList({
   fixedListRef?: MutableRefObject<FixedSizeList | undefined>
   showETH: boolean
 }) {
-  const itemData = useMemo(() => (showETH ? [Currency.ETHER, ...currencies] : currencies), [currencies, showETH])
+  const itemData = useMemo(() => (showETH ? [Currency.TOKEN0, ...currencies] : currencies), [currencies, showETH])
 
   const Row = useCallback(
     ({ data, index, style }) => {

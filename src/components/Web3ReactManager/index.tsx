@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import { useWeb3React } from '@web3-react/core'
+import { useStarknetReact } from '@web3-starknet-react/core'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
 
-import { network } from '../../connectors'
+// import { network } from '../../connectors'
 import { useEagerConnect, useInactiveListener } from '../../hooks'
 import { NetworkContextName } from '../../constants'
 import Loader from '../Loader'
@@ -21,33 +21,34 @@ const Message = styled.h2`
 
 export default function Web3ReactManager({ children }: { children: JSX.Element }) {
   const { t } = useTranslation()
-  const { active } = useWeb3React()
-  const { active: networkActive, error: networkError, activate: activateNetwork } = useWeb3React(NetworkContextName)
+  const { active } = useStarknetReact()
+  const { active: networkActive, error: networkError, activate: activateNetwork } = useStarknetReact(NetworkContextName)
 
   // try to eagerly connect to an injected provider, if it exists and has granted access already
   const triedEager = useEagerConnect()
+  console.log('🚀 ~ file: index.tsx ~ line 29 ~ Web3ReactManager ~ triedEager', triedEager)
 
   // after eagerly trying injected, if the network connect ever isn't active or in an error state, activate itd
-  useEffect(() => {
-    if (triedEager && !networkActive && !networkError && !active) {
-      activateNetwork(network)
-    }
-  }, [triedEager, networkActive, networkError, activateNetwork, active])
+  // useEffect(() => {
+  //   if (triedEager && !networkActive && !networkError && !active) {
+  //     activateNetwork(network)
+  //   }
+  // }, [triedEager, networkActive, networkError, activateNetwork, active])
 
   // when there's no account connected, react to logins (broadly speaking) on the injected provider, if it exists
   useInactiveListener(!triedEager)
 
   // handle delayed loader state
   const [showLoader, setShowLoader] = useState(false)
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      setShowLoader(true)
-    }, 600)
+  // useEffect(() => {
+  //   const timeout = setTimeout(() => {
+  //     setShowLoader(false)
+  //   }, 600)
 
-    return () => {
-      clearTimeout(timeout)
-    }
-  }, [])
+  //   return () => {
+  //     clearTimeout(timeout)
+  //   }
+  // }, [])
 
   // on page load, do nothing until we've tried to connect to the injected connector
   if (!triedEager) {
@@ -64,13 +65,15 @@ export default function Web3ReactManager({ children }: { children: JSX.Element }
   }
 
   // if neither context is active, spin
-  if (!active && !networkActive) {
-    return showLoader ? (
-      <MessageWrapper>
-        <Loader />
-      </MessageWrapper>
-    ) : null
-  }
+  // if (!active && !networkActive) {
+  //   return showLoader ? (
+  //     <MessageWrapper>
+  //       <Loader />
+  //     </MessageWrapper>
+  //   ) : (
+  //     children
+  //   )
+  // }
 
   return children
 }

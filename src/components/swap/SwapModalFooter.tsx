@@ -1,6 +1,5 @@
-import { Trade, TradeType } from '@uniswap/sdk'
-import React, { useMemo, useState } from 'react'
-// import  { useContext } from 'react'
+import { Trade, TradeType } from '@jediswap/sdk'
+import React, { useContext, useMemo, useState } from 'react'
 import { Repeat } from 'react-feather'
 import { Text } from 'rebass'
 // import { ThemeContext } from 'styled-components'

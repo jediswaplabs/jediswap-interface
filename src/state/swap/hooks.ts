@@ -1,12 +1,11 @@
-import useENS from '../../hooks/useENS'
 import { Version } from '../../hooks/useToggledVersion'
 import { parseUnits } from '@ethersproject/units'
-import { Currency, CurrencyAmount, ETHER, JSBI, Token, TokenAmount, Trade } from '@uniswap/sdk'
+import { Currency, CurrencyAmount, TOKEN0, JSBI, Token, TokenAmount, Trade } from '@jediswap/sdk'
 import { ParsedQs } from 'qs'
 import { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useV1Trade } from '../../data/V1'
-import { useActiveWeb3React } from '../../hooks'
+// import { useV1Trade } from '../../data/V1'
+import { useActiveStarknetReact } from '../../hooks'
 import { useCurrency } from '../../hooks/Tokens'
 import { useTradeExactIn, useTradeExactOut } from '../../hooks/Trades'
 import useParsedQueryString from '../../hooks/useParsedQueryString'
@@ -18,6 +17,7 @@ import { SwapState } from './reducer'
 import useToggledVersion from '../../hooks/useToggledVersion'
 import { useUserSlippageTolerance } from '../user/hooks'
 import { computeSlippageAdjustedAmounts } from '../../utils/prices'
+import { useAddressNormalizer } from '../../hooks/useAddressNormalizer'
 
 export function useSwapState(): AppState['swap'] {
   return useSelector<AppState, AppState['swap']>(state => state.swap)
@@ -32,10 +32,11 @@ export function useSwapActionHandlers(): {
   const dispatch = useDispatch<AppDispatch>()
   const onCurrencySelection = useCallback(
     (field: Field, currency: Currency) => {
+      // console.log('🚀 ~ file: hooks.ts ~ line 35 ~ useSwapActionHandlers ~ currency', field, currency)
       dispatch(
         selectCurrency({
           field,
-          currencyId: currency instanceof Token ? currency.address : currency === ETHER ? 'ETH' : ''
+          currencyId: currency instanceof Token ? currency.address : currency === TOKEN0 ? 'TOKEN0' : ''
         })
       )
     },
@@ -78,7 +79,7 @@ export function tryParseAmount(value?: string, currency?: Currency): CurrencyAmo
     if (typedValueParsed !== '0') {
       return currency instanceof Token
         ? new TokenAmount(currency, JSBI.BigInt(typedValueParsed))
-        : CurrencyAmount.ether(JSBI.BigInt(typedValueParsed))
+        : CurrencyAmount.token0(JSBI.BigInt(typedValueParsed))
     }
   } catch (error) {
     // should fail if the user specifies too many decimal places of precision (or maybe exceed max uint?)
@@ -113,11 +114,8 @@ export function useDerivedSwapInfo(): {
   parsedAmount: CurrencyAmount | undefined
   v2Trade: Trade | undefined
   inputError?: string
-  v1Trade: Trade | undefined
 } {
-  const { account } = useActiveWeb3React()
-
-  const toggledVersion = useToggledVersion()
+  const { account } = useActiveStarknetReact()
 
   const {
     independentField,
@@ -129,18 +127,25 @@ export function useDerivedSwapInfo(): {
 
   const inputCurrency = useCurrency(inputCurrencyId)
   const outputCurrency = useCurrency(outputCurrencyId)
-  const recipientLookup = useENS(recipient ?? undefined)
-  const to: string | null = (recipient === null ? account : recipientLookup.address) ?? null
+  const address = useAddressNormalizer(recipient ?? undefined)
+  const to: string | null = (recipient === null ? account : address) ?? null
 
   const relevantTokenBalances = useCurrencyBalances(account ?? undefined, [
     inputCurrency ?? undefined,
     outputCurrency ?? undefined
   ])
+  // console.log('🚀 ~ file: hooks.ts ~ line 137 ~ useDerivedSwapInfo ~ relevantTokenBalances', relevantTokenBalances)
 
   const isExactIn: boolean = independentField === Field.INPUT
   const parsedAmount = tryParseAmount(typedValue, (isExactIn ? inputCurrency : outputCurrency) ?? undefined)
 
   const bestTradeExactIn = useTradeExactIn(isExactIn ? parsedAmount : undefined, outputCurrency ?? undefined)
+  // console.log(
+  //   '🚀 ~ file: hooks.ts ~ line 147 ~ useDerivedSwapInfo ~ bestTradeExactIn ',
+  //   bestTradeExactIn,
+  //   parsedAmount,
+  //   outputCurrency
+  // )
   const bestTradeExactOut = useTradeExactOut(inputCurrency ?? undefined, !isExactIn ? parsedAmount : undefined)
 
   const v2Trade = isExactIn ? bestTradeExactIn : bestTradeExactOut
@@ -149,6 +154,7 @@ export function useDerivedSwapInfo(): {
     [Field.INPUT]: relevantTokenBalances[0],
     [Field.OUTPUT]: relevantTokenBalances[1]
   }
+  // console.log('🚀 ~ file: hooks.ts ~ line 151 ~ useDerivedSwapInfo ~ currencyBalances', currencyBalances)
 
   const currencies: { [field in Field]?: Currency } = {
     [Field.INPUT]: inputCurrency ?? undefined,
@@ -156,7 +162,7 @@ export function useDerivedSwapInfo(): {
   }
 
   // get link to trade on v1, if a better rate exists
-  const v1Trade = useV1Trade(isExactIn, currencies[Field.INPUT], currencies[Field.OUTPUT], parsedAmount)
+  // const v1Trade = useV1Trade(isExactIn, currencies[Field.INPUT], currencies[Field.OUTPUT], parsedAmount)
 
   let inputError: string | undefined
   if (!account) {
@@ -188,19 +194,10 @@ export function useDerivedSwapInfo(): {
 
   const slippageAdjustedAmounts = v2Trade && allowedSlippage && computeSlippageAdjustedAmounts(v2Trade, allowedSlippage)
 
-  const slippageAdjustedAmountsV1 =
-    v1Trade && allowedSlippage && computeSlippageAdjustedAmounts(v1Trade, allowedSlippage)
-
   // compare input balance to max input based on version
   const [balanceIn, amountIn] = [
     currencyBalances[Field.INPUT],
-    toggledVersion === Version.v1
-      ? slippageAdjustedAmountsV1
-        ? slippageAdjustedAmountsV1[Field.INPUT]
-        : null
-      : slippageAdjustedAmounts
-      ? slippageAdjustedAmounts[Field.INPUT]
-      : null
+    slippageAdjustedAmounts ? slippageAdjustedAmounts[Field.INPUT] : null
   ]
 
   if (balanceIn && amountIn && balanceIn.lessThan(amountIn)) {
@@ -212,8 +209,7 @@ export function useDerivedSwapInfo(): {
     currencyBalances,
     parsedAmount,
     v2Trade: v2Trade ?? undefined,
-    inputError,
-    v1Trade
+    inputError
   }
 }
 
@@ -221,10 +217,10 @@ function parseCurrencyFromURLParameter(urlParam: any): string {
   if (typeof urlParam === 'string') {
     const valid = isAddress(urlParam)
     if (valid) return valid
-    if (urlParam.toUpperCase() === 'ETH') return 'ETH'
-    if (valid === false) return 'ETH'
+    if (urlParam.toUpperCase() === 'TOKEN0') return 'TOKEN0'
+    if (valid === false) return 'TOKEN0'
   }
-  return 'ETH' ?? ''
+  return 'TOKEN0' ?? ''
 }
 
 function parseTokenAmountURLParameter(urlParam: any): string {
@@ -248,6 +244,7 @@ function validatedRecipient(recipient: any): string | null {
 
 export function queryParametersToSwapState(parsedQs: ParsedQs): SwapState {
   let inputCurrency = parseCurrencyFromURLParameter(parsedQs.inputCurrency)
+  // console.log('🚀 ~ file: hooks.ts ~ line 240 ~ queryParametersToSwapState ~ inputCurrency', inputCurrency)
   let outputCurrency = parseCurrencyFromURLParameter(parsedQs.outputCurrency)
   if (inputCurrency === outputCurrency) {
     if (typeof parsedQs.outputCurrency === 'string') {
@@ -276,7 +273,7 @@ export function queryParametersToSwapState(parsedQs: ParsedQs): SwapState {
 export function useDefaultsFromURLSearch():
   | { inputCurrencyId: string | undefined; outputCurrencyId: string | undefined }
   | undefined {
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useActiveStarknetReact()
   const dispatch = useDispatch<AppDispatch>()
   const parsedQs = useParsedQueryString()
   const [result, setResult] = useState<
@@ -286,6 +283,7 @@ export function useDefaultsFromURLSearch():
   useEffect(() => {
     if (!chainId) return
     const parsed = queryParametersToSwapState(parsedQs)
+    console.log('🚀 ~ file: hooks.ts ~ line 278 ~ useEffect ~ parsed', parsed)
 
     dispatch(
       replaceSwapState({

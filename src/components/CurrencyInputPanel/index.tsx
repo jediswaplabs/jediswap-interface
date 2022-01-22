@@ -1,8 +1,8 @@
-import { Currency, Pair } from '@uniswap/sdk'
+import { Currency, Pair } from '@jediswap/sdk'
 import React, { useState, useContext, useCallback } from 'react'
 import styled, { ThemeContext } from 'styled-components'
 import { darken } from 'polished'
-// import { useCurrencyBalance } from '../../state/wallet/hooks'
+import { useCurrencyBalance } from '../../state/wallet/hooks'
 import CurrencySearchModal from '../SearchModal/CurrencySearchModal'
 import CurrencyLogo from '../CurrencyLogo'
 import DoubleCurrencyLogo from '../DoubleLogo'
@@ -11,7 +11,7 @@ import { TYPE } from '../../theme'
 import { Input as NumericalInput } from '../NumericalInput'
 import { ReactComponent as DropDown } from '../../assets/images/dropdown.svg'
 
-import { useActiveWeb3React } from '../../hooks'
+import { useActiveStarknetReact } from '../../hooks'
 import { useTranslation } from 'react-i18next'
 
 const InputRow = styled.div<{ selected: boolean }>`
@@ -181,8 +181,8 @@ CurrencyInputPanelProps) {
   const { t } = useTranslation()
 
   const [modalOpen, setModalOpen] = useState(false)
-  const { account } = useActiveWeb3React()
-  // const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, currency ?? undefined)
+  const { account } = useActiveStarknetReact()
+  const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, currency ?? undefined)
   const theme = useContext(ThemeContext)
 
   const handleDismissSearch = useCallback(() => {

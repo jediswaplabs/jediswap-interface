@@ -1,13 +1,13 @@
-import { AbstractConnector } from '@web3-react/abstract-connector'
-import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core'
+import { AbstractConnector } from '@web3-starknet-react/abstract-connector'
+import { UnsupportedChainIdError, useStarknetReact } from '@web3-starknet-react/core'
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
 import React, { useEffect, useState } from 'react'
 import { isMobile } from 'react-device-detect'
-import ReactGA from 'react-ga'
+// import ReactGA from 'react-ga'
 import styled from 'styled-components'
 import MetamaskIcon from '../../assets/images/metamask.png'
 import { ReactComponent as Close } from '../../assets/images/x.svg'
-import { fortmatic, injected, portis } from '../../connectors'
+// import { fortmatic, injected, portis } from '../../connectors'
 import { OVERLAY_READY } from '../../connectors/Fortmatic'
 import { SUPPORTED_WALLETS } from '../../constants'
 import usePrevious from '../../hooks/usePrevious'
@@ -126,7 +126,9 @@ export default function WalletModal({
   ENSName?: string
 }) {
   // important that these are destructed from the account-specific web3-react context
-  const { active, account, connector, activate, error } = useWeb3React()
+  const { active, account, connector, activate, error } = useStarknetReact()
+
+  // const connectStarknet = useStarknetConnector({ showModal: true })
 
   const [walletView, setWalletView] = useState(WALLET_VIEWS.ACCOUNT)
 
@@ -172,11 +174,11 @@ export default function WalletModal({
       return true
     })
     // log selected wallet
-    ReactGA.event({
-      category: 'Wallet',
-      action: 'Change Wallet',
-      label: name
-    })
+    // ReactGA.event({
+    //   category: 'Wallet',
+    //   action: 'Change Wallet',
+    //   label: name
+    // })
     setPendingWallet(connector) // set wallet for pending view
     setWalletView(WALLET_VIEWS.PENDING)
 
@@ -190,17 +192,24 @@ export default function WalletModal({
         if (error instanceof UnsupportedChainIdError) {
           activate(connector) // a little janky...can't use setError because the connector isn't set
         } else {
+          console.error(error)
           setPendingError(true)
         }
       })
   }
 
+  // const tryStarknetActivation = async () => {
+  //   const starknet = await connectStarknet()
+
+  //   console.log('Starknet: ', starknet)
+  // }
+
   // close wallet modal if fortmatic modal is active
-  useEffect(() => {
-    fortmatic.on(OVERLAY_READY, () => {
-      toggleWalletModal()
-    })
-  }, [toggleWalletModal])
+  // useEffect(() => {
+  //   fortmatic.on(OVERLAY_READY, () => {
+  //     toggleWalletModal()
+  //   })
+  // }, [toggleWalletModal])
 
   // get wallets user can switch too, depending on device/browser
   function getOptions() {
@@ -210,9 +219,9 @@ export default function WalletModal({
       // check for mobile options
       if (isMobile) {
         //disable portis on mobile for now
-        if (option.connector === portis) {
-          return null
-        }
+        // if (option.connector === portis) {
+        //   return null
+        // }
 
         if (!window.web3 && !window.ethereum && option.mobile) {
           return (
@@ -235,34 +244,34 @@ export default function WalletModal({
       }
 
       // overwrite injected when needed
-      if (option.connector === injected) {
-        // don't show injected if there's no injected provider
-        if (!(window.web3 || window.ethereum)) {
-          if (option.name === 'MetaMask') {
-            return (
-              <Option
-                id={`connect-${key}`}
-                key={key}
-                color={'#E8831D'}
-                header={'Install Metamask'}
-                subheader={null}
-                link={'https://metamask.io/'}
-                icon={MetamaskIcon}
-              />
-            )
-          } else {
-            return null //dont want to return install twice
-          }
-        }
-        // don't return metamask if injected provider isn't metamask
-        else if (option.name === 'MetaMask' && !isMetamask) {
-          return null
-        }
-        // likewise for generic
-        else if (option.name === 'Injected' && isMetamask) {
-          return null
-        }
-      }
+      // if (option.connector === injected) {
+      //   // don't show injected if there's no injected provider
+      //   if (!(window.web3 || window.ethereum)) {
+      //     if (option.name === 'MetaMask') {
+      //       return (
+      //         <Option
+      //           id={`connect-${key}`}
+      //           key={key}
+      //           color={'#E8831D'}
+      //           header={'Install Metamask'}
+      //           subheader={null}
+      //           link={'https://metamask.io/'}
+      //           icon={MetamaskIcon}
+      //         />
+      //       )
+      //     } else {
+      //       return null //dont want to return install twice
+      //     }
+      //   }
+      //   // don't return metamask if injected provider isn't metamask
+      //   else if (option.name === 'MetaMask' && !isMetamask) {
+      //     return null
+      //   }
+      //   // likewise for generic
+      //   else if (option.name === 'Injected' && isMetamask) {
+      //     return null
+      //   }
+      // }
 
       // return rest of options
       return (

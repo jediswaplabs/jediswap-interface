@@ -1,7 +1,7 @@
 import { getVersionUpgrade, minVersionBump, VersionUpgrade } from '@uniswap/token-lists'
 import { useCallback, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useActiveWeb3React } from '../../hooks'
+import { useActiveStarknetReact } from '../../hooks'
 import { useFetchListCallback } from '../../hooks/useFetchListCallback'
 import useInterval from '../../hooks/useInterval'
 import useIsWindowVisible from '../../hooks/useIsWindowVisible'
@@ -10,9 +10,10 @@ import { AppDispatch, AppState } from '../index'
 import { acceptListUpdate } from './actions'
 
 export default function Updater(): null {
-  const { library } = useActiveWeb3React()
+  const { library } = useActiveStarknetReact()
   const dispatch = useDispatch<AppDispatch>()
   const lists = useSelector<AppState, AppState['lists']['byUrl']>(state => state.lists.byUrl)
+  console.log('🚀 ~ file: updater.ts ~ line 16 ~ Updater ~ lists', lists)
 
   const isWindowVisible = useIsWindowVisible()
 

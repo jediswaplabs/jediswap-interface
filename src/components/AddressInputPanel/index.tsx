@@ -1,11 +1,13 @@
 import React, { useContext, useCallback } from 'react'
 import styled, { ThemeContext } from 'styled-components'
-import useENS from '../../hooks/useENS'
-import { useActiveWeb3React } from '../../hooks'
+// import useENS from '../../hooks/useENS'
+import { useActiveStarknetReact } from '../../hooks'
 import { ExternalLink, TYPE } from '../../theme'
 import { AutoColumn } from '../Column'
 import { RowBetween } from '../Row'
 import { getEtherscanLink } from '../../utils'
+// import { normalizeAccount } from '@web3-starknet-react/core/dist/normalizers'
+import { useAddressNormalizer } from '../../hooks/useAddressNormalizer'
 
 const InputPanel = styled.div`
   ${({ theme }) => theme.flexColumnNoWrap}
@@ -76,10 +78,12 @@ export default function AddressInputPanel({
   // triggers whenever the typed value changes
   onChange: (value: string) => void
 }) {
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useActiveStarknetReact()
   const theme = useContext(ThemeContext)
 
-  const { address, loading, name } = useENS(value)
+  // const { address, loading, name } = useENS(value)
+
+  const address = useAddressNormalizer(value)
 
   const handleInput = useCallback(
     event => {
@@ -90,7 +94,7 @@ export default function AddressInputPanel({
     [onChange]
   )
 
-  const error = Boolean(value.length > 0 && !loading && !address)
+  const error = Boolean(value.length > 0)
 
   return (
     <InputPanel id={id}>
@@ -102,7 +106,7 @@ export default function AddressInputPanel({
                 Recipient
               </TYPE.black>
               {address && chainId && (
-                <ExternalLink href={getEtherscanLink(chainId, name ?? address, 'address')} style={{ fontSize: '14px' }}>
+                <ExternalLink href={getEtherscanLink(chainId, address, 'address')} style={{ fontSize: '14px' }}>
                   (View on Etherscan)
                 </ExternalLink>
               )}

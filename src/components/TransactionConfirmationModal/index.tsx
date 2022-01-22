@@ -1,4 +1,4 @@
-import { ChainId } from '@uniswap/sdk'
+import { ChainId } from '@jediswap/sdk'
 import React, { useContext } from 'react'
 import styled, { ThemeContext } from 'styled-components'
 import Modal from '../Modal'
@@ -12,7 +12,7 @@ import { AutoColumn, ColumnCenter } from '../Column'
 import Circle from '../../assets/jedi/loadingCircle.svg'
 
 import { getEtherscanLink } from '../../utils'
-import { useActiveWeb3React } from '../../hooks'
+import { useActiveStarknetReact } from '../../hooks'
 import openInBrowser from '../../assets/jedi/openInBrowser.svg'
 
 const Wrapper = styled.div`
@@ -218,7 +218,7 @@ export default function TransactionConfirmationModal({
   pendingText,
   content
 }: ConfirmationModalProps) {
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useActiveStarknetReact()
 
   if (!chainId) return null
 
