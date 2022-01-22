@@ -1,0 +1,48 @@
+image: docker:latest
+
+workflow:
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event" || $CI_PIPELINE_SOURCE == "push"'
+      when: never
+    - when: always
+
+stages:
+  - build
+  - deploy
+
+variables:
+  ENVIRONMENT: ''
+  CI: ''
+
+build:
+  stage: build
+  image: node:14
+  script:
+    - npm ci
+    - mkdir ~/src_maps
+    - npm run build
+  artifacts:
+    paths:
+      - build/
+    expire_in: 1 hour
+  rules:
+    - if: '$ENVIRONMENT == "production" || $ENVIRONMENT == "staging"'
+      when: always
+      allow_failure: false
+    - when: never
+
+deploy:
+  stage: deploy
+  before_script:
+    - apk add --no-cache curl jq python3 py-pip
+    - pip3 install awscli
+  script:
+    - aws s3 cp build/ s3://$S3_BUCKET_NAME/ --recursive --include "*"
+    - aws cloudfront create-invalidation --distribution-id $CDN_DISTRIBUTION_ID --paths "/index.html"
+  environment:
+    name: $ENVIRONMENT
+  rules:
+    - if: '$ENVIRONMENT == "production" || $ENVIRONMENT == "staging"'
+      when: always
+      allow_failure: false
+    - when: never

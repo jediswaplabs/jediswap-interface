@@ -1771,6 +1771,20 @@
   dependencies:
     "@hapi/hoek" "^9.0.0"
 
+"@jediswap/sdk@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@jediswap/sdk/-/sdk-1.0.0.tgz#381c23314ee25b3b45b8ce25d4ec95362642df6c"
+  integrity sha512-pKEeM3JePCqx4y0zv1PFW2n6cex6nWM+6invlm70O5NGEReS1vJtduzEEVOP3wGMjUc1SWXdWwaeMiARnaoH8g==
+  dependencies:
+    "@uniswap/v2-core" "^1.0.0"
+    big.js "^5.2.2"
+    decimal.js-light "^2.5.0"
+    jsbi "^3.1.1"
+    starknet "^2.7.2"
+    tiny-invariant "^1.1.0"
+    tiny-warning "^1.0.3"
+    toformat "^2.0.0"
+
 "@jest/console@^24.7.1", "@jest/console@^24.9.0":
   version "24.9.0"
   resolved "https://registry.yarnpkg.com/@jest/console/-/console-24.9.0.tgz#79b1bc06fb74a8cfb01cbdedf945584b1b9707f0"
@@ -14372,6 +14386,22 @@ starknet@^2.7.1:
   version "2.7.1"
   resolved "https://registry.yarnpkg.com/starknet/-/starknet-2.7.1.tgz#722077230dc932093a9009587bb049945e035bfa"
   integrity sha512-R1AjCLb3NR8ZJadw/6xYfJELwVsjLJ0lXopMpzoepr2Tv4amjKc6XlGaFirKJ154MC09Y8fN+qw9t3VycKZbgg==
+  dependencies:
+    axios "^0.23.0"
+    bn.js "^5.2.0"
+    elliptic "^6.5.4"
+    ethereum-cryptography "^0.2.0"
+    hash.js "^1.1.7"
+    json-bigint "^1.0.0"
+    minimalistic-assert "^1.0.1"
+    pako "^2.0.4"
+    superstruct "^0.15.3"
+    url-join "^4.0.1"
+
+starknet@^2.7.2:
+  version "2.7.2"
+  resolved "https://registry.yarnpkg.com/starknet/-/starknet-2.7.2.tgz#927d7aaa226bd213420584e4397911f56f75e664"
+  integrity sha512-TLFrpQEOYx7o9wgF6fPOQwplxFu+CSaxy5Yidn7TW5B9PkMHaQRPmQdx508oxadeaJnye6wJTQ1zfYBrMrxnrg==
   dependencies:
     axios "^0.23.0"
     bn.js "^5.2.0"
