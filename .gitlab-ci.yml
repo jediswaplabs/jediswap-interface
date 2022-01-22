@@ -25,7 +25,6 @@ build:
   before_script:
     - yarn config set cache-folder .yarn
     - rm -rf node_modules && yarn install --frozen-lockfile
-    - yarn install
   script:
     - mkdir ~/src_maps
     - yarn $ENVIRONMENT-build
