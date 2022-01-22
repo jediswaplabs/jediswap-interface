@@ -28,7 +28,7 @@ build:
     - yarn install
   script:
     - mkdir ~/src_maps
-    - yarn build
+    - yarn $ENVIRONMENT-build
   artifacts:
     paths:
       - build/
