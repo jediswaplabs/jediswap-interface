@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
-import { Abi, Args, compileCalldata, Contract } from 'starknet'
+import { Abi, Args, compileCalldata, Contract } from '@jediswap/starknet'
 import { getSelectorFromName } from 'starknet/dist/utils/stark'
 import { useActiveStarknetReact } from '.'
 import { useBlockNumber } from '../state/application/hooks'

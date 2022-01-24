@@ -1,5 +1,5 @@
 // import { Web3Provider } from '@ethersproject/providers'
-import { Provider } from 'starknet'
+import { Provider } from '@jediswap/starknet'
 
 export default function getLibrary(provider: any): Provider {
   const library = new Provider(provider)

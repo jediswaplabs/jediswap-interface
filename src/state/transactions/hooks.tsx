@@ -1,4 +1,4 @@
-import { AddTransactionResponse } from 'starknet'
+import { AddTransactionResponse } from '@jediswap/starknet'
 import { useCallback, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
