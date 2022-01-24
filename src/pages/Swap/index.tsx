@@ -52,6 +52,60 @@ import HeaderIcon from '../../assets/jedi/SwapPanel_headerItem.svg'
 import SwapWidget from '../../assets/jedi/SwapWidget.svg'
 // import BackdropImage from '../../assets/jedi/Backdrop.svg'
 
+const HeaderRow = styled.div`
+  display: flex;
+  // font-family: Soloist Title;
+  font-size: 24px;
+  // font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: -0.1em;
+  text-align: center;
+  justify-content: space-between;
+  color: ${({ theme }) => theme.jediWhite};
+  // margin-bottom: 30px;
+`
+const Icon = styled.img<{ unlimited?: boolean; noMargin?: boolean }>`
+  width: 100%;
+  height: auto;
+  max-width: ${({ unlimited }) => (unlimited ? 'auto' : '27px')};
+  margin-bottom: ${({ noMargin }) => (!noMargin ? '30px' : 0)};
+`
+const IconWrapper = styled.div`
+  width: 100%;
+  height: auto;
+  max-width: 40px;
+  margin-top: 24px;
+  margin-bottom: -5px;
+`
+const BalanceText = styled.div`
+  font-family: DM Sans;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 16px;
+  letter-spacing: 0em;
+  text-align: center;
+  color: ${({ theme }) => theme.jediWhite};
+  margin-bottom: 16px;
+`
+const Backdrop = styled.div<{ top?: string; left?: string; curveRight?: boolean; curveLeft?: boolean }>`
+  position: absolute;
+  width: 10px;
+  height: 80px;
+  left: ${({ left }) => left};
+  top: ${({ top }) => top};
+
+  background: linear-gradient(0deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8)),
+    linear-gradient(180deg, #ffffff 0%, rgba(255, 255, 255, 0) 100%);
+  box-shadow: 0px 0px 18.9113px rgba(49, 255, 156, 0.7), 0px 0px 73.2115px rgba(49, 255, 156, 0.5),
+    inset 0px 0px 7.32115px rgba(49, 255, 156, 0.5);
+
+  border-radius: ${({ curveRight }) => (curveRight ? '30px 30px 0 0' : '0 0 30px 30px')};
+
+  transform: matrix(0, 1, 1, 0, 0, 0);
+`
+
 export default function Swap() {
   const loadedUrlParams = useDefaultsFromURLSearch()
 
@@ -250,59 +304,6 @@ export default function Swap() {
     onCurrencySelection
   ])
 
-  const HeaderRow = styled.div`
-    display: flex;
-    // font-family: Soloist Title;
-    font-size: 24px;
-    // font-style: normal;
-    font-weight: 400;
-    line-height: 24px;
-    letter-spacing: -0.1em;
-    text-align: center;
-    justify-content: space-between;
-    color: ${({ theme }) => theme.jediWhite};
-    // margin-bottom: 30px;
-  `
-  const Icon = styled.img<{ unlimited?: boolean; noMargin?: boolean }>`
-    width: 100%;
-    height: auto;
-    max-width: ${({ unlimited }) => (unlimited ? 'auto' : '27px')};
-    margin-bottom: ${({ noMargin }) => (!noMargin ? '30px' : 0)};
-  `
-  const IconWrapper = styled.div`
-    width: 100%;
-    height: auto;
-    max-width: 40px;
-    margin-top: 24px;
-    margin-bottom: -5px;
-  `
-  const BalanceText = styled.div`
-    font-family: DM Sans;
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 16px;
-    letter-spacing: 0em;
-    text-align: center;
-    color: ${({ theme }) => theme.jediWhite};
-    margin-bottom: 16px;
-  `
-  const Backdrop = styled.div<{ top?: string; left?: string; curveRight?: boolean; curveLeft?: boolean }>`
-    position: absolute;
-    width: 10px;
-    height: 80px;
-    left: ${({ left }) => left};
-    top: ${({ top }) => top};
-
-    background: linear-gradient(0deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8)),
-      linear-gradient(180deg, #ffffff 0%, rgba(255, 255, 255, 0) 100%);
-    box-shadow: 0px 0px 18.9113px rgba(49, 255, 156, 0.7), 0px 0px 73.2115px rgba(49, 255, 156, 0.5),
-      inset 0px 0px 7.32115px rgba(49, 255, 156, 0.5);
-
-    border-radius: ${({ curveRight }) => (curveRight ? '30px 30px 0 0' : '0 0 30px 30px')};
-
-    transform: matrix(0, 1, 1, 0, 0, 0);
-  `
   return (
     <>
       {/* <TokenWarningModal
@@ -336,7 +337,7 @@ export default function Swap() {
           </HeaderRow>
           <HeaderRow>
             <BalanceText>Swap From</BalanceText>
-            <BalanceText>Balance: 0</BalanceText>
+            <BalanceText>Balance: {currencyBalances.INPUT?.toFixed(6) ?? 0}</BalanceText>
           </HeaderRow>
           <AutoColumn>
             <CurrencyInputPanel
@@ -371,7 +372,7 @@ export default function Swap() {
             </AutoColumn>
             <HeaderRow>
               <BalanceText>Swap To (est.)</BalanceText>
-              <BalanceText>Balance: 0</BalanceText>
+              <BalanceText>Balance: {currencyBalances.OUTPUT?.toFixed(6) ?? 0}</BalanceText>
             </HeaderRow>
             <CurrencyInputPanel
               value={formattedAmounts[Field.OUTPUT]}

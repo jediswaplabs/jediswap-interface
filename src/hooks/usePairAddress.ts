@@ -3,7 +3,7 @@ import { useMemo, useState, useCallback, useEffect } from 'react'
 import { Token } from '@jediswap/sdk'
 import { useRegistryContract } from './useContract'
 import { useBlockNumber } from '../state/application/hooks'
-import { Args } from 'starknet'
+import { Args } from '@jediswap/starknet'
 import useDeepCompareEffect from 'use-deep-compare-effect'
 import { retry } from '../utils/retry'
 
