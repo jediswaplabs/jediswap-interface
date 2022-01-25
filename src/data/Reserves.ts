@@ -6,7 +6,7 @@ import { useActiveStarknetReact } from '../hooks'
 import { useMultipleStarknetCallSingleData } from '../hooks/useStarknet'
 
 import { wrappedCurrency } from '../utils/wrappedCurrency'
-import { Abi, uint256 } from 'starknet'
+import { Abi, uint256 } from '@jediswap/starknet'
 import { usePairAddresses } from '../hooks/usePairAddress'
 
 export enum PairState {

@@ -1771,19 +1771,35 @@
   dependencies:
     "@hapi/hoek" "^9.0.0"
 
-"@jediswap/sdk@^1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@jediswap/sdk/-/sdk-1.0.2.tgz#a6513bd02f83538d9c7db7ea7874209d46a42137"
-  integrity sha512-zkl0hVV0nP8HIGu/cAQX90wP7srQ86+ZVZztav4KURmWqeUvWoFMgBk91Q/I7Ohfg+6puUUAncsabe6Oc1FzUQ==
+"@jediswap/sdk@^1.0.4":
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/@jediswap/sdk/-/sdk-1.0.4.tgz#b3437acc9595e779d7680749668caf97d9a3d2ad"
+  integrity sha512-AlxQKNYcHR5zSwvIURQF73N6n6xNybdxdNU2H11yg6aTn8ETexpsxwhbG6H9mLfRbMPf7NmUmGLbrhEFYYubbQ==
   dependencies:
+    "@jediswap/starknet" "^2.7.2"
     "@uniswap/v2-core" "^1.0.0"
     big.js "^5.2.2"
     decimal.js-light "^2.5.0"
     jsbi "^3.1.1"
-    starknet "^2.7.2"
     tiny-invariant "^1.1.0"
     tiny-warning "^1.0.3"
     toformat "^2.0.0"
+
+"@jediswap/starknet@2.7.2", "@jediswap/starknet@^2.7.2":
+  version "2.7.2"
+  resolved "https://registry.yarnpkg.com/@jediswap/starknet/-/starknet-2.7.2.tgz#826bdd04739ddc6b5d04e2cb9e223754d201a5bc"
+  integrity sha512-pyG+iZuMCruDJlf6cQ+Of6T3oPmEzc8rYG2wG7c4xoNliESmys33DqSAORp2SWPTSXN2rUODbVzQKfpZtRzh7Q==
+  dependencies:
+    axios "^0.23.0"
+    bn.js "^5.2.0"
+    elliptic "^6.5.4"
+    ethereum-cryptography "^0.2.0"
+    hash.js "^1.1.7"
+    json-bigint "^1.0.0"
+    minimalistic-assert "^1.0.1"
+    pako "^2.0.4"
+    superstruct "^0.15.3"
+    url-join "^4.0.1"
 
 "@jest/console@^24.7.1", "@jest/console@^24.9.0":
   version "24.9.0"
@@ -3248,33 +3264,33 @@
     "@web3-react/types" "^6.0.7"
     walletlink "^2.2.6"
 
-"@web3-starknet-react/abstract-connector@^0.3.0":
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/@web3-starknet-react/abstract-connector/-/abstract-connector-0.3.0.tgz#46b2880d50799cfa34d850c228942d1497823839"
-  integrity sha512-525F5euGwGD+iZLZQHRBuBnBHtQ7hIZuNHeEKZLoNDGq2TxbDN7UyPGEwEP9HUZgjRp7EP2xDEoI1tAQCbN07w==
+"@web3-starknet-react/abstract-connector@^0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@web3-starknet-react/abstract-connector/-/abstract-connector-0.4.0.tgz#62903c44dce2dcf25ef9fd0fd66e28e3322ab09e"
+  integrity sha512-fO+gv5Js/3Han3hO2bnlO4URNwKJhyjt1UHcYA7pTgW+yMw/bjOoEEbLY/6v+Pr8z9IPVKkTSGOEMiDcc7egkw==
   dependencies:
-    "@web3-starknet-react/types" "^0.3.0"
+    "@web3-starknet-react/types" "^0.4.0"
 
-"@web3-starknet-react/argentx-connector@^0.3.1":
-  version "0.3.1"
-  resolved "https://registry.yarnpkg.com/@web3-starknet-react/argentx-connector/-/argentx-connector-0.3.1.tgz#1beb0ef862b0de86e6615127913b256df40d0132"
-  integrity sha512-7LrffqRm4yEKEHjwwicgC+VjPSiKsbfeewG/lp1xWoES5TxZxEoAEwiBaUXShVomwkm2ZR8PkkejjEaseMiMUA==
+"@web3-starknet-react/argentx-connector@^0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@web3-starknet-react/argentx-connector/-/argentx-connector-0.4.0.tgz#7617e288b593dd0610096a568fbd07b55d3da083"
+  integrity sha512-kxfRLWKu38O+YjYqMPkx1x5XNKvjynG5qU37N3VHgBrgrQsXV7HqoazjLNpVYx3WpaHkkFBEGkaGdHVWw7CTRA==
   dependencies:
-    "@web3-starknet-react/abstract-connector" "^0.3.0"
-    "@web3-starknet-react/types" "^0.3.0"
+    "@web3-starknet-react/abstract-connector" "^0.4.0"
+    "@web3-starknet-react/types" "^0.4.0"
 
-"@web3-starknet-react/core@^0.3.0":
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/@web3-starknet-react/core/-/core-0.3.0.tgz#79236e292189de9eb436131affcb87f38fc4b59b"
-  integrity sha512-Kupzrya5iomkWY28BbOodZAmbFr6PQP0o24nBpdTPBA8DrN8/DYO/uLNMFaYJbsI6tXJ9RKYIzgz8BoJjhwkzA==
+"@web3-starknet-react/core@^0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@web3-starknet-react/core/-/core-0.4.0.tgz#5ea2474416b10e64fe00f96ac5f7f02cd5fed66e"
+  integrity sha512-/nR2zt0R5Z6iAm/xO/21uf6lUhQNuMEna3dMpi+UNNU7UmBZdpLkm7e9F+21mkg2zfeU7BzyOZY65dAS3kV7nA==
   dependencies:
-    "@web3-starknet-react/abstract-connector" "^0.3.0"
-    "@web3-starknet-react/types" "^0.3.0"
+    "@web3-starknet-react/abstract-connector" "^0.4.0"
+    "@web3-starknet-react/types" "^0.4.0"
 
-"@web3-starknet-react/types@^0.3.0":
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/@web3-starknet-react/types/-/types-0.3.0.tgz#23a78e21a30592712c2dc9f20a08ce40a33a37a0"
-  integrity sha512-s5NGs4nfIrACzmZDo/CPpaOONsn2Zc3FwLI9lumqxPnO+y8KdgVRem6ceiTg2hGzb2I0f+P/W4C1a+LO77RiZg==
+"@web3-starknet-react/types@^0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@web3-starknet-react/types/-/types-0.4.0.tgz#31d76b5e172b8f3fddb343bb99ca313c5e97da67"
+  integrity sha512-6Mn7SYWfuyYxxCgLk03SeziOAtAvzaOH2Fne/+BFB2KwwV5HfRP/1+/CcRqq97zG1pnJuIZ2CexPv1cfCXe5uQ==
 
 "@webassemblyjs/ast@1.8.5":
   version "1.8.5"
@@ -14388,22 +14404,6 @@ stack-utils@^1.0.1:
   integrity sha512-KZiTzuV3CnSnSvgMRrARVCj+Ht7rMbauGDK0LdVFRGyenwdylpajAp4Q0i6SX8rEmbTpMMf6ryq2gb8pPq2WgQ==
   dependencies:
     escape-string-regexp "^2.0.0"
-
-starknet@^2.7.1, starknet@^2.7.2:
-  version "2.7.2"
-  resolved "https://registry.yarnpkg.com/starknet/-/starknet-2.7.2.tgz#927d7aaa226bd213420584e4397911f56f75e664"
-  integrity sha512-TLFrpQEOYx7o9wgF6fPOQwplxFu+CSaxy5Yidn7TW5B9PkMHaQRPmQdx508oxadeaJnye6wJTQ1zfYBrMrxnrg==
-  dependencies:
-    axios "^0.23.0"
-    bn.js "^5.2.0"
-    elliptic "^6.5.4"
-    ethereum-cryptography "^0.2.0"
-    hash.js "^1.1.7"
-    json-bigint "^1.0.0"
-    minimalistic-assert "^1.0.1"
-    pako "^2.0.4"
-    superstruct "^0.15.3"
-    url-join "^4.0.1"
 
 start-server-and-test@^1.11.0:
   version "1.14.0"

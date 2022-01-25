@@ -1,3 +1,4 @@
+import { Status } from '@jediswap/starknet'
 import { createAction } from '@reduxjs/toolkit'
 import { TokenList } from '@uniswap/token-lists'
 
@@ -5,7 +6,7 @@ export type PopupContent =
   | {
       txn: {
         hash: string
-        success: boolean
+        status: Status
         summary?: string
       }
     }

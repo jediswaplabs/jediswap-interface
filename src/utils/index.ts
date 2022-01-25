@@ -1,10 +1,8 @@
 import { AbstractConnector } from '@web3-starknet-react/abstract-connector'
 import { useMemo } from 'react'
 // import { Contract } from '@ethersproject/contracts'
-import { Abi, Contract, Provider, Signer, SignerInterface } from 'starknet'
-import { getAddress } from '@ethersproject/address'
+import { Abi, Contract, Provider, Signer, SignerInterface } from '@jediswap/starknet'
 import { AddressZero } from '@ethersproject/constants'
-import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers'
 import { BigNumber } from '@ethersproject/bignumber'
 import { TOKEN1 } from '../constants'
 import { ChainId, JSBI, Percent, Token, CurrencyAmount, Currency, TOKEN0 } from '@jediswap/sdk'
@@ -89,7 +87,7 @@ export function getProviderOrSigner(
   library: Provider,
   connector?: AbstractConnector,
   account?: string
-): Provider | undefined {
+): Provider | SignerInterface | undefined {
   return account && connector ? connector.getSigner() : library
 }
 

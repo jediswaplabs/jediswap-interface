@@ -1,15 +1,13 @@
 import { createAction } from '@reduxjs/toolkit'
 import { ChainId } from '@jediswap/sdk'
+import { Status } from '@jediswap/starknet'
 
 export interface SerializableTransactionReceipt {
-  to: string
-  from: string
-  contractAddress: string
   transactionIndex: number
   blockHash: string
   transactionHash: string
   blockNumber: number
-  status?: number
+  status?: Status
 }
 
 export const addTransaction = createAction<{
@@ -21,11 +19,11 @@ export const addTransaction = createAction<{
   summary?: string
 }>('transactions/addTransaction')
 export const clearAllTransactions = createAction<{ chainId: ChainId }>('transactions/clearAllTransactions')
-export const finalizeTransaction = createAction<{
+export const updateTransaction = createAction<{
   chainId: ChainId
   hash: string
   receipt: SerializableTransactionReceipt
-}>('transactions/finalizeTransaction')
+}>('transactions/updateTransaction')
 export const checkedTransaction = createAction<{
   chainId: ChainId
   hash: string

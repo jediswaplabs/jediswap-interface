@@ -1,5 +1,5 @@
 import { BigNumber } from '@ethersproject/bignumber'
-import { Contract, Args, uint256, compileCalldata } from 'starknet'
+import { Contract, Args, uint256, compileCalldata } from '@jediswap/starknet'
 import { JSBI, Percent, Router, SwapParameters, Trade, TradeType } from '@jediswap/sdk'
 import { useMemo } from 'react'
 import { BIPS_BASE, INITIAL_ALLOWED_SLIPPAGE } from '../constants'

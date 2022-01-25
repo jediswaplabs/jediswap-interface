@@ -1,4 +1,4 @@
-import { uint256 } from 'starknet'
+import { uint256 } from '@jediswap/starknet'
 import { Token, TokenAmount } from '@jediswap/sdk'
 import { useMemo } from 'react'
 

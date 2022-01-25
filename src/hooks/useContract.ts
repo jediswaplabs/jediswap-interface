@@ -1,4 +1,4 @@
-import { Contract } from 'starknet'
+import { Contract } from '@jediswap/starknet'
 import JediswapPairABI from '../constants/abis/Pair.json'
 import { useMemo } from 'react'
 import ERC20_ABI from '../constants/abis/erc20.json'
