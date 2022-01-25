@@ -2,18 +2,21 @@ import { AbstractConnector } from '@web3-starknet-react/abstract-connector'
 import { useMemo } from 'react'
 // import { Contract } from '@ethersproject/contracts'
 import { Abi, Contract, Provider, Signer, SignerInterface } from '@jediswap/starknet'
-import { AddressZero } from '@ethersproject/constants'
 import { BigNumber } from '@ethersproject/bignumber'
-import { TOKEN1 } from '../constants'
+import { TOKEN1, ZERO_ADDRESS } from '../constants'
 import { ChainId, JSBI, Percent, Token, CurrencyAmount, Currency, TOKEN0 } from '@jediswap/sdk'
 import { TokenAddressMap } from '../state/lists/hooks'
+import { validateAndParseAddress } from '@jediswap/starknet'
+import { toBN, toHex } from '@jediswap/starknet/dist/utils/number'
 
 // returns the checksummed address if the address is valid, otherwise returns false
-export function isAddress(addr: any): string | false {
+export function isAddress(addr: string | null | undefined): string | false {
+  console.log('🚀 ~ file: index.ts ~ line 14 ~ isAddress ~ addr', addr)
   try {
-    if (typeof addr === 'string' && addr.match(/^(0x)?[0-9a-fA-F]{63}$/)) {
-      const address = addr.substring(0, 2) === '0x' ? addr : `0x${addr}`
-      return address
+    if (addr) {
+      const starknetAddress = validateAndParseAddress(addr)
+      console.log('🚀 ~ file: index.ts ~ line 17 ~ isAddress ~ starknetAddress', addr, starknetAddress)
+      return starknetAddress
     }
     return false
   } catch {
@@ -99,10 +102,11 @@ export function getContract(
   connector?: AbstractConnector,
   account?: string
 ): Contract {
-  if (!isAddress(address) || address === AddressZero) {
+  const parsedAddress = isAddress(address)
+
+  if (!parsedAddress || parsedAddress === ZERO_ADDRESS) {
     throw Error(`Invalid 'address' parameter '${address}'.`)
   }
-  console.log('Library: ', library)
 
   const providerOrSigner = getProviderOrSigner(library, connector, account)
 
