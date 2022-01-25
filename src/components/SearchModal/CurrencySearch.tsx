@@ -139,9 +139,9 @@ export function CurrencySearch({
 
   return (
     <Column style={{ width: '100%', flex: '1 1' }}>
-      <PaddedColumn gap="14px">
+      <PaddedColumn gap="20px">
         <RowBetween>
-          <Text fontWeight={500} fontSize={16}>
+          <Text fontWeight={400} fontSize={20} color={'#FFFFFF'}>
             Select Token
             <QuestionHelper text="Find a token by searching for its name or symbol or by pasting its address below." />
           </Text>
@@ -160,10 +160,10 @@ export function CurrencySearch({
           <CommonBases chainId={chainId} onSelect={handleCurrencySelect} selectedCurrency={selectedCurrency} />
         )}
         <RowBetween>
-          <Text fontSize={14} fontWeight={500}>
+          <Text fontSize={16} fontWeight={700} fontFamily={'DM Sans'} letterSpacing={'0ch'} color={'#FFFFFF'}>
             Token Name
           </Text>
-          <SortButton ascending={invertSearchOrder} toggleSortOrder={() => setInvertSearchOrder(iso => !iso)} />
+          {/* <SortButton ascending={invertSearchOrder} toggleSortOrder={() => setInvertSearchOrder(iso => !iso)} /> */}
         </RowBetween>
       </PaddedColumn>
 
@@ -184,7 +184,7 @@ export function CurrencySearch({
           )}
         </AutoSizer>
       </div>
-
+      {/* 
       <Separator />
       <Card>
         <RowBetween>
@@ -197,7 +197,9 @@ export function CurrencySearch({
                   alt={`${selectedListInfo.current.name} list logo`}
                 />
               ) : null}
-              <TYPE.main id="currency-search-selected-list-name">{selectedListInfo.current.name}</TYPE.main>
+              <TYPE.main fontFamily={'DM Sans'} id="currency-search-selected-list-name">
+                {selectedListInfo.current.name}
+              </TYPE.main>
             </Row>
           ) : null}
           <LinkStyledButton
@@ -208,7 +210,7 @@ export function CurrencySearch({
             {selectedListInfo.current ? 'Change' : 'Select a list'}
           </LinkStyledButton>
         </RowBetween>
-      </Card>
+      </Card> */}
     </Column>
   )
 }

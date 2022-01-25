@@ -34,8 +34,8 @@ const StyledDialogContent = styled(({ minHeight, maxHeight, mobile, isOpen, ...r
   overflow-y: ${({ mobile }) => (mobile ? 'scroll' : 'hidden')};
 
   &[data-reach-dialog-content] {
-    margin: 0 0 2rem 0;
-    background-color: ${({ theme }) => theme.bg1};
+    margin: 0 0 0 0;
+    background-color: ${({ theme }) => theme.jediNavyBlue};
     box-shadow: 0 4px 8px 0 ${({ theme }) => transparentize(0.95, theme.shadow1)};
     padding: 0px;
     width: 50vw;
@@ -73,7 +73,11 @@ const StyledDialogContent = styled(({ minHeight, maxHeight, mobile, isOpen, ...r
     `}
   }
 `
-
+const BorderWrapper = styled.div`
+  background: linear-gradient(to top right, #50d5ff, #ef35ff);
+  padding: 2px;
+  border-radius: 8px;
+`
 interface ModalProps {
   isOpen: boolean
   onDismiss: () => void
@@ -116,22 +120,24 @@ export default function Modal({
         ({ item, key, props }) =>
           item && (
             <StyledDialogOverlay key={key} style={props} onDismiss={onDismiss} initialFocusRef={initialFocusRef}>
-              <StyledDialogContent
-                {...(isMobile
-                  ? {
-                      ...bind(),
-                      style: { transform: y.interpolate(y => `translateY(${y > 0 ? y : 0}px)`) }
-                    }
-                  : {})}
-                aria-label="dialog content"
-                minHeight={minHeight}
-                maxHeight={maxHeight}
-                mobile={isMobile}
-              >
-                {/* prevents the automatic focusing of inputs on mobile by the reach dialog */}
-                {!initialFocusRef && isMobile ? <div tabIndex={1} /> : null}
-                {children}
-              </StyledDialogContent>
+              <BorderWrapper>
+                <StyledDialogContent
+                  {...(isMobile
+                    ? {
+                        ...bind(),
+                        style: { transform: y.interpolate(y => `translateY(${y > 0 ? y : 0}px)`) }
+                      }
+                    : {})}
+                  aria-label="dialog content"
+                  minHeight={minHeight}
+                  maxHeight={maxHeight}
+                  mobile={isMobile}
+                >
+                  {/* prevents the automatic focusing of inputs on mobile by the reach dialog */}
+                  {!initialFocusRef && isMobile ? <div tabIndex={1} /> : null}
+                  {children}
+                </StyledDialogContent>
+              </BorderWrapper>
             </StyledDialogOverlay>
           )
       )}
