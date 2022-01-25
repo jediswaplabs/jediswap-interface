@@ -3,7 +3,7 @@ import {
   addTransaction,
   checkedTransaction,
   clearAllTransactions,
-  finalizeTransaction,
+  updateTransaction,
   SerializableTransactionReceipt
 } from './actions'
 
@@ -54,12 +54,15 @@ export default createReducer(initialState, builder =>
         tx.lastCheckedBlockNumber = Math.max(blockNumber, tx.lastCheckedBlockNumber)
       }
     })
-    .addCase(finalizeTransaction, (transactions, { payload: { hash, chainId, receipt } }) => {
+    .addCase(updateTransaction, (transactions, { payload: { hash, chainId, receipt } }) => {
       const tx = transactions[chainId]?.[hash]
       if (!tx) {
         return
       }
       tx.receipt = receipt
-      tx.confirmedTime = now()
+
+      if (receipt.status === 'ACCEPTED_ON_L1') {
+        tx.confirmedTime = now()
+      }
     })
 )
