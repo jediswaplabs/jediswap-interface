@@ -11,11 +11,9 @@ import { toBN, toHex } from '@jediswap/starknet/dist/utils/number'
 
 // returns the checksummed address if the address is valid, otherwise returns false
 export function isAddress(addr: string | null | undefined): string | false {
-  console.log('🚀 ~ file: index.ts ~ line 14 ~ isAddress ~ addr', addr)
   try {
     if (addr) {
       const starknetAddress = validateAndParseAddress(addr)
-      console.log('🚀 ~ file: index.ts ~ line 17 ~ isAddress ~ starknetAddress', addr, starknetAddress)
       return starknetAddress
     }
     return false
