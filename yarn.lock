@@ -3279,10 +3279,10 @@
     "@web3-starknet-react/abstract-connector" "^0.4.1"
     "@web3-starknet-react/types" "^0.4.1"
 
-"@web3-starknet-react/core@^0.4.1":
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/@web3-starknet-react/core/-/core-0.4.1.tgz#1fb3d13932c3a735fc2074aaa054ba0e33a9e12b"
-  integrity sha512-xJVPNx8oUZT4HIDSavE8byCtPOCEBYvCfV8E5UbxlVsG9kQwg3Ai/E0hTX1wVQgtyRuloc39LOLFZAIXsp9Mjg==
+"@web3-starknet-react/core@^0.4.2":
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/@web3-starknet-react/core/-/core-0.4.2.tgz#9a1b2634d129e29aee681db708a63b360327b0ed"
+  integrity sha512-NfZiirl1sG7GJyF5mbiUnCJ4ObhkJd6Sv2xxd+qG92NoE4nhjDGAPXAlo0jVxUO+XmOsWWUK2OCo/Ajob0BNHg==
   dependencies:
     "@web3-starknet-react/abstract-connector" "^0.4.1"
     "@web3-starknet-react/types" "^0.4.1"
