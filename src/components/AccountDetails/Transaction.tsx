@@ -42,8 +42,8 @@ export default function Transaction({ hash }: { hash: string }) {
 
   const tx = allTransactions?.[hash]
   const summary = tx?.summary
-  const pending = !tx?.receipt
-  const success = !pending && tx && (tx.receipt?.status === 1 || typeof tx.receipt?.status === 'undefined')
+  const pending = !tx.receipt || tx.receipt.status === 'PENDING' || tx.receipt.status === 'RECEIVED'
+  const success = !pending && tx && tx.receipt?.status !== 'REJECTED'
 
   if (!chainId) return null
 
