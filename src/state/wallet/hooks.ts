@@ -5,7 +5,7 @@ import { useAllTokens } from '../../hooks/Tokens'
 import { useActiveStarknetReact } from '../../hooks'
 import { isAddress } from '../../utils'
 import { NEVER_RELOAD, useMultipleStarknetCallSingleData, useStarknetCall } from '../../hooks/useStarknet'
-import { Abi, uint256 } from 'starknet'
+import { Abi, uint256 } from '@jediswap/starknet'
 import { useAddressNormalizer } from '../../hooks/useAddressNormalizer'
 import { useTokenContract } from '../../hooks/useContract'
 

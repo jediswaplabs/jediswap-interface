@@ -3,8 +3,6 @@ import { useEffect, useState, useCallback } from 'react'
 import { useActiveStarknetReact } from './index'
 import { useBlockNumber } from '../state/application/hooks'
 
-import { BigNumberish } from 'starknet/dist/utils/number'
-
 // gets the current timestamp from the blockchain
 export default function useCurrentBlockTimestamp(): number | undefined {
   // const multicall = useMulticallContract()

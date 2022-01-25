@@ -203,7 +203,7 @@ export function useSwapCallback(
 
         const swapArgs: Args = {
           amountIn: { type: 'struct', ...uint256AmountIn },
-          amountOutMin: { type: 'struct', high: 0, low: 0 },
+          amountOutMin: { type: 'struct', ...uint256AmountOut },
           path,
           to,
           deadline

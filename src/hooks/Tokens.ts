@@ -1,5 +1,5 @@
 import { TOKEN1 } from './../constants/index'
-import { Args, shortString, number as starkNumber } from 'starknet'
+import { Args, shortString, number as starkNumber } from '@jediswap/starknet'
 import { parseBytes32String } from '@ethersproject/strings'
 import { Currency, TOKEN0, Token, currencyEquals } from '@jediswap/sdk'
 import { useMemo } from 'react'

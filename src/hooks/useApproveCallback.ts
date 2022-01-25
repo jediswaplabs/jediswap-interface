@@ -11,7 +11,7 @@ import { computeSlippageAdjustedAmounts } from '../utils/prices'
 import { calculateGasMargin } from '../utils'
 import { useTokenContract } from './useContract'
 import { useActiveStarknetReact } from './index'
-import { AddTransactionResponse, Args, uint256 } from 'starknet'
+import { AddTransactionResponse, Args, uint256 } from '@jediswap/starknet'
 
 export enum ApprovalState {
   UNKNOWN,
