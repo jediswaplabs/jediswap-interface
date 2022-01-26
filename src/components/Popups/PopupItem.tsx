@@ -17,16 +17,27 @@ export const StyledClose = styled(X)`
     cursor: pointer;
   }
 `
+export const PopupWrapper = styled.div`
+  background: linear-gradient(200.98deg, #ef35ff 1.04%, #50d5ff 55.28%);
+  padding: 2px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
+
 export const Popup = styled.div`
   display: inline-block;
   width: 100%;
   padding: 1em;
-  background-color: ${({ theme }) => theme.bg1};
+  background-color: ${({ theme }) => theme.jediNavyBlue};
   position: relative;
-  border-radius: 10px;
+  border-radius: 8px;
   padding: 20px;
   padding-right: 35px;
   overflow: hidden;
+  font-family: 'DM Sans', sans-serif;
+  letter-spacing: 0;
 
   ${({ theme }) => theme.mediaWidth.upToSmall`
     min-width: 290px;
@@ -58,7 +69,7 @@ export default function PopupItem({
     if (removeAfterMs === null) return undefined
 
     const timeout = setTimeout(() => {
-      removeThisPopup()
+      // removeThisPopup()
     }, removeAfterMs)
 
     return () => {
@@ -88,10 +99,12 @@ export default function PopupItem({
   })
 
   return (
-    <Popup>
-      <StyledClose color={theme.text2} onClick={removeThisPopup} />
-      {popupContent}
-      {removeAfterMs !== null ? <AnimatedFader style={faderStyle} /> : null}
-    </Popup>
+    <PopupWrapper>
+      <Popup>
+        <StyledClose color={theme.text2} onClick={removeThisPopup} />
+        {popupContent}
+        {/* {removeAfterMs !== null ? <AnimatedFader style={faderStyle} /> : null} */}
+      </Popup>
+    </PopupWrapper>
   )
 }
