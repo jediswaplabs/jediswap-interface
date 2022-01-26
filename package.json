@@ -44,7 +44,7 @@
     "@web3-react/walletconnect-connector": "^6.1.1",
     "@web3-react/walletlink-connector": "^6.0.9",
     "@web3-starknet-react/abstract-connector": "^0.5.1",
-    "@web3-starknet-react/argentx-connector": "^0.5.1",
+    "@web3-starknet-react/argentx-connector": "^0.5.2",
     "@web3-starknet-react/core": "^0.5.1",
     "@web3-starknet-react/types": "^0.5.0",
     "ajv": "^6.12.3",
