@@ -71,9 +71,11 @@ const HeaderText = styled.div`
 `
 
 const SubHeader = styled.div`
-  color: ${({ theme }) => theme.text1};
+  color: ${({ theme }) => theme.jediWhite};
   margin-top: 10px;
   font-size: 12px;
+  font-family: DM Sans;
+  letter-spacing: 0ch;
 `
 
 const IconWrapper = styled.div<{ size?: number | null }>`

@@ -24,8 +24,8 @@ import { BorderWrapper } from '../AccountDetails'
 
 const CloseIcon = styled.div`
   position: absolute;
-  right: 1rem;
-  top: 14px;
+  right: 2rem;
+  top: 28px;
   color:${({ theme }) => theme.jediWhite}
   &:hover {
     cursor: pointer;
@@ -48,7 +48,7 @@ const Wrapper = styled.div`
 
 const HeaderRow = styled.div`
   ${({ theme }) => theme.flexRowNoWrap};
-  padding: 1rem 1rem;
+  padding: 2rem 2rem 0;
   font-weight: 500;
   color: ${({ theme }) => theme.jediWhite};
   ${({ theme }) => theme.mediaWidth.upToMedium`
