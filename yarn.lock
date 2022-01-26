@@ -3264,40 +3264,28 @@
     "@web3-react/types" "^6.0.7"
     walletlink "^2.2.6"
 
-"@web3-starknet-react/abstract-connector@^0.4.1":
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/@web3-starknet-react/abstract-connector/-/abstract-connector-0.4.1.tgz#01cc6a6e523e06bb457ebb78e1f39e30b5669ce9"
-  integrity sha512-Y9RWMLxZo7gpoUW1tXstFWtY48ay3YfPa8xbxMwkqWybVR4g95STFwaT9QBHUQMCeMC+9bDwZmjRZ4ZFTjT4Eg==
+"@web3-starknet-react/abstract-connector@^0.5.1":
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/@web3-starknet-react/abstract-connector/-/abstract-connector-0.5.1.tgz#114ea9f461687283d6774f81f679d13fe5658ed7"
+  integrity sha512-+MJd+Hm81psMbSdCg/0BFGC3LcA7XugTUzkhcvw63twF9xMx5WkhFzLkrAWBRr4GNey0qTXsbltuYs/o/mhQbw==
   dependencies:
-    "@web3-starknet-react/types" "^0.4.1"
+    "@web3-starknet-react/types" "^0.5.0"
 
-"@web3-starknet-react/abstract-connector@^0.5.0":
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/@web3-starknet-react/abstract-connector/-/abstract-connector-0.5.0.tgz#cc50d0ebcd8cafc189f3a77dc16d4aa52478036b"
-  integrity sha512-qXIc4IHXCBU8HISr/+5iku6inCqjsnK9drpgGLpNaArNCmVrOtLUmKYzHtDQog6ApV9J/1xgLn6DhAmriuy+nQ==
+"@web3-starknet-react/argentx-connector@^0.5.1":
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/@web3-starknet-react/argentx-connector/-/argentx-connector-0.5.1.tgz#26ac5f71217f9580ae3aae3c216ab4e851b2d5d9"
+  integrity sha512-VZjLLUBOiJ9Nsp8F4PGcFdBZOTWIATMKNvG2+QsvqvYlcuJHxwz1QPuxMPLqKRJIpLfVCRb7eZvZp+VPhuQqeQ==
   dependencies:
-    "@web3-starknet-react/types" "^0.4.1"
+    "@web3-starknet-react/abstract-connector" "^0.5.1"
+    "@web3-starknet-react/types" "^0.5.0"
 
-"@web3-starknet-react/argentx-connector@^0.5.0":
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/@web3-starknet-react/argentx-connector/-/argentx-connector-0.5.0.tgz#0101cd457cefb742583a1c482bc249e184bbaf53"
-  integrity sha512-bFdEUN5HmwnfFGp5H2qzcjUgLE8Rayee7FpeE5x4+liSwJA7IUAas6RenvgrJ+GfuFtt7VqAffwjIdbY8up8sA==
+"@web3-starknet-react/core@^0.5.1":
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/@web3-starknet-react/core/-/core-0.5.1.tgz#d1ff489d9e60ad09371abdf80b43cc0559936a7c"
+  integrity sha512-rL/P4n/BNpLXYDGGVt/11xicigPo8yleaPtqA2N4NOrCCcUE/ezaeVcd9kb44cXY4bjV3XrSfqFiy0WF5R7w9Q==
   dependencies:
-    "@web3-starknet-react/abstract-connector" "^0.4.1"
-    "@web3-starknet-react/types" "^0.4.1"
-
-"@web3-starknet-react/core@^0.5.0":
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/@web3-starknet-react/core/-/core-0.5.0.tgz#941a37bcb39cb1de2d07106245a5ce4a439f3b7e"
-  integrity sha512-CciezksN/6RblIBfEemg5EK8ihBxUCEABWF0j2RTtoxlrgdfe3WEo4cHVvdPwH2xImdMve8qmEcWZfaEZn/rKQ==
-  dependencies:
-    "@web3-starknet-react/abstract-connector" "^0.4.1"
-    "@web3-starknet-react/types" "^0.4.1"
-
-"@web3-starknet-react/types@^0.4.1":
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/@web3-starknet-react/types/-/types-0.4.1.tgz#282dbfb2c63de65ffd46a960fab3004eb0d88a6a"
-  integrity sha512-/WT3iH8lAImv2osmZq5dziluTpgJ+M9GRVaAE13HQzkpJk7WLKRfMwkLvvGpyOBc9VzI72Sjewu/neyO4rq88w==
+    "@web3-starknet-react/abstract-connector" "^0.5.1"
+    "@web3-starknet-react/types" "^0.5.0"
 
 "@web3-starknet-react/types@^0.5.0":
   version "0.5.0"
