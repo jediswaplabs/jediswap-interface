@@ -114,7 +114,7 @@ const Text = styled.p`
   margin: 0 0.5rem 0 0.25rem;
   font-size: 1rem;
   font-weight: 500;
-  font-family: DM Sans;
+  font-family: 'DM Sans', sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 16px;

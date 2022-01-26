@@ -66,16 +66,16 @@ const HeaderText = styled.div`
   color: ${({ theme }) => theme.jediWhite};
   font-size: 1rem;
   font-weight: 500;
-  font-family: DM Sans;
-  letter-spacing: 0ch;
+  font-family: 'DM Sans', sans-serif;
+  letter-spacing: 0px;
 `
 
 const SubHeader = styled.div`
   color: ${({ theme }) => theme.jediWhite};
   margin-top: 10px;
   font-size: 12px;
-  font-family: DM Sans;
-  letter-spacing: 0ch;
+  font-family: 'DM Sans', sans-serif;
+  letter-spacing: 0px;
 `
 
 const IconWrapper = styled.div<{ size?: number | null }>`

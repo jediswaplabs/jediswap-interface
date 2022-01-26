@@ -20,7 +20,8 @@ const StyledInput = styled.input<{ error?: boolean; fontSize?: string; align?: s
   overflow: hidden;
   text-overflow: ellipsis;
   padding: 12px;
-  font-family: 'DM Sans';
+  font-family: 'DM Sans', sans-serif;
+  letter-spacing: 0;
   -webkit-appearance: textfield;
 
   ::-webkit-search-decoration {

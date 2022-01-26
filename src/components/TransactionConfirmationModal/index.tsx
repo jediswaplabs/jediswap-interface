@@ -19,8 +19,8 @@ const Wrapper = styled.div`
   width: 100%;
   background: linear-gradient(to top right, #50d5ff, #ef35ff);
   color: ${({ theme }) => theme.jediWhite};
-  font-family: 'DM Sans';
-  letter-spacing: 0ch;
+  font-family: 'DM Sans', sans-serif;
+  letter-spacing: 0px;
   /* border-radius: 8px; */
   padding: 2px;
 `
@@ -62,7 +62,7 @@ function ConfirmationPendingContent({ onDismiss, pendingText }: { onDismiss: () 
           <CustomLightSpinner src={Circle} alt="loader" size={'80px'} />
         </ConfirmedIcon>
         <AutoColumn gap="12px" justify={'center'}>
-          <Text fontWeight={700} fontSize={24} fontFamily={'DM Sans'} color="#F2F2F2" letterSpacing={'0ch'}>
+          <Text fontWeight={700} fontSize={24} fontFamily={'DM Sans'} color="#F2F2F2" letterSpacing={'0px'}>
             Waiting For Confirmation
           </Text>
           <AutoColumn gap="12px" justify={'center'}>
@@ -72,7 +72,7 @@ function ConfirmationPendingContent({ onDismiss, pendingText }: { onDismiss: () 
               color="#F2F2F2"
               textAlign="center"
               fontFamily={'DM Sans'}
-              letterSpacing={'0ch'}
+              letterSpacing={'0px'}
             >
               {pendingText}
             </Text>
@@ -83,7 +83,7 @@ function ConfirmationPendingContent({ onDismiss, pendingText }: { onDismiss: () 
             color="#F2F2F2"
             textAlign="center"
             fontFamily={'DM Sans'}
-            letterSpacing={'0ch'}
+            letterSpacing={'0px'}
             marginTop={'50px'}
           >
             Confirm this transaction in your wallet
@@ -116,7 +116,7 @@ function TransactionSubmittedContent({
           <ArrowUp strokeWidth={1} size={90} color={theme.jediWhite} />
         </ConfirmedIcon>
         <AutoColumn gap="12px" justify={'center'}>
-          <Text fontWeight={700} fontSize={24} fontFamily={'DM Sans'} color={'#FFFFFF'} letterSpacing={'0ch'}>
+          <Text fontWeight={700} fontSize={24} fontFamily={'DM Sans'} color={'#FFFFFF'} letterSpacing={'0px'}>
             Transaction Submitted
           </Text>
 
@@ -129,7 +129,7 @@ function TransactionSubmittedContent({
                   fontSize={14}
                   color={theme.jediWhite}
                   fontFamily={'DM Sans'}
-                  letterSpacing={'0ch'}
+                  letterSpacing={'0px'}
                 >
                   Open in browser
                 </Text>

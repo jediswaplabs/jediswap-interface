@@ -13,8 +13,8 @@ const PendingSection = styled.div`
   align-items: center;
   justify-content: center;
   width: 100%;
-  font-family: DM Sans;
-  letter-spacing: 0ch;
+  font-family: 'DM Sans', sans-serif;
+  letter-spacing: 0px;
   color: ${({ theme }) => theme.jediWhite};
   background: ${({ theme }) => theme.jediNavyBlue};
   & > * {

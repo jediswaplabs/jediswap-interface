@@ -124,7 +124,7 @@ function CurrencyRow({
           fontWeight={700}
           fontSize={16}
           fontFamily={'DM Sans'}
-          letterSpacing={'0ch'}
+          letterSpacing={'0px'}
           color={'#FFFFFF'}
         >
           {currency.symbol}

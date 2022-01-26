@@ -54,10 +54,10 @@ export const SearchInput = styled.input`
   /* border-style: solid; */
   /* border: 1px solid ${({ theme }) => theme.bg3}; */
   -webkit-appearance: none;
-  font-family: 'DM Sans';
+  font-family: 'DM Sans', sans-serif;
   font-size: 14px;
   font-weight: 400;
-  letter-spacing: 0ch;
+  letter-spacing: 0px;
   box-shadow: inset 0px -63.1213px 52.3445px -49.2654px rgba(96, 68, 145, 0.3),
     inset 0px 75.4377px 76.9772px -36.9491px rgba(202, 172, 255, 0.3),
     inset 0px 3.07909px 13.8559px rgba(154, 146, 210, 0.3), inset 0px 0.769772px 30.7909px rgba(227, 222, 255, 0.2);

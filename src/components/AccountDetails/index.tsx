@@ -117,8 +117,8 @@ const LowerSection = styled.div`
   flex-grow: 1;
   overflow: auto;
   text-align: center;
-  font-family: DM Sans;
-  letter-spacing: 0ch;
+  font-family: 'DM Sans', sans-serif;
+  letter-spacing: 0px;
   font-weight: 700;
   font-size: 1rem;
   color: ${({ theme }) => theme.jediWhite};
@@ -141,8 +141,8 @@ const AccountControl = styled.div`
 
   font-weight: 500;
   font-size: 1.25rem;
-  font-family: 'DM Sans';
-  letter-spacing: 0ch;
+  font-family: 'DM Sans', sans-serif;
+  letter-spacing: 0px;
   color: ${({ theme }) => theme.jediWhite};
 
   a:hover {
@@ -191,8 +191,8 @@ const WalletName = styled.div`
   font-size: 0.825rem;
   font-weight: 500;
   color: ${({ theme }) => theme.jediWhite};
-  font-family: 'DM Sans';
-  letter-spacing: 0ch;
+  font-family: 'DM Sans', sans-serif;
+  letter-spacing: 0px;
 `
 
 const IconWrapper = styled.div<{ size?: number }>`
@@ -401,7 +401,7 @@ export default function AccountDetails({
                             fontSize: '.825rem',
                             fontWeight: 700,
                             fontFamily: 'DM Sans',
-                            letterSpacing: '0ch',
+                            letterSpacing: '0px',
                             border: 'none',
                             background: 'transparent',
                             boxShadow: 'none',
@@ -479,7 +479,7 @@ export default function AccountDetails({
           <TYPE.body
             color={theme.jediWhite}
             fontFamily={'DM Sans'}
-            letterSpacing={'0ch'}
+            letterSpacing={'0px'}
             fontSize={14}
             fontWeight={400}
           >
