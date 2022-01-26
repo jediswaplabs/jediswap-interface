@@ -37,6 +37,16 @@ const TransactionState = styled(ExternalLink)<{ pending: boolean; success?: bool
   font-size: 0.825rem;
   color: ${({ theme }) => theme.primary1};
 `
+const PendingText = styled.div`
+  font-family: DM Sans;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 0px;
+  text-align: left;
+  color: ${({ theme }) => theme.jediPink};
+`
 
 const IconWrapper = styled.div<{ pending: boolean; success?: boolean }>`
   color: ${({ pending, success, theme }) => (pending ? theme.primary1 : success ? theme.green1 : theme.red1)};
@@ -58,10 +68,16 @@ export default function Transaction({ hash }: { hash: string }) {
       <TransactionState href={getEtherscanLink(chainId, hash, 'transaction')} pending={pending} success={success}>
         <RowFixed>
           <TransactionStatusText>{summary ?? hash} </TransactionStatusText>
-          <LinkIcon />
+          <LinkIcon size={16} />
         </RowFixed>
         <IconWrapper pending={pending} success={success}>
-          {pending ? <Loader /> : success ? <CheckSquare size="16" /> : <AlertTriangle size="16" />}
+          {pending ? (
+            <PendingText>Pending</PendingText>
+          ) : success ? (
+            <CheckSquare size="16" />
+          ) : (
+            <AlertTriangle size="16" />
+          )}
         </IconWrapper>
       </TransactionState>
     </TransactionWrapper>
