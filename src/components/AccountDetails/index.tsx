@@ -231,6 +231,13 @@ const WalletAction = styled(ButtonSecondary)`
     border: none;
     text-decoration: underline;
   }
+
+  :active,
+  :focus {
+    box-shadow: inset 0px 75.4377px 76.9772px -36.9491px rgba(202, 172, 255, 0.3),
+      inset 0px 3.07909px 13.8559px rgba(154, 146, 210, 0.3), inset 0px 0.769772px 30.7909px rgba(227, 222, 255, 0.2);
+    border: none;
+  }
 `
 
 const MainWalletAction = styled(WalletAction)`
@@ -277,13 +284,8 @@ export default function AccountDetails({
   const dispatch = useDispatch<AppDispatch>()
 
   function formatConnectorName() {
-    const { ethereum } = window
-    const isMetaMask = !!(ethereum && ethereum.isMetaMask)
     const name = Object.keys(SUPPORTED_WALLETS)
-      .filter(
-        k =>
-          SUPPORTED_WALLETS[k].connector === connector && (connector !== argentX || isMetaMask === (k === 'METAMASK'))
-      )
+      .filter(k => SUPPORTED_WALLETS[k].connector === connector)
       .map(k => SUPPORTED_WALLETS[k].name)[0]
     return <WalletName>Connected with {name}</WalletName>
   }
