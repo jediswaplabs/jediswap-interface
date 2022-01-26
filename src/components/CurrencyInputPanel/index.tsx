@@ -70,7 +70,6 @@ const Aligner = styled.div`
 `
 
 const StyledDropDown = styled(DropDown)<{ selected: boolean }>`
-  margin: 0 0.5rem 0 0.5rem;
   width: 16px;
 
   path {
@@ -103,15 +102,15 @@ const Container = styled.div<{ hideInput: boolean }>`
 `
 
 const StyledTokenName = styled.span<{ active?: boolean }>`
-  ${({ active }) => (active ? 'margin: 0 0.25rem 0 0.75rem;' : 'margin: 0;')}
+  ${({ active }) => (active ? 'margin: 0 4px 0 6px;' : 'margin: 0 7.5px 0 0;')}
   /* margin: 5px; */
-  font-size: ${({ active }) => (active ? '20px' : '12px')};
+  font-size: ${({ active }) => (active ? '17px' : '12px')};
   text-transform: uppercase;
   text-align: left;
   display: flex;
   align-items: center;
   white-space: nowrap;
-  letter-spacing: 0.1px;
+  letter-spacing: 0px;
 `
 
 const StyledBalanceMax = styled.button`
