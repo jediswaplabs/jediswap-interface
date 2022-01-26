@@ -43,7 +43,11 @@ const Tag = styled.div`
 `
 
 function Balance({ balance }: { balance: CurrencyAmount }) {
-  return <StyledBalanceText title={balance.toExact()}>{balance.toSignificant(4)}</StyledBalanceText>
+  return (
+    <StyledBalanceText title={balance.toExact()} color={'#FFFFFF'}>
+      {balance.toSignificant(4)}
+    </StyledBalanceText>
+  )
 }
 
 const TagContainer = styled.div`
@@ -113,9 +117,16 @@ function CurrencyRow({
       disabled={isSelected}
       selected={otherSelected}
     >
-      <CurrencyLogo currency={currency} size={'24px'} />
+      <CurrencyLogo currency={currency} size={'16px'} />
       <Column>
-        <Text title={currency.name} fontWeight={500}>
+        <Text
+          title={currency.name}
+          fontWeight={700}
+          fontSize={16}
+          fontFamily={'DM Sans'}
+          letterSpacing={'0ch'}
+          color={'#FFFFFF'}
+        >
           {currency.symbol}
         </Text>
         <FadedSpan>
