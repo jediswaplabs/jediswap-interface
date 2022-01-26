@@ -69,7 +69,7 @@ export default function PopupItem({
     if (removeAfterMs === null) return undefined
 
     const timeout = setTimeout(() => {
-      // removeThisPopup()
+      removeThisPopup()
     }, removeAfterMs)
 
     return () => {
