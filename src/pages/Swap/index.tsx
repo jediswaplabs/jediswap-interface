@@ -514,11 +514,11 @@ export default function Swap() {
               </Column>
             )}
             {isExpertMode && swapErrorMessage ? <SwapCallbackError error={swapErrorMessage} /> : null}
-            {betterTradeLinkVersion ? (
+            {/* {betterTradeLinkVersion ? (
               <BetterTradeLink version={betterTradeLinkVersion} />
             ) : toggledVersion !== DEFAULT_VERSION && defaultTrade ? (
               <DefaultVersionLink />
-            ) : null}
+            ) : null} */}
           </BottomGrouping>
         </Wrapper>
       </AppBody>
