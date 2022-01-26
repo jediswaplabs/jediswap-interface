@@ -17,8 +17,8 @@ const TransactionStatusText = styled.div`
   margin-right: 0.5rem;
   display: flex;
   align-items: center;
-  font-family: DM Sans;
-  letter-spacing: 0ch;
+  font-family: 'DM Sans', sans-serif;
+  letter-spacing: 0px;
   font-weight: 400;
   font-size: 0.875rem;
   :hover {
@@ -38,7 +38,7 @@ const TransactionState = styled(ExternalLink)<{ pending: boolean; success?: bool
   color: ${({ theme }) => theme.primary1};
 `
 const PendingText = styled.div`
-  font-family: DM Sans;
+  font-family: 'DM Sans', sans-serif;
   font-size: 14px;
   font-style: normal;
   font-weight: 400;

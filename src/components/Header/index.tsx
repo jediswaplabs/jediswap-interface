@@ -302,7 +302,7 @@ const StarkNetCard = styled.div`
   align-items: center;
   justify-content: center;
   border-radius: 8px;
-  font-family: DM Sans;
+  font-family: 'DM Sans', sans-serif;
   font-size: 16px;
   font-style: normal;
   font-weight: 400;

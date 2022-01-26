@@ -21,14 +21,15 @@ const InputRow = styled.div<{ selected: boolean }>`
 `
 
 const CurrencySelect = styled.button<{ selected: boolean }>`
- display: flex;
- align-items: center;
- justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   height: 2.2rem;
   min-width:130px;
   max-width: 132px;
   font-size: 12px;
-  font-family: 'DM Sans';
+  font-family: 'DM Sans', sans-serif;
+  letter-spacing: 0px;
   font-weight: 700;
   /* background-color: ${({ selected, theme }) => (selected ? theme.bg1 : theme.primary1)}; */
   background: rgba(196, 196, 196, 0.01);
@@ -119,13 +120,13 @@ const StyledBalanceMax = styled.button`
   height: 28px;
   /* background-color: ${({ theme }) => theme.primary5}; */
   background: transparent;
-  font-family: 'DM Sans';
+  font-family: 'DM Sans', sans-serif;
   border: 1px solid #FFFFFF;
   border-radius: 4px;
   font-weight: normal;
   font-size: 12px;
   line-height: 100%;
-  letter-spacing: 0ch;
+  letter-spacing: 0px;
   padding: 6px 11px;
   cursor: pointer;
   margin-right: 0.5rem;

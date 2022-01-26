@@ -79,7 +79,7 @@ const IconWrapper = styled.div`
   margin-bottom: -5px;
 `
 const BalanceText = styled.div`
-  font-family: DM Sans;
+  font-family: 'DM Sans', sans-serif;
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
