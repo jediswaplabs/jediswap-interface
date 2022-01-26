@@ -362,7 +362,7 @@ export default function AccountDetails({
                 <WalletAction
                   style={{ fontSize: '.875rem', color: '#9B9B9B' }}
                   onClick={() => {
-                    ;(connector as any).close()
+                    ;(connector as any).deactivate()
                   }}
                 >
                   Disconnect
