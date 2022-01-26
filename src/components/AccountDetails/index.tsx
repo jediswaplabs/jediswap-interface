@@ -11,7 +11,7 @@ import Transaction from './Transaction'
 
 import { SUPPORTED_WALLETS } from '../../constants'
 import { ReactComponent as Close } from '../../assets/images/x.svg'
-import { getEtherscanLink } from '../../utils'
+import { getVoyagerLink } from '../../utils'
 import argentXIcon from '../../assets/images/argentx.png'
 // import { fortmatic, injected, portis, walletconnect, walletlink } from '../../connectors'
 import { argentX } from '../../connectors'
@@ -434,7 +434,7 @@ export default function AccountDetails({
                       <AddressLink
                         hasENS={!!ENSName}
                         isENS={true}
-                        href={chainId && getEtherscanLink(chainId, ENSName, 'address')}
+                        href={chainId && getVoyagerLink(chainId, ENSName, 'address')}
                       >
                         <LinkIcon size={16} />
                         <span style={{ marginLeft: '4px' }}>View on Etherscan</span>
@@ -453,11 +453,7 @@ export default function AccountDetails({
                       </Copy>
                     )}
                     {chainId && account && (
-                      <AddressLink
-                        hasENS={!!ENSName}
-                        isENS={false}
-                        href={getEtherscanLink(chainId, account, 'address')}
-                      >
+                      <AddressLink hasENS={!!ENSName} isENS={false} href={getVoyagerLink(chainId, account, 'address')}>
                         <LinkIcon size={20} style={{ color: '#50D5FF' }} />
                         <span style={{ marginLeft: '8px' }}>View on Etherscan</span>
                       </AddressLink>
