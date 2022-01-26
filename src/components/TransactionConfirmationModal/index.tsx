@@ -11,7 +11,7 @@ import { ButtonGradient, ButtonPrimary } from '../Button'
 import { AutoColumn, ColumnCenter } from '../Column'
 import Circle from '../../assets/jedi/loadingCircle.svg'
 
-import { getEtherscanLink } from '../../utils'
+import { getVoyagerLink } from '../../utils'
 import { useActiveStarknetReact } from '../../hooks'
 import openInBrowser from '../../assets/jedi/openInBrowser.svg'
 
@@ -121,7 +121,7 @@ function TransactionSubmittedContent({
           </Text>
 
           {chainId && hash && (
-            <ExternalLink href={getEtherscanLink(chainId, hash, 'transaction')}>
+            <ExternalLink href={getVoyagerLink(chainId, hash, 'transaction')}>
               <Row>
                 <img src={openInBrowser} alt="open" />
                 <Text
