@@ -117,6 +117,11 @@ const LowerSection = styled.div`
   flex-grow: 1;
   overflow: auto;
   text-align: center;
+  font-family: DM Sans;
+  letter-spacing: 0ch;
+  font-weight: 700;
+  font-size: 1rem;
+  color: ${({ theme }) => theme.jediWhite};
   background-color: ${({ theme }) => theme.jediNavyBlue};
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;
@@ -231,7 +236,7 @@ const WalletAction = styled(ButtonSecondary)`
 const MainWalletAction = styled(WalletAction)`
   color: ${({ theme }) => theme.primary1};
 `
-const BorderWrapper = styled.div`
+export const BorderWrapper = styled.div`
   background: linear-gradient(to left, #50d5ff, #ef35ff);
   padding: 1px;
   border-radius: 8px;
@@ -465,8 +470,8 @@ export default function AccountDetails({
       {!!pendingTransactions.length || !!confirmedTransactions.length ? (
         <LowerSection>
           <AutoRow mb={'1rem'} style={{ justifyContent: 'space-between' }}>
-            <TYPE.body>Recent Transactions</TYPE.body>
-            <LinkStyledButton onClick={clearAllTransactionsCallback}>(clear all)</LinkStyledButton>
+            <TYPE.body color={'#FFFFFF'}>Recent Transactions</TYPE.body>
+            <LinkStyledButton onClick={clearAllTransactionsCallback}>Clear all</LinkStyledButton>
           </AutoRow>
           {renderTransactions(pendingTransactions)}
           {renderTransactions(confirmedTransactions)}
