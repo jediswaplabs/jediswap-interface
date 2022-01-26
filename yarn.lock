@@ -3271,18 +3271,25 @@
   dependencies:
     "@web3-starknet-react/types" "^0.4.1"
 
-"@web3-starknet-react/argentx-connector@^0.4.1":
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/@web3-starknet-react/argentx-connector/-/argentx-connector-0.4.1.tgz#57b0c784b7aaf347131e65fd992ca5409e332419"
-  integrity sha512-MU4m7NHSShZA9X70mZpnWkf678qdFGcl/En8rgcgB4sFMX6kHiitwxGGc4T4NyZGT/boIupsBv2NZNliQF3e9Q==
+"@web3-starknet-react/abstract-connector@^0.5.0":
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/@web3-starknet-react/abstract-connector/-/abstract-connector-0.5.0.tgz#cc50d0ebcd8cafc189f3a77dc16d4aa52478036b"
+  integrity sha512-qXIc4IHXCBU8HISr/+5iku6inCqjsnK9drpgGLpNaArNCmVrOtLUmKYzHtDQog6ApV9J/1xgLn6DhAmriuy+nQ==
+  dependencies:
+    "@web3-starknet-react/types" "^0.4.1"
+
+"@web3-starknet-react/argentx-connector@^0.5.0":
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/@web3-starknet-react/argentx-connector/-/argentx-connector-0.5.0.tgz#0101cd457cefb742583a1c482bc249e184bbaf53"
+  integrity sha512-bFdEUN5HmwnfFGp5H2qzcjUgLE8Rayee7FpeE5x4+liSwJA7IUAas6RenvgrJ+GfuFtt7VqAffwjIdbY8up8sA==
   dependencies:
     "@web3-starknet-react/abstract-connector" "^0.4.1"
     "@web3-starknet-react/types" "^0.4.1"
 
-"@web3-starknet-react/core@^0.4.2":
-  version "0.4.2"
-  resolved "https://registry.yarnpkg.com/@web3-starknet-react/core/-/core-0.4.2.tgz#9a1b2634d129e29aee681db708a63b360327b0ed"
-  integrity sha512-NfZiirl1sG7GJyF5mbiUnCJ4ObhkJd6Sv2xxd+qG92NoE4nhjDGAPXAlo0jVxUO+XmOsWWUK2OCo/Ajob0BNHg==
+"@web3-starknet-react/core@^0.5.0":
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/@web3-starknet-react/core/-/core-0.5.0.tgz#941a37bcb39cb1de2d07106245a5ce4a439f3b7e"
+  integrity sha512-CciezksN/6RblIBfEemg5EK8ihBxUCEABWF0j2RTtoxlrgdfe3WEo4cHVvdPwH2xImdMve8qmEcWZfaEZn/rKQ==
   dependencies:
     "@web3-starknet-react/abstract-connector" "^0.4.1"
     "@web3-starknet-react/types" "^0.4.1"
@@ -3291,6 +3298,11 @@
   version "0.4.1"
   resolved "https://registry.yarnpkg.com/@web3-starknet-react/types/-/types-0.4.1.tgz#282dbfb2c63de65ffd46a960fab3004eb0d88a6a"
   integrity sha512-/WT3iH8lAImv2osmZq5dziluTpgJ+M9GRVaAE13HQzkpJk7WLKRfMwkLvvGpyOBc9VzI72Sjewu/neyO4rq88w==
+
+"@web3-starknet-react/types@^0.5.0":
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/@web3-starknet-react/types/-/types-0.5.0.tgz#30fe3bf9eb798fcf182035780130e58bebf5de81"
+  integrity sha512-6nllGLadgKgKkIde1wa+bKC5aeVBE5dhWKiHHaMXYEG8fJzzPWcYM+ham+WEVDKVxjrPqlQ7nSXHxYq1PRfcag==
 
 "@webassemblyjs/ast@1.8.5":
   version "1.8.5"
