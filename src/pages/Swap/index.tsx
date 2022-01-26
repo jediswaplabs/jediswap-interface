@@ -337,7 +337,7 @@ export default function Swap() {
           </HeaderRow>
           <HeaderRow>
             <BalanceText>Swap From</BalanceText>
-            <BalanceText>Balance: {currencyBalances.INPUT?.toExact() ?? 0}</BalanceText>
+            <BalanceText>Balance: {currencyBalances.INPUT?.toFixed(6) ?? 0}</BalanceText>
           </HeaderRow>
           <AutoColumn>
             <CurrencyInputPanel
@@ -372,7 +372,7 @@ export default function Swap() {
             </AutoColumn>
             <HeaderRow>
               <BalanceText>Swap To (est.)</BalanceText>
-              <BalanceText>Balance: {currencyBalances.OUTPUT?.toExact() ?? 0}</BalanceText>
+              <BalanceText>Balance: {currencyBalances.OUTPUT?.toFixed(6) ?? 0}</BalanceText>
             </HeaderRow>
             <CurrencyInputPanel
               value={formattedAmounts[Field.OUTPUT]}
