@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { CheckCircle, Triangle } from 'react-feather'
+import { CheckSquare, AlertTriangle } from 'react-feather'
 
 import { useActiveStarknetReact } from '../../hooks'
 import { getEtherscanLink } from '../../utils'
@@ -9,12 +9,18 @@ import { useAllTransactions } from '../../state/transactions/hooks'
 import { RowFixed } from '../Row'
 import Loader from '../Loader'
 
+import { ExternalLink as LinkIcon } from 'react-feather'
+
 const TransactionWrapper = styled.div``
 
 const TransactionStatusText = styled.div`
   margin-right: 0.5rem;
   display: flex;
   align-items: center;
+  font-family: DM Sans;
+  letter-spacing: 0ch;
+  font-weight: 400;
+  font-size: 0.875rem;
   :hover {
     text-decoration: underline;
   }
@@ -30,6 +36,16 @@ const TransactionState = styled(ExternalLink)<{ pending: boolean; success?: bool
   font-weight: 500;
   font-size: 0.825rem;
   color: ${({ theme }) => theme.primary1};
+`
+const PendingText = styled.div`
+  font-family: DM Sans;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 0px;
+  text-align: left;
+  color: ${({ theme }) => theme.jediPink};
 `
 
 const IconWrapper = styled.div<{ pending: boolean; success?: boolean }>`
@@ -51,10 +67,17 @@ export default function Transaction({ hash }: { hash: string }) {
     <TransactionWrapper>
       <TransactionState href={getEtherscanLink(chainId, hash, 'transaction')} pending={pending} success={success}>
         <RowFixed>
-          <TransactionStatusText>{summary ?? hash} ↗</TransactionStatusText>
+          <TransactionStatusText>{summary ?? hash} </TransactionStatusText>
+          <LinkIcon size={16} />
         </RowFixed>
         <IconWrapper pending={pending} success={success}>
-          {pending ? <Loader /> : success ? <CheckCircle size="16" /> : <Triangle size="16" />}
+          {pending ? (
+            <PendingText>Pending</PendingText>
+          ) : success ? (
+            <CheckSquare size="16" />
+          ) : (
+            <AlertTriangle size="16" />
+          )}
         </IconWrapper>
       </TransactionState>
     </TransactionWrapper>

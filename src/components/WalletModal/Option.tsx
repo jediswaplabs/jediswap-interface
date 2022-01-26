@@ -4,15 +4,15 @@ import { ExternalLink } from '../../theme'
 
 const InfoCard = styled.button<{ active?: boolean }>`
   background-color: ${({ theme, active }) => (active ? theme.bg3 : theme.bg2)};
-  padding: 1rem;
+  padding: 2rem;
   outline: none;
   border: 1px solid;
-  border-radius: 12px;
+  border-radius: 8px;
   width: 100% !important;
   &:focus {
     box-shadow: 0 0 0 1px ${({ theme }) => theme.primary1};
   }
-  border-color: ${({ theme, active }) => (active ? 'transparent' : theme.bg3)};
+  /* border-color: ${({ theme, active }) => (active ? 'transparent' : theme.bg3)}; */
 `
 
 const OptionCard = styled(InfoCard as any)`
@@ -22,6 +22,7 @@ const OptionCard = styled(InfoCard as any)`
   justify-content: space-between;
   margin-top: 2rem;
   padding: 1rem;
+  background: ${({ theme }) => theme.jediNavyBlue};
 `
 
 const OptionCardLeft = styled.div`
@@ -34,7 +35,7 @@ const OptionCardClickable = styled(OptionCard as any)<{ clickable?: boolean }>`
   margin-top: 0;
   &:hover {
     cursor: ${({ clickable }) => (clickable ? 'pointer' : '')};
-    border: ${({ clickable, theme }) => (clickable ? `1px solid ${theme.primary1}` : ``)};
+    /* border: ${({ clickable, theme }) => (clickable ? `1px solid ${theme.primary1}` : ``)}; */
   }
   opacity: ${({ disabled }) => (disabled ? '0.5' : '1')};
 `
@@ -62,15 +63,19 @@ const CircleWrapper = styled.div`
 
 const HeaderText = styled.div`
   ${({ theme }) => theme.flexRowNoWrap};
-  color: ${props => (props.color === 'blue' ? ({ theme }) => theme.primary1 : ({ theme }) => theme.text1)};
+  color: ${({ theme }) => theme.jediWhite};
   font-size: 1rem;
   font-weight: 500;
+  font-family: DM Sans;
+  letter-spacing: 0ch;
 `
 
 const SubHeader = styled.div`
-  color: ${({ theme }) => theme.text1};
+  color: ${({ theme }) => theme.jediWhite};
   margin-top: 10px;
   font-size: 12px;
+  font-family: DM Sans;
+  letter-spacing: 0ch;
 `
 
 const IconWrapper = styled.div<{ size?: number | null }>`

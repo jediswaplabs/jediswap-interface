@@ -20,10 +20,13 @@ import Modal from '../Modal'
 import Option from './Option'
 import PendingView from './PendingView'
 
+import { BorderWrapper } from '../AccountDetails'
+
 const CloseIcon = styled.div`
   position: absolute;
-  right: 1rem;
-  top: 14px;
+  right: 2rem;
+  top: 28px;
+  color:${({ theme }) => theme.jediWhite}
   &:hover {
     cursor: pointer;
     opacity: 0.6;
@@ -45,19 +48,19 @@ const Wrapper = styled.div`
 
 const HeaderRow = styled.div`
   ${({ theme }) => theme.flexRowNoWrap};
-  padding: 1rem 1rem;
+  padding: 2rem 2rem 0;
   font-weight: 500;
-  color: ${props => (props.color === 'blue' ? ({ theme }) => theme.primary1 : 'inherit')};
+  color: ${({ theme }) => theme.jediWhite};
   ${({ theme }) => theme.mediaWidth.upToMedium`
     padding: 1rem;
   `};
 `
 
 const ContentWrapper = styled.div`
-  background-color: ${({ theme }) => theme.bg2};
+  background-color: ${({ theme }) => theme.jediNavyBlue};
   padding: 2rem;
-  border-bottom-left-radius: 20px;
-  border-bottom-right-radius: 20px;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
 
   ${({ theme }) => theme.mediaWidth.upToMedium`padding: 1rem`};
 `
@@ -83,11 +86,15 @@ const UpperSection = styled.div`
 `
 
 const Blurb = styled.div`
-  ${({ theme }) => theme.flexRowNoWrap}
+  ${({ theme }) => theme.flexColumnNoWrap}
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
   margin-top: 2rem;
+  font-family: DM Sans;
+  font-size: 1rem;
+  letter-spacing: 0ch;
+  color: ${({ theme }) => theme.jediWhite};
   ${({ theme }) => theme.mediaWidth.upToMedium`
     margin: 1rem;
     font-size: 12px;
@@ -356,7 +363,9 @@ export default function WalletModal({
               tryActivation={tryActivation}
             />
           ) : (
-            <OptionGrid>{getOptions()}</OptionGrid>
+            <BorderWrapper>
+              <OptionGrid>{getOptions()}</OptionGrid>
+            </BorderWrapper>
           )}
           {walletView !== WALLET_VIEWS.PENDING && (
             <Blurb>

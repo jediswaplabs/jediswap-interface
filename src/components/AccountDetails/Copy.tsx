@@ -6,11 +6,14 @@ import { LinkStyledButton } from '../../theme'
 import { CheckCircle, Copy } from 'react-feather'
 
 const CopyIcon = styled(LinkStyledButton)`
-  color: ${({ theme }) => theme.text3};
+  color: ${({ theme }) => theme.jediWhite};
   flex-shrink: 0;
   display: flex;
   text-decoration: none;
-  font-size: 0.825rem;
+  font-size: 0.875rem;
+  letter-spacing: 0ch;
+  font-family: 'DM Sans';
+
   :hover,
   :active,
   :focus {
@@ -19,8 +22,10 @@ const CopyIcon = styled(LinkStyledButton)`
   }
 `
 const TransactionStatusText = styled.span`
-  margin-left: 0.25rem;
-  font-size: 0.825rem;
+  /* margin-left: 0.25rem; */
+  font-size: 0.875rem;
+  letter-spacing: 0ch;
+  font-family: 'DM Sans';
   ${({ theme }) => theme.flexRowNoWrap};
   align-items: center;
 `
@@ -32,12 +37,12 @@ export default function CopyHelper(props: { toCopy: string; children?: React.Rea
     <CopyIcon onClick={() => setCopied(props.toCopy)}>
       {isCopied ? (
         <TransactionStatusText>
-          <CheckCircle size={'16'} />
+          <CheckCircle size={'20'} style={{ color: '#50D5FF', marginRight: '8px' }} />
           <TransactionStatusText>Copied</TransactionStatusText>
         </TransactionStatusText>
       ) : (
-        <TransactionStatusText>
-          <Copy size={'16'} />
+        <TransactionStatusText style={{ color: '#50D5FF' }}>
+          <Copy size={'20'} />
         </TransactionStatusText>
       )}
       {isCopied ? '' : props.children}

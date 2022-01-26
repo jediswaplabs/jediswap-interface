@@ -6,12 +6,17 @@ import { SUPPORTED_WALLETS } from '../../constants'
 // import { injected } from '../../connectors'
 import { darken } from 'polished'
 import Loader from '../Loader'
-
+import { BorderWrapper } from '../AccountDetails'
 const PendingSection = styled.div`
   ${({ theme }) => theme.flexColumnNoWrap};
+  gap: 10px;
   align-items: center;
   justify-content: center;
   width: 100%;
+  font-family: DM Sans;
+  letter-spacing: 0ch;
+  color: ${({ theme }) => theme.jediWhite};
+  background: ${({ theme }) => theme.jediNavyBlue};
   & > * {
     width: 100%;
   }
@@ -25,10 +30,12 @@ const LoadingMessage = styled.div<{ error?: boolean }>`
   ${({ theme }) => theme.flexRowNoWrap};
   align-items: center;
   justify-content: flex-start;
-  border-radius: 12px;
-  margin-bottom: 20px;
+  border-radius: 8px;
+  padding:10px 0;
+  /* margin-bottom: 20px; */
   color: ${({ theme, error }) => (error ? theme.red1 : 'inherit')};
-  border: 1px solid ${({ theme, error }) => (error ? theme.red1 : theme.text4)};
+  background: ${({ theme }) => theme.jediNavyBlue};
+  /* border: 1px solid ${({ theme, error }) => (error ? theme.red1 : theme.text4)}; */
 
   & > * {
     padding: 1rem;
@@ -61,6 +68,7 @@ const LoadingWrapper = styled.div`
   ${({ theme }) => theme.flexRowNoWrap};
   align-items: center;
   justify-content: center;
+  background: ${({ theme }) => theme.jediNavyBlue};
 `
 
 export default function PendingView({
@@ -78,28 +86,30 @@ export default function PendingView({
 
   return (
     <PendingSection>
-      <LoadingMessage error={error}>
-        <LoadingWrapper>
-          {error ? (
-            <ErrorGroup>
-              <div>Error connecting.</div>
-              <ErrorButton
-                onClick={() => {
-                  setPendingError(false)
-                  connector && tryActivation(connector)
-                }}
-              >
-                Try Again
-              </ErrorButton>
-            </ErrorGroup>
-          ) : (
-            <>
-              <StyledLoader />
-              Initializing...
-            </>
-          )}
-        </LoadingWrapper>
-      </LoadingMessage>
+      <BorderWrapper>
+        <LoadingMessage error={error}>
+          <LoadingWrapper>
+            {error ? (
+              <ErrorGroup>
+                <div>Error connecting.</div>
+                <ErrorButton
+                  onClick={() => {
+                    setPendingError(false)
+                    connector && tryActivation(connector)
+                  }}
+                >
+                  Try Again
+                </ErrorButton>
+              </ErrorGroup>
+            ) : (
+              <>
+                <StyledLoader />
+                Initializing...
+              </>
+            )}
+          </LoadingWrapper>
+        </LoadingMessage>
+      </BorderWrapper>
       {Object.keys(SUPPORTED_WALLETS).map(key => {
         const option = SUPPORTED_WALLETS[key]
         if (option.connector === connector) {
@@ -112,15 +122,17 @@ export default function PendingView({
           //   }
           // }
           return (
-            <Option
-              id={`connect-${key}`}
-              key={key}
-              clickable={false}
-              color={option.color}
-              header={option.name}
-              subheader={option.description}
-              icon={require('../../assets/images/' + option.iconName)}
-            />
+            <BorderWrapper>
+              <Option
+                id={`connect-${key}`}
+                key={key}
+                clickable={false}
+                color={option.color}
+                header={option.name}
+                subheader={option.description}
+                icon={require('../../assets/images/' + option.iconName)}
+              />
+            </BorderWrapper>
           )
         }
         return null
