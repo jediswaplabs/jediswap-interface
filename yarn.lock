@@ -1771,10 +1771,10 @@
   dependencies:
     "@hapi/hoek" "^9.0.0"
 
-"@jediswap/sdk@^1.0.4":
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/@jediswap/sdk/-/sdk-1.0.4.tgz#b3437acc9595e779d7680749668caf97d9a3d2ad"
-  integrity sha512-AlxQKNYcHR5zSwvIURQF73N6n6xNybdxdNU2H11yg6aTn8ETexpsxwhbG6H9mLfRbMPf7NmUmGLbrhEFYYubbQ==
+"@jediswap/sdk@^1.0.5":
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/@jediswap/sdk/-/sdk-1.0.5.tgz#61aabe14f18b86640440f1d8ff688fff9fb02d4b"
+  integrity sha512-HUkMRNgfvkaEkk44JJ1MDjwKyBoPg7x8ze8ViCdb0NWk+hhUSHFF3DSMX/NL8eV+bYvQqCNvh6XKPhHgTLjNEQ==
   dependencies:
     "@jediswap/starknet" "^2.7.2"
     "@uniswap/v2-core" "^1.0.0"
