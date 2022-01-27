@@ -4,11 +4,12 @@ import { AbstractConnector } from '@web3-starknet-react/abstract-connector'
 // import { fortmatic, injected, portis, walletconnect, walletlink, argentX } from '../connectors'
 import { argentX } from '../connectors'
 
-export const ROUTER_ADDRESS = '0x0b9f9711f0c8867218b4571c7bcd6f450d40c8ff6201a260a3a78f406d2a727'
+export const TOKEN0_ADDRESS = '0x178dbb224d42b76d1e4697741c8c43068ced9792bc511941ce865c0fc951369'
+export const TOKEN1_ADDRESS = '0x41e1b41f88e7c8390c0d23f927b37dd69e2e8fec21f52631e04b210a71c0fe4'
+export const TOKEN2_ADDRESS = '0x496585a4cbaf2d7475b1f5294b83e7fea343ff3fe7c7625b87ea46c6f83eb1d'
 
-export const TOKEN0_ADDRESS = '0x11526cc0f7883d396ca270f5151ff5e76829d855e9787d91e3fafe520fbfcc8'
-export const TOKEN1_ADDRESS = '0x709f8d7990b9f9b7cb25e4fde4c4f568906a4120eb0200d45eb8170bf752929'
-export const REGISTRY_ADDRESS = '0x2a65f38f4be52d128eb2002f8a3412f4d4ac6adaed004451d2786c37563ec3f'
+export const REGISTRY_ADDRESS = '0x584dcb0c7fb57d397196cb18dddc77ef22590e47f17ff93495c2738fd8e0e26'
+export const ROUTER_ADDRESS = '0x60f1afee33746df30700dae622000f0c88fc92922aebc6d425903bb1f2d6d49'
 
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000000000000000000000000000'
 
@@ -28,6 +29,8 @@ type ChainTokenList = {
 export const TOKEN0 = new Token(ChainId.GÖRLI, TOKEN0_ADDRESS, 18, 'TOKEN0', 'Token 0')
 
 export const TOKEN1 = new Token(ChainId.GÖRLI, TOKEN1_ADDRESS, 18, 'TOKEN1', 'Token 1')
+
+export const TOKEN2 = new Token(ChainId.GÖRLI, TOKEN2_ADDRESS, 18, 'TOKEN2', 'Token 2')
 
 // TODO this is only approximate, it's actually based on blocks
 export const PROPOSAL_LENGTH_IN_DAYS = 7
