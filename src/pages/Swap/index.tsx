@@ -121,6 +121,9 @@ export default function Swap() {
     useCurrency(loadedUrlParams?.inputCurrencyId),
     useCurrency(loadedUrlParams?.outputCurrencyId)
   ]
+
+  const [routeLoading, setRouteLoading] = useState<boolean>(true)
+
   // const [dismissTokenWarning, setDismissTokenWarning] = useState<boolean>(false)
   // const urlLoadedTokens: Token[] = useMemo(
   //   () => [loadedInputCurrency, loadedOutputCurrency]?.filter((c): c is Token => c instanceof Token) ?? [],
@@ -211,6 +214,26 @@ export default function Swap() {
     currencies[Field.INPUT] && currencies[Field.OUTPUT] && parsedAmounts[independentField]?.greaterThan(JSBI.BigInt(0))
   )
   const noRoute = !route
+
+  useEffect(() => {
+    let routeTimeout
+
+    if (noRoute) {
+      if (!routeLoading) setRouteLoading(true)
+
+      routeTimeout = setTimeout(() => {
+        setRouteLoading(false)
+      }, 5000)
+    } else {
+      setRouteLoading(false)
+    }
+
+    return () => {
+      if (routeTimeout) {
+        clearTimeout(routeTimeout)
+      }
+    }
+  }, [noRoute, routeLoading])
 
   // check whether the user has approved the router on the input token
   const [approval, approveCallback] = useApproveCallbackFromTrade(trade, allowedSlippage)
@@ -440,7 +463,7 @@ export default function Swap() {
               <ButtonGradient onClick={toggleWalletModal}>Connect Wallet</ButtonGradient>
             ) : noRoute && userHasSpecifiedInputOutput ? (
               <RedGradientButton style={{ textAlign: 'center' }} disabled>
-                Insufficient liquidity for this trade
+                {routeLoading ? 'Fetching route...' : 'Insufficient liquidity for this trade'}
               </RedGradientButton>
             ) : showApproveFlow ? (
               <RowBetween>
