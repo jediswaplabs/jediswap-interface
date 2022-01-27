@@ -113,7 +113,7 @@ const YourAccount = styled.div`
 
 const LowerSection = styled.div`
   ${({ theme }) => theme.flexColumnNoWrap}
-  padding: 1.5rem;
+  padding: 1rem 2rem 2rem;
   flex-grow: 1;
   overflow: auto;
   text-align: center;
