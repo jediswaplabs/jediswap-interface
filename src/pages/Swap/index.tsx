@@ -274,6 +274,8 @@ export default function Swap() {
   // warnings on slippage
   const priceImpactSeverity = warningSeverity(priceImpactWithoutFee)
 
+  const insufficientBalanceError = swapInputError?.includes('balance')
+
   // show approve flow when: no error on inputs, not approved or pending, or approved in current session
   // never show if price impact is above threshold in non expert mode
   const showApproveFlow =
@@ -487,6 +489,10 @@ export default function Swap() {
                   </Text>
                 </ButtonError>
               </RowBetween>
+            ) : insufficientBalanceError ? (
+              <RedGradientButton id="swap-button" disabled>
+                {swapInputError}
+              </RedGradientButton>
             ) : (
               <ButtonError
                 onClick={() => {
