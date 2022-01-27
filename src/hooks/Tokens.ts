@@ -1,4 +1,4 @@
-import { TOKEN1 } from './../constants/index'
+import { TOKEN1, TOKEN2 } from './../constants/index'
 import { Args, shortString, number as starkNumber } from '@jediswap/starknet'
 import { parseBytes32String } from '@ethersproject/strings'
 import { Currency, TOKEN0, Token, currencyEquals } from '@jediswap/sdk'
@@ -18,7 +18,8 @@ export function useAllTokens(): { [address: string]: Token } {
 
   const jediTokenMap = useMemo(() => {
     return {
-      [TOKEN1.address]: TOKEN1
+      [TOKEN1.address]: TOKEN1,
+      [TOKEN2.address]: TOKEN2
     }
   }, [])
   const allTokens = useSelectedTokenList()
