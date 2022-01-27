@@ -26,11 +26,11 @@ type ChainTokenList = {
 // export const AMPL = new Token(ChainId.MAINNET, '0xD46bA6D942050d489DBd938a2C909A5d5039A161', 9, 'AMPL', 'Ampleforth')
 // export const WBTC = new Token(ChainId.MAINNET, '0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599', 18, 'WBTC', 'Wrapped BTC')
 
-export const TOKEN0 = new Token(ChainId.GÖRLI, TOKEN0_ADDRESS, 18, 'TOKEN0', 'Token 0')
+export const TOKEN0 = new Token(ChainId.GÖRLI, TOKEN0_ADDRESS, 18, 'JAN26J0', 'Jan26 J0')
 
-export const TOKEN1 = new Token(ChainId.GÖRLI, TOKEN1_ADDRESS, 18, 'TOKEN1', 'Token 1')
+export const TOKEN1 = new Token(ChainId.GÖRLI, TOKEN1_ADDRESS, 18, 'JAN26J1', 'Jan26 J1')
 
-export const TOKEN2 = new Token(ChainId.GÖRLI, TOKEN2_ADDRESS, 18, 'TOKEN2', 'Token 2')
+export const TOKEN2 = new Token(ChainId.GÖRLI, TOKEN2_ADDRESS, 18, 'JAN26J2', 'Jan26 J2')
 
 // TODO this is only approximate, it's actually based on blocks
 export const PROPOSAL_LENGTH_IN_DAYS = 7
