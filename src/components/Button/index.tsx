@@ -265,7 +265,7 @@ export const ButtonGradient = styled(Base)`
   border: none;
   color: ${({ theme }) => theme.jediWhite};
   border-radius: 8px;
-  padding: 22px 0;
+  padding: 22px 17px;
   font-size: 20px;
   font-weight: 400;
   line-height: 20px;
