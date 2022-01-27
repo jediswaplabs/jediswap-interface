@@ -3,11 +3,10 @@ import { useMemo } from 'react'
 // import { Contract } from '@ethersproject/contracts'
 import { Abi, Contract, Provider, Signer, SignerInterface } from '@jediswap/starknet'
 import { BigNumber } from '@ethersproject/bignumber'
-import { TOKEN1, ZERO_ADDRESS } from '../constants'
+import { TOKEN1, TOKEN2, ZERO_ADDRESS } from '../constants'
 import { ChainId, JSBI, Percent, Token, CurrencyAmount, Currency, TOKEN0 } from '@jediswap/sdk'
 import { TokenAddressMap } from '../state/lists/hooks'
 import { validateAndParseAddress } from '@jediswap/starknet'
-import { toBN, toHex } from '@jediswap/starknet/dist/utils/number'
 
 // returns the checksummed address if the address is valid, otherwise returns false
 export function isAddress(addr: string | null | undefined): string | false {
@@ -121,6 +120,6 @@ export function escapeRegExp(string: string): string {
 }
 
 export function isTokenOnList(defaultTokens: TokenAddressMap, currency?: Currency): boolean {
-  if (currency === TOKEN0 || currency === TOKEN1) return true
+  if (currency === TOKEN0 || currency === TOKEN1 || currency === TOKEN2) return true
   return Boolean(currency instanceof Token && defaultTokens[currency.chainId]?.[currency.address])
 }
