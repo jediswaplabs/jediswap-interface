@@ -5,6 +5,7 @@ import { useBlockNumber } from '../state/application/hooks'
 import { useTransactionAdder } from '../state/transactions/hooks'
 import { retry } from '../utils/retry'
 import useDeepCompareEffect from 'use-deep-compare-effect'
+import isZero from '../utils/isZero'
 
 export interface ListenerOptions {
   // how often this data should be fetched, by default 1
@@ -87,6 +88,7 @@ export function useMultipleStarknetCallSingleData(
     (addresses: (string | undefined)[], contractInterface: Abi[], methodName: string, args?: Args | undefined) => {
       return Promise.all(
         addresses.map(async address => {
+          if (address && isZero(address)) return undefined
           const contract = new Contract(contractInterface, address)
           // console.log('🚀 ~ file: useStarknet.ts ~ line 70 ~ callResults ~ contract', contract)
           const result = await contract?.call(methodName, args)
