@@ -55,7 +55,7 @@ const WTOKEN0_ONLY: ChainTokenList = {
 export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
   ...WTOKEN0_ONLY,
   // [ChainId.MAINNET]: [...WETH_ONLY[ChainId.MAINNET], DAI, USDC, USDT, COMP, MKR]
-  [ChainId.GÖRLI]: [TOKEN0, TOKEN1]
+  [ChainId.GÖRLI]: [TOKEN0]
   // [ChainId.MAINNET]: [TOKEN0, TOKEN1],
 }
 
@@ -72,13 +72,13 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
 // used for display in the default list when adding liquidity
 export const SUGGESTED_BASES: ChainTokenList = {
   ...WTOKEN0_ONLY,
-  [ChainId.GÖRLI]: [TOKEN0, TOKEN1]
+  [ChainId.GÖRLI]: [TOKEN0]
 }
 
 // used to construct the list of all pairs we consider by default in the frontend
 export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
   ...WTOKEN0_ONLY,
-  [ChainId.GÖRLI]: [TOKEN0, TOKEN1]
+  [ChainId.GÖRLI]: [TOKEN0]
 }
 
 export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } = {
@@ -87,7 +87,8 @@ export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } 
     //   new Token(ChainId.GÖRLI, '0x5d3a536E4D6DbD6114cc1Ead35777bAB948E3643', 8, 'cDAI', 'Compound Dai'),
     //   new Token(ChainId.GÖRLI, '0x39AA39c021dfbaE8faC545936693aC917d5E7563', 8, 'cUSDC', 'Compound USD Coin')
     // ],
-    [TOKEN0, TOKEN1]
+    [TOKEN0, TOKEN1],
+    [TOKEN0, TOKEN2]
     // [DAI, USDT]
   ]
 }
