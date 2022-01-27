@@ -89,12 +89,19 @@ const BalanceText = styled.div`
   color: ${({ theme }) => theme.jediWhite};
   margin-bottom: 16px;
 `
-const Backdrop = styled.div<{ top?: string; left?: string; curveRight?: boolean; curveLeft?: boolean }>`
+const Backdrop = styled.div<{
+  top?: string
+  bottom?: string
+  left?: string
+  curveRight?: boolean
+  curveLeft?: boolean
+}>`
   position: absolute;
   width: 10px;
   height: 80px;
   left: ${({ left }) => left};
   top: ${({ top }) => top};
+  bottom: ${({ bottom }) => bottom};
 
   background: linear-gradient(0deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8)),
     linear-gradient(180deg, #ffffff 0%, rgba(255, 255, 255, 0) 100%);
@@ -314,8 +321,8 @@ export default function Swap() {
       <AppBody>
         <Backdrop top={'0'} left={'503px'} curveRight />
         <Backdrop top={'30px'} left={'493px'} curveRight style={{ height: '60px' }} />
-        <Backdrop top={'380px'} left={'-35px'} curveLeft style={{ height: '60px' }} />
-        <Backdrop top={'390px'} left={'-45px'} curveLeft />
+        <Backdrop bottom={'30px'} left={'-35px'} curveLeft style={{ height: '60px' }} />
+        <Backdrop bottom={'0px'} left={'-45px'} curveLeft />
         <SwapPoolTabs active={'swap'} />
         <Wrapper id="swap-page">
           <ConfirmSwapModal
