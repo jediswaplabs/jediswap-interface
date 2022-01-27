@@ -23,11 +23,13 @@ const StatusHeader = styled.div`
   font-weight: 700;
   font-size: 18px;
   line-height: 18px;
+  color: ${({ theme }) => theme.jediWhite};
 `
 const TxSummary = styled.div`
   font-size: 12px;
   font-weight: normal;
   line-height: 120%;
+  color: ${({ theme }) => theme.jediWhite};
 `
 
 const IconWrapper = styled.div<{ size?: number }>`
