@@ -33,7 +33,7 @@ build:
       - build/
     expire_in: 1 hour
   rules:
-    - if: '$ENVIRONMENT == "production" || $ENVIRONMENT == "staging"'
+    - if: '$ENVIRONMENT == "production" || $ENVIRONMENT == "staging" || $ENVIRONMENT == "testnet"'
       when: always
       allow_failure: false
     - when: never
@@ -49,7 +49,7 @@ deploy:
   environment:
     name: $ENVIRONMENT
   rules:
-    - if: '$ENVIRONMENT == "production" || $ENVIRONMENT == "staging"'
+    - if: '$ENVIRONMENT == "production" || $ENVIRONMENT == "staging" || $ENVIRONMENT == "testnet"'
       when: always
       allow_failure: false
     - when: never

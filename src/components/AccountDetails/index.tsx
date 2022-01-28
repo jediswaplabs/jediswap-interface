@@ -437,7 +437,7 @@ export default function AccountDetails({
                         href={chainId && getVoyagerLink(chainId, ENSName, 'address')}
                       >
                         <LinkIcon size={16} />
-                        <span style={{ marginLeft: '4px' }}>View on Etherscan</span>
+                        <span style={{ marginLeft: '4px' }}>View on Voyager</span>
                       </AddressLink>
                     )}
                   </div>
@@ -455,7 +455,7 @@ export default function AccountDetails({
                     {chainId && account && (
                       <AddressLink hasENS={!!ENSName} isENS={false} href={getVoyagerLink(chainId, account, 'address')}>
                         <LinkIcon size={20} style={{ color: '#50D5FF' }} />
-                        <span style={{ marginLeft: '8px' }}>View on Etherscan</span>
+                        <span style={{ marginLeft: '8px' }}>View on Voyager</span>
                       </AddressLink>
                     )}
                   </div>
