@@ -18,15 +18,35 @@ enum DeadlineError {
   InvalidInput = 'InvalidInput'
 }
 
+const SlippageText = styled.div`
+  font-family: DM Sans;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 0px;
+  text-align: left;
+`
+
+const SlippageWrapper = styled.div`
+  background: rgba(196, 196, 196, 0.01);
+  box-shadow: inset 0px -63.1213px 52.3445px -49.2654px rgba(96, 68, 145, 0.3),
+    inset 0px 75.4377px 76.9772px -36.9491px rgba(202, 172, 255, 0.3),
+    inset 0px 3.07909px 13.8559px rgba(154, 146, 210, 0.3), inset 0px 0.769772px 30.7909px rgba(227, 222, 255, 0.2);
+  border-radius: 8px;
+  padding: 12px;
+`
+
 const FancyButton = styled.button`
   color: ${({ theme }) => theme.text1};
   align-items: center;
   height: 2rem;
   border-radius: 36px;
-  font-size: 1rem;
+  font-size: 16px;
+  line-height: 100%;
   width: auto;
   min-width: 3.5rem;
-  border: 1px solid ${({ theme }) => theme.bg3};
+  border: 1px solid ${({ theme }) => theme.jediWhite};
   outline: none;
   background: ${({ theme }) => theme.bg1};
   :hover {
@@ -35,15 +55,20 @@ const FancyButton = styled.button`
   :focus {
     border: 1px solid ${({ theme }) => theme.primary1};
   }
+  padding: 8px;
 `
 
 const Option = styled(FancyButton)<{ active: boolean }>`
-  margin-right: 8px;
+  margin-right: 10px;
   :hover {
     cursor: pointer;
   }
-  background-color: ${({ active, theme }) => active && theme.primary1};
-  color: ${({ active, theme }) => (active ? theme.white : theme.text1)};
+  background-color: ${({ active, theme }) => (active ? theme.jediNavyBlue : 'transparent')};
+  color: ${({ active, theme }) => (active ? theme.white : theme.jediWhite)};
+  font-family: 'DM Sans', sans-serif;
+  letter-spacing: 0px;
+  border-radius: 4px;
+  border-color: ${({ active, theme }) => active && theme.jediBlue};
 `
 
 const Input = styled.input`
@@ -70,11 +95,27 @@ const OptionCustom = styled(FancyButton)<{ active?: boolean; warning?: boolean }
       active && `1px solid ${warning ? darken(0.1, theme.red1) : darken(0.1, theme.primary1)}`};
   }
 
+  /* background-color: ${({ active, theme }) => (active ? theme.jediNavyBlue : 'transparent')};  */
+  background-color: ${({ theme }) => theme.jediNavyBlue};
+  color: ${({ active, theme }) => (active ? theme.white : theme.jediWhite)};
+  font-family: 'DM Sans', sans-serif;
+  letter-spacing: 0px;
+  border-radius: 4px;
+  border-color: ${({ active, theme }) => active && theme.jediBlue};
+  margin-right: 16px;
+  padding-left:5px ;
+
   input {
     width: 100%;
+    min-width: 40px;
+    text-align: left;
     height: 100%;
     border: 0px;
-    border-radius: 2rem;
+    border-radius: 4px;
+    background-color: transparent;
+    font-family: 'DM Sans', sans-serif;
+    letter-spacing: 0px;
+    font-size: 16px;
   }
 `
 
@@ -148,70 +189,72 @@ export default function SlippageTabs({ rawSlippage, setRawSlippage, deadline, se
     <AutoColumn gap="md">
       <AutoColumn gap="sm">
         <RowFixed>
-          <TYPE.black fontWeight={400} fontSize={14} color={theme.text2}>
-            Slippage tolerance
-          </TYPE.black>
-          <QuestionHelper text="Your transaction will revert if the price changes unfavorably by more than this percentage." />
+          <SlippageText>Slippage tolerance</SlippageText>
+          {/* <QuestionHelper text="Your transaction will revert if the price changes unfavorably by more than this percentage." /> */}
         </RowFixed>
-        <RowBetween>
-          <Option
-            onClick={() => {
-              setSlippageInput('')
-              setRawSlippage(10)
-            }}
-            active={rawSlippage === 10}
-          >
-            0.1%
-          </Option>
-          <Option
-            onClick={() => {
-              setSlippageInput('')
-              setRawSlippage(50)
-            }}
-            active={rawSlippage === 50}
-          >
-            0.5%
-          </Option>
-          <Option
-            onClick={() => {
-              setSlippageInput('')
-              setRawSlippage(100)
-            }}
-            active={rawSlippage === 100}
-          >
-            1%
-          </Option>
-          <OptionCustom active={![10, 50, 100].includes(rawSlippage)} warning={!slippageInputIsValid} tabIndex={-1}>
-            <RowBetween>
-              {!!slippageInput &&
-              (slippageError === SlippageError.RiskyLow || slippageError === SlippageError.RiskyHigh) ? (
-                <SlippageEmojiContainer>
-                  <span role="img" aria-label="warning">
-                    ⚠️
-                  </span>
-                </SlippageEmojiContainer>
-              ) : null}
-              {/* https://github.com/DefinitelyTyped/DefinitelyTyped/issues/30451 */}
-              <Input
-                ref={inputRef as any}
-                placeholder={(rawSlippage / 100).toFixed(2)}
-                value={slippageInput}
-                onBlur={() => {
-                  parseCustomSlippage((rawSlippage / 100).toFixed(2))
-                }}
-                onChange={e => parseCustomSlippage(e.target.value)}
-                color={!slippageInputIsValid ? 'red' : ''}
-              />
-              %
-            </RowBetween>
-          </OptionCustom>
-        </RowBetween>
+        <SlippageWrapper>
+          <RowBetween>
+            <OptionCustom active={![10, 50, 100].includes(rawSlippage)} warning={!slippageInputIsValid} tabIndex={-1}>
+              <RowBetween>
+                {!!slippageInput &&
+                (slippageError === SlippageError.RiskyLow || slippageError === SlippageError.RiskyHigh) ? (
+                  <SlippageEmojiContainer>
+                    <span role="img" aria-label="warning">
+                      ⚠️
+                    </span>
+                  </SlippageEmojiContainer>
+                ) : null}
+                {/* https://github.com/DefinitelyTyped/DefinitelyTyped/issues/30451 */}
+                <Input
+                  ref={inputRef as any}
+                  placeholder={(rawSlippage / 100).toFixed(1)}
+                  value={slippageInput}
+                  onBlur={() => {
+                    parseCustomSlippage((rawSlippage / 100).toFixed(2))
+                  }}
+                  onChange={e => parseCustomSlippage(e.target.value)}
+                  color={!slippageInputIsValid ? 'red' : ''}
+                />
+                %
+              </RowBetween>
+            </OptionCustom>
+            <Option
+              onClick={() => {
+                setSlippageInput('')
+                setRawSlippage(10)
+              }}
+              active={rawSlippage === 10}
+            >
+              0.1%
+            </Option>
+            <Option
+              onClick={() => {
+                setSlippageInput('')
+                setRawSlippage(50)
+              }}
+              active={rawSlippage === 50}
+            >
+              0.5%
+            </Option>
+            <Option
+              onClick={() => {
+                setSlippageInput('')
+                setRawSlippage(100)
+              }}
+              active={rawSlippage === 100}
+            >
+              1%
+            </Option>
+          </RowBetween>
+        </SlippageWrapper>
         {!!slippageError && (
           <RowBetween
             style={{
               fontSize: '14px',
               paddingTop: '7px',
-              color: slippageError === SlippageError.InvalidInput ? 'red' : '#F3841E'
+              color: slippageError === SlippageError.InvalidInput ? 'red' : '#F3841E',
+              fontFamily: "'DM Sans', 'sans-serif'",
+              letterSpacing: '0px'
             }}
           >
             {slippageError === SlippageError.InvalidInput
@@ -225,27 +268,30 @@ export default function SlippageTabs({ rawSlippage, setRawSlippage, deadline, se
 
       <AutoColumn gap="sm">
         <RowFixed>
-          <TYPE.black fontSize={14} fontWeight={400} color={theme.text2}>
-            Transaction deadline
-          </TYPE.black>
-          <QuestionHelper text="Your transaction will revert if it is pending for more than this long." />
+          <SlippageText>Transaction deadline</SlippageText>
+          {/* <QuestionHelper text="Your transaction will revert if it is pending for more than this long." /> */}
         </RowFixed>
-        <RowFixed>
-          <OptionCustom style={{ width: '80px' }} tabIndex={-1}>
-            <Input
-              color={!!deadlineError ? 'red' : undefined}
-              onBlur={() => {
-                parseCustomDeadline((deadline / 60).toString())
-              }}
-              placeholder={(deadline / 60).toString()}
-              value={deadlineInput}
-              onChange={e => parseCustomDeadline(e.target.value)}
-            />
-          </OptionCustom>
-          <TYPE.body style={{ paddingLeft: '8px' }} fontSize={14}>
-            minutes
-          </TYPE.body>
-        </RowFixed>
+        <SlippageWrapper>
+          <RowFixed>
+            <OptionCustom style={{ width: '80px', marginRight: 0 }} tabIndex={-1}>
+              <Input
+                color={!!deadlineError ? 'red' : undefined}
+                onBlur={() => {
+                  parseCustomDeadline((deadline / 60).toString())
+                }}
+                placeholder={(deadline / 60).toString()}
+                value={deadlineInput}
+                onChange={e => parseCustomDeadline(e.target.value)}
+              />
+            </OptionCustom>
+            <TYPE.body
+              style={{ paddingLeft: '8px', fontFamily: "'DM Sans', 'sans-serif'", letterSpacing: '0px' }}
+              fontSize={14}
+            >
+              minutes
+            </TYPE.body>
+          </RowFixed>
+        </SlippageWrapper>
       </AutoColumn>
     </AutoColumn>
   )

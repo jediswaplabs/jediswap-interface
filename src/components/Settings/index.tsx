@@ -19,11 +19,12 @@ import QuestionHelper from '../QuestionHelper'
 import { RowBetween, RowFixed } from '../Row'
 import Toggle from '../Toggle'
 import TransactionSettings from '../TransactionSettings'
+import HeaderIcon from '../../assets/jedi/SwapPanel_headerItem.svg'
 
-const StyledMenuIcon = styled(Settings)`
-  height: 20px;
-  width: 20px;
-
+const StyledMenuIcon = styled(Settings)<{ unlimited?: boolean; noMargin?: boolean }>`
+  width: 100%;
+  height: auto;
+  max-width: ${({ unlimited }) => (unlimited ? 'auto' : '27px')};
   > * {
     stroke: ${({ theme }) => theme.text1};
   }
@@ -66,6 +67,34 @@ const StyledMenuButton = styled.button`
     margin-top: 2px;
   }
 `
+const StyledMenuButtonTransparent = styled.button`
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border: none;
+  background-color: transparent;
+  margin: 0;
+  padding: 0;
+  /* height: 35px; */
+  width: 100%;
+  height: auto;
+  /* background-color: ${({ theme }) => theme.bg3}; */
+
+  padding: 0.15rem 0.5rem;
+  border-radius: 0.5rem;
+
+  :hover,
+  :focus {
+    cursor: pointer;
+    outline: none;
+    /* background-color: ${({ theme }) => theme.bg4}; */
+  }
+
+  svg {
+    margin-top: 2px;
+  }
+`
+
 const EmojiWrapper = styled.div`
   position: absolute;
   bottom: -6px;
@@ -82,20 +111,25 @@ const StyledMenu = styled.div`
   border: none;
   text-align: left;
 `
+const MenuGradientWrapper = styled.span`
+  background: linear-gradient(200.98deg, #ef35ff 1.04%, #50d5ff 55.28%);
+  padding: 2px;
+  border-radius: 8px;
+  position: absolute;
+  top: 2.75rem;
+  right: 0.5rem;
+  z-index: 100;
+`
 
 const MenuFlyout = styled.span`
   min-width: 20.125rem;
-  background-color: ${({ theme }) => theme.bg2};
+  background-color: ${({ theme }) => theme.jediNavyBlue};
   box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.01), 0px 4px 8px rgba(0, 0, 0, 0.04), 0px 16px 24px rgba(0, 0, 0, 0.04),
     0px 24px 32px rgba(0, 0, 0, 0.01);
-  border-radius: 12px;
+  border-radius: 8px;
   display: flex;
   flex-direction: column;
   font-size: 1rem;
-  position: absolute;
-  top: 4rem;
-  right: 0rem;
-  z-index: 100;
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     min-width: 18.125rem;
@@ -182,29 +216,33 @@ export default function SettingsTab() {
           </AutoColumn>
         </ModalContentWrapper>
       </Modal>
-      <StyledMenuButton onClick={toggle} id="open-settings-dialog-button">
+
+      {/* <SettingsIcon src={HeaderIcon} /> */}
+      <StyledMenuButtonTransparent onClick={toggle} id="open-settings-dialog-button">
         <StyledMenuIcon />
-        {expertMode ? (
+
+        {/* {expertMode ? (
           <EmojiWrapper>
             <span role="img" aria-label="wizard-icon">
               🧙
             </span>
           </EmojiWrapper>
-        ) : null}
-      </StyledMenuButton>
+        ) : null} */}
+      </StyledMenuButtonTransparent>
       {open && (
-        <MenuFlyout>
-          <AutoColumn gap="md" style={{ padding: '1rem' }}>
-            <Text fontWeight={600} fontSize={14}>
-              Transaction Settings
-            </Text>
-            <TransactionSettings
-              rawSlippage={userSlippageTolerance}
-              setRawSlippage={setUserslippageTolerance}
-              deadline={ttl}
-              setDeadline={setTtl}
-            />
-            <Text fontWeight={600} fontSize={14}>
+        <MenuGradientWrapper>
+          <MenuFlyout>
+            <AutoColumn gap="md" style={{ padding: '1rem' }}>
+              <Text fontWeight={600} fontSize={14}>
+                Settings
+              </Text>
+              <TransactionSettings
+                rawSlippage={userSlippageTolerance}
+                setRawSlippage={setUserslippageTolerance}
+                deadline={ttl}
+                setDeadline={setTtl}
+              />
+              {/* <Text fontWeight={600} fontSize={14}>
               Interface Settings
             </Text>
             <RowBetween>
@@ -237,9 +275,10 @@ export default function SettingsTab() {
                 </TYPE.black>
               </RowFixed>
               <Toggle isActive={darkMode} toggle={toggleDarkMode} />
-            </RowBetween>
-          </AutoColumn>
-        </MenuFlyout>
+            </RowBetween> */}
+            </AutoColumn>
+          </MenuFlyout>
+        </MenuGradientWrapper>
       )}
     </StyledMenu>
   )
