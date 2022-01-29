@@ -108,16 +108,18 @@ const HeaderElement = styled.div`
 // `
 
 const HeaderLinks = styled(Row)`
-  justify-content: center;
+  justify-content: space-around;
   ${({ theme }) => theme.mediaWidth.upToMedium`
     // padding: 1rem 0 1rem 1rem;
     justify-content: flex-start;
 `};
-  gap: 38px;
+  /* gap: 38px;
+   */
 `
 
 const AccountElement = styled.div<{ active: boolean }>`
   display: flex;
+  flex: 0;
   flex-direction: row;
   align-items: center;
   // background-color: ${({ theme, active }) => (!active ? theme.bg1 : theme.bg3)};
@@ -157,22 +159,24 @@ const UNIWrapper = styled.span`
   }
 `
 
-const HideSmall = styled.span`
+const HideSmall = styled.div`
   ${({ theme }) => theme.mediaWidth.upToSmall`
     display: none;
   `};
 `
 
 const NetworkCard = styled(YellowCard)`
-  border-radius: 12px;
-  padding: 8px 12px;
+  border-radius: 10px;
+  padding: 14px;
+  flex: 1;
+  font-size: 14px;
   ${({ theme }) => theme.mediaWidth.upToSmall`
     margin: 0;
     margin-right: 0.5rem;
     width: initial;
     overflow: hidden;
     text-overflow: ellipsis;
-    flex-shrink: 1;
+    flex-shrink: 0;
   `};
 `
 
@@ -379,11 +383,11 @@ function Header({ history }: { history: any }) {
       </HeaderLinks>
       {/* </HeaderRow> */}
       <HeaderControls>
-        <StarkNetCard>Starknet</StarkNetCard>
+        {/* <StarkNetCard>Starknet</StarkNetCard> */}
         <HeaderElement>
           <HideSmall>
             {chainId && NETWORK_LABELS[chainId] && (
-              <NetworkCard title={NETWORK_LABELS[chainId]}>{NETWORK_LABELS[chainId]}</NetworkCard>
+              <NetworkCard title={NETWORK_LABELS[chainId]}>Starknet-{NETWORK_LABELS[chainId]}</NetworkCard>
             )}
           </HideSmall>
           <AccountElement active={!!account} style={{ pointerEvents: 'auto' }}>
