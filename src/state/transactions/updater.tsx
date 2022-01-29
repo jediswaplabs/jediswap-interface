@@ -1,6 +1,7 @@
-import { useEffect } from 'react'
+import { useCallback, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useActiveStarknetReact } from '../../hooks'
+import useInterval from '../../hooks/useInterval'
 import { useAddPopup, useBlockNumber } from '../application/hooks'
 import { AppDispatch, AppState } from '../index'
 import { checkedTransaction, updateTransaction, SerializableTransactionReceipt } from './actions'
@@ -39,7 +40,7 @@ export default function Updater(): null {
   // show popup on confirm
   const addPopup = useAddPopup()
 
-  useEffect(() => {
+  const checkTxStatusCallback = useCallback(() => {
     if (!chainId || !library || !lastBlockNumber) return
 
     Object.keys(transactions)
@@ -87,6 +88,9 @@ export default function Updater(): null {
           })
       })
   }, [chainId, library, transactions, lastBlockNumber, dispatch, addPopup])
+
+  // Check Tx Status every 15s after library is initialized
+  useInterval(checkTxStatusCallback, library ? 1000 * 15 : null)
 
   return null
 }
