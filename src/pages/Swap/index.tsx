@@ -1,5 +1,7 @@
 import { CurrencyAmount, JSBI, Token, Trade } from '@jediswap/sdk'
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import Settings from '../../components/Settings'
+
 import { ArrowDown } from 'react-feather'
 import ReactGA from 'react-ga'
 import { Text } from 'rebass'
@@ -363,10 +365,13 @@ export default function Swap() {
             swapErrorMessage={swapErrorMessage}
             onDismiss={handleConfirmDismiss}
           />
-          <HeaderRow>
-            Swap
-            <Icon src={HeaderIcon} />
-          </HeaderRow>
+          <div style={{ marginBottom: '30px' }}>
+            <HeaderRow>
+              Swap
+              {/* <Icon src={HeaderIcon} /> */}
+              <Settings />
+            </HeaderRow>
+          </div>
           <HeaderRow>
             <BalanceText>Swap From</BalanceText>
             <BalanceText>Balance: {currencyBalances.INPUT?.toFixed(6) ?? 0}</BalanceText>
