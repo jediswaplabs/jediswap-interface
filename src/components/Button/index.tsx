@@ -12,14 +12,14 @@ const Base = styled(RebassButton)<{
   borderRadius?: string
   altDisabledStyle?: boolean
 }>`
-  padding: ${({ padding }) => (padding ? padding : '18px')};
+  padding: ${({ padding }) => (padding ? padding : '22px 17px')};
   width: ${({ width }) => (width ? width : '100%')};
   font-weight: 500;
   text-align: center;
-  border-radius: 12px;
+  border-radius: 8px;
   border-radius: ${({ borderRadius }) => borderRadius && borderRadius};
   outline: none;
-  border: 1px solid transparent;
+  /* border: 1px solid transparent; */
   color: white;
   text-decoration: none;
   display: flex;
@@ -262,7 +262,6 @@ const ButtonErrorStyle = styled(Base)`
 
 export const ButtonGradient = styled(Base)`
   background: linear-gradient(95.64deg, #29aafd 8.08%, #ff00e9 105.91%);
-  border: none;
   color: ${({ theme }) => theme.jediWhite};
   border-radius: 8px;
   padding: 22px 17px;
