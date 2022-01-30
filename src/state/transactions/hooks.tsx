@@ -72,7 +72,11 @@ export function useHasPendingApproval(tokenAddress: string | undefined, spender:
       Object.keys(allTransactions).some(hash => {
         const tx = allTransactions[hash]
         if (!tx) return false
-        if (tx.receipt) {
+        if (
+          tx.receipt?.status === 'ACCEPTED_ON_L2' ||
+          tx.receipt?.status === 'ACCEPTED_ON_L1' ||
+          tx.receipt?.status === 'REJECTED'
+        ) {
           return false
         } else {
           const approval = tx.approval
