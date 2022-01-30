@@ -160,7 +160,7 @@ export function ConfirmationModalContent({
 }) {
   return (
     <Wrapper>
-      <Section>
+      <Section style={{ paddingBottom: '12px' }}>
         <TextWrapper>
           <RowBetween>
             <Text fontWeight={400} fontSize={20} fontFamily={'Soloist Title'} letterSpacing={'-0.1em'}>
@@ -171,7 +171,9 @@ export function ConfirmationModalContent({
         </TextWrapper>
         {topContent()}
       </Section>
-      <BottomSection gap="12px">{bottomContent()}</BottomSection>
+      <BottomSection gap="12px" style={{ paddingTop: '12px' }}>
+        {bottomContent()}
+      </BottomSection>
     </Wrapper>
   )
 }
@@ -224,7 +226,7 @@ export default function TransactionConfirmationModal({
 
   // confirmation screen
   return (
-    <Modal isOpen={isOpen} onDismiss={onDismiss} maxHeight={90}>
+    <Modal isOpen={isOpen} onDismiss={onDismiss} maxHeight={95}>
       {attemptingTxn ? (
         <ConfirmationPendingContent onDismiss={onDismiss} pendingText={pendingText} />
       ) : hash ? (

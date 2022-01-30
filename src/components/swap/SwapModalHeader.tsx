@@ -56,6 +56,10 @@ const Column = styled.div`
   justify-content: flex-start;
   width: 100%;
 `
+const SwapText = styled(Text)`
+  font-size: 14px;
+  font-weight: 400;
+`
 
 export default function SwapModalHeader({
   trade,
@@ -80,10 +84,12 @@ export default function SwapModalHeader({
   const theme = useContext(ThemeContext)
 
   return (
-    <AutoColumn gap={'md'} style={{ marginTop: '30px' }}>
+    <AutoColumn gap={'6px'} style={{ marginTop: '29px' }}>
       <RowWrapper>
         <Column>
-          <RowFixed>Swap From</RowFixed>
+          <RowFixed>
+            <SwapText>Swap From</SwapText>
+          </RowFixed>
           <RowBetween>
             <RowFixed gap={'0px'}>
               <CurrencyLogo currency={trade.inputAmount.currency} size={'24px'} style={{ marginRight: '8px' }} />
@@ -106,13 +112,13 @@ export default function SwapModalHeader({
       <RowFixed>
         <ArrowBorder>
           <ArrowWrapper>
-            <ArrowDown size="16" /*color={theme.text2}*/ style={{ /*marginLeft: '4px',*/ minWidth: '16px' }} />
+            <ArrowDown size="16px" /*color={theme.text2}*/ style={{ /*marginLeft: '4px',*/ minWidth: '16px' }} />
           </ArrowWrapper>
         </ArrowBorder>
       </RowFixed>
       <RowWrapper>
         <Column>
-          <RowFixed>Swap To</RowFixed>
+          <SwapText>Swap To</SwapText>
           <RowBetween align="flex-end">
             <RowFixed gap={'0px'}>
               <CurrencyLogo currency={trade.outputAmount.currency} size={'24px'} style={{ marginRight: '8px' }} />
@@ -138,7 +144,7 @@ export default function SwapModalHeader({
           </RowBetween>
         </Column>
       </RowWrapper>
-      {showAcceptChanges ? (
+      {/* {showAcceptChanges ? (
         <SwapShowAcceptChanges justify="flex-start" gap={'0px'}>
           <RowBetween>
             <RowFixed>
@@ -153,7 +159,7 @@ export default function SwapModalHeader({
             </ButtonPrimary>
           </RowBetween>
         </SwapShowAcceptChanges>
-      ) : null}
+      ) : null} */}
 
       {recipient !== null ? (
         <AutoColumn justify="flex-start" gap="sm" style={{ padding: '12px 0 0 0px' }}>

@@ -19,6 +19,7 @@ import FormattedPriceImpact from './FormattedPriceImpact'
 import { StyledBalanceMaxMini, SwapCallbackError } from './styleds'
 
 import styled from 'styled-components'
+import { basisPointsToPercent } from '../../utils'
 
 const Wrapper = styled.div`
   background: rgba(196, 196, 196, 0.01);
@@ -36,8 +37,8 @@ const Wrapper = styled.div`
   text-align: left;
   position: relative;
 `
-const ButtonWrapepr = styled.div`
-  margin-bottom: 24px;
+const ButtonWrapper = styled.div`
+  margin-bottom: 14px;
   width: 100%;
 `
 const GradientBreakLine = styled.div`
@@ -63,16 +64,20 @@ export default function SwapModalFooter({
 }) {
   const [showInverted, setShowInverted] = useState<boolean>(false)
   // const theme = useContext(ThemeContext)
+
+  const slippagePct = useMemo(() => basisPointsToPercent(allowedSlippage), [allowedSlippage])
+
   const slippageAdjustedAmounts = useMemo(() => computeSlippageAdjustedAmounts(trade, allowedSlippage), [
     allowedSlippage,
     trade
   ])
+
   const { priceImpactWithoutFee, realizedLPFee } = useMemo(() => computeTradePriceBreakdown(trade), [trade])
   const severity = warningSeverity(priceImpactWithoutFee)
 
   return (
     <>
-      <RowBetween align="center" style={{ marginBottom: '12px' }}>
+      <RowBetween align="center" style={{ marginBottom: '10px' }}>
         <Text fontWeight={400} fontSize={16} /*color={theme.text2}*/>
           Price
         </Text>
@@ -85,13 +90,15 @@ export default function SwapModalFooter({
             alignItems: 'center',
             display: 'flex',
             textAlign: 'right',
-            paddingLeft: '10px'
+            paddingLeft: '10px',
+            cursor: 'pointer'
           }}
+          onClick={() => setShowInverted(!showInverted)}
         >
           {formatExecutionPrice(trade, showInverted)}
-          <StyledBalanceMaxMini onClick={() => setShowInverted(!showInverted)}>
+          {/* <StyledBalanceMaxMini onClick={() => setShowInverted(!showInverted)}>
             <Repeat size={14} />
-          </StyledBalanceMaxMini>
+          </StyledBalanceMaxMini> */}
         </Text>
       </RowBetween>
 
@@ -105,7 +112,7 @@ export default function SwapModalFooter({
         </Padding>
         <GradientBreakLine />
         <Padding>
-          <AutoColumn gap="20px">
+          <AutoColumn gap="16px">
             <RowBetween>
               <RowFixed>
                 <TYPE.white fontSize={14} fontWeight={400} /*color={theme.text2}*/>
@@ -135,7 +142,7 @@ export default function SwapModalFooter({
               </RowFixed>
               {/* <FormattedPriceImpact priceImpact={priceImpactWithoutFee} /> */}
               <TYPE.white fontSize={14} fontWeight={400}>
-                0.50%
+                {slippagePct.toFixed(2)}%
               </TYPE.white>
             </RowBetween>
 
@@ -182,7 +189,7 @@ export default function SwapModalFooter({
         )}
       </AutoColumn>
       <AutoRow>
-        <ButtonWrapepr>
+        <ButtonWrapper>
           <ButtonError
             onClick={onConfirm}
             disabled={disabledConfirm}
@@ -194,7 +201,7 @@ export default function SwapModalFooter({
               {severity > 2 ? 'Swap Anyway' : 'Confirm Swap'}
             </Text>
           </ButtonError>
-        </ButtonWrapepr>
+        </ButtonWrapper>
         {swapErrorMessage ? <SwapCallbackError error={swapErrorMessage} /> : null}
       </AutoRow>
     </>
