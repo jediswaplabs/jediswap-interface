@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { Box } from 'rebass/styled-components'
 
-const Row = styled(Box)<{ align?: string; padding?: string; border?: string; borderRadius?: string }>`
+const Row = styled(Box)<{ align?: string; padding?: string; border?: string; borderRadius?: string; gap?: string }>`
   width: 100%;
   display: flex;
   padding: 0;
@@ -9,6 +9,7 @@ const Row = styled(Box)<{ align?: string; padding?: string; border?: string; bor
   padding: ${({ padding }) => padding};
   border: ${({ border }) => border};
   border-radius: ${({ borderRadius }) => borderRadius};
+  gap: ${({ gap }) => gap};
 `
 
 export const RowBetween = styled(Row)`
