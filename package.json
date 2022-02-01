@@ -7,7 +7,7 @@
     "@argent/get-starknet": "^0.1.4",
     "@ethersproject/experimental": "^5.0.1",
     "@jediswap/sdk": "1.2.2",
-    "@jediswap/starknet": "2.7.2",
+    "@jediswap/starknet": "2.7.3",
     "@popperjs/core": "^2.4.4",
     "@reach/dialog": "^0.10.3",
     "@reach/portal": "^0.10.3",

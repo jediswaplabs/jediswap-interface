@@ -1787,7 +1787,23 @@
     tiny-warning "^1.0.3"
     toformat "^2.0.0"
 
-"@jediswap/starknet@2.7.2", "@jediswap/starknet@^2.7.2":
+"@jediswap/starknet@2.7.3":
+  version "2.7.3"
+  resolved "https://registry.yarnpkg.com/@jediswap/starknet/-/starknet-2.7.3.tgz#ec4a6998cb9b51326e4395c82808f15cd4a6ad8b"
+  integrity sha512-a8FREghNwJ2rADgI2IsAH0wFjXFEe69oBTAj13vb91+vSuMDUzk6NK9DArjVdwhOVTJrgxI/DAFBI9e/jv1YRA==
+  dependencies:
+    axios "^0.23.0"
+    bn.js "^5.2.0"
+    elliptic "^6.5.4"
+    ethereum-cryptography "^0.2.0"
+    hash.js "^1.1.7"
+    json-bigint "^1.0.0"
+    minimalistic-assert "^1.0.1"
+    pako "^2.0.4"
+    superstruct "^0.15.3"
+    url-join "^4.0.1"
+
+"@jediswap/starknet@^2.7.2":
   version "2.7.2"
   resolved "https://registry.yarnpkg.com/@jediswap/starknet/-/starknet-2.7.2.tgz#826bdd04739ddc6b5d04e2cb9e223754d201a5bc"
   integrity sha512-pyG+iZuMCruDJlf6cQ+Of6T3oPmEzc8rYG2wG7c4xoNliESmys33DqSAORp2SWPTSXN2rUODbVzQKfpZtRzh7Q==
