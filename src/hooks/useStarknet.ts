@@ -88,7 +88,7 @@ export function useMultipleStarknetCallSingleData(
     (addresses: (string | undefined)[], contractInterface: Abi[], methodName: string, args?: Args | undefined) => {
       return Promise.all(
         addresses.map(async address => {
-          if (address && isZero(address)) return undefined
+          if (!address || isZero(address)) return undefined
           const contract = new Contract(contractInterface, address)
           // console.log('🚀 ~ file: useStarknet.ts ~ line 70 ~ callResults ~ contract', contract)
           const result = await contract?.call(methodName, args)
