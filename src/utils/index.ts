@@ -7,11 +7,12 @@ import { TOKEN1, TOKEN2, ZERO_ADDRESS } from '../constants'
 import { ChainId, JSBI, Percent, Token, CurrencyAmount, Currency, TOKEN0 } from '@jediswap/sdk'
 import { TokenAddressMap } from '../state/lists/hooks'
 import { validateAndParseAddress } from '@jediswap/starknet'
+import isZero from './isZero'
 
 // returns the checksummed address if the address is valid, otherwise returns false
 export function isAddress(addr: string | null | undefined): string | false {
   try {
-    if (addr) {
+    if (addr && !isZero(addr)) {
       const starknetAddress = validateAndParseAddress(addr)
       return starknetAddress
     }
