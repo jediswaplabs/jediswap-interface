@@ -33,8 +33,16 @@ async function fetchChunk(
 ): Promise<{ results: string[]; blockNumber: number }> {
   console.debug('Fetching chunk', multicallContract, chunk, minBlockNumber)
   let resultsBlockNumber, returnData_len, returnData
+
+  const { getSelectorFromName } = stark
+
   try {
-    const calls = chunk.flatMap(obj => [obj.address, obj.selector, obj.calldata_len, ...obj.calldata])
+    const calls = chunk.flatMap(obj => [
+      obj.address,
+      getSelectorFromName(obj.methodName),
+      obj.calldata_len,
+      ...obj.calldata
+    ])
     console.log('🚀 ~ file: updater.tsx ~ line 37 ~ calls', calls)
     const response = await multicallContract.call('aggregate', { calls })
     console.log('🚀 ~ file: updater.tsx ~ line 38 ~ response', response)
@@ -122,59 +130,61 @@ export function parseReturnData(
   currentIndex: number,
   returnData: string[],
   returnDataIterator: IterableIterator<string>,
-  contractInterface: FunctionAbi
+  contractInterface?: FunctionAbi
 ): string {
-  const numberOfOutputs = contractInterface.outputs.length
-  const hasMultipleOutputs = numberOfOutputs > 1
-  const hasUint256Output = contractInterface.outputs.some(o => o.type === 'Uint256')
-  // const parsedReturnData: Array<string> = [...returnData]
+  if (contractInterface) {
+    const numberOfOutputs = contractInterface.outputs.length
+    const hasMultipleOutputs = numberOfOutputs > 1
+    const hasUint256Output = contractInterface.outputs.some(o => o.type === 'Uint256')
+    // const parsedReturnData: Array<string> = [...returnData]
 
-  if (hasMultipleOutputs) {
-    const outputAbiEntries = contractInterface.outputs
+    if (hasMultipleOutputs) {
+      const outputAbiEntries = contractInterface.outputs
 
-    if (!hasUint256Output) {
-      // If output is not of type uint256, no. of results = no. of calls * no. of outputs
-      const parsedReturnData = outputAbiEntries.reduce<{ [outputName: string]: string }>((memo, entry, i) => {
-        return {
-          ...memo,
-          [entry.name]: returnDataIterator.next().value
-        }
-      }, {})
+      if (!hasUint256Output) {
+        // If output is not of type uint256, no. of results = no. of calls * no. of outputs
+        const parsedReturnData = outputAbiEntries.reduce<{ [outputName: string]: string }>((memo, entry, i) => {
+          return {
+            ...memo,
+            [entry.name]: returnDataIterator.next().value
+          }
+        }, {})
 
-      return JSON.stringify(parsedReturnData)
-    } else {
-      // Multiple outputs are of type uint256, no. of results = no. of calls * no. of outputs * 2
+        return JSON.stringify(parsedReturnData)
+      } else {
+        // Multiple outputs are of type uint256, no. of results = no. of calls * no. of outputs * 2
 
-      // const uint256ReturnData: uint256.Uint256 = {  }
-      const parsedReturnData = outputAbiEntries.reduce<{ [outputName: string]: string }>((memo, entry, i) => {
-        const returnDataLow = returnDataIterator.next().value
-        const returnDataHigh = returnDataIterator.next().value
+        // const uint256ReturnData: uint256.Uint256 = {  }
+        const parsedReturnData = outputAbiEntries.reduce<{ [outputName: string]: string }>((memo, entry, i) => {
+          const returnDataLow = returnDataIterator.next().value
+          const returnDataHigh = returnDataIterator.next().value
 
-        const uint256ReturnData: uint256.Uint256 = { low: returnDataLow, high: returnDataHigh }
+          const uint256ReturnData: uint256.Uint256 = { low: returnDataLow, high: returnDataHigh }
 
-        return {
-          ...memo,
-          [entry.name]: number.toHex(uint256.uint256ToBN(uint256ReturnData))
-        }
-      }, {})
+          return {
+            ...memo,
+            [entry.name]: number.toHex(uint256.uint256ToBN(uint256ReturnData))
+          }
+        }, {})
 
-      return JSON.stringify(parsedReturnData)
-    }
-  } else {
-    // Has Single Output
-    if (!hasUint256Output) {
-      // Single Output and no uint256, no. of results = no. of calls
-      return returnData[currentIndex]
-    } else {
-      // Single Output of type uint256, no. of results = no. of calls * 2
-      const uint256Result: uint256.Uint256 = {
-        low: returnData[currentIndex * 2],
-        high: returnData[currentIndex * 2 + 1]
+        return JSON.stringify(parsedReturnData)
       }
+    } else {
+      // Has Single Output
+      if (!hasUint256Output) {
+        // Single Output and no uint256, no. of results = no. of calls
+        return returnData[currentIndex]
+      } else {
+        // Single Output of type uint256, no. of results = no. of calls * 2
+        const uint256Result: uint256.Uint256 = {
+          low: returnData[currentIndex * 2],
+          high: returnData[currentIndex * 2 + 1]
+        }
 
-      const parsedReturnData = number.toHex(uint256.uint256ToBN(uint256Result))
+        const parsedReturnData = number.toHex(uint256.uint256ToBN(uint256Result))
 
-      return parsedReturnData
+        return parsedReturnData
+      }
     }
   }
   return returnData[currentIndex]
@@ -256,31 +266,11 @@ export default function Updater(): null {
                 results: outdatedCallKeys
                   .slice(firstCallKeyIndex, lastCallKeyIndex)
                   .reduce<{ [callKey: string]: string | null }>((memo, callKey, i) => {
-                    const contractAbi = debouncedListeners?.[chainId]?.[callKey]?.contractInterface
-                    const methodAbi = contractAbi?.find(
-                      member => stark.getSelectorFromName(member.name) === parseCallKey(callKey).selector
-                    )
+                    const methodAbi = debouncedListeners?.[chainId]?.[callKey]?.methodAbi
 
-                    // console.log('🚀 ~ file: updater.tsx ~ line 192 ~ .then ~ contractAbi')
-
-                    const parsedReturnData: string = parseReturnData(
-                      i,
-                      returnData,
-                      returnDataIterator,
-                      methodAbi as FunctionAbi
-                    )
+                    const parsedReturnData: string = parseReturnData(i, returnData, returnDataIterator, methodAbi)
                     console.log('🚀 ~ file: updater.tsx ~ line 272 ~ .then ~ parsedReturnData', parsedReturnData)
 
-                    // if (hasUint256) {
-                    //   const parsedReturnData: uint256.Uint256 = { low: returnData[i * 2], high: returnData[i * 2 + 1] }
-                    //   // console.log('🚀 ~ file: updater.tsx ~ line 206 ~ .then ~ parsedReturnData', parsedReturnData)
-                    //   uint256ReturnData.push(number.toHex(uint256.uint256ToBN(parsedReturnData)))
-                    //   console.log('🚀 ~ file: updater.tsx ~ line 216 ~ .then ~ uint256ReturnData[i]', uint256ReturnData)
-
-                    //   memo[callKey] = uint256ReturnData[i]
-                    // } else {
-                    //   memo[callKey] = returnData[i] ?? null
-                    // }
                     memo[callKey] = parsedReturnData
                     console.log('🚀 ~ file: updater.tsx ~ line 214 ~ .then ~ memo', memo)
 

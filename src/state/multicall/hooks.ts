@@ -1,3 +1,4 @@
+import { FunctionAbi } from './../../../node_modules/@jediswap/sdk/node_modules/@jediswap/starknet/src/types'
 import { Abi, Args, compileCalldata, number, validateAndParseAddress } from '@jediswap/starknet'
 // import { Interface, FunctionFragment } from '@ethersproject/abi'
 import { BigNumber } from '@ethersproject/bignumber'
@@ -54,7 +55,7 @@ export const NEVER_RELOAD: ListenerOptions = {
 }
 
 // the lowest level call for subscribing to contract data
-function useCallsData(calls: (Call | undefined)[], contractInterface?: Abi[], options?: ListenerOptions): CallResult[] {
+function useCallsData(calls: (Call | undefined)[], methodAbi?: FunctionAbi, options?: ListenerOptions): CallResult[] {
   console.log('🚀 ~ file: hooks.ts ~ line 57 ~ useCallsData ~ calls', calls)
   const { chainId } = useActiveStarknetReact()
   const callResults = useSelector<AppState, AppState['multicall']['callResults']>(state => state.multicall.callResults)
@@ -82,7 +83,7 @@ function useCallsData(calls: (Call | undefined)[], contractInterface?: Abi[], op
         chainId,
         calls,
         options,
-        contractInterface
+        methodAbi
       })
     )
 
@@ -95,7 +96,7 @@ function useCallsData(calls: (Call | undefined)[], contractInterface?: Abi[], op
         })
       )
     }
-  }, [chainId, contractInterface, dispatch, options, serializedCallKeys])
+  }, [chainId, dispatch, methodAbi, options, serializedCallKeys])
 
   return useMemo(
     () =>
@@ -180,26 +181,27 @@ export function useSingleContractMultipleData(
   options?: ListenerOptions
 ): CallState[] {
   // const fragment = useMemo(() => contract?.interface?.getFunction(methodName), [contract, methodName])
-  const selector = useMemo(() => stark.getSelectorFromName(methodName), [methodName])
+  // const selector = useMemo(() => stark.getSelectorFromName(methodName), [methodName])
 
   const calls = useMemo(
     () =>
-      contract && isAddress(contract.connectedTo) && selector && callInputs && callInputs.length > 0
+      contract && isAddress(contract.connectedTo) && methodName && callInputs && callInputs.length > 0
         ? callInputs.map<Call>(inputs => {
             const { calldata_len, calldata } = computeCallDataProps(inputs)
 
             return {
               address: validateAndParseAddress(contract.connectedTo),
-              selector,
+              methodName,
               calldata_len: calldata_len.toString(),
               calldata
             }
           })
         : [],
-    [callInputs, contract, selector]
+    [callInputs, contract, methodName]
   )
+  const methodAbi = useValidatedMethodAbi(contract?.abi, methodName)
 
-  const results = useCallsData(calls, contract?.abi, options)
+  const results = useCallsData(calls, methodAbi, options)
 
   const latestBlockNumber = useBlockNumber()
 
@@ -229,18 +231,20 @@ export function useMultipleContractSingleData(
             return address && isAddress(address)
               ? {
                   address: validateAndParseAddress(address),
-                  selector,
+                  methodName,
                   calldata_len: callDataLength,
                   calldata: callData
                 }
               : undefined
           })
         : [],
-    [addresses, callData, callDataLength, callInputs, selector]
+    [addresses, callData, callDataLength, callInputs, methodName, selector]
   )
   console.log('🚀 ~ file: hooks.ts ~ line 231 ~ calls', calls)
 
-  const results = useCallsData(calls, contractInterface, options)
+  const methodAbi = useValidatedMethodAbi(contractInterface, methodName)
+
+  const results = useCallsData(calls, methodAbi, options)
   console.log('🚀 ~ file: hooks.ts ~ line 233 ~ results', results)
 
   const latestBlockNumber = useBlockNumber()
@@ -268,20 +272,30 @@ export function useSingleCallResult(
       ? [
           {
             address: validateAndParseAddress(contract.connectedTo),
-            selector,
+            methodName,
             calldata_len: calldata_len.toString(),
             calldata
           }
         ]
       : []
-  }, [calldata, calldata_len, contract, inputs, selector])
+  }, [calldata, calldata_len, contract, inputs, methodName, selector])
   console.log('🚀 ~ file: hooks.ts ~ line 260 ~ calls', calls)
 
-  const result = useCallsData(calls, contract?.abi, options)[0]
+  const methodAbi = useValidatedMethodAbi(contract?.abi, methodName)
+
+  const result = useCallsData(calls, methodAbi, options)[0]
   console.log('🚀 ~ file: hooks.ts ~ line 259 ~ result', result)
   const latestBlockNumber = useBlockNumber()
 
   return useMemo(() => {
     return toCallState(result, latestBlockNumber)
   }, [result, latestBlockNumber])
+}
+
+export function useValidatedMethodAbi(contractAbi: Abi[] | undefined, methodName: string): FunctionAbi | undefined {
+  return useMemo(
+    () =>
+      contractAbi?.filter((abi): abi is FunctionAbi => abi.type === 'function').find(abi => abi.name === methodName),
+    [contractAbi, methodName]
+  )
 }

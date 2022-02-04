@@ -1,4 +1,4 @@
-import { Args, Calldata, compileCalldata } from '@jediswap/starknet'
+import { Abi, Args, Calldata, compileCalldata, FunctionAbi } from '@jediswap/starknet'
 export function computeCallDataProps(args: Args = {}): { calldata_len: number | string; calldata: Calldata } {
   //   if (!args) {
   //     return {
@@ -27,4 +27,8 @@ export function computeCallDataProps(args: Args = {}): { calldata_len: number | 
     calldata_len: 0,
     calldata: calldata
   }
+}
+
+export function validateMethodAbi(abi: Abi): abi is FunctionAbi {
+  return abi.type === 'function'
 }

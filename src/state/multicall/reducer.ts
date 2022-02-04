@@ -1,3 +1,4 @@
+import { FunctionAbi } from './../../../node_modules/@jediswap/sdk/node_modules/@jediswap/starknet/src/types'
 import { Abi } from '@jediswap/starknet'
 import { createReducer } from '@reduxjs/toolkit'
 import {
@@ -17,7 +18,7 @@ export interface MulticallState {
       [callKey: string]: {
         // stores how many listeners there are per each blocks per fetch preference
         [blocksPerFetch: number]: number
-        contractInterface?: Abi[]
+        methodAbi?: FunctionAbi
       }
     }
   }
@@ -41,7 +42,7 @@ export default createReducer(initialState, builder =>
   builder
     .addCase(
       addMulticallListeners,
-      (state, { payload: { calls, chainId, contractInterface, options: { blocksPerFetch = 1 } = {} } }) => {
+      (state, { payload: { calls, chainId, methodAbi, options: { blocksPerFetch = 1 } = {} } }) => {
         const listeners: MulticallState['callListeners'] = state.callListeners
           ? state.callListeners
           : (state.callListeners = {})
@@ -50,7 +51,7 @@ export default createReducer(initialState, builder =>
           const callKey = toCallKey(call)
           listeners[chainId][callKey] = listeners[chainId][callKey] ?? {}
           listeners[chainId][callKey][blocksPerFetch] = (listeners[chainId][callKey][blocksPerFetch] ?? 0) + 1
-          listeners[chainId][callKey]['contractInterface'] = contractInterface
+          listeners[chainId][callKey]['methodAbi'] = methodAbi
         })
       }
     )

@@ -4,7 +4,6 @@ import ERC20_ABI from '../../constants/abis/erc20.json'
 import { useAllTokens } from '../../hooks/Tokens'
 import { useActiveStarknetReact } from '../../hooks'
 import { isAddress } from '../../utils'
-import { NEVER_RELOAD, useMultipleStarknetCallSingleData, useStarknetCall } from '../../hooks/useStarknet'
 import { Abi, uint256 } from '@jediswap/starknet'
 import { useAddressNormalizer } from '../../hooks/useAddressNormalizer'
 import { useTokenContract } from '../../hooks/useContract'
@@ -59,8 +58,7 @@ export function useToken0Balance(uncheckedAddress?: string): CurrencyAmount | un
 
   const address = useAddressNormalizer(uncheckedAddress)
 
-  // const result = useStarknetCall(tokenContract, 'balanceOf', { account: address }, NEVER_RELOAD).balance
-  const balance = useSingleCallResult(tokenContract, 'balanceOf', { account: address ?? '' }, NEVER_RELOAD)
+  const balance = useSingleCallResult(tokenContract, 'balanceOf', { account: address ?? '' })
   console.log('🚀 ~ file: hooks.ts ~ line 77 ~ useToken0Balance ~ result', balance)
 
   const uint256Balance: uint256.Uint256 = useMemo(() => ({ low: balance?.result?.[0], high: balance?.result?.[1] }), [

@@ -91,8 +91,6 @@ export function useToken(tokenAddress?: string): Token | undefined | null {
 
   const symbol = useSingleCallResult(token ? undefined : tokenContract, 'symbol', undefined, NEVER_RELOAD)
   console.log('🚀 ~ file: Tokens.ts ~ line 89 ~ useToken ~ symbol', parseStringFromArgs(symbol))
-
-  // const symbolBytes32 = useSingleCallResult(token ? undefined : tokenContractBytes32, 'symbol', undefined, NEVER_RELOAD)
   const decimals = useSingleCallResult(token ? undefined : tokenContract, 'decimals', undefined, NEVER_RELOAD)
   // console.log(
   //   '🚀 ~ file: Tokens.ts ~ line 93 ~ useToken ~ decimals',

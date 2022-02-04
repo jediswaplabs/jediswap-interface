@@ -1,10 +1,11 @@
+import { FunctionAbi } from './../../../node_modules/@jediswap/sdk/node_modules/@jediswap/starknet/src/types'
 import { createAction } from '@reduxjs/toolkit'
 import { Abi, Calldata } from '@jediswap/starknet'
 import { isAddress } from '../../utils'
 
 export interface Call {
   address: string
-  selector: string
+  methodName: string
   calldata_len: string
   calldata: Calldata
   // contractInterface?: Abi[]
@@ -24,7 +25,7 @@ export function toCallKey(call: Call): string {
   //     throw new Error(`Invalid hex: ${call.callData}`)
   //   }
 
-  const key = `${call.address}-${call.selector}-${call.calldata_len}${callDataToString(call.calldata)}`
+  const key = `${call.address}-${call.methodName}-${call.calldata_len}${callDataToString(call.calldata)}`
   console.log('🚀 ~ file: actions.ts ~ line 27 ~ toCallKey ~ key', key, call.calldata_len)
 
   // if (call.calldata) {
@@ -44,7 +45,7 @@ export function parseCallKey(callKey: string): Call {
   }
   return {
     address: pcs[0],
-    selector: pcs[1],
+    methodName: pcs[1],
     calldata_len: pcs[2],
     calldata: pcs.slice(3)
   }
@@ -58,7 +59,7 @@ export interface ListenerOptions {
 export const addMulticallListeners = createAction<{
   chainId: number
   calls: Call[]
-  contractInterface: Abi[] | undefined
+  methodAbi: FunctionAbi | undefined
   options?: ListenerOptions
 }>('multicall/addMulticallListeners')
 export const removeMulticallListeners = createAction<{ chainId: number; calls: Call[]; options?: ListenerOptions }>(
