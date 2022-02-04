@@ -436,18 +436,20 @@ export default function Swap() {
               </>
             )}
 
-            <Card padding={'.25rem .75rem 0 .75rem'} borderRadius={'20px'}>
+            <Card padding={'.75rem .75rem 0 .75rem'} borderRadius={'20px'}>
               <AutoColumn gap="4px">
                 {Boolean(trade) && (
                   <RowBetween align="center">
-                    <Text fontWeight={500} fontSize={14} color={theme.text2}>
+                    <Text
+                      fontFamily={'DM Sans'}
+                      fontWeight={500}
+                      fontSize={14}
+                      color={theme.text2}
+                      letterSpacing={'0px'}
+                    >
                       Price
                     </Text>
-                    <TradePrice
-                      price={trade?.executionPrice}
-                      showInverted={showInverted}
-                      setShowInverted={setShowInverted}
-                    />
+                    <TradePrice trade={trade} showInverted={showInverted} setShowInverted={setShowInverted} />
                   </RowBetween>
                 )}
                 {allowedSlippage !== INITIAL_ALLOWED_SLIPPAGE && (

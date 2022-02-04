@@ -72,7 +72,7 @@ const Option = styled(FancyButton)<{ active: boolean }>`
 `
 
 const Input = styled.input`
-  background: ${({ theme }) => theme.bg1};
+  background: ${({ theme }) => theme.jediBlue};
   font-size: 16px;
   width: auto;
   outline: none;
@@ -80,7 +80,7 @@ const Input = styled.input`
   &::-webkit-inner-spin-button {
     -webkit-appearance: none;
   }
-  color: ${({ theme, color }) => (color === 'red' ? theme.red1 : theme.text1)};
+  color: ${({ theme }) => theme.jediWhite};
   text-align: right;
 `
 
