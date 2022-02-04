@@ -9,7 +9,7 @@ import { useTokenBalancesWithLoadingIndicator } from '../../state/wallet/hooks'
 import { StyledInternalLink, ExternalLink, TYPE, HideSmall } from '../../theme'
 import { Text } from 'rebass'
 import Card from '../../components/Card'
-import Row, { RowBetween, RowFixed } from '../../components/Row'
+import { RowBetween, RowFixed } from '../../components/Row'
 import { ButtonPrimary, ButtonSecondary } from '../../components/Button'
 import { AutoColumn } from '../../components/Column'
 
@@ -18,8 +18,6 @@ import { usePairs } from '../../data/Reserves'
 import { toV2LiquidityToken, useTrackedTokenPairs } from '../../state/user/hooks'
 import { Dots } from '../../components/swap/styleds'
 import { CardSection, DataCard, CardNoise, CardBGImage } from './styleds'
-import { Icons, Table, TableFooter, TableHeader, TableRow, TitleText } from './table'
-import AppBody, { BodyWrapper } from '../AppBody'
 
 const PageWrapper = styled(AutoColumn)`
   max-width: 640px;
@@ -129,11 +127,12 @@ export default function Pool() {
 
   return (
     <>
-        {/* <SwapPoolTabs active={'pool'} /> */}
+      <PageWrapper>
+        <SwapPoolTabs active={'pool'} />
 
-        <AutoColumn gap="lg" justify="center" style={{width: '100%'}}>
+        <AutoColumn gap="lg" justify="center">
           <AutoColumn gap="lg" style={{ width: '100%' }}>
-            {/* <TitleRow style={{ marginTop: '1rem' }} padding={'0'}>
+            <TitleRow style={{ marginTop: '1rem' }} padding={'0'}>
               <HideSmall>
                 <TYPE.mediumHeader style={{ marginTop: '0.5rem', justifySelf: 'flex-start' }} fontFamily="DM Sans">
                   Top Pool
@@ -144,7 +143,7 @@ export default function Pool() {
                   Create A Pool
                 </CreatePoolButton>
               </ButtonRow>
-            </TitleRow> */}
+            </TitleRow>
 
             {/* {!account ? (
               <Card padding="40px">
@@ -181,39 +180,8 @@ export default function Pool() {
               </EmptyProposals>
             )} */}
           </AutoColumn>
-          <BodyWrapper maxWidth='900px'>
-          <Table>
-            <TableHeader/>
-            <TableRow data={[<Row gap='8px' justifyContent={'center'}>
-                  <Icons/>
-                  <TitleText>ETH-USDC</TitleText>
-                </Row>, '$497,907,052', '$497,907,052', '$497,907,052', '9.54139%']}/>
-            <TableRow data={[<Row gap='8px' justifyContent={'center'}>
-              <Icons/>
-              <TitleText>ETH-USDC</TitleText>
-            </Row>, '$497,907,052', '$497,907,052', '$497,907,052', '9.54139%']}/>
-            <TableRow data={[<Row gap='8px' justifyContent={'center'}>
-                  <Icons/>
-                  <TitleText>ETH-USDC</TitleText>
-                </Row>, '$497,907,052', '$497,907,052', '$497,907,052', '9.54139%']}/>
-            <TableRow data={[<Row gap='8px' justifyContent={'center'}>
-              <Icons/>
-              <TitleText>ETH-USDC</TitleText>
-            </Row>, '$497,907,052', '$497,907,052', '$497,907,052', '9.54139%']}/>
-            <TableRow data={[<Row gap='8px' justifyContent={'center'}>
-                  <Icons/>
-                  <TitleText>ETH-USDC</TitleText>
-                </Row>, '$497,907,052', '$497,907,052', '$497,907,052', '9.54139%']}/>
-            <TableRow data={[<Row gap='8px' justifyContent={'center'}>
-              <Icons/>
-              <TitleText>ETH-USDC</TitleText>
-            </Row>, '$497,907,052', '$497,907,052', '$497,907,052', '9.54139%']}/>
-          </Table>
-          <TableFooter/>
-
-          </BodyWrapper>
-          
         </AutoColumn>
+      </PageWrapper>
     </>
   )
 }
