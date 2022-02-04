@@ -124,8 +124,6 @@ export default function Swap() {
     useCurrency(loadedUrlParams?.outputCurrencyId)
   ]
 
-  const [routeLoading, setRouteLoading] = useState<boolean>(true)
-
   // const [dismissTokenWarning, setDismissTokenWarning] = useState<boolean>(false)
   // const urlLoadedTokens: Token[] = useMemo(
   //   () => [loadedInputCurrency, loadedOutputCurrency]?.filter((c): c is Token => c instanceof Token) ?? [],
@@ -150,7 +148,14 @@ export default function Swap() {
 
   // swap state
   const { independentField, typedValue, recipient } = useSwapState()
-  const { v2Trade, currencyBalances, parsedAmount, currencies, inputError: swapInputError } = useDerivedSwapInfo()
+  const {
+    trade,
+    currencyBalances,
+    parsedAmount,
+    currencies,
+    inputError: swapInputError,
+    tradeLoading
+  } = useDerivedSwapInfo()
   // const { wrapType, execute: onWrap, inputError: wrapInputError } = useWrapCallback(
   //   currencies[Field.INPUT],
   //   currencies[Field.OUTPUT],
@@ -158,15 +163,6 @@ export default function Swap() {
   // )
   // const showWrap: boolean = wrapType !== WrapType.NOT_APPLICABLE
   // const { address: recipientAddress } = useENSAddress(recipient)
-  const recipientAddress = useAddressNormalizer(recipient)
-  const toggledVersion = useToggledVersion()
-  const tradesByVersion = {
-    [Version.v2]: v2Trade
-  }
-  const trade = tradesByVersion[toggledVersion]
-  const defaultTrade = tradesByVersion[DEFAULT_VERSION]
-
-  const betterTradeLinkVersion: Version | undefined = Version.v2
 
   const parsedAmounts = {
     [Field.INPUT]: independentField === Field.INPUT ? parsedAmount : trade?.inputAmount,
@@ -217,25 +213,25 @@ export default function Swap() {
   )
   const noRoute = !route
 
-  useEffect(() => {
-    let routeTimeout
+  // useEffect(() => {
+  //   let routeTimeout
 
-    if (noRoute) {
-      if (!routeLoading) setRouteLoading(true)
+  //   if (noRoute) {
+  //     if (!routeLoading) setRouteLoading(true)
 
-      routeTimeout = setTimeout(() => {
-        setRouteLoading(false)
-      }, 5000)
-    } else {
-      setRouteLoading(false)
-    }
+  //     routeTimeout = setTimeout(() => {
+  //       setRouteLoading(false)
+  //     }, 5000)
+  //   } else {
+  //     setRouteLoading(false)
+  //   }
 
-    return () => {
-      if (routeTimeout) {
-        clearTimeout(routeTimeout)
-      }
-    }
-  }, [noRoute, routeLoading])
+  //   return () => {
+  //     if (routeTimeout) {
+  //       clearTimeout(routeTimeout)
+  //     }
+  //   }
+  // }, [noRoute, routeLoading])
 
   // check whether the user has approved the router on the input token
   const [approval, approveCallback] = useApproveCallbackFromTrade(trade, allowedSlippage)
@@ -291,7 +287,7 @@ export default function Swap() {
           txHash: undefined
         })
       })
-  }, [tradeToConfirm, account, priceImpactWithoutFee, recipient, recipientAddress, showConfirm, swapCallback, trade])
+  }, [tradeToConfirm, priceImpactWithoutFee, showConfirm, swapCallback])
 
   // errors
   const [showInverted, setShowInverted] = useState<boolean>(false)
@@ -470,7 +466,7 @@ export default function Swap() {
               <ButtonGradient onClick={toggleWalletModal}>Connect Wallet</ButtonGradient>
             ) : noRoute && userHasSpecifiedInputOutput ? (
               <RedGradientButton style={{ textAlign: 'center' }} disabled>
-                {routeLoading ? 'Fetching route...' : 'Insufficient liquidity for this trade'}
+                {tradeLoading ? 'Fetching route...' : 'Insufficient liquidity for this trade'}
               </RedGradientButton>
             ) : showApproveFlow ? (
               <RowBetween>

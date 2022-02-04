@@ -3,6 +3,7 @@ import { AbstractConnector } from '@web3-starknet-react/abstract-connector'
 
 // import { fortmatic, injected, portis, walletconnect, walletlink, argentX } from '../connectors'
 import { argentX } from '../connectors'
+import ARGENTX_ICON from '../assets/images/argentx.png'
 
 export const TOKEN0_ADDRESS = '0x178dbb224d42b76d1e4697741c8c43068ced9792bc511941ce865c0fc951369'
 export const TOKEN1_ADDRESS = '0x41e1b41f88e7c8390c0d23f927b37dd69e2e8fec21f52631e04b210a71c0fe4'
@@ -96,7 +97,7 @@ export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } 
 export interface WalletInfo {
   connector?: AbstractConnector
   name: string
-  iconName: string
+  icon: string
   description: string
   href: string | null
   color: string
@@ -109,7 +110,7 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
   ArgentX: {
     connector: argentX,
     name: 'Argent-X',
-    iconName: 'argentx.png',
+    icon: ARGENTX_ICON,
     description: 'Starknet Browser Wallet',
     href: null,
     color: '#FF875B'

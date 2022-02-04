@@ -7,6 +7,7 @@ import { useActiveStarknetReact } from './index'
 import REGISTRY_ABI from '../constants/abis/Registry.json'
 import { REGISTRY_ADDRESS, ROUTER_ADDRESS } from '../constants'
 import JediSwapRouterABI from '../constants/abis/Router.json'
+import { MULTICALL_NETWORKS, MULTICALL_ABI } from '../constants/multicall'
 
 // returns null on errors
 function useContract(address: string | undefined, ABI: any, withSignerIfPossible = true): Contract | null {
@@ -36,7 +37,7 @@ function useContract(address: string | undefined, ABI: any, withSignerIfPossible
       console.error('Failed to get contract', error)
       return null
     }
-  }, [address, ABI, library, withSignerIfPossible, account])
+  }, [address, ABI, library, connector, withSignerIfPossible, account])
 }
 
 export function useTokenContract(tokenAddress?: string, withSignerIfPossible?: boolean): Contract | null {
@@ -53,4 +54,10 @@ export function useRegistryContract(withSignerIfPossible?: boolean): Contract | 
 
 export function useRouterContract(): Contract | null {
   return useContract(ROUTER_ADDRESS, JediSwapRouterABI, true)
+}
+
+export function useMulticallContract(): Contract | null {
+  const { chainId } = useActiveStarknetReact()
+
+  return useContract(MULTICALL_NETWORKS[chainId ?? 5], MULTICALL_ABI, false)
 }

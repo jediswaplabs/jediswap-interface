@@ -4,10 +4,10 @@ import ERC20_ABI from '../../constants/abis/erc20.json'
 import { useAllTokens } from '../../hooks/Tokens'
 import { useActiveStarknetReact } from '../../hooks'
 import { isAddress } from '../../utils'
-import { NEVER_RELOAD, useMultipleStarknetCallSingleData, useStarknetCall } from '../../hooks/useStarknet'
 import { Abi, uint256 } from '@jediswap/starknet'
 import { useAddressNormalizer } from '../../hooks/useAddressNormalizer'
 import { useTokenContract } from '../../hooks/useContract'
+import { useMultipleContractSingleData, useSingleCallResult } from '../multicall/hooks'
 
 /**
  * Returns a map of the given addresses to their eventually consistent ETH balances.
@@ -58,14 +58,18 @@ export function useToken0Balance(uncheckedAddress?: string): CurrencyAmount | un
 
   const address = useAddressNormalizer(uncheckedAddress)
 
-  const result = useStarknetCall(tokenContract, 'balanceOf', { account: address }, NEVER_RELOAD).balance
-  console.log('🚀 ~ file: hooks.ts ~ line 77 ~ useToken0Balance ~ result', result)
+  const balance = useSingleCallResult(tokenContract, 'balanceOf', { account: address ?? '' })
+  console.log('🚀 ~ file: hooks.ts ~ line 77 ~ useToken0Balance ~ result', balance)
+
+  const uint256Balance: uint256.Uint256 = useMemo(() => ({ low: balance?.result?.[0], high: balance?.result?.[1] }), [
+    balance?.result
+  ])
 
   return useMemo(() => {
-    const value = result ? uint256.uint256ToBN(result as any) : undefined
+    const value = balance ? uint256.uint256ToBN(uint256Balance) : undefined
     if (value && address) return CurrencyAmount.token0(JSBI.BigInt(value.toString()))
     return undefined
-  }, [address, result])
+  }, [address, balance, uint256Balance])
 }
 
 /**
@@ -81,24 +85,29 @@ export function useTokenBalancesWithLoadingIndicator(
   )
 
   const validatedTokenAddresses = useMemo(() => validatedTokens.map(vt => vt.address), [validatedTokens])
+  console.log('🚀 ~ file: hooks.ts ~ line 90 ~ validatedTokenAddresses', validatedTokenAddresses)
 
-  const balances = useMultipleStarknetCallSingleData(
-    validatedTokenAddresses,
-    ERC20_ABI as Abi[],
-    'balanceOf',
-    address ? { address } : undefined
-  )
+  const balances = useMultipleContractSingleData(validatedTokenAddresses, ERC20_ABI as Abi[], 'balanceOf', {
+    account: address ?? ''
+  })
+  console.log('🚀 ~ file: hooks.ts ~ line 92 ~ balances', balances)
 
-  const anyLoading: boolean = useMemo(() => balances.some(callState => !callState), [balances])
+  const anyLoading: boolean = useMemo(() => balances.some(callState => callState.loading), [balances])
 
   return [
     useMemo(
       () =>
         address && validatedTokens.length > 0
           ? validatedTokens.reduce<{ [tokenAddress: string]: TokenAmount | undefined }>((memo, token, i) => {
-              const result = balances?.[i]?.balance
-              // console.log('🚀 ~ file: hooks.ts ~ line 102 ~ result', result)
-              const value = result ? uint256.uint256ToBN(result as any) : undefined
+              // if (i % 2 === 1) continue
+
+              // const resultLow = balances?.[i]?.result?.[0]
+              // const resultHigh = balances?.[i]?.result?.[1]
+              // // console.log('🚀 ~ file: hooks.ts ~ line 102 ~ result', result)
+
+              // const uint256Balance: uint256.Uint256 = { low: resultLow, high: resultHigh }
+              // const value = resultLow && resultHigh ? uint256.uint256ToBN(uint256Balance) : undefined
+              const value = balances?.[i]?.result?.[0]
               const amount = value ? JSBI.BigInt(value.toString()) : undefined
               if (amount) {
                 memo[token.address] = new TokenAmount(token, amount)

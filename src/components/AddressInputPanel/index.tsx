@@ -106,7 +106,7 @@ export default function AddressInputPanel({
                 Recipient
               </TYPE.black>
               {address && chainId && (
-                <ExternalLink href={getVoyagerLink(chainId, address, 'address')} style={{ fontSize: '14px' }}>
+                <ExternalLink href={getVoyagerLink(chainId, address, 'contract')} style={{ fontSize: '14px' }}>
                   (View on Voyager)
                 </ExternalLink>
               )}

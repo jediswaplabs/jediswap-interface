@@ -112,8 +112,9 @@ export function useDerivedSwapInfo(): {
   currencies: { [field in Field]?: Currency }
   currencyBalances: { [field in Field]?: CurrencyAmount }
   parsedAmount: CurrencyAmount | undefined
-  v2Trade: Trade | undefined
+  trade: Trade | undefined
   inputError?: string
+  tradeLoading: boolean
 } {
   const { account } = useActiveStarknetReact()
 
@@ -139,16 +140,23 @@ export function useDerivedSwapInfo(): {
   const isExactIn: boolean = independentField === Field.INPUT
   const parsedAmount = tryParseAmount(typedValue, (isExactIn ? inputCurrency : outputCurrency) ?? undefined)
 
-  const bestTradeExactIn = useTradeExactIn(isExactIn ? parsedAmount : undefined, outputCurrency ?? undefined)
+  const [bestTradeExactIn, bestTradeInLoading] = useTradeExactIn(
+    isExactIn ? parsedAmount : undefined,
+    outputCurrency ?? undefined
+  )
   // console.log(
   //   '🚀 ~ file: hooks.ts ~ line 147 ~ useDerivedSwapInfo ~ bestTradeExactIn ',
   //   bestTradeExactIn,
   //   parsedAmount,
   //   outputCurrency
   // )
-  const bestTradeExactOut = useTradeExactOut(inputCurrency ?? undefined, !isExactIn ? parsedAmount : undefined)
+  const [bestTradeExactOut, bestTradeOutLoading] = useTradeExactOut(
+    inputCurrency ?? undefined,
+    !isExactIn ? parsedAmount : undefined
+  )
 
-  const v2Trade = isExactIn ? bestTradeExactIn : bestTradeExactOut
+  const trade = isExactIn ? bestTradeExactIn : bestTradeExactOut
+  console.log('🚀 ~ file: hooks.ts ~ line 159 ~ useDerivedSwapInfo ~ trade', trade)
 
   const currencyBalances = {
     [Field.INPUT]: relevantTokenBalances[0],
@@ -192,7 +200,7 @@ export function useDerivedSwapInfo(): {
 
   const [allowedSlippage] = useUserSlippageTolerance()
 
-  const slippageAdjustedAmounts = v2Trade && allowedSlippage && computeSlippageAdjustedAmounts(v2Trade, allowedSlippage)
+  const slippageAdjustedAmounts = trade && allowedSlippage && computeSlippageAdjustedAmounts(trade, allowedSlippage)
 
   // compare input balance to max input based on version
   const [balanceIn, amountIn] = [
@@ -208,8 +216,9 @@ export function useDerivedSwapInfo(): {
     currencies,
     currencyBalances,
     parsedAmount,
-    v2Trade: v2Trade ?? undefined,
-    inputError
+    trade: trade ?? undefined,
+    inputError,
+    tradeLoading: isExactIn ? bestTradeInLoading : bestTradeOutLoading
   }
 }
 
