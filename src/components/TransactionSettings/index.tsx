@@ -126,6 +126,14 @@ const SlippageEmojiContainer = styled.span`
   `}
 `
 
+const MinutesText = styled.div`
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  padding-left: 8px;
+  letter-spacing: 0px;
+  color: ${({ theme }) => theme.jediWhite};
+`
+
 export interface SlippageTabsProps {
   rawSlippage: number
   setRawSlippage: (rawSlippage: number) => void
@@ -284,12 +292,7 @@ export default function SlippageTabs({ rawSlippage, setRawSlippage, deadline, se
                 onChange={e => parseCustomDeadline(e.target.value)}
               />
             </OptionCustom>
-            <TYPE.body
-              style={{ paddingLeft: '8px', fontFamily: "'DM Sans', 'sans-serif'", letterSpacing: '0px' }}
-              fontSize={14}
-            >
-              minutes
-            </TYPE.body>
+            <MinutesText>minutes</MinutesText>
           </RowFixed>
         </SlippageWrapper>
       </AutoColumn>
