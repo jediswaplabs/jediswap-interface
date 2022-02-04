@@ -1,4 +1,4 @@
-import { FunctionAbi } from './../../../node_modules/@jediswap/sdk/node_modules/@jediswap/starknet/src/types'
+import { FunctionAbi } from '@jediswap/starknet'
 import { createAction } from '@reduxjs/toolkit'
 import { Abi, Calldata } from '@jediswap/starknet'
 import { isAddress } from '../../utils'

@@ -1,4 +1,4 @@
-import { FunctionAbi } from './../../../node_modules/@jediswap/sdk/node_modules/@jediswap/starknet/src/types'
+import { FunctionAbi } from '@jediswap/starknet'
 import { Abi, Args, compileCalldata, number, validateAndParseAddress } from '@jediswap/starknet'
 // import { Interface, FunctionFragment } from '@ethersproject/abi'
 import { BigNumber } from '@ethersproject/bignumber'
