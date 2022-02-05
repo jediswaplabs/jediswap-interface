@@ -370,7 +370,7 @@ export default function Swap() {
           </div>
           <HeaderRow>
             <BalanceText>Swap From</BalanceText>
-            <BalanceText>Balance: {currencyBalances.INPUT?.toFixed(6) ?? 0}</BalanceText>
+            <BalanceText>Balance: {currencyBalances.INPUT?.toSignificant(6) ?? 0}</BalanceText>
           </HeaderRow>
           <AutoColumn>
             <CurrencyInputPanel
@@ -405,7 +405,7 @@ export default function Swap() {
             </AutoColumn>
             <HeaderRow>
               <BalanceText>Swap To (est.)</BalanceText>
-              <BalanceText>Balance: {currencyBalances.OUTPUT?.toFixed(6) ?? 0}</BalanceText>
+              <BalanceText>Balance: {currencyBalances.OUTPUT?.toSignificant(6) ?? 0}</BalanceText>
             </HeaderRow>
             <CurrencyInputPanel
               value={formattedAmounts[Field.OUTPUT]}

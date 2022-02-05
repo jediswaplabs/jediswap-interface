@@ -23,7 +23,7 @@ export const PaddedColumn = styled(AutoColumn)`
 `
 
 export const MenuItem = styled(RowBetween)`
-  padding: 12px 32px;
+  padding: 18px 32px;
   height: 56px;
   display: grid;
   grid-template-columns: auto minmax(auto, 1fr) auto minmax(0, 72px);
@@ -76,6 +76,7 @@ export const Separator = styled.div`
   width: 100%;
   background: linear-gradient(to left, #50d5ff, #ef35ff);
   height: 1px;
+  margin-bottom: 16px;
 `
 
 export const SeparatorDark = styled.div`
