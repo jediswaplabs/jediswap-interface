@@ -1,16 +1,13 @@
 import { ChainId, JSBI, Percent, Token, WTOKEN0 } from '@jediswap/sdk'
 import { AbstractConnector } from '@web3-starknet-react/abstract-connector'
+import { STABLE_TOKEN0, TOKEN0, TOKEN1, TOKEN2 } from './jediTokens'
 
 // import { fortmatic, injected, portis, walletconnect, walletlink, argentX } from '../connectors'
 import { argentX } from '../connectors'
 import ARGENTX_ICON from '../assets/images/argentx.png'
 
-export const TOKEN0_ADDRESS = '0x178dbb224d42b76d1e4697741c8c43068ced9792bc511941ce865c0fc951369'
-export const TOKEN1_ADDRESS = '0x41e1b41f88e7c8390c0d23f927b37dd69e2e8fec21f52631e04b210a71c0fe4'
-export const TOKEN2_ADDRESS = '0x496585a4cbaf2d7475b1f5294b83e7fea343ff3fe7c7625b87ea46c6f83eb1d'
-
-export const REGISTRY_ADDRESS = '0x584dcb0c7fb57d397196cb18dddc77ef22590e47f17ff93495c2738fd8e0e26'
-export const ROUTER_ADDRESS = '0x60f1afee33746df30700dae622000f0c88fc92922aebc6d425903bb1f2d6d49'
+export const REGISTRY_ADDRESS = '0x8b2d26fcdc87d11c784a07353ca529622775162cebb555a2824dac27f9ff07'
+export const ROUTER_ADDRESS = '0x42426b8af6cfdefba38684677968f7674a24f8fd161e52b8b5f5b481d522366'
 
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000000000000000000000000000'
 
@@ -26,12 +23,6 @@ type ChainTokenList = {
 // export const MKR = new Token(ChainId.MAINNET, '0x9f8F72aA9304c8B593d555F12eF6589cC3A579A2', 18, 'MKR', 'Maker')
 // export const AMPL = new Token(ChainId.MAINNET, '0xD46bA6D942050d489DBd938a2C909A5d5039A161', 9, 'AMPL', 'Ampleforth')
 // export const WBTC = new Token(ChainId.MAINNET, '0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599', 18, 'WBTC', 'Wrapped BTC')
-
-export const TOKEN0 = new Token(ChainId.GÖRLI, TOKEN0_ADDRESS, 18, 'JAN26J0', 'Jan26 J0')
-
-export const TOKEN1 = new Token(ChainId.GÖRLI, TOKEN1_ADDRESS, 18, 'JAN26J1', 'Jan26 J1')
-
-export const TOKEN2 = new Token(ChainId.GÖRLI, TOKEN2_ADDRESS, 18, 'JAN26J2', 'Jan26 J2')
 
 // TODO this is only approximate, it's actually based on blocks
 export const PROPOSAL_LENGTH_IN_DAYS = 7
@@ -56,7 +47,7 @@ const WTOKEN0_ONLY: ChainTokenList = {
 export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
   ...WTOKEN0_ONLY,
   // [ChainId.MAINNET]: [...WETH_ONLY[ChainId.MAINNET], DAI, USDC, USDT, COMP, MKR]
-  [ChainId.GÖRLI]: [TOKEN0]
+  [ChainId.GÖRLI]: [TOKEN0, STABLE_TOKEN0]
   // [ChainId.MAINNET]: [TOKEN0, TOKEN1],
 }
 
@@ -73,7 +64,7 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
 // used for display in the default list when adding liquidity
 export const SUGGESTED_BASES: ChainTokenList = {
   ...WTOKEN0_ONLY,
-  [ChainId.GÖRLI]: [TOKEN0]
+  [ChainId.GÖRLI]: [TOKEN0, STABLE_TOKEN0]
 }
 
 // used to construct the list of all pairs we consider by default in the frontend
