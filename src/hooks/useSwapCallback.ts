@@ -10,7 +10,6 @@ import isZero from '../utils/isZero'
 import { useActiveStarknetReact } from './index'
 import useTransactionDeadline from './useTransactionDeadline'
 // import useENS from './useENS'
-import { Version } from './useToggledVersion'
 
 export enum SwapCallbackState {
   INVALID,
@@ -87,7 +86,7 @@ function useSwapCallArguments(
       )
     }
     return swapMethods.map(parameters => ({ parameters, contract }))
-  }, [account, allowedSlippage, chainId, deadline, library, recipient, trade])
+  }, [account, allowedSlippage, chainId, contract, deadline, library, recipient, trade])
 }
 
 // returns a function that will execute a swap, if the parameters are all valid

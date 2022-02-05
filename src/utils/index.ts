@@ -3,8 +3,9 @@ import { useMemo } from 'react'
 // import { Contract } from '@ethersproject/contracts'
 import { Abi, Contract, Provider, Signer, SignerInterface } from '@jediswap/starknet'
 import { BigNumber } from '@ethersproject/bignumber'
-import { TOKEN1, TOKEN2, ZERO_ADDRESS } from '../constants'
-import { ChainId, JSBI, Percent, Token, CurrencyAmount, Currency, TOKEN0 } from '@jediswap/sdk'
+import { ZERO_ADDRESS } from '../constants'
+import { jediTokensList } from '../constants/jediTokens'
+import { ChainId, JSBI, Percent, Token, CurrencyAmount, Currency, TOKEN0 as Currency0 } from '@jediswap/sdk'
 import { TokenAddressMap } from '../state/lists/hooks'
 import { validateAndParseAddress } from '@jediswap/starknet'
 import isZero from './isZero'
@@ -114,6 +115,9 @@ export function escapeRegExp(string: string): string {
 }
 
 export function isTokenOnList(defaultTokens: TokenAddressMap, currency?: Currency): boolean {
-  if (currency === TOKEN0 || currency === TOKEN1 || currency === TOKEN2) return true
-  return Boolean(currency instanceof Token && defaultTokens[currency.chainId]?.[currency.address])
+  if (currency === Currency0) return true
+
+  const isJediToken = Object.values(jediTokensList).some(token => token === currency)
+
+  return isJediToken || Boolean(currency instanceof Token && defaultTokens[currency.chainId]?.[currency.address])
 }

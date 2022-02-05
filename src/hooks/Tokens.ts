@@ -1,4 +1,4 @@
-import { TOKEN1, TOKEN2 } from './../constants/index'
+import { jediTokensList } from '../constants/jediTokens'
 import { Args, shortString, number as starkNumber } from '@jediswap/starknet'
 import { parseBytes32String } from '@ethersproject/strings'
 import { Currency, TOKEN0, Token, currencyEquals } from '@jediswap/sdk'
@@ -17,12 +17,6 @@ export function useAllTokens(): { [address: string]: Token } {
   const { chainId } = useActiveStarknetReact()
   const userAddedTokens = useUserAddedTokens()
 
-  const jediTokenMap = useMemo(() => {
-    return {
-      [TOKEN1.address]: TOKEN1,
-      [TOKEN2.address]: TOKEN2
-    }
-  }, [])
   const allTokens = useSelectedTokenList()
 
   return useMemo(() => {
@@ -37,10 +31,10 @@ export function useAllTokens(): { [address: string]: Token } {
           },
           // must make a copy because reduce modifies the map, and we do not
           // want to make a copy in every iteration
-          { ...allTokens[chainId], ...jediTokenMap }
+          { ...allTokens[chainId], ...jediTokensList }
         )
     )
-  }, [chainId, userAddedTokens, allTokens, jediTokenMap])
+  }, [chainId, userAddedTokens, allTokens])
 }
 
 // Check if currency is included in custom list from user storage
@@ -80,6 +74,7 @@ export function useToken(tokenAddress?: string): Token | undefined | null {
 
   const address = isAddress(tokenAddress)
   const token: Token | undefined = address ? tokens[address] : undefined
+  console.log('🚀 ~ file: Tokens.ts ~ line 77 ~ useToken ~ token', token)
 
   const tokenContract = useTokenContract(address ? address : undefined)
 
