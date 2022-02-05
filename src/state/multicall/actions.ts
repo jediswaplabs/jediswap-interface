@@ -26,7 +26,6 @@ export function toCallKey(call: Call): string {
   //   }
 
   const key = `${call.address}-${call.methodName}-${call.calldata_len}${callDataToString(call.calldata)}`
-  console.log('🚀 ~ file: actions.ts ~ line 27 ~ toCallKey ~ key', key, call.calldata_len)
 
   // if (call.calldata) {
   return key

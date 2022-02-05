@@ -56,7 +56,6 @@ export const NEVER_RELOAD: ListenerOptions = {
 
 // the lowest level call for subscribing to contract data
 function useCallsData(calls: (Call | undefined)[], methodAbi?: FunctionAbi, options?: ListenerOptions): CallResult[] {
-  console.log('🚀 ~ file: hooks.ts ~ line 57 ~ useCallsData ~ calls', calls)
   const { chainId } = useActiveStarknetReact()
   const callResults = useSelector<AppState, AppState['multicall']['callResults']>(state => state.multicall.callResults)
   const dispatch = useDispatch<AppDispatch>()
@@ -77,7 +76,7 @@ function useCallsData(calls: (Call | undefined)[], methodAbi?: FunctionAbi, opti
     const callKeys: string[] = JSON.parse(serializedCallKeys)
     if (!chainId || callKeys.length === 0) return undefined
     const calls = callKeys.map(key => parseCallKey(key))
-    console.log('🚀 ~ file: hooks.ts ~ line 77 ~ useEffect ~ calls', serializedCallKeys)
+
     dispatch(
       addMulticallListeners({
         chainId,
@@ -143,12 +142,12 @@ function toCallState(
 ): CallState {
   if (!callResult) return INVALID_CALL_STATE
   const { valid, data, blockNumber } = callResult
-  console.log('🚀 ~ file: hooks.ts ~ line 143 ~ data', data)
+
   if (!valid) return INVALID_CALL_STATE
   if (valid && !blockNumber) return LOADING_CALL_STATE
   if (!latestBlockNumber) return LOADING_CALL_STATE
   const success = data && data.length > 2
-  console.log('🚀 ~ file: hooks.ts ~ line 149 ~ success', success)
+
   const syncing = (blockNumber ?? 0) < latestBlockNumber
   let result: Result | undefined = undefined
   if (success && data) {
@@ -222,7 +221,6 @@ export function useMultipleContractSingleData(
 
   const callDataLength = callDataProps?.calldata_len.toString()
   const callData = callDataProps?.calldata
-  console.log('🚀 ~ file: hooks.ts ~ line 213 ~ callData', callData)
 
   const calls = useMemo(
     () =>
@@ -240,12 +238,10 @@ export function useMultipleContractSingleData(
         : [],
     [addresses, callData, callDataLength, callInputs, methodName, selector]
   )
-  console.log('🚀 ~ file: hooks.ts ~ line 231 ~ calls', calls)
 
   const methodAbi = useValidatedMethodAbi(contractInterface, methodName)
 
   const results = useCallsData(calls, methodAbi, options)
-  console.log('🚀 ~ file: hooks.ts ~ line 233 ~ results', results)
 
   const latestBlockNumber = useBlockNumber()
 
@@ -264,8 +260,6 @@ export function useSingleCallResult(
 
   const selector = useMemo(() => stark.getSelectorFromName(methodName), [methodName])
   const { calldata_len, calldata } = useMemo(() => computeCallDataProps(inputs), [inputs])
-  console.log('🚀 ~ file: hooks.ts ~ line 245 ~ calldata', calldata)
-  console.log('🚀 ~ file: hooks.ts ~ line 248 ~ isValidMethodArgs(inputs)', methodName, isValidMethodArgs(inputs))
 
   const calls = useMemo<Call[]>(() => {
     return contract && isAddress(contract.connectedTo) && selector && isValidMethodArgs(inputs)
@@ -279,12 +273,11 @@ export function useSingleCallResult(
         ]
       : []
   }, [calldata, calldata_len, contract, inputs, methodName, selector])
-  console.log('🚀 ~ file: hooks.ts ~ line 260 ~ calls', calls)
 
   const methodAbi = useValidatedMethodAbi(contract?.abi, methodName)
 
   const result = useCallsData(calls, methodAbi, options)[0]
-  console.log('🚀 ~ file: hooks.ts ~ line 259 ~ result', result)
+
   const latestBlockNumber = useBlockNumber()
 
   return useMemo(() => {

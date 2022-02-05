@@ -82,29 +82,18 @@ export function useToken(tokenAddress?: string): Token | undefined | null {
   const token: Token | undefined = address ? tokens[address] : undefined
 
   const tokenContract = useTokenContract(address ? address : undefined)
-  console.log('🚀 ~ file: Tokens.ts ~ line 70 ~ useToken ~ tokenContract', tokenContract)
-  // const tokenContractBytes32 = useBytes32TokenContract(address ? address : undefined, false)
-  // const token: Token | undefined = address ? tokens[address] : undefined
 
   const tokenName = useSingleCallResult(token ? undefined : tokenContract, 'name', undefined, NEVER_RELOAD)
-  console.log('🚀 ~ file: Tokens.ts ~ line 89 ~ useToken ~ tokenName', tokenName)
 
   const symbol = useSingleCallResult(token ? undefined : tokenContract, 'symbol', undefined, NEVER_RELOAD)
-  console.log('🚀 ~ file: Tokens.ts ~ line 89 ~ useToken ~ symbol', parseStringFromArgs(symbol))
+
   const decimals = useSingleCallResult(token ? undefined : tokenContract, 'decimals', undefined, NEVER_RELOAD)
-  // console.log(
-  //   '🚀 ~ file: Tokens.ts ~ line 93 ~ useToken ~ decimals',
-  //   typeof decimals,
-  //   parseStringFromArgs(decimals, true)
-  // )
 
   return useMemo(() => {
     if (token) return token
     if (!chainId || !address) return undefined
     if (decimals.loading || symbol.loading || tokenName.loading) return null
     if (decimals.result) {
-      console.log('Building Token')
-
       const token = new Token(
         chainId,
         address,
@@ -112,7 +101,7 @@ export function useToken(tokenAddress?: string): Token | undefined | null {
         parseStringFromArgs(symbol.result?.[0]),
         parseStringFromArgs(symbol.result?.[0])
       )
-      // console.log('🚀 ~ file: Tokens.ts ~ line 112 ~ returnuseMemo ~ token ', token)
+      //
       return token
     }
     return undefined

@@ -7,7 +7,6 @@ export function useBlockHash(blockNumber: number | undefined): string | undefine
 
   const blockhashCallback = useCallback(async () => {
     const block = await library?.getBlock(undefined, blockNumber)
-    console.log('🚀 ~ file: useBlockHashCallback.tsx ~ line 10 ~ blockhashCallback ~ block', block)
 
     setBlockHash(block?.block_hash)
   }, [blockNumber, library])

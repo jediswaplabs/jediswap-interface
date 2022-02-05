@@ -14,15 +14,8 @@ function useContract(address: string | undefined, ABI: any, withSignerIfPossible
   const { library, account, connector } = useActiveStarknetReact()
 
   return useMemo(() => {
-    if (!address || !ABI || !library) {
-      // console.log(
-      //   '🚀 ~ file: useContract.ts ~ line 32 ~ returnuseMemo ~ !address || !ABI || !library',
-      //   address,
-      //   ABI,
-      //   library
-      // )
-      return null
-    }
+    if (!address || !ABI || !library) return null
+
     try {
       const contract = getContract(
         address,

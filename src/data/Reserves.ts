@@ -29,14 +29,13 @@ export function usePairs(currencies: [Currency | undefined, Currency | undefined
       ]),
     [chainId, currencies]
   )
-  console.log('🚀 ~ file: Reserves.ts ~ line 32 ~ usePairs ~ tokens', tokens)
 
   // const pairAddresses = usePairAddresses(tokens)
 
   const callInputs: (Args | undefined)[] = tokens.map(([tokenA, tokenB]) =>
     tokenA && tokenB && !tokenA.equals(tokenB) ? { token0: tokenA?.address, token1: tokenB?.address } : undefined
   )
-  // console.log('🚀 ~ file: Reserves.ts ~ line 34 ~ usePairs ~ pairAddresses', pairAddresses)
+  //
 
   const registryContract = useRegistryContract(true)
 
@@ -46,10 +45,8 @@ export function usePairs(currencies: [Currency | undefined, Currency | undefined
     callInputs,
     NEVER_RELOAD
   )
-  console.log('🚀 ~ file: Reserves.ts ~ line 44 ~ usePairs ~ pairAddressesCallState', pairAddressesCallState)
 
   const pairAddresses = pairAddressesCallState.map(pairAddress => pairAddress.result?.[0])
-  console.log('🚀 ~ file: Reserves.ts ~ line 46 ~ usePairs ~ pairAddresses', pairAddresses)
 
   // const pairAddresses = useMemo(
   //   () =>
@@ -60,7 +57,6 @@ export function usePairs(currencies: [Currency | undefined, Currency | undefined
   // )
 
   const results = useMultipleContractSingleData(pairAddresses, JediswapPairABI as Abi[], 'get_reserves')
-  console.log('🚀 ~ file: Reserves.ts ~ line 44 ~ usePairs ~ results', results)
 
   return useMemo(() => {
     return results.map((result, i) => {
@@ -72,7 +68,7 @@ export function usePairs(currencies: [Currency | undefined, Currency | undefined
       if (!tokenA || !tokenB || tokenA.equals(tokenB)) return [PairState.INVALID, null]
       if (!reserves) return [PairState.NOT_EXISTS, null]
       const { reserve0, reserve1 } = reserves
-      console.log('🚀 ~ file: Reserves.ts ~ line 61 ~ returnresults.map ~ reserves', reserves)
+
       const [token0, token1] = tokenA.sortsBefore(tokenB) ? [tokenA, tokenB] : [tokenB, tokenA]
 
       // const reserve0Amount = JSBI.BigInt(uint256.uint256ToBN(reserve0 as any).toString())

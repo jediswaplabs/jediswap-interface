@@ -43,9 +43,8 @@ async function fetchChunk(
       obj.calldata_len,
       ...obj.calldata
     ])
-    console.log('🚀 ~ file: updater.tsx ~ line 37 ~ calls', calls)
+
     const response = await multicallContract.call('aggregate', { calls })
-    console.log('🚀 ~ file: updater.tsx ~ line 38 ~ response', response)
 
     resultsBlockNumber = response.block_number
     returnData_len = response.result_len
@@ -223,7 +222,6 @@ export default function Updater(): null {
     const outdatedCallKeys: string[] = JSON.parse(serializedOutdatedCallKeys)
     if (outdatedCallKeys.length === 0) return
     const calls = outdatedCallKeys.map(key => parseCallKey(key))
-    console.log('🚀 ~ file: updater.tsx ~ line 149 ~ useEffect ~ calls', calls)
 
     const chunkedCalls = chunkArray(calls, CALL_CHUNK_SIZE)
 
@@ -253,14 +251,8 @@ export default function Updater(): null {
 
             // accumulates the length of all previous indices
             const firstCallKeyIndex = chunkedCalls.slice(0, index).reduce<number>((memo, curr) => memo + curr.length, 0)
-            console.log('🚀 ~ file: updater.tsx ~ line 179 ~ .then ~ firstCallKeyIndex', firstCallKeyIndex)
-            const lastCallKeyIndex = firstCallKeyIndex + returnData.length
-            console.log('🚀 ~ file: updater.tsx ~ line 181 ~ .then ~ lastCallKeyIndex', lastCallKeyIndex)
 
-            console.log(
-              '🚀 ~ file: updater.tsx ~ line 206 ~ .then ~ outdatedCallKeys',
-              outdatedCallKeys.slice(firstCallKeyIndex, lastCallKeyIndex)
-            )
+            const lastCallKeyIndex = firstCallKeyIndex + returnData.length
 
             const uint256ReturnData: Array<string> = []
             const returnDataIterator = returnData.flat()[Symbol.iterator]()
@@ -274,10 +266,8 @@ export default function Updater(): null {
                     const methodAbi = debouncedListeners?.[chainId]?.[callKey]?.methodAbi
 
                     const parsedReturnData: string = parseReturnData(i, returnData, returnDataIterator, methodAbi)
-                    console.log('🚀 ~ file: updater.tsx ~ line 272 ~ .then ~ parsedReturnData', parsedReturnData)
 
                     memo[callKey] = parsedReturnData
-                    console.log('🚀 ~ file: updater.tsx ~ line 214 ~ .then ~ memo', memo)
 
                     return memo
                   }, {}),

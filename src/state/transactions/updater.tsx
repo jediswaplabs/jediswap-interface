@@ -49,7 +49,6 @@ export default function Updater(): null {
         library
           .getTransactionReceipt({ txHash: hash })
           .then(receipt => {
-            console.log('🚀 ~ file: updater.tsx ~ line 52 ~ useEffect ~ receipt', receipt)
             if (receipt) {
               if (!transactions[hash].receipt || transactions[hash].receipt?.status !== receipt.status) {
                 dispatch(
