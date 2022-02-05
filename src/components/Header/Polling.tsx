@@ -68,8 +68,6 @@ export default function Polling() {
 
   const blockNumber = useBlockNumber()
   const blockHash = useBlockHash(blockNumber)
-  console.log('🚀 ~ file: Polling.tsx ~ line 71 ~ Polling ~ blockHash', blockHash)
-  // console.log('🚀 ~ file: Polling.tsx ~ line 69 ~ Polling ~ blockNumber', blockNumber)
 
   const [isMounted, setIsMounted] = useState(true)
 

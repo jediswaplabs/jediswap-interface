@@ -29,8 +29,6 @@ export function useEagerConnect() {
             setTried(true)
           })
         } else {
-          console.log('🚀 ~ file: index.ts ~ line 23 ~ argentX.isAuthorized ~ isAuthorized', isAuthorized)
-
           setTried(true)
         }
       }

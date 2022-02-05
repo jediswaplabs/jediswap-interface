@@ -59,7 +59,6 @@ export function useToken0Balance(uncheckedAddress?: string): CurrencyAmount | un
   const address = useAddressNormalizer(uncheckedAddress)
 
   const balance = useSingleCallResult(tokenContract, 'balanceOf', { account: address ?? '' })
-  console.log('🚀 ~ file: hooks.ts ~ line 77 ~ useToken0Balance ~ result', balance)
 
   const uint256Balance: uint256.Uint256 = useMemo(() => ({ low: balance?.result?.[0], high: balance?.result?.[1] }), [
     balance?.result
@@ -85,12 +84,10 @@ export function useTokenBalancesWithLoadingIndicator(
   )
 
   const validatedTokenAddresses = useMemo(() => validatedTokens.map(vt => vt.address), [validatedTokens])
-  console.log('🚀 ~ file: hooks.ts ~ line 90 ~ validatedTokenAddresses', validatedTokenAddresses)
 
   const balances = useMultipleContractSingleData(validatedTokenAddresses, ERC20_ABI as Abi[], 'balanceOf', {
     account: address ?? ''
   })
-  console.log('🚀 ~ file: hooks.ts ~ line 92 ~ balances', balances)
 
   const anyLoading: boolean = useMemo(() => balances.some(callState => callState.loading), [balances])
 
@@ -103,7 +100,6 @@ export function useTokenBalancesWithLoadingIndicator(
 
               // const resultLow = balances?.[i]?.result?.[0]
               // const resultHigh = balances?.[i]?.result?.[1]
-              // // console.log('🚀 ~ file: hooks.ts ~ line 102 ~ result', result)
 
               // const uint256Balance: uint256.Uint256 = { low: resultLow, high: resultHigh }
               // const value = resultLow && resultHigh ? uint256.uint256ToBN(uint256Balance) : undefined
@@ -139,15 +135,13 @@ export function useCurrencyBalances(
   account?: string,
   currencies?: (Currency | undefined)[]
 ): (CurrencyAmount | undefined)[] {
-  // console.log('🚀 ~ file: hooks.ts ~ line 109 ~ tokens ', currencies?.[0] instanceof Token)
   const tokens = useMemo(() => currencies?.filter((currency): currency is Token => currency instanceof Token) ?? [], [
     currencies
   ])
-  console.log('🚀 ~ file: hooks.ts ~ line 144 ~ tokens', tokens)
 
   const token0Balance = useToken0Balance(account)
   const tokenBalances = useTokenBalances(account, tokens)
-  console.log('🚀 ~ file: hooks.ts ~ line 142 ~ tokenBalances', currencies, tokenBalances)
+
   const containsTOKEN0: boolean = useMemo(() => currencies?.some(currency => currency === TOKEN0) ?? false, [
     currencies
   ])
@@ -165,7 +159,6 @@ export function useCurrencyBalances(
 }
 
 export function useCurrencyBalance(account?: string, currency?: Currency): CurrencyAmount | undefined {
-  console.log('🚀 ~ file: hooks.ts ~ line 128 ~ useCurrencyBalance ~ currency', currency)
   return useCurrencyBalances(account, [currency])[0]
 }
 

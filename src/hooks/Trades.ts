@@ -46,7 +46,6 @@ function useAllCommonPairs(currencyA?: Currency, currencyB?: Currency): [Pair[],
 
   const allPairs = usePairs(allPairCombinations)
   const anyPairLoading = allPairs.some(([pairState]) => pairState === PairState.LOADING)
-  // console.log('🚀 ~ file: Trades.ts ~ line 48 ~ useAllCommonPairs ~ allPairs', allPairs)
 
   // only pass along valid pairs, non-duplicated pairs
   return [
@@ -75,10 +74,6 @@ function useAllCommonPairs(currencyA?: Currency, currencyB?: Currency): [Pair[],
  */
 export function useTradeExactIn(currencyAmountIn?: CurrencyAmount, currencyOut?: Currency): [Trade | null, boolean] {
   const [allowedPairs, pairLoading] = useAllCommonPairs(currencyAmountIn?.currency, currencyOut)
-  console.log('🚀 ~ file: Trades.ts ~ line 79 ~ useTradeExactIn ~ pairLoading', pairLoading)
-  // console.log('🚀 ~ file: Trades.ts ~ line 71 ~ useTradeExactIn ~ allowedPairs', allowedPairs)
-  //  const [debouncedAmount, debouncedOtherCurrency] = useDebounce([currencyAmountIn, currencyOut], 2000)
-  //const isLoading = currencyAmountIn !== undefined && debouncedAmount === undefined
 
   return [
     useMemo(() => {
@@ -86,7 +81,7 @@ export function useTradeExactIn(currencyAmountIn?: CurrencyAmount, currencyOut?:
         const trade =
           Trade.bestTradeExactIn(allowedPairs, currencyAmountIn, currencyOut, { maxHops: 3, maxNumResults: 1 })[0] ??
           null
-        console.log('🚀 ~ file: Trades.ts ~ line 74 ~ returnuseMemo ~ trade', trade)
+
         return trade
       }
       return null
@@ -100,9 +95,6 @@ export function useTradeExactIn(currencyAmountIn?: CurrencyAmount, currencyOut?:
  */
 export function useTradeExactOut(currencyIn?: Currency, currencyAmountOut?: CurrencyAmount): [Trade | null, boolean] {
   const [allowedPairs, pairLoading] = useAllCommonPairs(currencyIn, currencyAmountOut?.currency)
-
-  // const [debouncedAmount, debouncedOtherCurrency] = useDebounce([currencyAmountOut, currencyIn], 2000)
-  // const isLoading = currencyAmountOut !== undefined && debouncedAmount === undefined
 
   return [
     useMemo(() => {

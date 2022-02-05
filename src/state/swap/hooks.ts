@@ -32,7 +32,6 @@ export function useSwapActionHandlers(): {
   const dispatch = useDispatch<AppDispatch>()
   const onCurrencySelection = useCallback(
     (field: Field, currency: Currency) => {
-      // console.log('🚀 ~ file: hooks.ts ~ line 35 ~ useSwapActionHandlers ~ currency', field, currency)
       dispatch(
         selectCurrency({
           field,
@@ -135,7 +134,7 @@ export function useDerivedSwapInfo(): {
     inputCurrency ?? undefined,
     outputCurrency ?? undefined
   ])
-  // console.log('🚀 ~ file: hooks.ts ~ line 137 ~ useDerivedSwapInfo ~ relevantTokenBalances', relevantTokenBalances)
+  //
 
   const isExactIn: boolean = independentField === Field.INPUT
   const parsedAmount = tryParseAmount(typedValue, (isExactIn ? inputCurrency : outputCurrency) ?? undefined)
@@ -144,7 +143,7 @@ export function useDerivedSwapInfo(): {
     isExactIn ? parsedAmount : undefined,
     outputCurrency ?? undefined
   )
-  // console.log(
+  //
   //   '🚀 ~ file: hooks.ts ~ line 147 ~ useDerivedSwapInfo ~ bestTradeExactIn ',
   //   bestTradeExactIn,
   //   parsedAmount,
@@ -156,13 +155,11 @@ export function useDerivedSwapInfo(): {
   )
 
   const trade = isExactIn ? bestTradeExactIn : bestTradeExactOut
-  console.log('🚀 ~ file: hooks.ts ~ line 159 ~ useDerivedSwapInfo ~ trade', trade)
 
   const currencyBalances = {
     [Field.INPUT]: relevantTokenBalances[0],
     [Field.OUTPUT]: relevantTokenBalances[1]
   }
-  // console.log('🚀 ~ file: hooks.ts ~ line 151 ~ useDerivedSwapInfo ~ currencyBalances', currencyBalances)
 
   const currencies: { [field in Field]?: Currency } = {
     [Field.INPUT]: inputCurrency ?? undefined,
@@ -253,7 +250,7 @@ function validatedRecipient(recipient: any): string | null {
 
 export function queryParametersToSwapState(parsedQs: ParsedQs): SwapState {
   let inputCurrency = parseCurrencyFromURLParameter(parsedQs.inputCurrency)
-  // console.log('🚀 ~ file: hooks.ts ~ line 240 ~ queryParametersToSwapState ~ inputCurrency', inputCurrency)
+
   let outputCurrency = parseCurrencyFromURLParameter(parsedQs.outputCurrency)
   if (inputCurrency === outputCurrency) {
     if (typeof parsedQs.outputCurrency === 'string') {
@@ -292,7 +289,6 @@ export function useDefaultsFromURLSearch():
   useEffect(() => {
     if (!chainId) return
     const parsed = queryParametersToSwapState(parsedQs)
-    console.log('🚀 ~ file: hooks.ts ~ line 278 ~ useEffect ~ parsed', parsed)
 
     dispatch(
       replaceSwapState({

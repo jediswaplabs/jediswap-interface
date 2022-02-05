@@ -207,7 +207,7 @@ export default function Swap() {
   }
 
   const route = trade?.route
-  console.log('🚀 ~ file: index.tsx ~ line 143 ~ Swap ~ trade', trade)
+
   const userHasSpecifiedInputOutput = Boolean(
     currencies[Field.INPUT] && currencies[Field.OUTPUT] && parsedAmounts[independentField]?.greaterThan(JSBI.BigInt(0))
   )
