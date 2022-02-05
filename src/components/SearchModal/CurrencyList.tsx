@@ -26,6 +26,10 @@ const StyledBalanceText = styled(Text)`
   overflow: hidden;
   max-width: 5rem;
   text-overflow: ellipsis;
+
+  font-family: 'DM Sans', sans-serif;
+  letter-spacing: 0px;
+  font-weight: 500;
 `
 
 const Tag = styled.div`
@@ -44,8 +48,8 @@ const Tag = styled.div`
 
 function Balance({ balance }: { balance: CurrencyAmount }) {
   return (
-    <StyledBalanceText title={balance.toExact()} color={'#FFFFFF'}>
-      {balance.toSignificant(4)}
+    <StyledBalanceText title={balance.toSignificant(6)} color={'#FFFFFF'}>
+      {balance.toSignificant(6)}
     </StyledBalanceText>
   )
 }
