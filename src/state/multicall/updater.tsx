@@ -136,7 +136,6 @@ export function parseReturnData(
     const numberOfOutputs = contractInterface.outputs.length
     const hasMultipleOutputs = numberOfOutputs > 1
     const hasUint256Output = contractInterface.outputs.some(o => o.type === 'Uint256')
-    // const parsedReturnData: Array<string> = [...returnData]
 
     if (hasMultipleOutputs) {
       const outputAbiEntries = contractInterface.outputs
@@ -154,7 +153,6 @@ export function parseReturnData(
       } else {
         // Multiple outputs are of type uint256, no. of results = no. of calls * no. of outputs * 2
 
-        // const uint256ReturnData: uint256.Uint256 = {  }
         const parsedReturnData = outputAbiEntries.reduce<{ [outputName: string]: string }>((memo, entry, i) => {
           const returnDataLow = returnDataIterator.next().value
           const returnDataHigh = returnDataIterator.next().value
@@ -173,12 +171,19 @@ export function parseReturnData(
       // Has Single Output
       if (!hasUint256Output) {
         // Single Output and no uint256, no. of results = no. of calls
-        return returnData[currentIndex]
+
+        // return returnData[currentIndex]
+        return returnDataIterator.next().value
       } else {
         // Single Output of type uint256, no. of results = no. of calls * 2
+        // const uint256Result: uint256.Uint256 = {
+        //   low: returnData[currentIndex * 2],
+        //   high: returnData[currentIndex * 2 + 1]
+        // }
+
         const uint256Result: uint256.Uint256 = {
-          low: returnData[currentIndex * 2],
-          high: returnData[currentIndex * 2 + 1]
+          low: returnDataIterator.next().value,
+          high: returnDataIterator.next().value
         }
 
         const parsedReturnData = number.toHex(uint256.uint256ToBN(uint256Result))
