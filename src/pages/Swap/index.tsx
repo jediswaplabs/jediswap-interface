@@ -7,7 +7,7 @@ import ReactGA from 'react-ga'
 import { Text } from 'rebass'
 import { ThemeContext } from 'styled-components'
 import AddressInputPanel from '../../components/AddressInputPanel'
-import { ButtonError, ButtonPrimary, ButtonConfirmed } from '../../components/Button'
+import { ButtonError, ButtonConfirmed, ButtonEmpty, ButtonOutlined } from '../../components/Button'
 // import { ButtonLight } from '../../components/Button'
 import { ButtonGradient, RedGradientButton } from '../../components/Button'
 import Card, { GreyCard } from '../../components/Card'
@@ -52,6 +52,8 @@ import { useAddressNormalizer } from '../../hooks/useAddressNormalizer'
 import styled from 'styled-components'
 import HeaderIcon from '../../assets/jedi/SwapPanel_headerItem.svg'
 import SwapWidget from '../../assets/jedi/SwapWidget.svg'
+import { jediTokensList, TOKEN0 } from '../../constants/jediTokens'
+import { MintState, useMintCallback } from '../../hooks/useMintCallback'
 // import BackdropImage from '../../assets/jedi/Backdrop.svg'
 
 const HeaderRow = styled.div`
@@ -115,6 +117,21 @@ const Backdrop = styled.div<{
   transform: matrix(0, 1, 1, 0, 0, 0);
 `
 
+const MintSection = styled.section`
+  margin-top: 3rem;
+  max-width: 470px;
+  width: 100%;
+`
+
+const MintButton = styled(ButtonOutlined)`
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0px;
+  border-color: ${({ theme }) => theme.jediBlue};
+  color: ${({ theme }) => theme.jediWhite};
+`
+
 export default function Swap() {
   const loadedUrlParams = useDefaultsFromURLSearch()
 
@@ -132,6 +149,8 @@ export default function Swap() {
   // const handleConfirmTokenWarning = useCallback(() => {
   //   setDismissTokenWarning(true)
   // }, [])
+
+  const [mintAddress, setMintAddress] = useState<string | undefined>(undefined)
 
   const { account } = useActiveStarknetReact()
   const theme = useContext(ThemeContext)
@@ -212,6 +231,8 @@ export default function Swap() {
     currencies[Field.INPUT] && currencies[Field.OUTPUT] && parsedAmounts[independentField]?.greaterThan(JSBI.BigInt(0))
   )
   const noRoute = !route
+
+  const [mintState, mintCallback] = useMintCallback(mintAddress)
 
   // useEffect(() => {
   //   let routeTimeout
@@ -333,6 +354,19 @@ export default function Swap() {
   const handleOutputSelect = useCallback(outputCurrency => onCurrencySelection(Field.OUTPUT, outputCurrency), [
     onCurrencySelection
   ])
+
+  const handleMint = useCallback((tokenAddress: string) => {
+    setMintAddress(tokenAddress)
+  }, [])
+
+  useEffect(() => {
+    if (mintAddress && mintState === MintState.VALID) {
+      mintCallback().then(() => {
+        console.log(`Minting ${mintAddress}`)
+        setMintAddress(undefined)
+      })
+    }
+  }, [mintAddress, mintCallback, mintState])
 
   return (
     <>
@@ -562,6 +596,17 @@ export default function Swap() {
         </Wrapper>
       </AppBody>
 
+      {account && (
+        <MintSection>
+          <AutoRow justify={'center'}>
+            {Object.entries({ [TOKEN0.address]: TOKEN0, ...jediTokensList }).map(([tokenAddress, token]) => (
+              <AutoColumn key={tokenAddress} style={{ margin: '6px' }}>
+                <MintButton onClick={() => handleMint(tokenAddress)}> Mint {token.symbol} </MintButton>
+              </AutoColumn>
+            ))}
+          </AutoRow>
+        </MintSection>
+      )}
       {/* TODO: FIX ADVANCED SWAP */}
       {/* <AdvancedSwapDetailsDropdown trade={trade} /> */}
     </>

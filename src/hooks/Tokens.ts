@@ -74,7 +74,6 @@ export function useToken(tokenAddress?: string): Token | undefined | null {
 
   const address = isAddress(tokenAddress)
   const token: Token | undefined = address ? tokens[address] : undefined
-  console.log('🚀 ~ file: Tokens.ts ~ line 77 ~ useToken ~ token', token)
 
   const tokenContract = useTokenContract(address ? address : undefined)
 
