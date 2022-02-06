@@ -38,7 +38,7 @@ const Wrapper = styled.div`
   position: relative;
 `
 const ButtonWrapper = styled.div`
-  margin-bottom: 14px;
+  margin-bottom: 16px;
   width: 100%;
 `
 const GradientBreakLine = styled.div`
@@ -47,7 +47,7 @@ const GradientBreakLine = styled.div`
   width: 100%;
 `
 const Padding = styled.div`
-  padding: 16px 24px;
+  padding: 12px 24px;
 `
 export default function SwapModalFooter({
   trade,
@@ -77,7 +77,7 @@ export default function SwapModalFooter({
 
   return (
     <>
-      <RowBetween align="center" style={{ marginBottom: '10px' }}>
+      <RowBetween align="center">
         <Text fontWeight={400} fontSize={16} /*color={theme.text2}*/>
           Price
         </Text>
@@ -112,7 +112,7 @@ export default function SwapModalFooter({
         </Padding>
         <GradientBreakLine />
         <Padding>
-          <AutoColumn gap="16px">
+          <AutoColumn gap="12px">
             <RowBetween>
               <RowFixed>
                 <TYPE.white fontSize={14} fontWeight={400} /*color={theme.text2}*/>
@@ -169,7 +169,7 @@ export default function SwapModalFooter({
           </AutoColumn>
         </Padding>
       </Wrapper>
-      <AutoColumn justify="flex-start" gap="sm" style={{ padding: '3px 0 0 0px' }}>
+      <AutoColumn justify="flex-start" gap="sm">
         {trade.tradeType === TradeType.EXACT_INPUT ? (
           <TYPE.white textAlign="left" style={{ width: '100%', fontSize: '14px', fontWeight: 400 }}>
             {`Output is estimated. You will receive at least `}
@@ -190,13 +190,7 @@ export default function SwapModalFooter({
       </AutoColumn>
       <AutoRow>
         <ButtonWrapper>
-          <ButtonError
-            onClick={onConfirm}
-            disabled={disabledConfirm}
-            error={severity > 2}
-            style={{ margin: '10px 0 0 0' }}
-            id="confirm-swap-or-send"
-          >
+          <ButtonError onClick={onConfirm} disabled={disabledConfirm} error={severity > 2} id="confirm-swap-or-send">
             <Text fontSize={20} fontWeight={500}>
               {severity > 2 ? 'Swap Anyway' : 'Confirm Swap'}
             </Text>
