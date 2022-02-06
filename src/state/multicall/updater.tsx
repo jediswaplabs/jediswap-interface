@@ -44,7 +44,13 @@ async function fetchChunk(
       ...obj.calldata
     ])
 
+    // Keep it here for multicall debugging
+    // const dateTime = new Date().getTime()
+
+    // console.log(`at timestamp ${dateTime.toString()}`, '🚀 ~ file: updater.tsx ~ line 46 ~ calls', calls)
+
     const response = await multicallContract.call('aggregate', { calls })
+    // console.log(`at timestamp ${dateTime.toString()}`, '🚀 ~ file: updater.tsx ~ line 48 ~ response', response)
 
     resultsBlockNumber = response.block_number
     returnData_len = response.result_len
@@ -153,14 +159,21 @@ export function parseReturnData(
         // Multiple outputs are of type uint256, no. of results = no. of calls * no. of outputs * 2
 
         const parsedReturnData = outputAbiEntries.reduce<{ [outputName: string]: string }>((memo, entry, i) => {
-          const returnDataLow = returnDataIterator.next().value
-          const returnDataHigh = returnDataIterator.next().value
+          if (entry.type === 'Uint256') {
+            const returnDataLow = returnDataIterator.next().value
+            const returnDataHigh = returnDataIterator.next().value
 
-          const uint256ReturnData: uint256.Uint256 = { low: returnDataLow, high: returnDataHigh }
+            const uint256ReturnData: uint256.Uint256 = { low: returnDataLow, high: returnDataHigh }
 
-          return {
-            ...memo,
-            [entry.name]: number.toHex(uint256.uint256ToBN(uint256ReturnData))
+            return {
+              ...memo,
+              [entry.name]: number.toHex(uint256.uint256ToBN(uint256ReturnData))
+            }
+          } else {
+            return {
+              ...memo,
+              [entry.name]: returnDataIterator.next().value
+            }
           }
         }, {})
 
@@ -191,7 +204,7 @@ export function parseReturnData(
       }
     }
   }
-  return returnData[currentIndex]
+  return returnDataIterator.next().value
 }
 
 export default function Updater(): null {
