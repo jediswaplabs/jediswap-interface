@@ -263,7 +263,6 @@ const ButtonErrorStyle = styled(Base)`
 export const ButtonGradient = styled(Base)`
   background: linear-gradient(95.64deg, #29aafd 8.08%, #ff00e9 105.91%);
   color: ${({ theme }) => theme.jediWhite};
-  border-radius: 8px;
   padding: 22px 17px;
   font-size: 20px;
   font-weight: 400;

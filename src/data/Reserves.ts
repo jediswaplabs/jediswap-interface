@@ -47,6 +47,7 @@ export function usePairs(currencies: [Currency | undefined, Currency | undefined
   )
 
   const pairAddresses = pairAddressesCallState.map(pairAddress => pairAddress.result?.[0])
+  // console.log('🚀 ~ file: Reserves.ts ~ line 50 ~ usePairs ~ pairAddresses', pairAddresses)
 
   // const pairAddresses = useMemo(
   //   () =>
@@ -57,6 +58,7 @@ export function usePairs(currencies: [Currency | undefined, Currency | undefined
   // )
 
   const results = useMultipleContractSingleData(pairAddresses, JediswapPairABI as Abi[], 'get_reserves')
+  // console.log('🚀 ~ file: Reserves.ts ~ line 60 ~ usePairs ~ results', results)
 
   return useMemo(() => {
     return results.map((result, i) => {
