@@ -149,11 +149,19 @@ function TransactionSubmittedContent({
 
 export function ConfirmationModalContent({
   title,
+  titleFont,
   bottomContent,
   onDismiss,
   topContent
 }: {
   title: string
+  titleFont?: {
+    size?: number
+    family?: string
+    letterSpacing?: string
+    weight?: number
+    lineHeight?: string
+  }
   onDismiss: () => void
   topContent: () => React.ReactNode
   bottomContent: () => React.ReactNode
@@ -163,7 +171,13 @@ export function ConfirmationModalContent({
       <Section style={{ paddingBottom: '8px' }}>
         <TextWrapper>
           <RowBetween>
-            <Text fontWeight={400} fontSize={20} fontFamily={'Soloist Title'} letterSpacing={'-0.1em'}>
+            <Text
+              fontWeight={titleFont?.weight ?? 400}
+              fontSize={titleFont?.size ?? 20}
+              fontFamily={titleFont?.family ?? 'Soloist Title'}
+              letterSpacing={titleFont?.letterSpacing ?? '-0.1em'}
+              lineHeight={titleFont?.lineHeight}
+            >
               {title}
             </Text>
             <CloseIcon onClick={onDismiss} />

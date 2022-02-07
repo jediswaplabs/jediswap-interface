@@ -218,12 +218,6 @@ export default function AddLiquidity({
         })
 
         setTxHash(response.transaction_hash)
-
-        ReactGA.event({
-          category: 'Liquidity',
-          action: 'Add',
-          label: [currencies[Field.CURRENCY_A]?.symbol, currencies[Field.CURRENCY_B]?.symbol].join('/')
-        })
       })
       .catch(error => {
         setAttemptingTxn(false)
@@ -251,9 +245,9 @@ export default function AddLiquidity({
         </LightCard>
       </AutoColumn>
     ) : (
-      <AutoColumn gap="20px">
-        <RowFlat style={{ marginTop: '20px' }}>
-          <Text fontSize="48px" fontWeight={500} lineHeight="42px" marginRight={10}>
+      <AutoColumn gap="10px">
+        <RowFlat style={{ marginTop: '16px' }}>
+          <Text fontSize="40px" fontWeight={500} lineHeight="42px" marginRight={10}>
             {liquidityMinted?.toSignificant(6)}
           </Text>
           <DoubleCurrencyLogo
@@ -267,10 +261,19 @@ export default function AddLiquidity({
             {currencies[Field.CURRENCY_A]?.symbol + '/' + currencies[Field.CURRENCY_B]?.symbol + ' Pool Tokens'}
           </Text>
         </Row>
-        <TYPE.italic fontSize={12} textAlign="left" padding={'8px 0 0 0 '}>
+        <Text
+          color={theme.jediWhite}
+          fontFamily={'DM Sans'}
+          letterSpacing={'0px'}
+          fontSize={14}
+          fontWeight={400}
+          textAlign="left"
+          lineHeight={'120%'}
+          padding={'8px 0'}
+        >
           {`Output is estimated. If the price changes by more than ${allowedSlippage /
             100}% your transaction will revert.`}
-        </TYPE.italic>
+        </Text>
       </AutoColumn>
     )
   }
@@ -346,6 +349,7 @@ export default function AddLiquidity({
                 onDismiss={handleDismissConfirmation}
                 topContent={modalHeader}
                 bottomContent={modalBottom}
+                titleFont={{ family: 'DM Sans', size: 16, weight: 400, lineHeight: '20px', letterSpacing: '0px' }}
               />
             )}
             pendingText={pendingText}
