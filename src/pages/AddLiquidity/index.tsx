@@ -53,6 +53,10 @@ const BalanceText = styled.div`
   color: ${({ theme }) => theme.jediWhite};
 `
 
+const Separator = styled.div`
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+`
+
 export default function AddLiquidity({
   match: {
     params: { currencyIdA, currencyIdB }
@@ -354,49 +358,53 @@ export default function AddLiquidity({
                   </BlueCard>
                 </ColumnCenter>
               ))}
-            <AutoRow justify="flex-end">
-              <BalanceText>Balance: {currencyBalances.CURRENCY_A?.toSignificant(6) ?? 0}</BalanceText>
-            </AutoRow>
-            <CurrencyInputPanel
-              value={formattedAmounts[Field.CURRENCY_A]}
-              onUserInput={onFieldAInput}
-              onMax={() => {
-                onFieldAInput(maxAmounts[Field.CURRENCY_A]?.toExact() ?? '')
-              }}
-              onCurrencySelect={handleCurrencyASelect}
-              showMaxButton={!atMaxAmounts[Field.CURRENCY_A]}
-              currency={currencies[Field.CURRENCY_A]}
-              id="add-liquidity-input-tokena"
-              showCommonBases
-            />
-            <AutoRow>
-              <AutoRow justify="center" style={{ width: '50%' }}>
-                <Plus size="16" color={theme.jediWhite} />
+
+            <AutoColumn gap="16px">
+              <AutoRow justify="flex-end">
+                <BalanceText>Balance: {currencyBalances.CURRENCY_A?.toSignificant(6) ?? 0}</BalanceText>
               </AutoRow>
-              <AutoRow justify="flex-end" style={{ width: '50%' }}>
+              <CurrencyInputPanel
+                value={formattedAmounts[Field.CURRENCY_A]}
+                onUserInput={onFieldAInput}
+                onMax={() => {
+                  onFieldAInput(maxAmounts[Field.CURRENCY_A]?.toExact() ?? '')
+                }}
+                onCurrencySelect={handleCurrencyASelect}
+                showMaxButton={!atMaxAmounts[Field.CURRENCY_A]}
+                currency={currencies[Field.CURRENCY_A]}
+                id="add-liquidity-input-tokena"
+              />
+            </AutoColumn>
+
+            <AutoRow justify="center" style={{ width: '50%', marginBottom: '-20px' }}>
+              <Plus size="16" color={theme.jediWhite} />
+            </AutoRow>
+
+            <AutoColumn gap="16px">
+              <AutoRow justify="flex-end">
                 <BalanceText>Balance: {currencyBalances.CURRENCY_B?.toSignificant(6) ?? 0}</BalanceText>
               </AutoRow>
-            </AutoRow>
-            <CurrencyInputPanel
-              value={formattedAmounts[Field.CURRENCY_B]}
-              onUserInput={onFieldBInput}
-              onCurrencySelect={handleCurrencyBSelect}
-              onMax={() => {
-                onFieldBInput(maxAmounts[Field.CURRENCY_B]?.toExact() ?? '')
-              }}
-              showMaxButton={!atMaxAmounts[Field.CURRENCY_B]}
-              currency={currencies[Field.CURRENCY_B]}
-              id="add-liquidity-input-tokenb"
-              showCommonBases
-            />
+              <CurrencyInputPanel
+                value={formattedAmounts[Field.CURRENCY_B]}
+                onUserInput={onFieldBInput}
+                onCurrencySelect={handleCurrencyBSelect}
+                onMax={() => {
+                  onFieldBInput(maxAmounts[Field.CURRENCY_B]?.toExact() ?? '')
+                }}
+                showMaxButton={!atMaxAmounts[Field.CURRENCY_B]}
+                currency={currencies[Field.CURRENCY_B]}
+                id="add-liquidity-input-tokenb"
+              />
+            </AutoColumn>
             {currencies[Field.CURRENCY_A] && currencies[Field.CURRENCY_B] && pairState !== PairState.INVALID && (
               <>
                 <LightCard padding="0px" borderRadius={'8px'}>
                   <RowBetween padding="1rem">
                     <TYPE.subHeader fontWeight={500} fontSize={14} fontFamily={'DM Sans'} letterSpacing={'0ch'}>
-                      {noLiquidity ? 'Initial prices' : 'Prices'} and pool share
+                      {noLiquidity ? 'Initial prices' : 'Prices'} and Pool share
                     </TYPE.subHeader>
-                  </RowBetween>{' '}
+                  </RowBetween>
+                  <Separator />
                   <LightCard padding="1rem">
                     <PoolPriceBar
                       currencies={currencies}
