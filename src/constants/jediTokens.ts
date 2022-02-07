@@ -14,7 +14,7 @@ export const TOKEN2_ADDRESS = validateAndParseAddress(
 
 export const TOKEN0 = new Token(ChainId.GÖRLI, TOKEN0_ADDRESS, 18, 'J4FEB0', 'Jedi4Feb 0')
 
-export const TOKEN1 = new Token(ChainId.GÖRLI, TOKEN1_ADDRESS, 18, 'J4FEB1', 'Jedi4Feb 1')
+export const TOKEN1 = new Token(ChainId.GÖRLI, TOKEN1_ADDRESS, 6, 'J4FEB1', 'Jedi4Feb 1')
 
 export const TOKEN2 = new Token(ChainId.GÖRLI, TOKEN2_ADDRESS, 18, 'J4FEB2', 'Jedi4Feb 2')
 
