@@ -26,6 +26,10 @@ export const OutlineCard = styled(Card)`
   border: 1px solid ${({ theme }) => theme.bg3};
 `
 
+export const WhiteOutlineCard = styled(OutlineCard)`
+  border-color: ${({ theme }) => theme.jediWhite};
+`
+
 export const YellowCard = styled(Card)`
   background-color: rgba(243, 132, 30, 0.05);
   color: ${({ theme }) => theme.yellow2};

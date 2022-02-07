@@ -91,5 +91,5 @@ export function usePairs(currencies: [Currency | undefined, Currency | undefined
 export function usePair(tokenA?: Currency, tokenB?: Currency): [PairState, Pair | null] {
   const pairs = usePairs([[tokenA, tokenB]])?.[0]
   // console.log('🚀 ~ file: Reserves.ts ~ line 93 ~ usePair ~ pairs', pairs)
-  return pairs ?? [PairState.INVALID, null]
+  return pairs ?? [PairState.LOADING, null]
 }

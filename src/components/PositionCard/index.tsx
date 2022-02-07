@@ -18,7 +18,7 @@ import noise from '../../assets/images/noise.png'
 
 import { useColor } from '../../hooks/useColor'
 
-import Card, { GreyCard, LightCard } from '../Card'
+import Card, { GreyCard, LightCard, WhiteOutlineCard } from '../Card'
 import { AutoColumn } from '../Column'
 import CurrencyLogo from '../CurrencyLogo'
 import DoubleCurrencyLogo from '../DoubleLogo'
@@ -55,6 +55,15 @@ const StyledPositionCard = styled(LightCard)<{ bgColor: any }>`
     `radial-gradient(91.85% 100% at 1.84% 0%, ${transparentize(0.8, bgColor)} 0%, ${theme.bg3} 100%) `};
   position: relative;
   overflow: hidden;
+`
+
+const CardText = styled.div<{ textAlign?: string }>`
+  font-family: 'DM Sans', sans-serif;
+  letter-spacing: 0px;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 140%;
+  text-align: ${({ textAlign }) => (textAlign ? textAlign : 'center')};
 `
 
 interface PositionCardProps {
@@ -157,15 +166,15 @@ export function MinimalPositionCard({ pair, showUnwrapped = false, border }: Pos
           </AutoColumn>
         </GreyCard>
       ) : (
-        <LightCard>
-          <TYPE.subHeader style={{ textAlign: 'center' }}>
+        <WhiteOutlineCard padding={'12px'}>
+          <CardText textAlign="left">
             <span role="img" aria-label="wizard-icon">
               ⭐️
             </span>{' '}
             By adding liquidity you&apos;ll earn 0.3% of all trades on this pair proportional to your share of the pool.
             Fees are added to the pool, accrue in real time and can be claimed by withdrawing your liquidity.
-          </TYPE.subHeader>
-        </LightCard>
+          </CardText>
+        </WhiteOutlineCard>
       )}
     </>
   )
