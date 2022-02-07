@@ -6,6 +6,7 @@ import noise from '../../assets/images/noise.png'
 
 export const Wrapper = styled.div`
   position: relative;
+  padding: 2rem;
 `
 
 export const ClickableText = styled(Text)`

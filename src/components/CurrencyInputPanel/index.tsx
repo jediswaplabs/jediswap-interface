@@ -255,6 +255,7 @@ CurrencyInputPanelProps) {
                 onUserInput={val => {
                   onUserInput(val)
                 }}
+                style={showMaxButton ? { paddingRight: '60px' } : { paddingRight: '12px' }}
               />
               {account && currency && showMaxButton && label !== 'To' && (
                 <StyledBalanceMax onClick={onMax}>MAX</StyledBalanceMax>

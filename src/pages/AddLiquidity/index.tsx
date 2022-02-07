@@ -14,7 +14,7 @@ import CurrencyInputPanel from '../../components/CurrencyInputPanel'
 import DoubleCurrencyLogo from '../../components/DoubleLogo'
 import { AddRemoveTabs } from '../../components/NavigationTabs'
 import { MinimalPositionCard } from '../../components/PositionCard'
-import Row, { RowBetween, RowFlat } from '../../components/Row'
+import Row, { AutoRow, RowBetween, RowFixed, RowFlat } from '../../components/Row'
 
 import { ROUTER_ADDRESS } from '../../constants'
 import { PairState } from '../../data/Reserves'
@@ -40,6 +40,22 @@ import { PoolPriceBar } from './PoolPriceBar'
 import { useRouterContract } from '../../hooks/useContract'
 import { AddTransactionResponse, Args, uint256 } from '@jediswap/starknet'
 import { BigNumberish } from '@jediswap/starknet/dist/utils/number'
+import styled from 'styled-components'
+
+const BalanceText = styled.div`
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 16px;
+  letter-spacing: 0em;
+  text-align: center;
+  color: ${({ theme }) => theme.jediWhite};
+`
+
+const Separator = styled.div`
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+`
 
 export default function AddLiquidity({
   match: {
@@ -306,8 +322,8 @@ export default function AddLiquidity({
   return (
     <>
       <AppBody>
-        <AddRemoveTabs creating={isCreate} adding={true} />
         <Wrapper>
+          <AddRemoveTabs creating={isCreate} adding={true} />
           <TransactionConfirmationModal
             isOpen={showConfirm}
             onDismiss={handleDismissConfirmation}
@@ -342,42 +358,54 @@ export default function AddLiquidity({
                   </BlueCard>
                 </ColumnCenter>
               ))}
-            <CurrencyInputPanel
-              value={formattedAmounts[Field.CURRENCY_A]}
-              onUserInput={onFieldAInput}
-              onMax={() => {
-                onFieldAInput(maxAmounts[Field.CURRENCY_A]?.toExact() ?? '')
-              }}
-              onCurrencySelect={handleCurrencyASelect}
-              showMaxButton={!atMaxAmounts[Field.CURRENCY_A]}
-              currency={currencies[Field.CURRENCY_A]}
-              id="add-liquidity-input-tokena"
-              showCommonBases
-            />
-            <ColumnCenter>
-              <Plus size="16" color={theme.text2} />
-            </ColumnCenter>
-            <CurrencyInputPanel
-              value={formattedAmounts[Field.CURRENCY_B]}
-              onUserInput={onFieldBInput}
-              onCurrencySelect={handleCurrencyBSelect}
-              onMax={() => {
-                onFieldBInput(maxAmounts[Field.CURRENCY_B]?.toExact() ?? '')
-              }}
-              showMaxButton={!atMaxAmounts[Field.CURRENCY_B]}
-              currency={currencies[Field.CURRENCY_B]}
-              id="add-liquidity-input-tokenb"
-              showCommonBases
-            />
+
+            <AutoColumn gap="16px">
+              <AutoRow justify="flex-end">
+                <BalanceText>Balance: {currencyBalances.CURRENCY_A?.toSignificant(6) ?? 0}</BalanceText>
+              </AutoRow>
+              <CurrencyInputPanel
+                value={formattedAmounts[Field.CURRENCY_A]}
+                onUserInput={onFieldAInput}
+                onMax={() => {
+                  onFieldAInput(maxAmounts[Field.CURRENCY_A]?.toExact() ?? '')
+                }}
+                onCurrencySelect={handleCurrencyASelect}
+                showMaxButton={!atMaxAmounts[Field.CURRENCY_A]}
+                currency={currencies[Field.CURRENCY_A]}
+                id="add-liquidity-input-tokena"
+              />
+            </AutoColumn>
+
+            <AutoRow justify="center" style={{ width: '50%', marginBottom: '-20px' }}>
+              <Plus size="16" color={theme.jediWhite} />
+            </AutoRow>
+
+            <AutoColumn gap="16px">
+              <AutoRow justify="flex-end">
+                <BalanceText>Balance: {currencyBalances.CURRENCY_B?.toSignificant(6) ?? 0}</BalanceText>
+              </AutoRow>
+              <CurrencyInputPanel
+                value={formattedAmounts[Field.CURRENCY_B]}
+                onUserInput={onFieldBInput}
+                onCurrencySelect={handleCurrencyBSelect}
+                onMax={() => {
+                  onFieldBInput(maxAmounts[Field.CURRENCY_B]?.toExact() ?? '')
+                }}
+                showMaxButton={!atMaxAmounts[Field.CURRENCY_B]}
+                currency={currencies[Field.CURRENCY_B]}
+                id="add-liquidity-input-tokenb"
+              />
+            </AutoColumn>
             {currencies[Field.CURRENCY_A] && currencies[Field.CURRENCY_B] && pairState !== PairState.INVALID && (
               <>
-                <LightCard padding="0px" borderRadius={'20px'}>
+                <LightCard padding="0px" borderRadius={'8px'}>
                   <RowBetween padding="1rem">
-                    <TYPE.subHeader fontWeight={500} fontSize={14}>
-                      {noLiquidity ? 'Initial prices' : 'Prices'} and pool share
+                    <TYPE.subHeader fontWeight={500} fontSize={14} fontFamily={'DM Sans'} letterSpacing={'0ch'}>
+                      {noLiquidity ? 'Initial prices' : 'Prices'} and Pool share
                     </TYPE.subHeader>
-                  </RowBetween>{' '}
-                  <LightCard padding="1rem" borderRadius={'20px'}>
+                  </RowBetween>
+                  <Separator />
+                  <LightCard padding="1rem">
                     <PoolPriceBar
                       currencies={currencies}
                       poolTokenPercentage={poolTokenPercentage}

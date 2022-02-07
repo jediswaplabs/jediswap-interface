@@ -83,7 +83,7 @@ export function FindPoolTabs() {
 export function AddRemoveTabs({ adding, creating }: { adding: boolean; creating: boolean }) {
   return (
     <Tabs>
-      <RowBetween style={{ padding: '1rem' }}>
+      <RowBetween style={{ padding: '0 0 1.125rem' }}>
         <HistoryLink to="/pool">
           <StyledArrowLeft />
         </HistoryLink>

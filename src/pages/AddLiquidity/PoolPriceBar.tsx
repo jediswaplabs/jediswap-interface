@@ -22,27 +22,31 @@ export function PoolPriceBar({
   const theme = useContext(ThemeContext)
   return (
     <AutoColumn gap="md">
-      <AutoRow justify="space-around" gap="4px">
+      <AutoRow justify="space-around" gap="4px" style={{ rowGap: '10px' }}>
         <AutoColumn justify="center">
-          <TYPE.black>{price?.toSignificant(6) ?? '-'}</TYPE.black>
-          <Text fontWeight={500} fontSize={14} color={theme.text2} pt={1}>
+          <TYPE.black fontFamily={'DM Sans'} letterSpacing={'0ch'}>
+            {price?.toSignificant(6) ?? '-'}
+          </TYPE.black>
+          <Text fontWeight={500} fontSize={14} color={theme.text2} pt={1} fontFamily={'DM Sans'} letterSpacing={'0ch'}>
             {currencies[Field.CURRENCY_B]?.symbol} per {currencies[Field.CURRENCY_A]?.symbol}
           </Text>
         </AutoColumn>
         <AutoColumn justify="center">
-          <TYPE.black>{price?.invert()?.toSignificant(6) ?? '-'}</TYPE.black>
-          <Text fontWeight={500} fontSize={14} color={theme.text2} pt={1}>
+          <TYPE.black fontFamily={'DM Sans'} letterSpacing={'0ch'}>
+            {price?.invert()?.toSignificant(6) ?? '-'}
+          </TYPE.black>
+          <Text fontWeight={500} fontSize={14} color={theme.text2} pt={1} fontFamily={'DM Sans'} letterSpacing={'0ch'}>
             {currencies[Field.CURRENCY_A]?.symbol} per {currencies[Field.CURRENCY_B]?.symbol}
           </Text>
         </AutoColumn>
         <AutoColumn justify="center">
-          <TYPE.black>
+          <TYPE.black fontFamily={'DM Sans'} letterSpacing={'0ch'}>
             {noLiquidity && price
               ? '100'
               : (poolTokenPercentage?.lessThan(ONE_BIPS) ? '<0.01' : poolTokenPercentage?.toFixed(2)) ?? '0'}
             %
           </TYPE.black>
-          <Text fontWeight={500} fontSize={14} color={theme.text2} pt={1}>
+          <Text fontWeight={500} fontSize={14} color={theme.text2} pt={1} fontFamily={'DM Sans'} letterSpacing={'0ch'}>
             Share of Pool
           </Text>
         </AutoColumn>

@@ -47,7 +47,7 @@ const WTOKEN0_ONLY: ChainTokenList = {
 export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
   ...WTOKEN0_ONLY,
   // [ChainId.MAINNET]: [...WETH_ONLY[ChainId.MAINNET], DAI, USDC, USDT, COMP, MKR]
-  [ChainId.GÖRLI]: [TOKEN0, STABLE_TOKEN0]
+  [ChainId.GÖRLI]: [TOKEN0]
   // [ChainId.MAINNET]: [TOKEN0, TOKEN1],
 }
 
@@ -64,7 +64,7 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
 // used for display in the default list when adding liquidity
 export const SUGGESTED_BASES: ChainTokenList = {
   ...WTOKEN0_ONLY,
-  [ChainId.GÖRLI]: [TOKEN0, STABLE_TOKEN0]
+  [ChainId.GÖRLI]: [TOKEN0]
 }
 
 // used to construct the list of all pairs we consider by default in the frontend
