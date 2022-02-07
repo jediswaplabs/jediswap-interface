@@ -9,7 +9,7 @@ import { useTokenBalancesWithLoadingIndicator } from '../../state/wallet/hooks'
 import { StyledInternalLink, ExternalLink, TYPE, HideSmall } from '../../theme'
 import { Text } from 'rebass'
 import Card from '../../components/Card'
-import Row, { RowBetween, RowFixed } from '../../components/Row'
+import Row, { AutoRow, RowBetween, RowFixed } from '../../components/Row'
 import { ButtonPrimary, ButtonSecondary } from '../../components/Button'
 import { AutoColumn } from '../../components/Column'
 
@@ -20,6 +20,7 @@ import { Dots } from '../../components/swap/styleds'
 import { CardSection, DataCard, CardNoise, CardBGImage } from './styleds'
 import { Icons, Table, TableFooter, TableHeader, TableRow, TitleText } from './table'
 import AppBody, { BodyWrapper } from '../AppBody'
+import {ReactComponent as MagnifyingGlass} from '../../assets/images/search-icon.svg'
 
 const PageWrapper = styled(AutoColumn)`
   max-width: 640px;
@@ -85,6 +86,43 @@ const EmptyProposals = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+`
+
+const PoolsTab = styled.div`
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 16px;
+  text-align: center;
+  height: 20px;
+  color: ${({ theme }) => theme.jediWhite};
+  padding:0;
+  padding-top: 16px;
+  padding-bottom: 16px;    
+  letter-spacing: 1px;
+`
+
+const SearchContainer = styled.div`
+  padding: 14px 10px;
+  background-color: #141451;
+  max-width: 450px;
+  width: 100%;
+  border-radius: 4px;
+`
+
+const SearchInput = styled.input`
+  text-decoration: none;
+  background-color: #141451;
+  border: none;
+  color: white;
+  font-family: 'DM Sans', sans-serif;
+  letter-spacing: 1px;
+  width: 100%;
+  font-size: 14px;
+
+  &:focus{
+    outline: none;
+  }
 `
 
 // const
@@ -181,6 +219,38 @@ export default function Pool() {
               </EmptyProposals>
             )} */}
           </AutoColumn>
+          <div style={{maxWidth: '900px', width: '100%'}}>
+
+          <RowBetween gap='24px' >
+            <Row gap='24px'>
+            <PoolsTab>Top Pools</PoolsTab>
+            <PoolsTab>My Pools</PoolsTab>
+            <PoolsTab>All Pools</PoolsTab>
+
+            </Row>
+            
+          <Row gap='24px'>
+          <CreatePoolButton>
+            Create Pool
+          </CreatePoolButton>
+          <CreatePoolButton>
+            Add Liquidity
+          </CreatePoolButton>
+
+          </Row>
+
+          </RowBetween>
+          </div>
+          <div style={{maxWidth: '900px', width: '100%', display: 'flex'}}>
+
+          <SearchContainer>
+            <Row>
+              <SearchInput placeholder='Search pools by name, symbol, address'/>
+              <MagnifyingGlass/>
+            </Row>
+          </SearchContainer>
+          </div>
+          
           <BodyWrapper maxWidth='900px'>
           <Table>
             <TableHeader/>

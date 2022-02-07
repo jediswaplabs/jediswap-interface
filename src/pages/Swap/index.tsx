@@ -44,7 +44,7 @@ import { useExpertModeManager, useUserSlippageTolerance } from '../../state/user
 import { LinkStyledButton, TYPE } from '../../theme'
 import { maxAmountSpend } from '../../utils/maxAmountSpend'
 import { computeTradePriceBreakdown, warningSeverity } from '../../utils/prices'
-import AppBody from '../AppBody'
+import AppBody, { BodyWrapper } from '../AppBody'
 import { ClickableText } from './styleds'
 import Loader from '../../components/Loader'
 import { useAddressNormalizer } from '../../hooks/useAddressNormalizer'
@@ -345,7 +345,7 @@ export default function Swap() {
         tokens={urlLoadedTokens}
         onConfirm={handleConfirmTokenWarning}
       /> */}
-      <AppBody>
+      <BodyWrapper marginTop='100px'>
         <Backdrop top={'0'} left={'503px'} curveRight />
         <Backdrop top={'30px'} left={'493px'} curveRight style={{ height: '60px' }} />
         <Backdrop bottom={'30px'} left={'-35px'} curveLeft style={{ height: '60px' }} />
@@ -562,7 +562,7 @@ export default function Swap() {
             ) : null} */}
           </BottomGrouping>
         </Wrapper>
-      </AppBody>
+      </BodyWrapper>
 
       {/* TODO: FIX ADVANCED SWAP */}
       {/* <AdvancedSwapDetailsDropdown trade={trade} /> */}
