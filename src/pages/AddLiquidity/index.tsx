@@ -14,7 +14,7 @@ import CurrencyInputPanel from '../../components/CurrencyInputPanel'
 import DoubleCurrencyLogo from '../../components/DoubleLogo'
 import { AddRemoveTabs } from '../../components/NavigationTabs'
 import { MinimalPositionCard } from '../../components/PositionCard'
-import Row, { RowBetween, RowFlat } from '../../components/Row'
+import Row, { AutoRow, RowBetween, RowFixed, RowFlat } from '../../components/Row'
 
 import { ROUTER_ADDRESS } from '../../constants'
 import { PairState } from '../../data/Reserves'
@@ -40,6 +40,18 @@ import { PoolPriceBar } from './PoolPriceBar'
 import { useRouterContract } from '../../hooks/useContract'
 import { AddTransactionResponse, Args, uint256 } from '@jediswap/starknet'
 import { BigNumberish } from '@jediswap/starknet/dist/utils/number'
+import styled from 'styled-components'
+
+const BalanceText = styled.div`
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 16px;
+  letter-spacing: 0em;
+  text-align: center;
+  color: ${({ theme }) => theme.jediWhite};
+`
 
 export default function AddLiquidity({
   match: {
@@ -306,8 +318,8 @@ export default function AddLiquidity({
   return (
     <>
       <AppBody>
-        <AddRemoveTabs creating={isCreate} adding={true} />
         <Wrapper>
+          <AddRemoveTabs creating={isCreate} adding={true} />
           <TransactionConfirmationModal
             isOpen={showConfirm}
             onDismiss={handleDismissConfirmation}
@@ -342,6 +354,9 @@ export default function AddLiquidity({
                   </BlueCard>
                 </ColumnCenter>
               ))}
+            <AutoRow justify="flex-end">
+              <BalanceText>Balance: {currencyBalances.CURRENCY_A?.toSignificant(6) ?? 0}</BalanceText>
+            </AutoRow>
             <CurrencyInputPanel
               value={formattedAmounts[Field.CURRENCY_A]}
               onUserInput={onFieldAInput}
@@ -354,9 +369,14 @@ export default function AddLiquidity({
               id="add-liquidity-input-tokena"
               showCommonBases
             />
-            <ColumnCenter>
-              <Plus size="16" color={theme.text2} />
-            </ColumnCenter>
+            <AutoRow>
+              <AutoRow justify="center" style={{ width: '50%' }}>
+                <Plus size="16" color={theme.jediWhite} />
+              </AutoRow>
+              <AutoRow justify="flex-end" style={{ width: '50%' }}>
+                <BalanceText>Balance: {currencyBalances.CURRENCY_B?.toSignificant(6) ?? 0}</BalanceText>
+              </AutoRow>
+            </AutoRow>
             <CurrencyInputPanel
               value={formattedAmounts[Field.CURRENCY_B]}
               onUserInput={onFieldBInput}
@@ -371,13 +391,13 @@ export default function AddLiquidity({
             />
             {currencies[Field.CURRENCY_A] && currencies[Field.CURRENCY_B] && pairState !== PairState.INVALID && (
               <>
-                <LightCard padding="0px" borderRadius={'20px'}>
+                <LightCard padding="0px" borderRadius={'8px'}>
                   <RowBetween padding="1rem">
-                    <TYPE.subHeader fontWeight={500} fontSize={14}>
+                    <TYPE.subHeader fontWeight={500} fontSize={14} fontFamily={'DM Sans'} letterSpacing={'0ch'}>
                       {noLiquidity ? 'Initial prices' : 'Prices'} and pool share
                     </TYPE.subHeader>
                   </RowBetween>{' '}
-                  <LightCard padding="1rem" borderRadius={'20px'}>
+                  <LightCard padding="1rem">
                     <PoolPriceBar
                       currencies={currencies}
                       poolTokenPercentage={poolTokenPercentage}
