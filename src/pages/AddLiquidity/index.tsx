@@ -6,7 +6,7 @@ import ReactGA from 'react-ga'
 import { RouteComponentProps } from 'react-router-dom'
 import { Text } from 'rebass'
 import { ThemeContext } from 'styled-components'
-import { ButtonError, ButtonLight, ButtonPrimary } from '../../components/Button'
+import { ButtonError, ButtonGradient, ButtonLight, ButtonPrimary } from '../../components/Button'
 import { BlueCard, LightCard } from '../../components/Card'
 import { AutoColumn, ColumnCenter } from '../../components/Column'
 import TransactionConfirmationModal, { ConfirmationModalContent } from '../../components/TransactionConfirmationModal'
@@ -55,6 +55,17 @@ const BalanceText = styled.div`
 
 const Separator = styled.div`
   border-top: 1px solid rgba(255, 255, 255, 0.2);
+`
+const HeaderNote = styled.div`
+  padding: 10px 12px;
+  font-family: 'DM Sans', sans-serif;
+  letter-spacing: 0px;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 120%;
+  color: ${({ theme }) => theme.jediWhite};
+  background-color: ${({ theme }) => theme.jediNavyBlue};
+  border-radius: 8px;
 `
 
 export default function AddLiquidity({
@@ -225,7 +236,7 @@ export default function AddLiquidity({
 
   const modalHeader = () => {
     return noLiquidity ? (
-      <AutoColumn gap="20px">
+      <AutoColumn gap="16px">
         <LightCard mt="20px" borderRadius="20px">
           <RowFlat>
             <Text fontSize="48px" fontWeight={500} lineHeight="42px" marginRight={10}>
@@ -339,7 +350,7 @@ export default function AddLiquidity({
             )}
             pendingText={pendingText}
           />
-          <AutoColumn gap="20px">
+          <AutoColumn gap="16px">
             {noLiquidity ||
               (isCreate && (
                 <ColumnCenter>
@@ -358,6 +369,11 @@ export default function AddLiquidity({
                   </BlueCard>
                 </ColumnCenter>
               ))}
+
+            <HeaderNote>
+              Note: When you add liquidity, you will receive pool tokens representing your position. These tokens
+              automatically earn fees proportional to your share of the pool, and can be redeemed at any time.
+            </HeaderNote>
 
             <AutoColumn gap="16px">
               <AutoRow justify="flex-end">
@@ -396,7 +412,7 @@ export default function AddLiquidity({
                 id="add-liquidity-input-tokenb"
               />
             </AutoColumn>
-            {currencies[Field.CURRENCY_A] && currencies[Field.CURRENCY_B] && pairState !== PairState.INVALID && (
+            {currencies[Field.CURRENCY_A] && currencies[Field.CURRENCY_B] && pairState === PairState.EXISTS && (
               <>
                 <LightCard padding="0px" borderRadius={'8px'}>
                   <RowBetween padding="1rem">
@@ -418,7 +434,7 @@ export default function AddLiquidity({
             )}
 
             {!account ? (
-              <ButtonLight onClick={toggleWalletModal}>Connect Wallet</ButtonLight>
+              <ButtonGradient onClick={toggleWalletModal}>Connect Wallet</ButtonGradient>
             ) : (
               <AutoColumn gap={'md'}>
                 {(approvalA === ApprovalState.NOT_APPROVED ||
@@ -473,7 +489,7 @@ export default function AddLiquidity({
       </AppBody>
 
       {pair && !noLiquidity && pairState !== PairState.INVALID ? (
-        <AutoColumn style={{ minWidth: '20rem', width: '100%', maxWidth: '400px', marginTop: '1rem' }}>
+        <AutoColumn style={{ minWidth: '20rem', width: '100%', maxWidth: '400px', marginTop: '20px' }}>
           <MinimalPositionCard showUnwrapped={oneCurrencyIsWTOKEN0} pair={pair} />
         </AutoColumn>
       ) : null}
