@@ -74,7 +74,7 @@ export const Icons = () => {
 export const TableRow = ({data} : {data : AnyArray}) => {
     return <TRow>
         {
-            data.map(val => <TData>
+            data.map((val, i) => <TData key={i}>
                 {val}
             </TData>)
         }
@@ -85,7 +85,7 @@ export const TableHeader = () => {
     const data = ['Pool name', 'Liquidity', 'Volume (24H)', 'Fees(24H)', 'APR'];
     return <TRow>
         {
-            data.map(val => <TH>
+            data.map((val, i) => <TH key={i}>
                 {val}
             </TH>)
         }

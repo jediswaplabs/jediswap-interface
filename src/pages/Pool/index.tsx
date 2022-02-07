@@ -253,6 +253,7 @@ export default function Pool() {
           
           <BodyWrapper maxWidth='900px'>
           <Table>
+            <tbody>
             <TableHeader/>
             <TableRow data={[<Row gap='8px' justifyContent={'center'}>
                   <Icons/>
@@ -278,6 +279,9 @@ export default function Pool() {
               <Icons/>
               <TitleText>ETH-USDC</TitleText>
             </Row>, '$497,907,052', '$497,907,052', '$497,907,052', '9.54139%']}/>
+
+            </tbody>
+            
           </Table>
           <TableFooter/>
 
