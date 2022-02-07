@@ -343,8 +343,9 @@ export default function Swap() {
     inputCurrency => {
       setApprovalSubmitted(false) // reset 2 step UI for approvals
       onCurrencySelection(Field.INPUT, inputCurrency)
+      handleTypeInput('0')
     },
-    [onCurrencySelection]
+    [handleTypeInput, onCurrencySelection]
   )
 
   const handleMaxInput = useCallback(() => {
