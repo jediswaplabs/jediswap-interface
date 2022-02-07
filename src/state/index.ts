@@ -8,7 +8,7 @@ import transactions from './transactions/reducer'
 import swap from './swap/reducer'
 import lists from './lists/reducer'
 import multicall from './multicall/reducer'
-// import mint from './mint/reducer'
+import mint from './mint/reducer'
 // import burn from './burn/reducer'
 
 const PERSISTED_KEYS: string[] = ['user', 'transactions', 'lists']
@@ -19,7 +19,7 @@ const store = configureStore({
     user,
     transactions,
     swap,
-    // mint,
+    mint,
     // burn,
     multicall,
     lists

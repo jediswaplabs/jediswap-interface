@@ -9,9 +9,9 @@ import { useTokenBalancesWithLoadingIndicator } from '../../state/wallet/hooks'
 import { StyledInternalLink, ExternalLink, TYPE, HideSmall } from '../../theme'
 import { Text } from 'rebass'
 import Card from '../../components/Card'
-import { RowBetween, RowFixed } from '../../components/Row'
+import Row, { RowBetween, RowFixed } from '../../components/Row'
 import { ButtonPrimary, ButtonSecondary } from '../../components/Button'
-import { AutoColumn } from '../../components/Column'
+import Column, { AutoColumn } from '../../components/Column'
 
 import { useActiveStarknetReact } from '../../hooks'
 import { usePairs } from '../../data/Reserves'
@@ -20,7 +20,7 @@ import { Dots } from '../../components/swap/styleds'
 import { CardSection, DataCard, CardNoise, CardBGImage } from './styleds'
 
 const PageWrapper = styled(AutoColumn)`
-  max-width: 640px;
+  max-width: 900px;
   width: 100%;
 `
 
@@ -85,6 +85,13 @@ const EmptyProposals = styled.div`
   align-items: center;
 `
 
+const ComingSoonSection = styled(Row)`
+  font-size: 36px;
+  justify-content: center;
+  margin-top: 50px;
+  height: 500px;
+`
+
 // const
 
 export default function Pool() {
@@ -135,15 +142,17 @@ export default function Pool() {
             <TitleRow style={{ marginTop: '1rem' }} padding={'0'}>
               <HideSmall>
                 <TYPE.mediumHeader style={{ marginTop: '0.5rem', justifySelf: 'flex-start' }} fontFamily="DM Sans">
-                  Top Pool
+                  {/* Top Pool */}
                 </TYPE.mediumHeader>
               </HideSmall>
               <ButtonRow>
-                <CreatePoolButton as={Link} to="/create/ETH">
-                  Create A Pool
+                <CreatePoolButton as={Link} to="/add/TOKEN0">
+                  Add Liquidity
                 </CreatePoolButton>
               </ButtonRow>
             </TitleRow>
+
+            <ComingSoonSection>Coming Soon</ComingSoonSection>
 
             {/* {!account ? (
               <Card padding="40px">
