@@ -10,7 +10,6 @@ import isZero from '../utils/isZero'
 import { useActiveStarknetReact } from './index'
 import useTransactionDeadline from './useTransactionDeadline'
 // import useENS from './useENS'
-import { Version } from './useToggledVersion'
 
 export enum SwapCallbackState {
   INVALID,
@@ -57,19 +56,10 @@ function useSwapCallArguments(
 
   return useMemo(() => {
     if (!trade || !recipient || !library || !account || !chainId || !deadline) {
-      // console.log(
-      //   '🚀 ~ file: useSwapCallback.ts ~ line 56 ~ returnuseMemo ~ !trade || !recipient || !library || !account || !chainId || !deadline',
-      //   trade,
-      //   recipient,
-      //   library,
-      //   account,
-      //   chainId,
-      //   deadline
-      // )
       return []
     }
 
-    // console.log('🚀 ~ file: useSwapCallback.ts ~ line 58 ~ returnuseMemo ~ contract', contract)
+    //
     if (!contract) {
       return []
     }
@@ -96,7 +86,7 @@ function useSwapCallArguments(
       )
     }
     return swapMethods.map(parameters => ({ parameters, contract }))
-  }, [account, allowedSlippage, chainId, deadline, library, recipient, trade])
+  }, [account, allowedSlippage, chainId, contract, deadline, library, recipient, trade])
 }
 
 // returns a function that will execute a swap, if the parameters are all valid
@@ -109,7 +99,6 @@ export function useSwapCallback(
   const { account, chainId, library } = useActiveStarknetReact()
 
   const swapCalls = useSwapCallArguments(trade, allowedSlippage, recipientAddressOrName)
-  console.log('🚀 ~ file: useSwapCallback.ts ~ line 97 ~ swapCalls', swapCalls)
 
   const addTransaction = useTransactionAdder()
   const recipient = recipientAddressOrName === null ? account : recipientAddressOrName
@@ -186,8 +175,6 @@ export function useSwapCallback(
         //   throw new Error('Unexpected error. Please contact support: none of the calls threw an error')
         // }
 
-        // console.log('Estimated Calls: ', estimatedCalls)
-
         const {
           call: {
             contract,
@@ -196,7 +183,6 @@ export function useSwapCallback(
         } = estimatedCalls[0]
 
         const [amountIn, amountOut, path, to, deadline] = args
-        // console.log('🚀 ~ file: useSwapCallback.ts ~ line 199 ~ onSwap ~ path', path)
 
         const uint256AmountIn = uint256.bnToUint256(amountIn as string)
         const uint256AmountOut = uint256.bnToUint256(amountOut as string)
@@ -209,48 +195,40 @@ export function useSwapCallback(
           deadline
         }
 
-        // console.log('Calldata: ', compileCalldata(swapArgs))
+        return contract
+          .invoke(methodName, swapArgs)
+          .then(response => {
+            const inputSymbol = trade.inputAmount.currency.symbol
+            const outputSymbol = trade.outputAmount.currency.symbol
+            const inputAmount = trade.inputAmount.toSignificant(3)
+            const outputAmount = trade.outputAmount.toSignificant(3)
 
-        return (
-          contract
-            .invoke(methodName, swapArgs)
-            //   (...args, {
-            //   gasLimit: gasEstimate ? calculateGasMargin(gasEstimate) : undefined,
-            //   ...(value && !isZero(value) ? { value, from: account } : { from: account })
-            // })
-            .then(response => {
-              const inputSymbol = trade.inputAmount.currency.symbol
-              const outputSymbol = trade.outputAmount.currency.symbol
-              const inputAmount = trade.inputAmount.toSignificant(3)
-              const outputAmount = trade.outputAmount.toSignificant(3)
+            const base = `Swap ${inputAmount} ${inputSymbol} for ${outputAmount} ${outputSymbol}`
+            const withRecipient =
+              recipient === account
+                ? base
+                : `${base} to ${
+                    recipientAddressOrName && isAddress(recipientAddressOrName)
+                      ? shortenAddress(recipientAddressOrName)
+                      : recipientAddressOrName
+                  }`
 
-              const base = `Swap ${inputAmount} ${inputSymbol} for ${outputAmount} ${outputSymbol}`
-              const withRecipient =
-                recipient === account
-                  ? base
-                  : `${base} to ${
-                      recipientAddressOrName && isAddress(recipientAddressOrName)
-                        ? shortenAddress(recipientAddressOrName)
-                        : recipientAddressOrName
-                    }`
-
-              addTransaction(response, {
-                summary: withRecipient
-              })
-
-              return response.transaction_hash
+            addTransaction(response, {
+              summary: withRecipient
             })
-            .catch((error: any) => {
-              // if the user rejected the tx, pass this along
-              if (error?.code === 4001) {
-                throw new Error('Transaction rejected.')
-              } else {
-                // otherwise, the error was unexpected and we need to convey that
-                console.error(`Swap failed`, error, methodName, args, value)
-                throw new Error(`Swap failed: ${error.message}`)
-              }
-            })
-        )
+
+            return response.transaction_hash
+          })
+          .catch((error: any) => {
+            // if the user rejected the tx, pass this along
+            if (error?.code === 4001) {
+              throw new Error('Transaction rejected.')
+            } else {
+              // otherwise, the error was unexpected and we need to convey that
+              console.error(`Swap failed`, error, methodName, args, value)
+              throw new Error(`Swap failed: ${error.message}`)
+            }
+          })
       },
       error: null
     }

@@ -37,7 +37,7 @@ export function usePairAddresses(tokens: (Token | undefined)[][]): (string | und
         })
       )
     },
-    [registryContract, tokens]
+    [registryContract]
   )
 
   useDeepCompareEffect(() => {

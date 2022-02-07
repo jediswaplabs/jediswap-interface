@@ -71,12 +71,24 @@
         "type": "Uint256"
       },
       {
+        "name": "decimalsA",
+        "type": "felt"
+      },
+      {
+        "name": "decimalsB",
+        "type": "felt"
+      },
+      {
         "name": "reserveA",
         "type": "Uint256"
       },
       {
         "name": "reserveB",
         "type": "Uint256"
+      },
+      {
+        "name": "stable",
+        "type": "felt"
       }
     ],
     "name": "quote",
@@ -96,12 +108,24 @@
         "type": "Uint256"
       },
       {
+        "name": "decimalsIn",
+        "type": "felt"
+      },
+      {
+        "name": "decimalsOut",
+        "type": "felt"
+      },
+      {
         "name": "reserveIn",
         "type": "Uint256"
       },
       {
         "name": "reserveOut",
         "type": "Uint256"
+      },
+      {
+        "name": "stable",
+        "type": "felt"
       }
     ],
     "name": "get_amount_out",
@@ -121,12 +145,24 @@
         "type": "Uint256"
       },
       {
+        "name": "decimalsIn",
+        "type": "felt"
+      },
+      {
+        "name": "decimalsOut",
+        "type": "felt"
+      },
+      {
         "name": "reserveIn",
         "type": "Uint256"
       },
       {
         "name": "reserveOut",
         "type": "Uint256"
+      },
+      {
+        "name": "stable",
+        "type": "felt"
       }
     ],
     "name": "get_amount_in",
@@ -162,7 +198,7 @@
       },
       {
         "name": "amounts",
-        "type": "felt*"
+        "type": "Uint256*"
       }
     ],
     "stateMutability": "view",
@@ -191,7 +227,7 @@
       },
       {
         "name": "amounts",
-        "type": "felt*"
+        "type": "Uint256*"
       }
     ],
     "stateMutability": "view",
@@ -328,7 +364,7 @@
       },
       {
         "name": "amounts",
-        "type": "felt*"
+        "type": "Uint256*"
       }
     ],
     "type": "function"
@@ -368,7 +404,7 @@
       },
       {
         "name": "amounts",
-        "type": "felt*"
+        "type": "Uint256*"
       }
     ],
     "type": "function"

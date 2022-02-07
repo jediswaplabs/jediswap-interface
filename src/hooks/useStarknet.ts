@@ -66,6 +66,7 @@ export function useStarknetCall(
     return () => {
       isCancelled = true
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [blockNumber, contract, methodName])
 
   return value
@@ -82,15 +83,13 @@ export function useMultipleStarknetCallSingleData(
   const blockNumber = useBlockNumber()
   const [calls, setCalls] = useState<(Args | undefined)[]>([])
 
-  // console.log(`Running ${methodName} for ${addresses}`)
-
   const callResults = useCallback(
     (addresses: (string | undefined)[], contractInterface: Abi[], methodName: string, args?: Args | undefined) => {
       return Promise.all(
         addresses.map(async address => {
-          if (address && isZero(address)) return undefined
+          if (!address || isZero(address)) return undefined
           const contract = new Contract(contractInterface, address)
-          // console.log('🚀 ~ file: useStarknet.ts ~ line 70 ~ callResults ~ contract', contract)
+
           const result = await contract?.call(methodName, args)
           return result
         })

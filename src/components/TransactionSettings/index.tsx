@@ -72,7 +72,7 @@ const Option = styled(FancyButton)<{ active: boolean }>`
 `
 
 const Input = styled.input`
-  background: ${({ theme }) => theme.bg1};
+  background: ${({ theme }) => theme.jediBlue};
   font-size: 16px;
   width: auto;
   outline: none;
@@ -80,7 +80,7 @@ const Input = styled.input`
   &::-webkit-inner-spin-button {
     -webkit-appearance: none;
   }
-  color: ${({ theme, color }) => (color === 'red' ? theme.red1 : theme.text1)};
+  color: ${({ theme }) => theme.jediWhite};
   text-align: right;
 `
 
@@ -124,6 +124,14 @@ const SlippageEmojiContainer = styled.span`
   ${({ theme }) => theme.mediaWidth.upToSmall`
     display: none;  
   `}
+`
+
+const MinutesText = styled.div`
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  padding-left: 8px;
+  letter-spacing: 0px;
+  color: ${({ theme }) => theme.jediWhite};
 `
 
 export interface SlippageTabsProps {
@@ -284,12 +292,7 @@ export default function SlippageTabs({ rawSlippage, setRawSlippage, deadline, se
                 onChange={e => parseCustomDeadline(e.target.value)}
               />
             </OptionCustom>
-            <TYPE.body
-              style={{ paddingLeft: '8px', fontFamily: "'DM Sans', 'sans-serif'", letterSpacing: '0px' }}
-              fontSize={14}
-            >
-              minutes
-            </TYPE.body>
+            <MinutesText>minutes</MinutesText>
           </RowFixed>
         </SlippageWrapper>
       </AutoColumn>

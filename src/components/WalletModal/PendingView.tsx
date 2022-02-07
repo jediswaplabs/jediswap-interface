@@ -122,15 +122,14 @@ export default function PendingView({
           //   }
           // }
           return (
-            <BorderWrapper>
+            <BorderWrapper key={key}>
               <Option
                 id={`connect-${key}`}
-                key={key}
                 clickable={false}
                 color={option.color}
                 header={option.name}
                 subheader={option.description}
-                icon={require('../../assets/images/' + option.iconName)}
+                icon={option.icon}
               />
             </BorderWrapper>
           )

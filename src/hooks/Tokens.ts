@@ -1,4 +1,4 @@
-import { TOKEN1, TOKEN2 } from './../constants/index'
+import { jediTokensList } from '../constants/jediTokens'
 import { Args, shortString, number as starkNumber } from '@jediswap/starknet'
 import { parseBytes32String } from '@ethersproject/strings'
 import { Currency, TOKEN0, Token, currencyEquals } from '@jediswap/sdk'
@@ -10,18 +10,13 @@ import { isAddress } from '../utils'
 import { useActiveStarknetReact } from './index'
 import { useTokenContract } from './useContract'
 import { useStarknetCall, NEVER_RELOAD } from './useStarknet'
+import { useSingleCallResult } from '../state/multicall/hooks'
 // import { BigNumberish } from 'starknet/dist/utils/number'
 
 export function useAllTokens(): { [address: string]: Token } {
   const { chainId } = useActiveStarknetReact()
   const userAddedTokens = useUserAddedTokens()
 
-  const jediTokenMap = useMemo(() => {
-    return {
-      [TOKEN1.address]: TOKEN1,
-      [TOKEN2.address]: TOKEN2
-    }
-  }, [])
   const allTokens = useSelectedTokenList()
 
   return useMemo(() => {
@@ -36,10 +31,10 @@ export function useAllTokens(): { [address: string]: Token } {
           },
           // must make a copy because reduce modifies the map, and we do not
           // want to make a copy in every iteration
-          { ...allTokens[chainId], ...jediTokenMap }
+          { ...allTokens[chainId], ...jediTokensList }
         )
     )
-  }, [chainId, userAddedTokens, allTokens, jediTokenMap])
+  }, [chainId, userAddedTokens, allTokens])
 }
 
 // Check if currency is included in custom list from user storage
@@ -75,51 +70,36 @@ function parseStringFromArgs(data: any, isHexNumber?: boolean): string | undefin
 // otherwise returns the token
 export function useToken(tokenAddress?: string): Token | undefined | null {
   const { chainId } = useActiveStarknetReact()
-  // const tokens = useAllTokens()
+  const tokens = useAllTokens()
 
   const address = isAddress(tokenAddress)
+  const token: Token | undefined = address ? tokens[address] : undefined
 
   const tokenContract = useTokenContract(address ? address : undefined)
-  console.log('🚀 ~ file: Tokens.ts ~ line 70 ~ useToken ~ tokenContract', tokenContract)
-  // const tokenContractBytes32 = useBytes32TokenContract(address ? address : undefined, false)
-  // const token: Token | undefined = address ? tokens[address] : undefined
 
-  const { name: tokenName } = useStarknetCall(tokenContract, 'name', undefined, NEVER_RELOAD)
+  const tokenName = useSingleCallResult(token ? undefined : tokenContract, 'name', undefined, NEVER_RELOAD)
 
-  const { symbol } = useStarknetCall(tokenContract, 'symbol', undefined, NEVER_RELOAD)
-  console.log('🚀 ~ file: Tokens.ts ~ line 89 ~ useToken ~ symbol', parseStringFromArgs(symbol))
+  const symbol = useSingleCallResult(token ? undefined : tokenContract, 'symbol', undefined, NEVER_RELOAD)
 
-  // const symbolBytes32 = useSingleCallResult(token ? undefined : tokenContractBytes32, 'symbol', undefined, NEVER_RELOAD)
-  const { decimals } = useStarknetCall(tokenContract, 'decimals', undefined, NEVER_RELOAD)
-  // console.log(
-  //   '🚀 ~ file: Tokens.ts ~ line 93 ~ useToken ~ decimals',
-  //   typeof decimals,
-  //   parseStringFromArgs(decimals, true)
-  // )
+  const decimals = useSingleCallResult(token ? undefined : tokenContract, 'decimals', undefined, NEVER_RELOAD)
 
   return useMemo(() => {
-    // if (token) return token
-    if (!chainId || !address) {
-      return undefined
-    }
-    if (!decimals || !symbol) {
-      return null
-    }
-    if (typeof decimals === 'string') {
-      console.log('Building Token')
-
+    if (token) return token
+    if (!chainId || !address) return undefined
+    if (decimals.loading || symbol.loading || tokenName.loading) return null
+    if (decimals.result) {
       const token = new Token(
         chainId,
         address,
-        parseInt(decimals),
-        parseStringFromArgs(symbol),
-        parseStringFromArgs(tokenName)
+        parseInt(decimals.result[0]),
+        parseStringFromArgs(symbol.result?.[0]),
+        parseStringFromArgs(symbol.result?.[0])
       )
-      // console.log('🚀 ~ file: Tokens.ts ~ line 112 ~ returnuseMemo ~ token ', token)
+      //
       return token
     }
     return undefined
-  }, [address, chainId, decimals, symbol, tokenName])
+  }, [address, chainId, decimals, symbol, token, tokenName])
 }
 
 export function useCurrency(currencyId: string | undefined): Currency | null | undefined {

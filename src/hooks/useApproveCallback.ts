@@ -32,7 +32,7 @@ export function useApproveCallback(
       : amountToApprove?.currency === TOKEN0
       ? WTOKEN0[chainId ?? 5]
       : undefined
-  // console.log('🚀 ~ file: useApproveCallback.ts ~ line 31 ~ token', token)
+
   const currentAllowance = useTokenAllowance(token, account ?? undefined, spender)
   const pendingApproval = useHasPendingApproval(token?.address, spender)
 

@@ -205,19 +205,6 @@ export default function WalletModal({
       })
   }
 
-  // const tryStarknetActivation = async () => {
-  //   const starknet = await connectStarknet()
-
-  //   console.log('Starknet: ', starknet)
-  // }
-
-  // close wallet modal if fortmatic modal is active
-  // useEffect(() => {
-  //   fortmatic.on(OVERLAY_READY, () => {
-  //     toggleWalletModal()
-  //   })
-  // }, [toggleWalletModal])
-
   // get wallets user can switch too, depending on device/browser
   function getOptions() {
     const isMetamask = window.ethereum && window.ethereum.isMetaMask
@@ -243,42 +230,12 @@ export default function WalletModal({
               link={option.href}
               header={option.name}
               subheader={null}
-              icon={require('../../assets/images/' + option.iconName)}
+              icon={option.icon}
             />
           )
         }
         return null
       }
-
-      // overwrite injected when needed
-      // if (option.connector === injected) {
-      //   // don't show injected if there's no injected provider
-      //   if (!(window.web3 || window.ethereum)) {
-      //     if (option.name === 'MetaMask') {
-      //       return (
-      //         <Option
-      //           id={`connect-${key}`}
-      //           key={key}
-      //           color={'#E8831D'}
-      //           header={'Install Metamask'}
-      //           subheader={null}
-      //           link={'https://metamask.io/'}
-      //           icon={MetamaskIcon}
-      //         />
-      //       )
-      //     } else {
-      //       return null //dont want to return install twice
-      //     }
-      //   }
-      //   // don't return metamask if injected provider isn't metamask
-      //   else if (option.name === 'MetaMask' && !isMetamask) {
-      //     return null
-      //   }
-      //   // likewise for generic
-      //   else if (option.name === 'Injected' && isMetamask) {
-      //     return null
-      //   }
-      // }
 
       // return rest of options
       return (
@@ -297,7 +254,7 @@ export default function WalletModal({
             link={option.href}
             header={option.name}
             subheader={null} //use option.descriptio to bring back multi-line
-            icon={require('../../assets/images/' + option.iconName)}
+            icon={option.icon}
           />
         )
       )

@@ -9,9 +9,9 @@ import { useTokenBalancesWithLoadingIndicator } from '../../state/wallet/hooks'
 import { StyledInternalLink, ExternalLink, TYPE, HideSmall } from '../../theme'
 import { Text } from 'rebass'
 import Card from '../../components/Card'
-import Row, { AutoRow, RowBetween, RowFixed } from '../../components/Row'
+import Row, { RowBetween, RowFixed } from '../../components/Row'
 import { ButtonPrimary, ButtonSecondary } from '../../components/Button'
-import { AutoColumn } from '../../components/Column'
+import Column, { AutoColumn } from '../../components/Column'
 
 import { useActiveStarknetReact } from '../../hooks'
 import { usePairs } from '../../data/Reserves'
@@ -23,7 +23,7 @@ import AppBody, { BodyWrapper } from '../AppBody'
 import {ReactComponent as MagnifyingGlass} from '../../assets/images/search-icon.svg'
 
 const PageWrapper = styled(AutoColumn)`
-  max-width: 640px;
+  max-width: 900px;
   width: 100%;
 `
 
@@ -123,6 +123,13 @@ const SearchInput = styled.input`
   &:focus{
     outline: none;
   }
+`
+
+const ComingSoonSection = styled(Row)`
+  font-size: 36px;
+  justify-content: center;
+  margin-top: 50px;
+  height: 500px;
 `
 
 // const

@@ -33,8 +33,8 @@ const ArrowWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
   background: ${({ theme }) => theme.jediNavyBlue};
   color: ${({ theme }) => theme.jediWhite};
@@ -84,12 +84,12 @@ export default function SwapModalHeader({
   const theme = useContext(ThemeContext)
 
   return (
-    <AutoColumn gap={'6px'} style={{ marginTop: '29px' }}>
+    <AutoColumn gap={'3px'} style={{ marginTop: '16px' }}>
       <RowWrapper>
         <Column>
-          <RowFixed>
+          {/* <RowFixed>
             <SwapText>Swap From</SwapText>
-          </RowFixed>
+          </RowFixed> */}
           <RowBetween>
             <RowFixed gap={'0px'}>
               <CurrencyLogo currency={trade.inputAmount.currency} size={'24px'} style={{ marginRight: '8px' }} />
@@ -118,7 +118,7 @@ export default function SwapModalHeader({
       </RowFixed>
       <RowWrapper>
         <Column>
-          <SwapText>Swap To</SwapText>
+          {/* <SwapText>Swap To</SwapText> */}
           <RowBetween align="flex-end">
             <RowFixed gap={'0px'}>
               <CurrencyLogo currency={trade.outputAmount.currency} size={'24px'} style={{ marginRight: '8px' }} />

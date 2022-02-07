@@ -1,5 +1,58 @@
 [
   {
+    "data": [
+      {
+        "name": "current_owner",
+        "type": "felt"
+      },
+      {
+        "name": "future_owner",
+        "type": "felt"
+      }
+    ],
+    "keys": [],
+    "name": "owner_change_initiated",
+    "type": "event"
+  },
+  {
+    "data": [
+      {
+        "name": "current_owner",
+        "type": "felt"
+      },
+      {
+        "name": "future_owner",
+        "type": "felt"
+      }
+    ],
+    "keys": [],
+    "name": "owner_change_completed",
+    "type": "event"
+  },
+  {
+    "data": [
+      {
+        "name": "token0",
+        "type": "felt"
+      },
+      {
+        "name": "token1",
+        "type": "felt"
+      },
+      {
+        "name": "pair",
+        "type": "felt"
+      },
+      {
+        "name": "total_pairs",
+        "type": "felt"
+      }
+    ],
+    "keys": [],
+    "name": "pair_added",
+    "type": "event"
+  },
+  {
     "inputs": [
       {
         "name": "initial_owner",
@@ -9,6 +62,22 @@
     "name": "constructor",
     "outputs": [],
     "type": "constructor"
+  },
+  {
+    "inputs": [],
+    "name": "get_all_pairs",
+    "outputs": [
+      {
+        "name": "all_pairs_len",
+        "type": "felt"
+      },
+      {
+        "name": "all_pairs",
+        "type": "felt*"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
   },
   {
     "inputs": [
@@ -88,17 +157,23 @@
   {
     "inputs": [
       {
-        "name": "new_owner",
+        "name": "future_owner",
         "type": "felt"
       }
     ],
-    "name": "transfer_ownership",
+    "name": "initiate_ownership_transfer",
     "outputs": [
       {
-        "name": "new_owner",
+        "name": "future_owner",
         "type": "felt"
       }
     ],
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "accept_ownership",
+    "outputs": [],
     "type": "function"
   }
 ]

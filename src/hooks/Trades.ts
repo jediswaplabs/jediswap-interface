@@ -8,10 +8,10 @@ import { wrappedCurrency } from '../utils/wrappedCurrency'
 
 import { useActiveStarknetReact } from './index'
 
-function useAllCommonPairs(currencyA?: Currency, currencyB?: Currency): Pair[] {
+function useAllCommonPairs(currencyA?: Currency, currencyB?: Currency): [Pair[], boolean] {
   const { chainId } = useActiveStarknetReact()
 
-  const bases: Token[] = chainId ? BASES_TO_CHECK_TRADES_AGAINST[chainId] : []
+  const bases: Token[] = useMemo(() => (chainId ? BASES_TO_CHECK_TRADES_AGAINST[chainId] : []), [chainId])
 
   const [tokenA, tokenB] = chainId
     ? [wrappedCurrency(currencyA, chainId), wrappedCurrency(currencyB, chainId)]
@@ -45,55 +45,67 @@ function useAllCommonPairs(currencyA?: Currency, currencyB?: Currency): Pair[] {
   )
 
   const allPairs = usePairs(allPairCombinations)
-  // console.log('🚀 ~ file: Trades.ts ~ line 48 ~ useAllCommonPairs ~ allPairs', allPairs)
+  const anyPairLoading = allPairs.some(([pairState]) => pairState === PairState.LOADING)
 
   // only pass along valid pairs, non-duplicated pairs
-  return useMemo(
-    () =>
-      Object.values(
-        allPairs
-          // filter out invalid pairs
-          .filter((result): result is [PairState.EXISTS, Pair] => Boolean(result[0] === PairState.EXISTS && result[1]))
-          // filter out duplicated pairs
-          .reduce<{ [pairAddress: string]: Pair }>((memo, [, curr]) => {
-            memo[curr.liquidityToken.address] = memo[curr.liquidityToken.address] ?? curr
-            return memo
-          }, {})
-      ),
-    [allPairs]
-  )
+  return [
+    useMemo(
+      () =>
+        Object.values(
+          allPairs
+            // filter out invalid pairs
+            .filter((result): result is [PairState.EXISTS, Pair] =>
+              Boolean(result[0] === PairState.EXISTS && result[1])
+            )
+            // filter out duplicated pairs
+            .reduce<{ [pairAddress: string]: Pair }>((memo, [, curr]) => {
+              memo[curr.liquidityToken.address] = memo[curr.liquidityToken.address] ?? curr
+              return memo
+            }, {})
+        ),
+      [allPairs]
+    ),
+    anyPairLoading
+  ]
 }
 
 /**
  * Returns the best trade for the exact amount of tokens in to the given token out
  */
-export function useTradeExactIn(currencyAmountIn?: CurrencyAmount, currencyOut?: Currency): Trade | null {
-  const allowedPairs = useAllCommonPairs(currencyAmountIn?.currency, currencyOut)
-  // console.log('🚀 ~ file: Trades.ts ~ line 71 ~ useTradeExactIn ~ allowedPairs', allowedPairs)
-  return useMemo(() => {
-    if (currencyAmountIn && currencyOut && allowedPairs.length > 0) {
-      const trade =
-        Trade.bestTradeExactIn(allowedPairs, currencyAmountIn, currencyOut, { maxHops: 3, maxNumResults: 1 })[0] ?? null
-      // console.log('🚀 ~ file: Trades.ts ~ line 74 ~ returnuseMemo ~ trade', trade)
-      return trade
-    }
-    return null
-  }, [allowedPairs, currencyAmountIn, currencyOut])
+export function useTradeExactIn(currencyAmountIn?: CurrencyAmount, currencyOut?: Currency): [Trade | null, boolean] {
+  const [allowedPairs, pairLoading] = useAllCommonPairs(currencyAmountIn?.currency, currencyOut)
+
+  return [
+    useMemo(() => {
+      if (currencyAmountIn && currencyOut && allowedPairs.length > 0) {
+        const trade =
+          Trade.bestTradeExactIn(allowedPairs, currencyAmountIn, currencyOut, { maxHops: 3, maxNumResults: 1 })[0] ??
+          null
+
+        return trade
+      }
+      return null
+    }, [allowedPairs, currencyAmountIn, currencyOut]),
+    pairLoading || allowedPairs.length === 0
+  ]
 }
 
 /**
  * Returns the best trade for the token in to the exact amount of token out
  */
-export function useTradeExactOut(currencyIn?: Currency, currencyAmountOut?: CurrencyAmount): Trade | null {
-  const allowedPairs = useAllCommonPairs(currencyIn, currencyAmountOut?.currency)
+export function useTradeExactOut(currencyIn?: Currency, currencyAmountOut?: CurrencyAmount): [Trade | null, boolean] {
+  const [allowedPairs, pairLoading] = useAllCommonPairs(currencyIn, currencyAmountOut?.currency)
 
-  return useMemo(() => {
-    if (currencyIn && currencyAmountOut && allowedPairs.length > 0) {
-      return (
-        Trade.bestTradeExactOut(allowedPairs, currencyIn, currencyAmountOut, { maxHops: 3, maxNumResults: 1 })[0] ??
-        null
-      )
-    }
-    return null
-  }, [allowedPairs, currencyIn, currencyAmountOut])
+  return [
+    useMemo(() => {
+      if (currencyIn && currencyAmountOut && allowedPairs.length > 0) {
+        return (
+          Trade.bestTradeExactOut(allowedPairs, currencyIn, currencyAmountOut, { maxHops: 3, maxNumResults: 1 })[0] ??
+          null
+        )
+      }
+      return null
+    }, [allowedPairs, currencyIn, currencyAmountOut]),
+    pairLoading || allowedPairs.length === 0
+  ]
 }

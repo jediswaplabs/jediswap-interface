@@ -22,7 +22,7 @@ const Wrapper = styled.div`
   font-family: 'DM Sans', sans-serif;
   letter-spacing: 0px;
   /* border-radius: 8px; */
-  padding: 2px;
+  padding: 1px;
 `
 const Section = styled(AutoColumn)<{ withBorderBottom?: boolean }>`
   padding: 16px 32px;
@@ -41,7 +41,7 @@ const ConfirmedIcon = styled(ColumnCenter)`
   padding: 0px 0 40px;
 `
 const TextWrapper = styled.div`
-  margin-top: 24px;
+  margin-top: 18px;
 `
 
 const Row = styled.div`
@@ -160,7 +160,7 @@ export function ConfirmationModalContent({
 }) {
   return (
     <Wrapper>
-      <Section style={{ paddingBottom: '12px' }}>
+      <Section style={{ paddingBottom: '8px' }}>
         <TextWrapper>
           <RowBetween>
             <Text fontWeight={400} fontSize={20} fontFamily={'Soloist Title'} letterSpacing={'-0.1em'}>
@@ -171,7 +171,7 @@ export function ConfirmationModalContent({
         </TextWrapper>
         {topContent()}
       </Section>
-      <BottomSection gap="12px" style={{ paddingTop: '12px' }}>
+      <BottomSection gap="12px" style={{ paddingTop: '8px' }}>
         {bottomContent()}
       </BottomSection>
     </Wrapper>
@@ -226,7 +226,7 @@ export default function TransactionConfirmationModal({
 
   // confirmation screen
   return (
-    <Modal isOpen={isOpen} onDismiss={onDismiss} maxHeight={95}>
+    <Modal isOpen={isOpen} onDismiss={onDismiss} maxHeight={90}>
       {attemptingTxn ? (
         <ConfirmationPendingContent onDismiss={onDismiss} pendingText={pendingText} />
       ) : hash ? (

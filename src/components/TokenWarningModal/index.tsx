@@ -73,7 +73,7 @@ function TokenWarningCard({ token }: TokenWarningCardProps) {
               : token.name || token.symbol}{' '}
           </TYPE.main>
           {chainId && (
-            <ExternalLink style={{ fontWeight: 400 }} href={getVoyagerLink(chainId, token.address, 'token')}>
+            <ExternalLink style={{ fontWeight: 400 }} href={getVoyagerLink(chainId, token.address, 'contract')}>
               <TYPE.blue title={token.address}>{shortenAddress(token.address)} (View on Voyager)</TYPE.blue>
             </ExternalLink>
           )}

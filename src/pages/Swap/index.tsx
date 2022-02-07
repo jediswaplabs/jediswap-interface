@@ -7,7 +7,7 @@ import ReactGA from 'react-ga'
 import { Text } from 'rebass'
 import { ThemeContext } from 'styled-components'
 import AddressInputPanel from '../../components/AddressInputPanel'
-import { ButtonError, ButtonPrimary, ButtonConfirmed } from '../../components/Button'
+import { ButtonError, ButtonConfirmed, ButtonEmpty, ButtonOutlined } from '../../components/Button'
 // import { ButtonLight } from '../../components/Button'
 import { ButtonGradient, RedGradientButton } from '../../components/Button'
 import Card, { GreyCard } from '../../components/Card'
@@ -52,6 +52,8 @@ import { useAddressNormalizer } from '../../hooks/useAddressNormalizer'
 import styled from 'styled-components'
 import HeaderIcon from '../../assets/jedi/SwapPanel_headerItem.svg'
 import SwapWidget from '../../assets/jedi/SwapWidget.svg'
+import { jediTokensList, TOKEN0 } from '../../constants/jediTokens'
+import { MintState, useMintCallback } from '../../hooks/useMintCallback'
 // import BackdropImage from '../../assets/jedi/Backdrop.svg'
 
 const HeaderRow = styled.div`
@@ -115,6 +117,21 @@ const Backdrop = styled.div<{
   transform: matrix(0, 1, 1, 0, 0, 0);
 `
 
+const MintSection = styled.section`
+  margin-top: 3rem;
+  max-width: 470px;
+  width: 100%;
+`
+
+const MintButton = styled(ButtonOutlined)`
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0px;
+  border-color: ${({ theme }) => theme.jediBlue};
+  color: ${({ theme }) => theme.jediWhite};
+`
+
 export default function Swap() {
   const loadedUrlParams = useDefaultsFromURLSearch()
 
@@ -124,8 +141,6 @@ export default function Swap() {
     useCurrency(loadedUrlParams?.outputCurrencyId)
   ]
 
-  const [routeLoading, setRouteLoading] = useState<boolean>(true)
-
   // const [dismissTokenWarning, setDismissTokenWarning] = useState<boolean>(false)
   // const urlLoadedTokens: Token[] = useMemo(
   //   () => [loadedInputCurrency, loadedOutputCurrency]?.filter((c): c is Token => c instanceof Token) ?? [],
@@ -134,6 +149,8 @@ export default function Swap() {
   // const handleConfirmTokenWarning = useCallback(() => {
   //   setDismissTokenWarning(true)
   // }, [])
+
+  const [mintAddress, setMintAddress] = useState<string | undefined>(undefined)
 
   const { account } = useActiveStarknetReact()
   const theme = useContext(ThemeContext)
@@ -150,7 +167,14 @@ export default function Swap() {
 
   // swap state
   const { independentField, typedValue, recipient } = useSwapState()
-  const { v2Trade, currencyBalances, parsedAmount, currencies, inputError: swapInputError } = useDerivedSwapInfo()
+  const {
+    trade,
+    currencyBalances,
+    parsedAmount,
+    currencies,
+    inputError: swapInputError,
+    tradeLoading
+  } = useDerivedSwapInfo()
   // const { wrapType, execute: onWrap, inputError: wrapInputError } = useWrapCallback(
   //   currencies[Field.INPUT],
   //   currencies[Field.OUTPUT],
@@ -158,15 +182,6 @@ export default function Swap() {
   // )
   // const showWrap: boolean = wrapType !== WrapType.NOT_APPLICABLE
   // const { address: recipientAddress } = useENSAddress(recipient)
-  const recipientAddress = useAddressNormalizer(recipient)
-  const toggledVersion = useToggledVersion()
-  const tradesByVersion = {
-    [Version.v2]: v2Trade
-  }
-  const trade = tradesByVersion[toggledVersion]
-  const defaultTrade = tradesByVersion[DEFAULT_VERSION]
-
-  const betterTradeLinkVersion: Version | undefined = Version.v2
 
   const parsedAmounts = {
     [Field.INPUT]: independentField === Field.INPUT ? parsedAmount : trade?.inputAmount,
@@ -211,31 +226,33 @@ export default function Swap() {
   }
 
   const route = trade?.route
-  console.log('🚀 ~ file: index.tsx ~ line 143 ~ Swap ~ trade', trade)
+
   const userHasSpecifiedInputOutput = Boolean(
     currencies[Field.INPUT] && currencies[Field.OUTPUT] && parsedAmounts[independentField]?.greaterThan(JSBI.BigInt(0))
   )
   const noRoute = !route
 
-  useEffect(() => {
-    let routeTimeout
+  const [mintState, mintCallback] = useMintCallback(mintAddress)
 
-    if (noRoute) {
-      if (!routeLoading) setRouteLoading(true)
+  // useEffect(() => {
+  //   let routeTimeout
 
-      routeTimeout = setTimeout(() => {
-        setRouteLoading(false)
-      }, 5000)
-    } else {
-      setRouteLoading(false)
-    }
+  //   if (noRoute) {
+  //     if (!routeLoading) setRouteLoading(true)
 
-    return () => {
-      if (routeTimeout) {
-        clearTimeout(routeTimeout)
-      }
-    }
-  }, [noRoute, routeLoading])
+  //     routeTimeout = setTimeout(() => {
+  //       setRouteLoading(false)
+  //     }, 5000)
+  //   } else {
+  //     setRouteLoading(false)
+  //   }
+
+  //   return () => {
+  //     if (routeTimeout) {
+  //       clearTimeout(routeTimeout)
+  //     }
+  //   }
+  // }, [noRoute, routeLoading])
 
   // check whether the user has approved the router on the input token
   const [approval, approveCallback] = useApproveCallbackFromTrade(trade, allowedSlippage)
@@ -291,7 +308,7 @@ export default function Swap() {
           txHash: undefined
         })
       })
-  }, [tradeToConfirm, account, priceImpactWithoutFee, recipient, recipientAddress, showConfirm, swapCallback, trade])
+  }, [tradeToConfirm, priceImpactWithoutFee, showConfirm, swapCallback])
 
   // errors
   const [showInverted, setShowInverted] = useState<boolean>(false)
@@ -338,6 +355,19 @@ export default function Swap() {
     onCurrencySelection
   ])
 
+  const handleMint = useCallback((tokenAddress: string) => {
+    setMintAddress(tokenAddress)
+  }, [])
+
+  useEffect(() => {
+    if (mintAddress && mintState === MintState.VALID) {
+      mintCallback().then(() => {
+        console.log(`Minting ${mintAddress}`)
+        setMintAddress(undefined)
+      })
+    }
+  }, [mintAddress, mintCallback, mintState])
+
   return (
     <>
       {/* <TokenWarningModal
@@ -374,7 +404,7 @@ export default function Swap() {
           </div>
           <HeaderRow>
             <BalanceText>Swap From</BalanceText>
-            <BalanceText>Balance: {currencyBalances.INPUT?.toFixed(6) ?? 0}</BalanceText>
+            <BalanceText>Balance: {currencyBalances.INPUT?.toSignificant(6) ?? 0}</BalanceText>
           </HeaderRow>
           <AutoColumn>
             <CurrencyInputPanel
@@ -409,7 +439,7 @@ export default function Swap() {
             </AutoColumn>
             <HeaderRow>
               <BalanceText>Swap To (est.)</BalanceText>
-              <BalanceText>Balance: {currencyBalances.OUTPUT?.toFixed(6) ?? 0}</BalanceText>
+              <BalanceText>Balance: {currencyBalances.OUTPUT?.toSignificant(6) ?? 0}</BalanceText>
             </HeaderRow>
             <CurrencyInputPanel
               value={formattedAmounts[Field.OUTPUT]}
@@ -436,18 +466,20 @@ export default function Swap() {
               </>
             )}
 
-            <Card padding={'.25rem .75rem 0 .75rem'} borderRadius={'20px'}>
+            <Card padding={'.75rem .75rem 0 .75rem'} borderRadius={'20px'}>
               <AutoColumn gap="4px">
                 {Boolean(trade) && (
                   <RowBetween align="center">
-                    <Text fontWeight={500} fontSize={14} color={theme.text2}>
+                    <Text
+                      fontFamily={'DM Sans'}
+                      fontWeight={500}
+                      fontSize={14}
+                      color={theme.text2}
+                      letterSpacing={'0px'}
+                    >
                       Price
                     </Text>
-                    <TradePrice
-                      price={trade?.executionPrice}
-                      showInverted={showInverted}
-                      setShowInverted={setShowInverted}
-                    />
+                    <TradePrice trade={trade} showInverted={showInverted} setShowInverted={setShowInverted} />
                   </RowBetween>
                 )}
                 {allowedSlippage !== INITIAL_ALLOWED_SLIPPAGE && (
@@ -468,7 +500,7 @@ export default function Swap() {
               <ButtonGradient onClick={toggleWalletModal}>Connect Wallet</ButtonGradient>
             ) : noRoute && userHasSpecifiedInputOutput ? (
               <RedGradientButton style={{ textAlign: 'center' }} disabled>
-                {routeLoading ? 'Fetching route...' : 'Insufficient liquidity for this trade'}
+                {tradeLoading ? 'Fetching route...' : 'Insufficient liquidity for this trade'}
               </RedGradientButton>
             ) : showApproveFlow ? (
               <RowBetween>
@@ -564,6 +596,17 @@ export default function Swap() {
         </Wrapper>
       </BodyWrapper>
 
+      {account && (
+        <MintSection>
+          <AutoRow justify={'center'}>
+            {Object.entries({ [TOKEN0.address]: TOKEN0, ...jediTokensList }).map(([tokenAddress, token]) => (
+              <AutoColumn key={tokenAddress} style={{ margin: '6px' }}>
+                <MintButton onClick={() => handleMint(tokenAddress)}> Mint {token.symbol} </MintButton>
+              </AutoColumn>
+            ))}
+          </AutoRow>
+        </MintSection>
+      )}
       {/* TODO: FIX ADVANCED SWAP */}
       {/* <AdvancedSwapDetailsDropdown trade={trade} /> */}
     </>
