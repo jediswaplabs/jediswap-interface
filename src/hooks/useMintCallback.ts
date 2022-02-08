@@ -6,6 +6,7 @@ import { useToken } from './Tokens'
 import { useTokenContract } from './useContract'
 import { isAddress } from '../utils'
 import { tryParseAmount } from '../state/swap/hooks'
+import { ArgentXConnector } from '@web3-starknet-react/argentx-connector'
 
 export enum MintState {
   VALID,
@@ -16,7 +17,7 @@ export function useMintCallback(tokenAddress: string | undefined): [MintState, (
   const addTransaction = useTransactionAdder()
   const tokenContract = useTokenContract(tokenAddress, true)
   const token = useToken(tokenAddress)
-  const { account } = useActiveStarknetReact()
+  const { account, connector } = useActiveStarknetReact()
 
   const validatedAccount = isAddress(account)
 
@@ -40,6 +41,18 @@ export function useMintCallback(tokenAddress: string | undefined): [MintState, (
       amount: { type: 'struct', ...uint256TokenAmount }
     }
 
+    if (connector instanceof ArgentXConnector) {
+      ;(connector.starknet as any).request({
+        type: 'wallet_watchAsset',
+        params: {
+          type: 'ERC20',
+          options: {
+            address: tokenAddress
+          }
+        }
+      })
+    }
+
     return tokenContract
       .invoke('mint', mintArgs)
       .then(response => {
@@ -49,9 +62,9 @@ export function useMintCallback(tokenAddress: string | undefined): [MintState, (
       })
       .catch((error: Error) => {
         console.debug(`Failed to mint ${token.symbol}`, error)
-        throw error
+        // throw error
       })
-  }, [addTransaction, token, tokenAddress, tokenContract, validatedAccount])
+  }, [addTransaction, connector, token, tokenAddress, tokenContract, validatedAccount])
 
   return [mintState, mintCallback]
 }
