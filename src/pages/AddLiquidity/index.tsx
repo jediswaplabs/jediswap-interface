@@ -67,6 +67,16 @@ const HeaderNote = styled.div`
   background-color: ${({ theme }) => theme.jediNavyBlue};
   border-radius: 8px;
 `
+const LiquidityTokens = styled.div`
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 30px;
+  margin-right: 5px;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+`
 
 export default function AddLiquidity({
   match: {
@@ -236,25 +246,27 @@ export default function AddLiquidity({
             <Text fontSize="48px" fontWeight={500} lineHeight="42px" marginRight={10}>
               {currencies[Field.CURRENCY_A]?.symbol + '/' + currencies[Field.CURRENCY_B]?.symbol}
             </Text>
-            <DoubleCurrencyLogo
-              currency0={currencies[Field.CURRENCY_A]}
-              currency1={currencies[Field.CURRENCY_B]}
-              size={30}
-            />
+            <div style={{ marginBottom: '1px' }}>
+              <DoubleCurrencyLogo
+                currency0={currencies[Field.CURRENCY_A]}
+                currency1={currencies[Field.CURRENCY_B]}
+                size={24}
+              />
+            </div>
           </RowFlat>
         </LightCard>
       </AutoColumn>
     ) : (
       <AutoColumn gap="10px">
         <RowFlat style={{ marginTop: '16px' }}>
-          <Text fontSize="40px" fontWeight={500} lineHeight="42px" marginRight={10}>
-            {liquidityMinted?.toSignificant(6)}
-          </Text>
-          <DoubleCurrencyLogo
-            currency0={currencies[Field.CURRENCY_A]}
-            currency1={currencies[Field.CURRENCY_B]}
-            size={30}
-          />
+          <LiquidityTokens>{liquidityMinted?.toSignificant(6)}</LiquidityTokens>
+          <div style={{ marginBottom: '1px' }}>
+            <DoubleCurrencyLogo
+              currency0={currencies[Field.CURRENCY_A]}
+              currency1={currencies[Field.CURRENCY_B]}
+              size={24}
+            />
+          </div>
         </RowFlat>
         <Row>
           <Text fontSize="24px">
