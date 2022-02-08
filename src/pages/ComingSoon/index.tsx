@@ -7,7 +7,7 @@ const ComingSoonText = styled.div`
   color: ${({ theme }) => theme.jediWhite};
 `
 
-const Wrapper = styled.div`
+export const Wrapper = styled.div`
   height: 60vh;
   display: flex;
   align-items: center;
