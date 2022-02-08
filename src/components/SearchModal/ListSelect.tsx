@@ -1,6 +1,6 @@
 import React, { memo, useCallback, useMemo, useRef, useState } from 'react'
 import { ArrowLeft } from 'react-feather'
-import ReactGA from 'react-ga'
+// import ReactGA from 'react-ga'
 import { usePopper } from 'react-popper'
 import { useDispatch, useSelector } from 'react-redux'
 import { Text } from 'rebass'
@@ -112,11 +112,11 @@ const ListRow = memo(function ListRow({ listUrl, onBack }: { listUrl: string; on
 
   const selectThisList = useCallback(() => {
     if (isSelected) return
-    ReactGA.event({
-      category: 'Lists',
-      action: 'Select List',
-      label: listUrl
-    })
+    // ReactGA.event({
+    //   category: 'Lists',
+    //   action: 'Select List',
+    //   label: listUrl
+    // })
 
     dispatch(selectList(listUrl))
     onBack()
@@ -124,26 +124,26 @@ const ListRow = memo(function ListRow({ listUrl, onBack }: { listUrl: string; on
 
   const handleAcceptListUpdate = useCallback(() => {
     if (!pending) return
-    ReactGA.event({
-      category: 'Lists',
-      action: 'Update List from List Select',
-      label: listUrl
-    })
+    // ReactGA.event({
+    //   category: 'Lists',
+    //   action: 'Update List from List Select',
+    //   label: listUrl
+    // })
     dispatch(acceptListUpdate(listUrl))
   }, [dispatch, listUrl, pending])
 
   const handleRemoveList = useCallback(() => {
-    ReactGA.event({
-      category: 'Lists',
-      action: 'Start Remove List',
-      label: listUrl
-    })
+    // ReactGA.event({
+    //   category: 'Lists',
+    //   action: 'Start Remove List',
+    //   label: listUrl
+    // })
     if (window.prompt(`Please confirm you would like to remove this list by typing REMOVE`) === `REMOVE`) {
-      ReactGA.event({
-        category: 'Lists',
-        action: 'Confirm Remove List',
-        label: listUrl
-      })
+      // ReactGA.event({
+      //   category: 'Lists',
+      //   action: 'Confirm Remove List',
+      //   label: listUrl
+      // })
       dispatch(removeList(listUrl))
     }
   }, [dispatch, listUrl])
@@ -267,18 +267,18 @@ export function ListSelect({ onDismiss, onBack }: { onDismiss: () => void; onBac
     fetchList(listUrlInput)
       .then(() => {
         setListUrlInput('')
-        ReactGA.event({
-          category: 'Lists',
-          action: 'Add List',
-          label: listUrlInput
-        })
+        // ReactGA.event({
+        //   category: 'Lists',
+        //   action: 'Add List',
+        //   label: listUrlInput
+        // })
       })
       .catch(error => {
-        ReactGA.event({
-          category: 'Lists',
-          action: 'Add List Failed',
-          label: listUrlInput
-        })
+        // ReactGA.event({
+        //   category: 'Lists',
+        //   action: 'Add List Failed',
+        //   label: listUrlInput
+        // })
         setAddError(error.message)
         dispatch(removeList(listUrlInput))
       })
