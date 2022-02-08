@@ -76,6 +76,7 @@
     "react-confetti": "^6.0.0",
     "react-device-detect": "^1.6.2",
     "react-dom": "^16.13.1",
+    "react-error-overlay": "6.0.9",
     "react-feather": "^2.0.8",
     "react-ga": "^2.5.7",
     "react-i18next": "^10.7.0",
@@ -83,7 +84,7 @@
     "react-popper": "^2.2.3",
     "react-redux": "^7.2.0",
     "react-router-dom": "^5.0.0",
-    "react-scripts": "^4.0.1",
+    "react-scripts": "^4.0.3",
     "react-spring": "^8.0.27",
     "react-use-gesture": "^6.0.14",
     "react-virtualized-auto-sizer": "^1.0.2",
@@ -100,7 +101,8 @@
     "wcag-contrast": "^3.0.0"
   },
   "resolutions": {
-    "@walletconnect/web3-provider": "1.1.1-alpha.0"
+    "@walletconnect/web3-provider": "1.1.1-alpha.0",
+    "react-error-overlay": "6.0.9"
   },
   "scripts": {
     "start": "react-scripts start",
