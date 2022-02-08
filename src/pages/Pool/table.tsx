@@ -4,8 +4,7 @@ import { AnyArray } from 'immer/dist/internal'
 import Row from '../../components/Row'
 import { Text } from 'rebass'
 
-export const TRow = styled.tr`
-`
+export const TRow = styled.tr``
 
 export const TH = styled.th`
   font-family: 'DM Sans', sans-serif;
@@ -30,19 +29,19 @@ export const TitleText = styled.div`
   color: ${({ theme }) => theme.jediWhite};
 `
 
-export const TitleIcon = styled.div<{color?: string; left? : string}>`
-    height: 20px;
-    width: 20px;
-    border-radius: 10px;
-    position: absolute;
-    left: ${({left}) => left};
-    background-color: ${({color}) => color};
+export const TitleIcon = styled.div<{ color?: string; left?: string }>`
+  height: 20px;
+  width: 20px;
+  border-radius: 10px;
+  position: absolute;
+  left: ${({ left }) => left};
+  background-color: ${({ color }) => color};
 `
 
 export const IconRow = styled.div`
-    position: relative;
-    height: 20px;
-    width: 35px;
+  position: relative;
+  height: 20px;
+  width: 35px;
 `
 
 export const TData = styled.td`
@@ -53,53 +52,78 @@ export const TData = styled.td`
   text-align: center;
   height: 20px;
   color: ${({ theme }) => theme.jediWhite};
-  padding:0;
+  padding: 0;
   padding-top: 16px;
-  padding-bottom: 16px;    
+  padding-bottom: 16px;
   border-bottom: solid 1px rgba(255, 255, 255, 0.1);
 `
 
 export const Table = styled.table`
-width: 100%;
-border-collapse: collapse;
+  width: 100%;
+  border-collapse: collapse;
 `
 
 export const Icons = () => {
-    return <IconRow>
-        <TitleIcon color='red'/>
-        <TitleIcon color='yellow' left="15px"/>
+  return (
+    <IconRow>
+      <TitleIcon color="red" />
+      <TitleIcon color="yellow" left="15px" />
     </IconRow>
+  )
 }
 
-export const TableRow = ({data} : {data : AnyArray}) => {
-    return <TRow>
-        {
-            data.map((val, i) => <TData key={i}>
-                {val}
-            </TData>)
-        }
+const PoolName = ({ name }: { name?: string }) => {
+  return (
+    <Row gap="8px" justifyContent={'center'}>
+      <Icons />
+      <TitleText>ETH-USDC</TitleText>
+    </Row>
+  )
+}
+
+export const TableRow = ({
+  name,
+  liquidity,
+  APR,
+  volume24H,
+  fees24H
+}: {
+  name: string
+  liquidity
+  APR: string
+  volume24H: string
+  fees24H: string
+}) => {
+  return (
+    <TRow>
+      <TData>
+        <PoolName name={name} />
+      </TData>
+      <TData>{liquidity}</TData>
+      <TData>{volume24H}</TData>
+      <TData>{fees24H}</TData>
+      <TData>{APR}</TData>
     </TRow>
+  )
 }
 
 export const TableHeader = () => {
-    const data = ['Pool name', 'Liquidity', 'Volume (24H)', 'Fees(24H)', 'APR'];
-    return <TRow>
-        {
-            data.map((val, i) => <TH key={i}>
-                {val}
-            </TH>)
-        }
+  const data = ['Pool name', 'Liquidity', 'Volume (24H)', 'Fees(24H)', 'APR']
+  return (
+    <TRow>
+      {data.map((val, i) => (
+        <TH key={i}>{val}</TH>
+      ))}
     </TRow>
+  )
 }
 
 export const TableFooter = () => {
-    return <Row padding={'16px 0 25px 0'} justifyContent={'center'}>
-        <Text
-          fontWeight={400}
-          fontSize={14}
-          fontFamily={'DM Sans'}
-          letterSpacing={'0px'}
-          color={'#FFFFFF'}
-        >Page 1 of 1</Text>
-  </Row>
+  return (
+    <Row padding={'16px 0 25px 0'} justifyContent={'center'}>
+      <Text fontWeight={400} fontSize={14} fontFamily={'DM Sans'} letterSpacing={'0px'} color={'#FFFFFF'}>
+        Page 1 of 1
+      </Text>
+    </Row>
+  )
 }

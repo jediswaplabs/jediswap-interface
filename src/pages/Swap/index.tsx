@@ -375,7 +375,7 @@ export default function Swap() {
         tokens={urlLoadedTokens}
         onConfirm={handleConfirmTokenWarning}
       /> */}
-      <BodyWrapper marginTop='100px'>
+      <BodyWrapper marginTop="100px">
         <Backdrop top={'0'} left={'503px'} curveRight />
         <Backdrop top={'30px'} left={'493px'} curveRight style={{ height: '60px' }} />
         <Backdrop bottom={'30px'} left={'-35px'} curveLeft style={{ height: '60px' }} />

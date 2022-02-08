@@ -20,7 +20,7 @@ import { Dots } from '../../components/swap/styleds'
 import { CardSection, DataCard, CardNoise, CardBGImage } from './styleds'
 import { Icons, Table, TableFooter, TableHeader, TableRow, TitleText } from './table'
 import AppBody, { BodyWrapper } from '../AppBody'
-import {ReactComponent as MagnifyingGlass} from '../../assets/images/search-icon.svg'
+import { ReactComponent as MagnifyingGlass } from '../../assets/images/search-icon.svg'
 
 const PageWrapper = styled(AutoColumn)`
   max-width: 900px;
@@ -96,9 +96,9 @@ const PoolsTab = styled.div`
   text-align: center;
   height: 20px;
   color: ${({ theme }) => theme.jediWhite};
-  padding:0;
+  padding: 0;
   padding-top: 16px;
-  padding-bottom: 16px;    
+  padding-bottom: 16px;
   letter-spacing: 1px;
 `
 
@@ -120,7 +120,7 @@ const SearchInput = styled.input`
   width: 100%;
   font-size: 14px;
 
-  &:focus{
+  &:focus {
     outline: none;
   }
 `
@@ -131,7 +131,6 @@ const ComingSoonSection = styled(Row)`
   margin-top: 50px;
   height: 500px;
 `
-
 // const
 
 export default function Pool() {
@@ -151,6 +150,14 @@ export default function Pool() {
     account ?? undefined,
     liquidityTokens
   )
+
+  const data = {
+    name: 'ETH-USDC',
+    liquidity: '$497,907,052',
+    volume24H: '$497,907,052',
+    fees24H: '$497,907,052',
+    APR: '$497,907,052'
+  }
 
   console.log(
     '🚀 ~ file: index.tsx ~ line 88 ~ Pool ~ v2PairsBalances, fetchingV2PairBalances',
@@ -174,11 +181,11 @@ export default function Pool() {
 
   return (
     <>
-        {/* <SwapPoolTabs active={'pool'} /> */}
+      {/* <SwapPoolTabs active={'pool'} /> */}
 
-        <AutoColumn gap="lg" justify="center" style={{width: '100%'}}>
-          <AutoColumn gap="lg" style={{ width: '100%' }}>
-            {/* <TitleRow style={{ marginTop: '1rem' }} padding={'0'}>
+      <AutoColumn gap="lg" justify="center" style={{ width: '100%' }}>
+        <AutoColumn gap="lg" style={{ width: '100%' }}>
+          {/* <TitleRow style={{ marginTop: '1rem' }} padding={'0'}>
               <HideSmall>
                 <TYPE.mediumHeader style={{ marginTop: '0.5rem', justifySelf: 'flex-start' }} fontFamily="DM Sans">
                   Top Pool
@@ -191,7 +198,7 @@ export default function Pool() {
               </ButtonRow>
             </TitleRow> */}
 
-            {/* {!account ? (
+          {/* {!account ? (
               <Card padding="40px">
                 <TYPE.body color={theme.text3} textAlign="center">
                   Connect to a wallet to view your liquidity.
@@ -225,76 +232,42 @@ export default function Pool() {
                 </TYPE.body>
               </EmptyProposals>
             )} */}
-          </AutoColumn>
-          <div style={{maxWidth: '900px', width: '100%'}}>
-
-          <RowBetween gap='24px' >
-            <Row gap='24px'>
-            <PoolsTab>Top Pools</PoolsTab>
-            <PoolsTab>My Pools</PoolsTab>
-            <PoolsTab>All Pools</PoolsTab>
-
+        </AutoColumn>
+        <div style={{ maxWidth: '900px', width: '100%' }}>
+          <RowBetween gap="24px">
+            <Row gap="24px">
+              <PoolsTab>Top Pools</PoolsTab>
+              <PoolsTab>My Pools</PoolsTab>
+              <PoolsTab>All Pools</PoolsTab>
             </Row>
-            
-          <Row gap='24px'>
-          <CreatePoolButton>
-            Create Pool
-          </CreatePoolButton>
-          <CreatePoolButton>
-            Add Liquidity
-          </CreatePoolButton>
 
-          </Row>
-
+            <Row gap="24px">
+              <CreatePoolButton>Create Pool</CreatePoolButton>
+              <CreatePoolButton>Add Liquidity</CreatePoolButton>
+            </Row>
           </RowBetween>
-          </div>
-          <div style={{maxWidth: '900px', width: '100%', display: 'flex'}}>
-
+        </div>
+        <div style={{ maxWidth: '900px', width: '100%', display: 'flex' }}>
           <SearchContainer>
             <Row>
-              <SearchInput placeholder='Search pools by name, symbol, address'/>
-              <MagnifyingGlass/>
+              <SearchInput placeholder="Search pools by name, symbol, address" />
+              <MagnifyingGlass />
             </Row>
           </SearchContainer>
-          </div>
-          
-          <BodyWrapper maxWidth='900px'>
+        </div>
+
+        <BodyWrapper maxWidth="900px">
           <Table>
             <tbody>
-            <TableHeader/>
-            <TableRow data={[<Row gap='8px' justifyContent={'center'}>
-                  <Icons/>
-                  <TitleText>ETH-USDC</TitleText>
-                </Row>, '$497,907,052', '$497,907,052', '$497,907,052', '9.54139%']}/>
-            <TableRow data={[<Row gap='8px' justifyContent={'center'}>
-              <Icons/>
-              <TitleText>ETH-USDC</TitleText>
-            </Row>, '$497,907,052', '$497,907,052', '$497,907,052', '9.54139%']}/>
-            <TableRow data={[<Row gap='8px' justifyContent={'center'}>
-                  <Icons/>
-                  <TitleText>ETH-USDC</TitleText>
-                </Row>, '$497,907,052', '$497,907,052', '$497,907,052', '9.54139%']}/>
-            <TableRow data={[<Row gap='8px' justifyContent={'center'}>
-              <Icons/>
-              <TitleText>ETH-USDC</TitleText>
-            </Row>, '$497,907,052', '$497,907,052', '$497,907,052', '9.54139%']}/>
-            <TableRow data={[<Row gap='8px' justifyContent={'center'}>
-                  <Icons/>
-                  <TitleText>ETH-USDC</TitleText>
-                </Row>, '$497,907,052', '$497,907,052', '$497,907,052', '9.54139%']}/>
-            <TableRow data={[<Row gap='8px' justifyContent={'center'}>
-              <Icons/>
-              <TitleText>ETH-USDC</TitleText>
-            </Row>, '$497,907,052', '$497,907,052', '$497,907,052', '9.54139%']}/>
-
+              <TableHeader />
+              {Array.from({ length: 8 }, (_, i) => i + 1).map(el => (
+                <TableRow key={el} {...data} />
+              ))}
             </tbody>
-            
           </Table>
-          <TableFooter/>
-
-          </BodyWrapper>
-          
-        </AutoColumn>
+          <TableFooter />
+        </BodyWrapper>
+      </AutoColumn>
     </>
   )
 }
