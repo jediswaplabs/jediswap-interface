@@ -57,12 +57,12 @@ const StyledPositionCard = styled(LightCard)<{ bgColor: any }>`
   overflow: hidden;
 `
 
-const CardText = styled.div<{ textAlign?: string }>`
+const CardText = styled.div<{ textAlign?: string; fontWeight?: number; fontSize?: number; lineHeight?: string }>`
   font-family: 'DM Sans', sans-serif;
   letter-spacing: 0px;
-  font-weight: normal;
-  font-size: 14px;
-  line-height: 140%;
+  font-weight: ${({ fontWeight }) => (fontWeight ? fontWeight : 'normal')};
+  font-size: ${({ fontSize }) => (fontSize ? `${fontSize}px` : '14px')};
+  line-height: ${({ lineHeight }) => (lineHeight ? lineHeight : '140%')};
   text-align: ${({ textAlign }) => (textAlign ? textAlign : 'center')};
 `
 
@@ -103,60 +103,62 @@ export function MinimalPositionCard({ pair, showUnwrapped = false, border }: Pos
   return (
     <>
       {userPoolBalance && JSBI.greaterThan(userPoolBalance.raw, JSBI.BigInt(0)) ? (
-        <GreyCard border={border}>
+        <WhiteOutlineCard border={border} borderRadius={'8px'} padding={'16px'}>
           <AutoColumn gap="12px">
             <FixedHeightRow>
               <RowFixed>
-                <Text fontWeight={500} fontSize={16}>
+                <CardText fontWeight={500} fontSize={18} lineHeight={'120%'}>
                   Your position
-                </Text>
+                </CardText>
               </RowFixed>
             </FixedHeightRow>
             <FixedHeightRow onClick={() => setShowMore(!showMore)}>
               <RowFixed>
-                <DoubleCurrencyLogo currency0={currency0} currency1={currency1} margin={true} size={20} />
-                <Text fontWeight={500} fontSize={20}>
+                <div style={{ marginRight: '8px' }}>
+                  <DoubleCurrencyLogo currency0={currency0} currency1={currency1} size={20} />
+                </div>
+                <CardText fontWeight={700} fontSize={18} lineHeight={'100%'}>
                   {currency0.symbol}/{currency1.symbol}
-                </Text>
+                </CardText>
               </RowFixed>
               <RowFixed>
-                <Text fontWeight={500} fontSize={20}>
+                <CardText fontWeight={700} fontSize={18} lineHeight={'100%'}>
                   {userPoolBalance ? userPoolBalance.toSignificant(4) : '-'}
-                </Text>
+                </CardText>
               </RowFixed>
             </FixedHeightRow>
-            <AutoColumn gap="4px">
+            <AutoColumn gap="4px" style={{ marginTop: '-4px' }}>
               <FixedHeightRow>
-                <Text fontSize={16} fontWeight={500}>
+                <CardText fontSize={16} fontWeight={500} lineHeight={'120%'}>
                   Your pool share:
-                </Text>
-                <Text fontSize={16} fontWeight={500}>
+                </CardText>
+                <CardText fontSize={16} fontWeight={500} lineHeight={'120%'}>
                   {poolTokenPercentage ? poolTokenPercentage.toFixed(6) + '%' : '-'}
-                </Text>
+                </CardText>
               </FixedHeightRow>
               <FixedHeightRow>
-                <Text fontSize={16} fontWeight={500}>
+                <CardText fontSize={16} fontWeight={500} lineHeight={'120%'}>
                   {currency0.symbol}:
-                </Text>
+                </CardText>
                 {token0Deposited ? (
                   <RowFixed>
-                    <Text fontSize={16} fontWeight={500} marginLeft={'6px'}>
+                    <CardText fontSize={16} fontWeight={500} lineHeight={'120%'} style={{ marginLeft: '6px' }}>
                       {token0Deposited?.toSignificant(6)}
-                    </Text>
+                    </CardText>
                   </RowFixed>
                 ) : (
                   '-'
                 )}
               </FixedHeightRow>
               <FixedHeightRow>
-                <Text fontSize={16} fontWeight={500}>
+                <CardText fontSize={16} fontWeight={500}>
                   {currency1.symbol}:
-                </Text>
+                </CardText>
                 {token1Deposited ? (
                   <RowFixed>
-                    <Text fontSize={16} fontWeight={500} marginLeft={'6px'}>
+                    <CardText fontSize={16} fontWeight={500} style={{ marginLeft: '6px' }}>
                       {token1Deposited?.toSignificant(6)}
-                    </Text>
+                    </CardText>
                   </RowFixed>
                 ) : (
                   '-'
@@ -164,9 +166,9 @@ export function MinimalPositionCard({ pair, showUnwrapped = false, border }: Pos
               </FixedHeightRow>
             </AutoColumn>
           </AutoColumn>
-        </GreyCard>
+        </WhiteOutlineCard>
       ) : (
-        <WhiteOutlineCard padding={'12px'}>
+        <WhiteOutlineCard padding={'12px'} borderRadius={'8px'}>
           <CardText textAlign="left">
             <span role="img" aria-label="wizard-icon">
               ⭐️
