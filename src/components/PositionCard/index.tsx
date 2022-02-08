@@ -57,9 +57,16 @@ const StyledPositionCard = styled(LightCard)<{ bgColor: any }>`
   overflow: hidden;
 `
 
-const CardText = styled.div<{ textAlign?: string; fontWeight?: number; fontSize?: number; lineHeight?: string }>`
+const CardText = styled.div<{
+  textAlign?: string
+  fontWeight?: number
+  fontSize?: number
+  lineHeight?: string
+  fontColor?: string
+}>`
   font-family: 'DM Sans', sans-serif;
   letter-spacing: 0px;
+  color: ${({ fontColor, theme }) => (fontColor ? fontColor : theme.jediWhite)};
   font-weight: ${({ fontWeight }) => (fontWeight ? fontWeight : 'normal')};
   font-size: ${({ fontSize }) => (fontSize ? `${fontSize}px` : '14px')};
   line-height: ${({ lineHeight }) => (lineHeight ? lineHeight : '140%')};
