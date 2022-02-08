@@ -15,6 +15,7 @@ import Swap from './Swap'
 import Pool from './Pool'
 
 import AddLiquidity from './AddLiquidity'
+import ComingSoon from './ComingSoon'
 // import {
 //   RedirectDuplicateTokenIds,
 //   RedirectOldAddLiquidityPathStructure,
@@ -99,6 +100,8 @@ export default function App() {
               <Route exact path="/add" component={AddLiquidity} />
               <Route exact path="/add/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />
               <Route exact path="/add/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
+              <Route exact path="/zap" component={ComingSoon} />
+              <Route exact path="/stake" component={ComingSoon} />
 
               {/* <Route exact strict path="/remove/:currencyIdA/:currencyIdB" component={RemoveLiquidity} /> */}
 

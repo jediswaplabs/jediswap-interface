@@ -361,10 +361,10 @@ function Header({ history }: { history: any }) {
         >
           {t('pool')}
         </StyledNavLink>
-        <StyledNavLink id={`swap-nav-link`} to={'/swap'} isActive={() => history.location.pathname.includes('/lend')}>
-          {t('Lend')}
+        <StyledNavLink id={`swap-nav-link`} to={'/zap'} isActive={() => history.location.pathname.includes('/zap')}>
+          {t('zap')}
         </StyledNavLink>
-        <StyledNavLink id={`swap-nav-link`} to={'/swap'} isActive={() => history.location.pathname.includes('/stake')}>
+        <StyledNavLink id={`swap-nav-link`} to={'/stake'} isActive={() => history.location.pathname.includes('/stake')}>
           {t('stake')}
         </StyledNavLink>
         {/* <StyledNavLink id={`stake-nav-link`} to={'/uni'} isActive={() => history.location.pathname.includes('/uni')}>
