@@ -27,5 +27,17 @@
     ],
     "stateMutability": "view",
     "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "get_current_block_timestamp",
+    "outputs": [
+      {
+        "name": "block_timestamp",
+        "type": "felt"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
   }
 ]
