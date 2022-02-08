@@ -57,7 +57,7 @@ export function ConfirmAddModalBottom({
         <TYPE.body fontWeight={500}>Share of Pool:</TYPE.body>
         <TYPE.body fontWeight={500}>{noLiquidity ? '100' : poolTokenPercentage?.toSignificant(4)}%</TYPE.body>
       </RowBetween>
-      <ButtonGradient style={{ margin: '20px 0 0 15px' }} onClick={onAdd}>
+      <ButtonGradient style={{ margin: '20px 0 10px 0 ' }} onClick={onAdd}>
         <Text fontWeight={500} fontSize={20}>
           {noLiquidity ? 'Create Pool & Supply' : 'Confirm Supply'}
         </Text>
