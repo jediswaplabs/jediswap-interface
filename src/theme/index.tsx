@@ -61,7 +61,7 @@ export function colors(darkMode: boolean): Colors {
     signalGreen,
 
     // text
-    text1: '#FFFFFF',
+    text1: jediWhite,
     text2: '#C3C5CB',
     text3: '#6C7284',
     text4: '#565A69',
