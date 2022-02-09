@@ -7,6 +7,11 @@ import { SUPPORTED_WALLETS } from '../../constants'
 import { darken } from 'polished'
 import Loader from '../Loader'
 import { BorderWrapper } from '../AccountDetails'
+import { NoStarknetProviderError } from '@web3-starknet-react/argentx-connector'
+import { WALLET_VIEWS } from '.'
+import { AutoColumn } from '../Column'
+import { ButtonOutlined } from '../Button'
+
 const PendingSection = styled.div`
   ${({ theme }) => theme.flexColumnNoWrap};
   gap: 10px;
@@ -29,7 +34,7 @@ const StyledLoader = styled(Loader)`
 const LoadingMessage = styled.div<{ error?: boolean }>`
   ${({ theme }) => theme.flexRowNoWrap};
   align-items: center;
-  justify-content: flex-start;
+  justify-content: ${({ error }) => (error ? 'center' : 'flex-start')};
   border-radius: 8px;
   padding:10px 0;
   /* margin-bottom: 20px; */
@@ -38,7 +43,7 @@ const LoadingMessage = styled.div<{ error?: boolean }>`
   /* border: 1px solid ${({ theme, error }) => (error ? theme.red1 : theme.text4)}; */
 
   & > * {
-    padding: 1rem;
+    padding: 1rem 0rem;
   }
 `
 
@@ -48,20 +53,47 @@ const ErrorGroup = styled.div`
   justify-content: flex-start;
 `
 
+const StarknetErrorGroup = styled(ErrorGroup)`
+  justify-content: space-between;
+  gap: 24px;
+`
+
 const ErrorButton = styled.div`
   border-radius: 8px;
   font-size: 12px;
   color: ${({ theme }) => theme.text1};
-  background-color: ${({ theme }) => theme.bg4};
-  margin-left: 1rem;
+  background-color: transparent;
+  margin-left: 25px;
   padding: 0.5rem;
   font-weight: 600;
   user-select: none;
 
   &:hover {
     cursor: pointer;
-    background-color: ${({ theme }) => darken(0.1, theme.text4)};
+    background-color: transparent;
   }
+`
+
+const StarknetDownloadButton = styled(ButtonOutlined)`
+  font-size: 12px;
+  padding: 0.5rem;
+  font-family: 'DM Sans';
+  font-weight: 600;
+  border-color: #ff875b;
+  color: ${({ theme }) => theme.jediWhite};
+  letter-spacing: 0px;
+  flex: 1;
+
+  &:hover {
+    border-color: ${({ theme }) => theme.jediBlue};
+    box-shadow: none;
+  }
+`
+
+const StarknetWalletNote = styled.div`
+  font-size: 12px;
+  /* max-width: 70%; */
+  /* color: ${({ theme }) => theme.jediBlue}; */
 `
 
 const LoadingWrapper = styled.div`
@@ -75,32 +107,59 @@ export default function PendingView({
   connector,
   error = false,
   setPendingError,
+  setWalletView,
   tryActivation
 }: {
   connector?: AbstractConnector
-  error?: boolean
+  error?: any
   setPendingError: (error: boolean) => void
+  setWalletView: (walletView: string) => void
   tryActivation: (connector: AbstractConnector) => void
 }) {
   const isMetamask = window?.ethereum?.isMetaMask
 
+  const isStarknetProviderError = error instanceof NoStarknetProviderError
+
+  const argentXUrl =
+    'https://chrome.google.com/webstore/detail/argent-x-starknet-wallet/dlcobpjiigpikoobohmabehhmhfoodbb'
+
+  const downloadArgentX = () => window.open(argentXUrl, '_blank')
+
   return (
     <PendingSection>
       <BorderWrapper>
-        <LoadingMessage error={error}>
+        <LoadingMessage error={error && isStarknetProviderError}>
           <LoadingWrapper>
             {error ? (
-              <ErrorGroup>
-                <div>Error connecting.</div>
-                <ErrorButton
-                  onClick={() => {
-                    setPendingError(false)
-                    connector && tryActivation(connector)
-                  }}
-                >
-                  Try Again
-                </ErrorButton>
-              </ErrorGroup>
+              isStarknetProviderError ? (
+                <StarknetErrorGroup>
+                  <AutoColumn gap="4px">
+                    <div>ArgentX wallet not found</div>
+                    <StarknetWalletNote>( Setup wallet and refresh )</StarknetWalletNote>
+                  </AutoColumn>
+                  <StarknetDownloadButton
+                    onClick={() => {
+                      setPendingError(false)
+                      downloadArgentX()
+                      setWalletView(WALLET_VIEWS.OPTIONS)
+                    }}
+                  >
+                    Download now
+                  </StarknetDownloadButton>
+                </StarknetErrorGroup>
+              ) : (
+                <ErrorGroup>
+                  <div>Error connecting.</div>
+                  <ErrorButton
+                    onClick={() => {
+                      setPendingError(false)
+                      connector && tryActivation(connector)
+                    }}
+                  >
+                    Try Again
+                  </ErrorButton>
+                </ErrorGroup>
+              )
             ) : (
               <>
                 <StyledLoader />
