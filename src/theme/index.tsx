@@ -61,24 +61,24 @@ export function colors(darkMode: boolean): Colors {
     signalGreen,
 
     // text
-    text1: '#FFFFFF',
-    text2: '#C3C5CB',
-    text3: '#6C7284',
-    text4: '#565A69',
-    text5: '#2C2F36',
+    text1: darkMode ? '#FFFFFF' : '#000000',
+    text2: darkMode ? '#C3C5CB' : '#565A69',
+    text3: darkMode ? '#6C7284' : '#888D9B',
+    text4: darkMode ? '#565A69' : '#C3C5CB',
+    text5: darkMode ? '#2C2F36' : '#EDEEF2',
 
     // backgrounds / greys
-    bg1: '#212429',
-    bg2: '#2C2F36',
-    bg3: '#40444F',
-    bg4: '#565A69',
-    bg5: '#6C7284',
+    bg1: darkMode ? '#212429' : '#FFFFFF',
+    bg2: darkMode ? '#2C2F36' : '#F7F8FA',
+    bg3: darkMode ? '#40444F' : '#EDEEF2',
+    bg4: darkMode ? '#565A69' : '#CED0D9',
+    bg5: darkMode ? '#6C7284' : '#888D9B',
 
     jediBg: '#5D5DDF',
 
     //specialty colors
-    modalBG: 'rgba(0,0,0,.425)',
-    advancedBG: 'rgba(0,0,0,0.1)',
+    modalBG: darkMode ? 'rgba(0,0,0,.425)' : 'rgba(0,0,0,0.3)',
+    advancedBG: darkMode ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.6)',
 
     //primary colors
     // primary1: darkMode ? '#2172E5' : '#ff007a',
@@ -89,17 +89,17 @@ export function colors(darkMode: boolean): Colors {
 
     primary1: jediBlue,
     primary2: jediPink,
-    primary3: '#4D8FEA',
-    primary4: '#376bad70',
-    primary5: '#153d6f70',
+    primary3: darkMode ? '#4D8FEA' : '#FF99C9',
+    primary4: darkMode ? '#376bad70' : '#F6DDE8',
+    primary5: darkMode ? '#153d6f70' : '#FDEAF1',
 
     // color text
-    primaryText1: '#6da8ff',
+    primaryText1: darkMode ? '#6da8ff' : '#ff007a',
 
     // secondary colors
-    secondary1: '#2172E5',
-    secondary2: '#17000b26',
-    secondary3: '#17000b26',
+    secondary1: darkMode ? '#2172E5' : '#ff007a',
+    secondary2: darkMode ? '#17000b26' : '#F6DDE8',
+    secondary3: darkMode ? '#17000b26' : '#FDEAF1',
 
     // other
     red1: signalRed,
@@ -126,7 +126,7 @@ export function theme(darkMode: boolean): DefaultTheme {
     },
 
     //shadows
-    shadow1: '#000',
+    shadow1: darkMode ? '#000' : '#2F80ED',
 
     // media queries
     mediaWidth: mediaWidthTemplates,
@@ -172,16 +172,16 @@ export const TYPE = {
     return <TextWrapper fontWeight={400} fontSize={16} color={'text1'} {...props} />
   },
   largeHeader(props: TextProps) {
-    return <TextWrapper fontWeight={600} color={'text1'} fontSize={24} {...props} />
+    return <TextWrapper fontWeight={600} fontSize={24} {...props} />
   },
   mediumHeader(props: TextProps) {
-    return <TextWrapper fontWeight={500} color={'text1'} fontSize={20} {...props} />
+    return <TextWrapper fontWeight={500} fontSize={20} {...props} />
   },
   subHeader(props: TextProps) {
-    return <TextWrapper fontWeight={400} color={'text1'} fontSize={14} {...props} />
+    return <TextWrapper fontWeight={400} fontSize={14} {...props} />
   },
   small(props: TextProps) {
-    return <TextWrapper fontWeight={500} color={'text1'} fontSize={11} {...props} />
+    return <TextWrapper fontWeight={500} fontSize={11} {...props} />
   },
   blue(props: TextProps) {
     return <TextWrapper fontWeight={500} color={'primary1'} {...props} />
