@@ -116,7 +116,7 @@ const HoverText = styled.div`
   }
 `
 
-const WALLET_VIEWS = {
+export const WALLET_VIEWS = {
   OPTIONS: 'options',
   OPTIONS_SECONDARY: 'options_secondary',
   ACCOUNT: 'account',
@@ -141,7 +141,7 @@ export default function WalletModal({
 
   const [pendingWallet, setPendingWallet] = useState<AbstractConnector | undefined>()
 
-  const [pendingError, setPendingError] = useState<boolean>()
+  const [pendingError, setPendingError] = useState<any>()
 
   const walletModalOpen = useModalOpen(ApplicationModal.WALLET)
   const toggleWalletModal = useWalletModalToggle()
@@ -200,7 +200,7 @@ export default function WalletModal({
           activate(connector) // a little janky...can't use setError because the connector isn't set
         } else {
           console.error(error)
-          setPendingError(true)
+          setPendingError(error)
         }
       })
   }
@@ -318,6 +318,7 @@ export default function WalletModal({
               error={pendingError}
               setPendingError={setPendingError}
               tryActivation={tryActivation}
+              setWalletView={setWalletView}
             />
           ) : (
             <BorderWrapper>
