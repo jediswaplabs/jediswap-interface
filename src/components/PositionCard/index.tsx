@@ -17,7 +17,7 @@ import noise from '../../assets/images/noise.png'
 
 import { useColor } from '../../hooks/useColor'
 
-import Card, { GreyCard, LightCard, WhiteOutlineCard } from '../Card'
+import Card, { LightCard, WhiteOutlineCard, JediPositionCard } from '../Card'
 import { AutoColumn } from '../Column'
 import CurrencyLogo from '../CurrencyLogo'
 import DoubleCurrencyLogo from '../DoubleLogo'
@@ -54,18 +54,6 @@ const StyledPositionCard = styled(LightCard)<{ bgColor: any }>`
     `radial-gradient(91.85% 100% at 1.84% 0%, ${transparentize(0.8, bgColor)} 0%, ${theme.bg3} 100%) `};
   position: relative;
   overflow: hidden;
-`
-
-const JediPositionCard = styled(StyledPositionCard)`
-  background: rgba(196, 196, 196, 0.01);
-  border: 2px solid ${({ theme }) => theme.jediWhite};
-  box-shadow: inset 0px 30.0211px 1.1072px -27.7118px rgba(255, 255, 255, 0.5),
-    inset 0px 5.38841px 8.46749px -3.07909px #ffffff, inset 0px -63.1213px 52.3445px -49.2654px rgba(96, 68, 145, 0.3),
-    inset 0px 75.4377px 76.9772px -36.9491px rgba(202, 172, 255, 0.3),
-    inset 0px 3.07909px 13.8559px rgba(154, 146, 210, 0.3), inset 0px 0.769772px 3.7909px rgba(227, 222, 255, 0.2);
-  backdrop-filter: blur(76.9772px);
-
-  border-radius: 16px;
 `
 
 const CardText = styled.div<{
@@ -231,7 +219,7 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
   const backgroundColor = useColor(pair?.token0)
 
   return (
-    <JediPositionCard border={border} bgColor={backgroundColor}>
+    <JediPositionCard border={border}>
       <CardNoise />
       <AutoColumn gap="16px">
         <FixedHeightRow>
