@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, currencyEquals, TOKEN0, Token } from '@jediswap/sdk'
+import { Currency, CurrencyAmount, currencyEquals, TOKEN0, Token, WTOKEN0 } from '@jediswap/sdk'
 import React, { CSSProperties, MutableRefObject, useCallback, useEffect, useMemo } from 'react'
 import { FixedSizeList } from 'react-window'
 import { Text } from 'rebass'
@@ -10,12 +10,16 @@ import { useCurrencyBalance } from '../../state/wallet/hooks'
 import { LinkStyledButton, TYPE } from '../../theme'
 import { useIsUserAddedToken } from '../../hooks/Tokens'
 import Column from '../Column'
-import { RowFixed } from '../Row'
+import Row, { RowFixed } from '../Row'
 import CurrencyLogo from '../CurrencyLogo'
 import { MouseoverTooltip } from '../Tooltip'
 import { FadedSpan, MenuItem } from './styleds'
 import Loader from '../Loader'
 import { isTokenOnList } from '../../utils'
+import { PlusCircle } from 'react-feather'
+import { ButtonEmpty } from '../Button'
+import { ArgentXConnector } from '@web3-starknet-react/argentx-connector'
+import { useAddTokenToWallet } from '../../hooks/useAddTokenToWallet'
 
 function currencyKey(currency: Currency): string {
   return currency instanceof Token ? currency.address : currency === TOKEN0 ? 'TOKEN0' : ''
@@ -44,6 +48,12 @@ const Tag = styled.div`
   white-space: nowrap;
   justify-self: flex-end;
   margin-right: 4px;
+`
+
+const StyledPlusCircle = styled(PlusCircle)`
+  cursor: pointer;
+  height: 18px;
+  width: 18px;
 `
 
 function Balance({ balance }: { balance: CurrencyAmount }) {
@@ -101,7 +111,7 @@ function CurrencyRow({
   otherSelected: boolean
   style: CSSProperties
 }) {
-  const { account, chainId } = useActiveStarknetReact()
+  const { account, chainId, connector } = useActiveStarknetReact()
   const key = currencyKey(currency)
   const selectedTokenList = useSelectedTokenList()
 
@@ -111,6 +121,8 @@ function CurrencyRow({
 
   const removeToken = useRemoveUserAddedToken()
   const addToken = useAddUserToken()
+
+  const addTokenToWallet = useAddTokenToWallet(connector)
 
   // only show add or remove buttons if not on selected list
   return (
@@ -123,16 +135,30 @@ function CurrencyRow({
     >
       <CurrencyLogo currency={currency} size={'16px'} />
       <Column>
-        <Text
-          title={currency.name}
-          fontWeight={700}
-          fontSize={16}
-          fontFamily={'DM Sans'}
-          letterSpacing={'0px'}
-          color={'#FFFFFF'}
-        >
-          {currency.symbol}
-        </Text>
+        <Row gap="15px">
+          <Text
+            title={currency.name}
+            fontWeight={700}
+            fontSize={16}
+            fontFamily={'DM Sans'}
+            letterSpacing={'0px'}
+            color={'#FFFFFF'}
+            minWidth={'60px'}
+          >
+            {currency.symbol}
+          </Text>
+
+          <StyledPlusCircle
+            onClick={() => {
+              console.log('Add token')
+              if (currency instanceof Token) {
+                addTokenToWallet(currency.address)
+              } else if (currency === TOKEN0) {
+                addTokenToWallet(WTOKEN0[chainId ?? 5].address)
+              }
+            }}
+          />
+        </Row>
         <FadedSpan>
           {!isOnSelectedList && customAdded ? (
             <TYPE.main fontWeight={500}>
