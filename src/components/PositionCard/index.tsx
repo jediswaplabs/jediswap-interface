@@ -3,16 +3,15 @@ import { darken } from 'polished'
 import React, { useState } from 'react'
 import { ChevronDown, ChevronUp } from 'react-feather'
 import { Link } from 'react-router-dom'
-import { Text } from 'rebass'
 import styled from 'styled-components'
 import { useTotalSupply } from '../../data/TotalSupply'
 
 import { useActiveStarknetReact } from '../../hooks'
 import { useTokenBalance } from '../../state/wallet/hooks'
-import { ExternalLink, TYPE } from '../../theme'
+import { DMSansText } from '../../theme'
 import { currencyId } from '../../utils/currencyId'
 import { unwrappedToken } from '../../utils/wrappedCurrency'
-import { ButtonPrimary, ButtonSecondary, ButtonEmpty } from '../Button'
+import { ButtonEmpty, ButtonGradient } from '../Button'
 import { transparentize } from 'polished'
 import noise from '../../assets/images/noise.png'
 
@@ -55,6 +54,18 @@ const StyledPositionCard = styled(LightCard)<{ bgColor: any }>`
     `radial-gradient(91.85% 100% at 1.84% 0%, ${transparentize(0.8, bgColor)} 0%, ${theme.bg3} 100%) `};
   position: relative;
   overflow: hidden;
+`
+
+const JediPositionCard = styled(StyledPositionCard)`
+  background: rgba(196, 196, 196, 0.01);
+  border: 2px solid ${({ theme }) => theme.jediWhite};
+  box-shadow: inset 0px 30.0211px 1.1072px -27.7118px rgba(255, 255, 255, 0.5),
+    inset 0px 5.38841px 8.46749px -3.07909px #ffffff, inset 0px -63.1213px 52.3445px -49.2654px rgba(96, 68, 145, 0.3),
+    inset 0px 75.4377px 76.9772px -36.9491px rgba(202, 172, 255, 0.3),
+    inset 0px 3.07909px 13.8559px rgba(154, 146, 210, 0.3), inset 0px 0.769772px 3.7909px rgba(227, 222, 255, 0.2);
+  backdrop-filter: blur(76.9772px);
+
+  border-radius: 16px;
 `
 
 const CardText = styled.div<{
@@ -220,15 +231,15 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
   const backgroundColor = useColor(pair?.token0)
 
   return (
-    <StyledPositionCard border={border} bgColor={backgroundColor}>
+    <JediPositionCard border={border} bgColor={backgroundColor}>
       <CardNoise />
-      <AutoColumn gap="12px">
+      <AutoColumn gap="16px">
         <FixedHeightRow>
           <RowFixed>
             <DoubleCurrencyLogo currency0={currency0} currency1={currency1} margin={true} size={20} />
-            <Text fontWeight={500} fontSize={20}>
-              {!currency0 || !currency1 ? <Dots>Loading</Dots> : `${currency0.symbol}/${currency1.symbol}`}
-            </Text>
+            <DMSansText.mediumHeader>
+              {!currency0 || !currency1 ? <Dots>Loading</Dots> : `${currency0.symbol} / ${currency1.symbol}`}
+            </DMSansText.mediumHeader>
           </RowFixed>
 
           <RowFixed gap="8px">
@@ -255,26 +266,18 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
         </FixedHeightRow>
 
         {showMore && (
-          <AutoColumn gap="8px">
+          <AutoColumn gap="10px">
             <FixedHeightRow>
-              <Text fontSize={16} fontWeight={500}>
-                Your pool tokens:
-              </Text>
-              <Text fontSize={16} fontWeight={500}>
-                {userPoolBalance ? userPoolBalance.toSignificant(4) : '-'}
-              </Text>
+              <DMSansText.mediumBody>Your pool tokens:</DMSansText.mediumBody>
+              <DMSansText.mediumBody>{userPoolBalance ? userPoolBalance.toSignificant(4) : '-'}</DMSansText.mediumBody>
             </FixedHeightRow>
             <FixedHeightRow>
               <RowFixed>
-                <Text fontSize={16} fontWeight={500}>
-                  Pooled {currency0.symbol}:
-                </Text>
+                <DMSansText.mediumBody>Pooled {currency0.symbol}:</DMSansText.mediumBody>
               </RowFixed>
               {token0Deposited ? (
                 <RowFixed>
-                  <Text fontSize={16} fontWeight={500} marginLeft={'6px'}>
-                    {token0Deposited?.toSignificant(6)}
-                  </Text>
+                  <DMSansText.mediumBody marginLeft={'6px'}>{token0Deposited?.toSignificant(6)}</DMSansText.mediumBody>
                   <CurrencyLogo size="20px" style={{ marginLeft: '8px' }} currency={currency0} />
                 </RowFixed>
               ) : (
@@ -284,15 +287,11 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
 
             <FixedHeightRow>
               <RowFixed>
-                <Text fontSize={16} fontWeight={500}>
-                  Pooled {currency1.symbol}:
-                </Text>
+                <DMSansText.mediumBody>Pooled {currency1.symbol}:</DMSansText.mediumBody>
               </RowFixed>
               {token1Deposited ? (
                 <RowFixed>
-                  <Text fontSize={16} fontWeight={500} marginLeft={'6px'}>
-                    {token1Deposited?.toSignificant(6)}
-                  </Text>
+                  <DMSansText.mediumBody marginLeft={'6px'}>{token1Deposited?.toSignificant(6)}</DMSansText.mediumBody>
                   <CurrencyLogo size="20px" style={{ marginLeft: '8px' }} currency={currency1} />
                 </RowFixed>
               ) : (
@@ -301,45 +300,43 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
             </FixedHeightRow>
 
             <FixedHeightRow>
-              <Text fontSize={16} fontWeight={500}>
-                Your pool share:
-              </Text>
-              <Text fontSize={16} fontWeight={500}>
+              <DMSansText.mediumBody>Your pool share:</DMSansText.mediumBody>
+              <DMSansText.mediumBody>
                 {poolTokenPercentage ? poolTokenPercentage.toFixed(2) + '%' : '-'}
-              </Text>
+              </DMSansText.mediumBody>
             </FixedHeightRow>
 
-            <ButtonSecondary padding="8px" borderRadius="8px">
+            {/* <ButtonSecondary padding="8px" borderRadius="8px">
               <ExternalLink
                 style={{ width: '100%', textAlign: 'center' }}
                 href={`https://uniswap.info/account/${account}`}
               >
                 View accrued fees and analytics<span style={{ fontSize: '11px' }}>↗</span>
               </ExternalLink>
-            </ButtonSecondary>
-            <RowBetween marginTop="10px">
-              <ButtonPrimary
-                padding="8px"
+            </ButtonSecondary> */}
+            <RowBetween marginTop="15px">
+              <ButtonGradient
                 borderRadius="8px"
                 as={Link}
                 to={`/add/${currencyId(currency0)}/${currencyId(currency1)}`}
                 width="48%"
+                style={{ padding: '12px 8px' }}
               >
                 Add
-              </ButtonPrimary>
-              <ButtonPrimary
-                padding="8px"
+              </ButtonGradient>
+              <ButtonGradient
                 borderRadius="8px"
                 as={Link}
                 width="48%"
                 to={`/remove/${currencyId(currency0)}/${currencyId(currency1)}`}
+                style={{ padding: '12px 8px' }}
               >
                 Remove
-              </ButtonPrimary>
+              </ButtonGradient>
             </RowBetween>
           </AutoColumn>
         )}
       </AutoColumn>
-    </StyledPositionCard>
+    </JediPositionCard>
   )
 }

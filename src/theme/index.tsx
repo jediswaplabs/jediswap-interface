@@ -203,6 +203,36 @@ export const TYPE = {
   }
 }
 
+const DMSansTextWrapper = styled(TextWrapper)`
+  font-family: 'DM Sans', sans-serif;
+  letter-spacing: 0px;
+  color: ${({ theme }) => theme.jediWhite};
+`
+
+export const DMSansText = {
+  main(props: TextProps) {
+    return <DMSansTextWrapper fontWeight={500} {...props} />
+  },
+  body(props: TextProps) {
+    return <DMSansTextWrapper fontWeight={400} fontSize={16} {...props} />
+  },
+  mediumBody(props: TextProps) {
+    return <DMSansTextWrapper fontWeight={500} fontSize={18} {...props} />
+  },
+  largeHeader(props: TextProps) {
+    return <DMSansTextWrapper fontWeight={600} fontSize={24} {...props} />
+  },
+  mediumHeader(props: TextProps) {
+    return <DMSansTextWrapper fontWeight={500} fontSize={20} {...props} />
+  },
+  subHeader(props: TextProps) {
+    return <DMSansTextWrapper fontWeight={400} fontSize={14} {...props} />
+  },
+  small(props: TextProps) {
+    return <DMSansTextWrapper fontWeight={500} fontSize={11} {...props} />
+  }
+}
+
 export const FixedGlobalStyle = createGlobalStyle`
 html, input, textarea, button {
   font-family: 'Soloist Title', sans-serif;
