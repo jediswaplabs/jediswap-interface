@@ -3,7 +3,6 @@ import { Contract, AddTransactionResponse, Args } from '@jediswap/starknet'
 import { Currency, currencyEquals, TOKEN0, Percent, WTOKEN0 } from '@jediswap/sdk'
 import React, { useCallback, useContext, useMemo, useState } from 'react'
 import { ArrowDown, Plus } from 'react-feather'
-import ReactGA from 'react-ga'
 import { RouteComponentProps } from 'react-router'
 import { Text } from 'rebass'
 import { ThemeContext } from 'styled-components'
@@ -337,12 +336,6 @@ export default function RemoveLiquidity({
         })
 
         setTxHash(response.transaction_hash)
-
-        ReactGA.event({
-          category: 'Liquidity',
-          action: 'Remove',
-          label: [currencyA?.symbol, currencyB?.symbol].join('/')
-        })
       })
       .catch((error: Error) => {
         setAttemptingTxn(false)
