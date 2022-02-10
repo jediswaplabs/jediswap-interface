@@ -62,11 +62,12 @@ const LabelRow = styled.div`
   }
 `
 
-const Aligner = styled.div`
+const Aligner = styled.div<{ vertical?: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0;
+  flex-direction: ${({ vertical }) => (vertical ? 'column' : 'row')};
+  gap: ${({ vertical }) => (vertical ? '5px' : '0px')};
 `
 
 const StyledDropDown = styled(DropDown)<{ selected: boolean }>`
@@ -224,15 +225,15 @@ CurrencyInputPanelProps) {
               }
             }}
           >
-            <Aligner>
+            <Aligner vertical={!!pair}>
               {pair ? (
-                <DoubleCurrencyLogo currency0={pair.token0} currency1={pair.token1} size={24} margin={true} />
+                <DoubleCurrencyLogo currency0={pair.token0} currency1={pair.token1} size={24} />
               ) : currency ? (
                 <CurrencyLogo currency={currency} size={'24px'} />
               ) : null}
               {pair ? (
-                <StyledTokenName className="pair-name-container">
-                  {pair?.token0.symbol}:{pair?.token1.symbol}
+                <StyledTokenName className="pair-name-container" style={{ fontSize: '14px' }}>
+                  {pair?.token0.symbol} : {pair?.token1.symbol}
                 </StyledTokenName>
               ) : (
                 <StyledTokenName className="token-symbol-container" active={Boolean(currency && currency.symbol)}>
