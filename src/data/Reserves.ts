@@ -1,4 +1,4 @@
-import { TokenAmount, Pair, Currency, JSBI } from '@jediswap/sdk'
+import { TokenAmount, Pair, Currency, JSBI, Token } from '@jediswap/sdk'
 import { useMemo } from 'react'
 import JediswapPairABI from '../constants/abis/Pair.json'
 import { Interface } from '@ethersproject/abi'
@@ -16,6 +16,11 @@ export enum PairState {
   NOT_EXISTS,
   EXISTS,
   INVALID
+}
+
+export interface LiquidityPairToken {
+  liquidityToken: Token | undefined
+  tokens: [Token, Token]
 }
 
 export function usePairs(currencies: [Currency | undefined, Currency | undefined][]): [PairState, Pair | null][] {
@@ -92,4 +97,41 @@ export function usePair(tokenA?: Currency, tokenB?: Currency): [PairState, Pair 
   const pairs = usePairs([[tokenA, tokenB]])?.[0]
   // console.log('🚀 ~ file: Reserves.ts ~ line 93 ~ usePair ~ pairs', pairs)
   return pairs ?? [PairState.LOADING, null]
+}
+
+export function useTokenPairsWithLiquidityTokens(pairTokens: [Token, Token][]): [LiquidityPairToken[], boolean] {
+  const registryContract = useRegistryContract(true)
+
+  const callInputs: (Args | undefined)[] = pairTokens.map(([tokenA, tokenB]) =>
+    tokenA && tokenB && !tokenA.equals(tokenB) ? { token0: tokenA?.address, token1: tokenB?.address } : undefined
+  )
+
+  const pairAddressesCallState = useSingleContractMultipleData(
+    registryContract,
+    'get_pair_for',
+    callInputs,
+    NEVER_RELOAD
+  )
+
+  const pairAddresses = pairAddressesCallState.map(pairAddress => pairAddress.result?.[0])
+
+  const anyLoading = pairAddressesCallState.some(pairAddresses => pairAddresses.loading)
+
+  return [
+    useMemo(
+      () =>
+        pairTokens.map(([tokenA, tokenB], i) => {
+          const pairAddress = pairAddresses?.[i]
+
+          if (!pairAddress) return { liquidityToken: undefined, tokens: [tokenA, tokenB] }
+
+          return {
+            liquidityToken: new Token(tokenA.chainId, pairAddress, 18, 'MGP', 'Mesh Generic Pair'),
+            tokens: [tokenA, tokenB]
+          }
+        }),
+      [pairAddresses, pairTokens]
+    ),
+    anyLoading
+  ]
 }
