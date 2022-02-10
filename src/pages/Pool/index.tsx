@@ -19,6 +19,7 @@ import { toV2LiquidityToken, useTrackedTokenPairs } from '../../state/user/hooks
 import { Dots } from '../../components/swap/styleds'
 import { CardSection, DataCard, CardNoise, CardBGImage } from './styleds'
 import { Wrapper } from '../ComingSoon'
+import { validateAndParseAddress } from '@jediswap/starknet'
 
 const PageWrapper = styled(AutoColumn)`
   max-width: 900px;
@@ -40,7 +41,7 @@ const TitleRow = styled(RowBetween)`
 `
 
 const ButtonRow = styled(RowFixed)`
-  gap: 8px;
+  gap: 14px;
   ${({ theme }) => theme.mediaWidth.upToSmall`
     width: 100%;
     flex-direction: row-reverse;
@@ -78,7 +79,7 @@ const CreatePoolButton = styled(ResponsiveButtonSecondary)`
 `
 
 const CreatePoolButtonAlt = styled(CreatePoolButton)`
-  font-size: 24px;
+  font-size: 18px;
   line-height: 30px;
 `
 
@@ -204,6 +205,15 @@ export default function Pool() {
       <ButtonRow>
         <CreatePoolButtonAlt as={Link} to="/add/TOKEN0">
           Add Liquidity
+        </CreatePoolButtonAlt>
+        <CreatePoolButtonAlt
+          as={Link}
+          to={
+            '/remove/TOKEN0/' +
+            validateAndParseAddress('0x30d1dc0202e2b5820d2956bc6232f3f76eb32b397f3242b63f5780d00acdeec')
+          }
+        >
+          Remove Liquidity
         </CreatePoolButtonAlt>
       </ButtonRow>
     </Wrapper>

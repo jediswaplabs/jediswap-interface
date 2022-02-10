@@ -1,7 +1,8 @@
+import { BigNumberish } from '@jediswap/starknet/dist/utils/number'
 import { AbstractConnector } from '@web3-starknet-react/abstract-connector'
 import { useMemo } from 'react'
 // import { Contract } from '@ethersproject/contracts'
-import { Abi, Contract, Provider, Signer, SignerInterface } from '@jediswap/starknet'
+import { Abi, Contract, Provider, Signer, SignerInterface, uint256 } from '@jediswap/starknet'
 import { BigNumber } from '@ethersproject/bignumber'
 import { ZERO_ADDRESS } from '../constants'
 import { jediTokensList } from '../constants/jediTokens'
@@ -120,4 +121,8 @@ export function isTokenOnList(defaultTokens: TokenAddressMap, currency?: Currenc
   const isJediToken = Object.values(jediTokensList).some(token => token === currency)
 
   return isJediToken || Boolean(currency instanceof Token && defaultTokens[currency.chainId]?.[currency.address])
+}
+
+export const parsedAmountToUint256Args = (amount: JSBI): { [k: string]: BigNumberish; type: 'struct' } => {
+  return { type: 'struct', ...uint256.bnToUint256(amount.toString()) }
 }

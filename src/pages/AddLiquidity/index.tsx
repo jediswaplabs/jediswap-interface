@@ -39,7 +39,8 @@ import { currencyId } from '../../utils/currencyId'
 import { PoolPriceBar } from './PoolPriceBar'
 import { useRouterContract } from '../../hooks/useContract'
 import { AddTransactionResponse, Args, uint256 } from '@jediswap/starknet'
-import { BigNumberish } from '@jediswap/starknet/dist/utils/number'
+import { parsedAmountToUint256Args } from '../../utils'
+
 import styled from 'styled-components'
 
 const BalanceText = styled.div`
@@ -156,10 +157,6 @@ export default function AddLiquidity({
     },
     {}
   )
-
-  const parsedAmountToUint256Args = (amount: JSBI): { [k: string]: BigNumberish; type: 'struct' } => {
-    return { type: 'struct', ...uint256.bnToUint256(amount.toString()) }
-  }
 
   // check whether the user has approved the router on the tokens
   const [approvalA, approveACallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_A], ROUTER_ADDRESS)
