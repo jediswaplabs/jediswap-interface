@@ -12,14 +12,16 @@ export const ClickableText = styled(Text)`
   :hover {
     cursor: pointer;
   }
-  color: ${({ theme }) => theme.primary1};
+  color: ${({ theme }) => theme.jediBlue};
+  font-style: italic;
 `
 export const MaxButton = styled.button<{ width: string }>`
   padding: 0.5rem 1rem;
-  background-color: ${({ theme }) => theme.primary5};
-  border: 1px solid ${({ theme }) => theme.primary5};
+  background-color: transparent;
+  border: 1px solid ${({ theme }) => theme.jediWhite};
   border-radius: 0.5rem;
   font-size: 1rem;
+
   ${({ theme }) => theme.mediaWidth.upToSmall`
     padding: 0.25rem 0.5rem;
   `};
@@ -27,13 +29,15 @@ export const MaxButton = styled.button<{ width: string }>`
   cursor: pointer;
   margin: 0.25rem;
   overflow: hidden;
-  color: ${({ theme }) => theme.primary1};
+  color: ${({ theme }) => theme.jediWhite};
   :hover {
-    border: 1px solid ${({ theme }) => theme.primary1};
+    border: 1px solid ${({ theme }) => theme.jediBlue};
+    color: ${({ theme }) => theme.jediBlue};
   }
   :focus {
-    border: 1px solid ${({ theme }) => theme.primary1};
+    border: 1px solid ${({ theme }) => theme.jediBlue};
     outline: none;
+    color: ${({ theme }) => theme.jediBlue};
   }
 `
 
