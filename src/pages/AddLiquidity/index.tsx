@@ -28,7 +28,7 @@ import { useDerivedMintInfo, useMintActionHandlers, useMintState } from '../../s
 
 import { useTransactionAdder } from '../../state/transactions/hooks'
 import { useIsExpertMode, useUserSlippageTolerance } from '../../state/user/hooks'
-import { TYPE } from '../../theme'
+import { DMSansText, TYPE } from '../../theme'
 import { calculateGasMargin, calculateSlippageAmount } from '../../utils'
 import { maxAmountSpend } from '../../utils/maxAmountSpend'
 import { wrappedCurrency } from '../../utils/wrappedCurrency'
@@ -270,19 +270,10 @@ export default function AddLiquidity({
             {currencies[Field.CURRENCY_A]?.symbol + '/' + currencies[Field.CURRENCY_B]?.symbol + ' Pool Tokens'}
           </Text>
         </Row>
-        <Text
-          color={theme.jediWhite}
-          fontFamily={'DM Sans'}
-          letterSpacing={'0px'}
-          fontSize={14}
-          fontWeight={400}
-          textAlign="left"
-          lineHeight={'120%'}
-          padding={'8px 0'}
-        >
+        <DMSansText.body fontSize={14} textAlign="left" padding={'8px 0 0 0'} lineHeight={'120%'}>
           {`Output is estimated. If the price changes by more than ${allowedSlippage /
             100}% your transaction will revert.`}
-        </Text>
+        </DMSansText.body>
       </AutoColumn>
     )
   }
