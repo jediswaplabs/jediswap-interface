@@ -219,7 +219,7 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
   const backgroundColor = useColor(pair?.token0)
 
   return (
-    <JediPositionCard border={border}>
+    <JediPositionCard style={{ cursor: 'pointer' }} border={border} onClick={() => setShowMore(!showMore)}>
       <CardNoise />
       <AutoColumn gap="16px">
         <FixedHeightRow>

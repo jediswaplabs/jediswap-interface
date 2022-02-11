@@ -12,8 +12,8 @@ export const ClickableText = styled(Text)`
   :hover {
     cursor: pointer;
   }
-  color: ${({ theme }) => theme.jediBlue};
-  font-style: italic;
+  color: ${({ theme }) => theme.jediGrey};
+  /* font-style: italic; */
 `
 export const MaxButton = styled.button<{ width: string }>`
   padding: 0.5rem 1rem;
