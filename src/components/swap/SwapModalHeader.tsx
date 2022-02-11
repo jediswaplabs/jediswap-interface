@@ -4,7 +4,7 @@ import { ArrowDown, AlertTriangle } from 'react-feather'
 import { Text } from 'rebass'
 import { ThemeContext } from 'styled-components'
 // import { Field } from '../../state/swap/actions'
-import { TYPE } from '../../theme'
+import { DMSansText, TYPE } from '../../theme'
 import { ButtonPrimary } from '../Button'
 import { isAddress, shortenAddress } from '../../utils'
 import { computeTradePriceBreakdown, warningSeverity } from '../../utils/prices'
@@ -144,22 +144,22 @@ export default function SwapModalHeader({
           </RowBetween>
         </Column>
       </RowWrapper>
-      {/* {showAcceptChanges ? (
+      {showAcceptChanges ? (
         <SwapShowAcceptChanges justify="flex-start" gap={'0px'}>
           <RowBetween>
             <RowFixed>
               <AlertTriangle size={20} style={{ marginRight: '8px', minWidth: 24 }} />
-              <TYPE.main color={theme.primary1}> Price Updated</TYPE.main>
+              <DMSansText.main color={theme.jediWhite}> Price Updated</DMSansText.main>
             </RowFixed>
             <ButtonPrimary
-              style={{ padding: '.5rem', width: 'fit-content', fontSize: '0.825rem', borderRadius: '12px' }}
+              style={{ padding: '.5rem', width: 'fit-content', fontSize: '0.825rem' }}
               onClick={onAcceptChanges}
             >
               Accept
             </ButtonPrimary>
           </RowBetween>
         </SwapShowAcceptChanges>
-      ) : null} */}
+      ) : null}
 
       {recipient !== null ? (
         <AutoColumn justify="flex-start" gap="sm" style={{ padding: '12px 0 0 0px' }}>
