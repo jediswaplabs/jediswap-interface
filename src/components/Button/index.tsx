@@ -12,7 +12,7 @@ const Base = styled(RebassButton)<{
   borderRadius?: string
   altDisabledStyle?: boolean
 }>`
-  padding: ${({ padding }) => (padding ? padding : '22px 17px')};
+  padding: ${({ padding }) => (padding ? padding : '22px 10px')};
   width: ${({ width }) => (width ? width : '100%')};
   font-weight: 500;
   text-align: center;
@@ -39,32 +39,33 @@ const Base = styled(RebassButton)<{
 `
 
 export const ButtonPrimary = styled(Base)`
-  background-color: ${({ theme }) => theme.primary1};
-  color: white;
-  &:focus {
-    box-shadow: 0 0 0 1pt ${({ theme }) => darken(0.05, theme.primary1)};
-    background-color: ${({ theme }) => darken(0.05, theme.primary1)};
+  background-color: ${({ theme }) => theme.jediBlue};
+  background: linear-gradient(95.64deg, #29aafd 8.08%, #ff00e9 105.91%);
+  color: ${({ theme }) => theme.jediWhite};
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  
+  :hover,
+  :focus,
+  :active {
+    background: linear-gradient(95.64deg, #ff00e9 8.08%, #29aafd 105.91%);
   }
-  &:hover {
-    background-color: ${({ theme }) => darken(0.05, theme.primary1)};
-  }
-  &:active {
+  /* &:active {
     box-shadow: 0 0 0 1pt ${({ theme }) => darken(0.1, theme.primary1)};
     background-color: ${({ theme }) => darken(0.1, theme.primary1)};
-  }
+  } */
   &:disabled {
-    background-color: ${({ theme, altDisabledStyle }) => (altDisabledStyle ? theme.primary1 : theme.jediNavyBlue)};
+    background: ${({ theme }) => theme.jediNavyBlue};
+    mix-blend-mode: normal;
     box-shadow: inset 0px 75.4377px 76.9772px -36.9491px rgba(202, 172, 255, 0.3),
       inset 0px 3.07909px 13.8559px rgba(154, 146, 210, 0.3), inset 0px 0.769772px 30.7909px rgba(227, 222, 255, 0.2);
-    mix-blend-mode: normal;
-    color: ${({ theme, altDisabledStyle }) => (altDisabledStyle ? 'white' : '#9B9B9B')};
-    cursor: auto;
-
-    border: 1px solid transparent;
-    outline: none;
-    opacity: ${({ altDisabledStyle }) => (altDisabledStyle ? '0.7' : '1')};
+    border-radius: 8px;
   }
 `
+
+export const ButtonGradient = styled(ButtonPrimary)``
 
 export const ButtonLight = styled(Base)`
   background-color: ${({ theme }) => theme.primary5};
@@ -226,9 +227,11 @@ export const ButtonWhite = styled(Base)`
 `
 
 const ButtonConfirmedStyle = styled(Base)`
-  background-color: ${({ theme }) => lighten(0.5, theme.green1)};
-  color: ${({ theme }) => theme.green1};
-  border: 1px solid ${({ theme }) => theme.green1};
+  /* background-color: ${({ theme }) => lighten(0.5, theme.jediBlue)}; */
+  background-color: transparent;
+  color: ${({ theme }) => theme.jediBlue};
+  border: 1px solid ${({ theme }) => theme.jediBlue};
+  /* padding: 21px 10px; */
 
   &:disabled {
     opacity: 50%;
@@ -257,22 +260,6 @@ const ButtonErrorStyle = styled(Base)`
     box-shadow: none;
     background-color: ${({ theme }) => theme.red1};
     border: 1px solid ${({ theme }) => theme.red1};
-  }
-`
-
-export const ButtonGradient = styled(Base)`
-  background: linear-gradient(95.64deg, #29aafd 8.08%, #ff00e9 105.91%);
-  color: ${({ theme }) => theme.jediWhite};
-  padding: 22px 17px;
-  font-size: 20px;
-  font-weight: 400;
-  line-height: 20px;
-  letter-spacing: -0.1em;
-  text-align: center;
-
-  :hover,
-  :focus {
-    background: linear-gradient(95.64deg, #ff00e9 8.08%, #29aafd 105.91%);
   }
 `
 
@@ -305,7 +292,7 @@ export function ButtonError({ error, ...rest }: { error?: boolean } & ButtonProp
   if (error) {
     return <ButtonErrorStyle {...rest} />
   } else {
-    return <ButtonGradient {...rest} />
+    return <ButtonPrimary {...rest} />
   }
 }
 

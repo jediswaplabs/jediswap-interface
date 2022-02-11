@@ -20,6 +20,7 @@ const StyledRangeInput = styled.input<{ size: number }>`
     height: ${({ size }) => size}px;
     width: ${({ size }) => size}px;
     background-color: #565a69;
+    background: linear-gradient(95.64deg, #29aafd 8.08%, #ff00e9 105.91%);
     border-radius: 100%;
     border: none;
     transform: translateY(-50%);
@@ -36,6 +37,7 @@ const StyledRangeInput = styled.input<{ size: number }>`
     height: ${({ size }) => size}px;
     width: ${({ size }) => size}px;
     background-color: #565a69;
+    background: linear-gradient(95.64deg, #29aafd 8.08%, #ff00e9 105.91%);
     border-radius: 100%;
     border: none;
     color: ${({ theme }) => theme.bg1};
@@ -51,6 +53,7 @@ const StyledRangeInput = styled.input<{ size: number }>`
     height: ${({ size }) => size}px;
     width: ${({ size }) => size}px;
     background-color: #565a69;
+    background: linear-gradient(95.64deg, #29aafd 8.08%, #ff00e9 105.91%);
     border-radius: 100%;
     color: ${({ theme }) => theme.bg1};
 
@@ -62,12 +65,12 @@ const StyledRangeInput = styled.input<{ size: number }>`
   }
 
   &::-webkit-slider-runnable-track {
-    background: linear-gradient(90deg, ${({ theme }) => theme.bg5}, ${({ theme }) => theme.bg3});
+    background: linear-gradient(90deg, ${({ theme }) => theme.jediNavyBlue}, ${({ theme }) => theme.jediBlue});
     height: 2px;
   }
 
   &::-moz-range-track {
-    background: linear-gradient(90deg, ${({ theme }) => theme.bg5}, ${({ theme }) => theme.bg3});
+    background: linear-gradient(90deg, ${({ theme }) => theme.jediNavyBlue}, ${({ theme }) => theme.jediBlue});
     height: 2px;
   }
 
