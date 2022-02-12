@@ -75,6 +75,7 @@ export function colors(darkMode: boolean): Colors {
     bg5: '#6C7284',
 
     jediBg: '#5D5DDF',
+    jediGradientBg: 'linear-gradient(95.64deg, #29AAFD 8.08%, #FF00E9 105.91%)',
 
     //specialty colors
     modalBG: 'rgba(0,0,0,.425)',
