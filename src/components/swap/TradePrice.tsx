@@ -6,6 +6,7 @@ import { Text } from 'rebass'
 import { ThemeContext } from 'styled-components'
 import { StyledBalanceMaxMini } from './styleds'
 import { formatExecutionPrice } from '../../utils/prices'
+import { DMSansText } from '../../theme'
 
 interface TradePriceProps {
   trade?: Trade
@@ -26,14 +27,7 @@ export default function TradePrice({ trade, showInverted, setShowInverted }: Tra
   const formattedPrice = formatExecutionPrice(trade, showInverted, '=')
 
   return (
-    <Text
-      fontFamily={'DM Sans'}
-      fontWeight={500}
-      fontSize={14}
-      color={theme.text2}
-      style={{ justifyContent: 'center', alignItems: 'center', display: 'flex' }}
-      letterSpacing={'0px'}
-    >
+    <DMSansText.body fontSize={14} style={{ justifyContent: 'center', alignItems: 'center', display: 'flex' }}>
       {show ? (
         <>
           {formattedPrice ?? '-'}
@@ -44,6 +38,6 @@ export default function TradePrice({ trade, showInverted, setShowInverted }: Tra
       ) : (
         '-'
       )}
-    </Text>
+    </DMSansText.body>
   )
 }

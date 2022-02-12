@@ -41,7 +41,7 @@ import {
   useSwapState
 } from '../../state/swap/hooks'
 import { useExpertModeManager, useUserSlippageTolerance } from '../../state/user/hooks'
-import { LinkStyledButton, TYPE } from '../../theme'
+import { DMSansText, LinkStyledButton, TYPE } from '../../theme'
 import { maxAmountSpend } from '../../utils/maxAmountSpend'
 import { computeTradePriceBreakdown, warningSeverity } from '../../utils/prices'
 import AppBody from '../AppBody'
@@ -440,7 +440,13 @@ export default function Swap() {
                 ) : null}
               </AutoRow>
             </AutoColumn>
-            <HeaderRow>
+            <HeaderRow
+              style={
+                currencyBalances.OUTPUT && currencyBalances.OUTPUT?.toSignificant(6).length > 10
+                  ? { marginTop: '25px' }
+                  : {}
+              }
+            >
               <BalanceText>Swap To (est.)</BalanceText>
               <BalanceText>Balance: {currencyBalances.OUTPUT?.toSignificant(6) ?? 0}</BalanceText>
             </HeaderRow>
@@ -473,26 +479,15 @@ export default function Swap() {
               <AutoColumn gap="4px">
                 {Boolean(trade) && (
                   <RowBetween align="center">
-                    <Text
-                      fontFamily={'DM Sans'}
-                      fontWeight={500}
-                      fontSize={14}
-                      color={theme.text2}
-                      letterSpacing={'0px'}
-                    >
-                      Price
-                    </Text>
+                    <DMSansText.body fontSize={14}>Price</DMSansText.body>
                     <TradePrice trade={trade} showInverted={showInverted} setShowInverted={setShowInverted} />
                   </RowBetween>
                 )}
+
                 {allowedSlippage !== INITIAL_ALLOWED_SLIPPAGE && (
                   <RowBetween align="center">
-                    <ClickableText fontWeight={500} fontSize={14} color={theme.text2} onClick={toggleSettings}>
-                      Slippage Tolerance
-                    </ClickableText>
-                    <ClickableText fontWeight={500} fontSize={14} color={theme.text2} onClick={toggleSettings}>
-                      {allowedSlippage / 100}%
-                    </ClickableText>
+                    <DMSansText.body fontSize={14}>Slippage Tolerance</DMSansText.body>
+                    <DMSansText.body fontSize={14}>{allowedSlippage / 100}%</DMSansText.body>
                   </RowBetween>
                 )}
               </AutoColumn>
