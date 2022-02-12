@@ -264,6 +264,8 @@ export default function Swap() {
   useEffect(() => {
     if (approval === ApprovalState.PENDING) {
       setApprovalSubmitted(true)
+    } else if (ApprovalState.NOT_APPROVED && approvalSubmitted) {
+      setApprovalSubmitted(false)
     }
   }, [approval, approvalSubmitted])
 
