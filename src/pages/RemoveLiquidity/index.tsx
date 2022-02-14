@@ -32,7 +32,7 @@ import { currencyId } from '../../utils/currencyId'
 import useDebouncedChangeHandler from '../../utils/useDebouncedChangeHandler'
 import { wrappedCurrency } from '../../utils/wrappedCurrency'
 import AppBody from '../AppBody'
-import { ClickableText, MaxButton, Wrapper } from '../Pool/styleds'
+import { ClickableText, MaxButton, Wrapper, PriceText } from '../Pool/styleds'
 import { useApproveCallback, ApprovalState } from '../../hooks/useApproveCallback'
 import { Dots } from '../../components/swap/styleds'
 import { useBurnActionHandlers } from '../../state/burn/hooks'
@@ -494,15 +494,15 @@ export default function RemoveLiquidity({
                 <AutoColumn gap="7.5px" style={{ padding: '10px 20px' }}>
                   <RowBetween>
                     Price:
-                    <div>
+                    <PriceText>
                       1 {currencyA?.symbol} = {tokenA ? pair.priceOf(tokenA).toSignificant(6) : '-'} {currencyB?.symbol}
-                    </div>
+                    </PriceText>
                   </RowBetween>
                   <RowBetween>
                     <div />
-                    <div>
+                    <PriceText>
                       1 {currencyB?.symbol} = {tokenB ? pair.priceOf(tokenB).toSignificant(6) : '-'} {currencyA?.symbol}
-                    </div>
+                    </PriceText>
                   </RowBetween>
                 </AutoColumn>
               </DMSansText.mediumBody>

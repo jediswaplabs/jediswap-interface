@@ -103,3 +103,9 @@ export const CardSection = styled(AutoColumn)<{ disabled?: boolean }>`
   z-index: 1;
   opacity: ${({ disabled }) => disabled && '0.4'};
 `
+export const PriceText = styled.div`
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 65%;
+`
