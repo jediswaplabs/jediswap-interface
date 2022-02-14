@@ -22,6 +22,8 @@ import SortButton from './SortButton'
 import { useTokenComparator } from './sorting'
 import { PaddedColumn, SearchInput, Separator } from './styleds'
 import AutoSizer from 'react-virtualized-auto-sizer'
+import { TOKEN0_ADDRESS } from '../../constants/jediTokens'
+import { wrappedCurrency } from '../../utils/wrappedCurrency'
 
 interface CurrencySearchProps {
   isOpen: boolean
@@ -79,9 +81,19 @@ export function CurrencySearch({
   const tokenComparator = useTokenComparator(invertSearchOrder)
 
   const filteredTokens: Token[] = useMemo(() => {
-    if (isAddressSearch) return searchToken ? [searchToken] : []
+    if (isAddressSearch) {
+      if (searchToken) return [searchToken]
+      else if (isAddressSearch === TOKEN0_ADDRESS) {
+        const WTOKEN0 = wrappedCurrency(TOKEN0, chainId)
+        if (WTOKEN0) {
+          return [WTOKEN0]
+        }
+        return []
+      }
+      return []
+    }
     return filterTokens(Object.values(allTokens), searchQuery)
-  }, [isAddressSearch, searchToken, allTokens, searchQuery])
+  }, [isAddressSearch, allTokens, searchQuery, searchToken, chainId])
 
   const filteredSortedTokens: Token[] = useMemo(() => {
     if (searchToken) return [searchToken]

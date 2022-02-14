@@ -5,11 +5,12 @@ import { useMemo } from 'react'
 import { Abi, Contract, Provider, Signer, SignerInterface, uint256 } from '@jediswap/starknet'
 import { BigNumber } from '@ethersproject/bignumber'
 import { ZERO_ADDRESS } from '../constants'
-import { jediTokensList } from '../constants/jediTokens'
+import { jediTokensList, TOKEN0 } from '../constants/jediTokens'
 import { ChainId, JSBI, Percent, Token, CurrencyAmount, Currency, TOKEN0 as Currency0 } from '@jediswap/sdk'
 import { TokenAddressMap } from '../state/lists/hooks'
 import { validateAndParseAddress } from '@jediswap/starknet'
 import isZero from './isZero'
+import { wrappedCurrency } from './wrappedCurrency'
 
 // returns the checksummed address if the address is valid, otherwise returns false
 export function isAddress(addr: string | null | undefined): string | false {
@@ -115,8 +116,9 @@ export function escapeRegExp(string: string): string {
   return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') // $& means the whole matched string
 }
 
-export function isTokenOnList(defaultTokens: TokenAddressMap, currency?: Currency): boolean {
+export function isTokenOnList(defaultTokens: TokenAddressMap, currency?: Currency, chainId?: ChainId): boolean {
   if (currency === Currency0) return true
+  if (currency === wrappedCurrency(currency, chainId)) return true
 
   const isJediToken = Object.values(jediTokensList).some(token => token === currency)
 
