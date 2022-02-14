@@ -115,7 +115,7 @@ function CurrencyRow({
   const key = currencyKey(currency)
   const selectedTokenList = useSelectedTokenList()
 
-  const isOnSelectedList = isTokenOnList(selectedTokenList, currency)
+  const isOnSelectedList = isTokenOnList(selectedTokenList, currency, chainId)
   const customAdded = useIsUserAddedToken(currency)
   const balance = useCurrencyBalance(account ?? undefined, currency)
 
