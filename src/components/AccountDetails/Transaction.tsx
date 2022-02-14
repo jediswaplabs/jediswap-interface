@@ -15,12 +15,18 @@ const TransactionWrapper = styled.div``
 
 const TransactionStatusText = styled.div`
   margin-right: 0.5rem;
-  display: flex;
-  align-items: center;
+  /* display: flex;
+  align-items: center; */
   font-family: 'DM Sans', sans-serif;
   letter-spacing: 0px;
   font-weight: 400;
   font-size: 0.875rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 90%;
+  display: block;
+
   :hover {
     text-decoration: underline;
   }
