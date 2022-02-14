@@ -32,6 +32,7 @@ export interface Colors {
   bg5: Color
 
   jediBg: Color
+  jediGradientBg: Color
 
   modalBG: Color
   advancedBG: Color

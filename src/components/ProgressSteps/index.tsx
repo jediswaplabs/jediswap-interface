@@ -3,18 +3,23 @@ import styled from 'styled-components'
 import { RowBetween } from '../Row'
 import { AutoColumn } from '../Column'
 import { transparentize } from 'polished'
+import { DMSansText } from '../../theme'
 
 const Wrapper = styled(AutoColumn)``
 
 const Grouping = styled(RowBetween)`
   width: 50%;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 18px;
+  letter-spacing: 0px;
+  font-weight: 700;
 `
 
 const Circle = styled.div<{ confirmed?: boolean; disabled?: boolean }>`
   min-width: 20px;
   min-height: 20px;
-  background-color: ${({ theme, confirmed, disabled }) =>
-    disabled ? theme.bg4 : confirmed ? theme.green1 : theme.primary1};
+  background: ${({ theme, confirmed, disabled }) => (disabled ? theme.jediGrey : theme.jediGradientBg)};
+
   border-radius: 50%;
   color: ${({ theme }) => theme.white};
   display: flex;
@@ -33,7 +38,7 @@ const CircleRow = styled.div`
 const Connector = styled.div<{ prevConfirmed?: boolean; disabled?: boolean }>`
   width: 100%;
   height: 2px;
-  background-color: ;
+  background-color: ${({ theme }) => theme.jediGrey};
   background: linear-gradient(
     90deg,
     ${({ theme, prevConfirmed, disabled }) =>
