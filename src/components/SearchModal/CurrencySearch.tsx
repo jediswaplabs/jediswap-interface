@@ -128,8 +128,8 @@ export function CurrencySearch({
   // manage focus on modal show
   const inputRef = useRef<HTMLInputElement>()
   const handleInput = useCallback(event => {
-    const input = event.target.value
-    const checksummedInput = isAddress(input)
+    const input = event.target.value as string
+    const checksummedInput = input.startsWith('0x') ? isAddress(input) : false
     setSearchQuery(checksummedInput || input)
     fixedList.current?.scrollTo(0)
   }, [])
@@ -138,7 +138,7 @@ export function CurrencySearch({
     (e: KeyboardEvent<HTMLInputElement>) => {
       if (e.key === 'Enter') {
         const s = searchQuery.toLowerCase().trim()
-        if (s === 'eth') {
+        if (s === 'token0') {
           handleCurrencySelect(TOKEN0)
         } else if (filteredSortedTokens.length > 0) {
           if (
@@ -148,9 +148,11 @@ export function CurrencySearch({
             handleCurrencySelect(filteredSortedTokens[0])
           }
         }
+      } else if (e.key === 'Backspace' && isAddressSearch) {
+        setSearchQuery('')
       }
     },
-    [filteredSortedTokens, handleCurrencySelect, searchQuery]
+    [filteredSortedTokens, handleCurrencySelect, isAddressSearch, searchQuery]
   )
 
   const selectedListInfo = useSelectedListInfo()
