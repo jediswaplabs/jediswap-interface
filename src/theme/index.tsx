@@ -208,6 +208,7 @@ const DMSansTextWrapper = styled(TextWrapper)`
   font-family: 'DM Sans', sans-serif;
   letter-spacing: 0px;
   color: ${({ theme }) => theme.jediWhite};
+  line-height: 100%;
 `
 
 export const DMSansText = {

@@ -1,8 +1,6 @@
 import React, { Suspense } from 'react'
 import { Route, Switch } from 'react-router-dom'
 import styled from 'styled-components'
-// import GoogleAnalyticsReporter from '../components/analytics/GoogleAnalyticsReporter'
-// import AddressClaimModal from '../components/claim/AddressClaimModal'
 import Header from '../components/Header'
 import Polling from '../components/Header/Polling'
 import URLWarning from '../components/Header/URLWarning'
@@ -11,24 +9,19 @@ import Web3ReactManager from '../components/Web3ReactManager'
 import { ApplicationModal } from '../state/application/actions'
 import { useModalOpen, useToggleModal } from '../state/application/hooks'
 import DarkModeQueryParamReader from '../theme/DarkModeQueryParamReader'
+
 import Swap from './Swap'
+import { RedirectPathToSwapOnly, RedirectToSwap } from './Swap/redirects'
+
 import Pool from './Pool'
 
 import AddLiquidity from './AddLiquidity'
-import ComingSoon from './ComingSoon'
-// import Earn from './Earn'
-// import Manage from './Earn/Manage'
-// import MigrateV1 from './MigrateV1'
-// import MigrateV1Exchange from './MigrateV1/MigrateV1Exchange'
-// import RemoveV1Exchange from './MigrateV1/RemoveV1Exchange'
-// import PoolFinder from './PoolFinder'
 import RemoveLiquidity from './RemoveLiquidity'
-import { RedirectOldRemoveLiquidityPathStructure } from './RemoveLiquidity/redirects'
-// import Vote from './Vote'
-// import VotePage from './Vote/VotePage'
-
-import { OpenClaimAddressModalAndRedirectToSwap, RedirectPathToSwapOnly, RedirectToSwap } from './Swap/redirects'
 import { RedirectDuplicateTokenIds, RedirectOldAddLiquidityPathStructure } from './AddLiquidity/redirects'
+import { RedirectOldRemoveLiquidityPathStructure } from './RemoveLiquidity/redirects'
+
+import Zap from './Zap'
+import ComingSoon from './ComingSoon'
 
 const AppWrapper = styled.div`
   display: flex;
@@ -95,13 +88,13 @@ export default function App() {
               <Route exact path="/add" component={AddLiquidity} />
               <Route exact path="/add/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />
               <Route exact path="/add/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
-              <Route exact path="/zap" component={ComingSoon} />
+              <Route exact path="/zap" component={Zap} />
               <Route exact path="/stake" component={ComingSoon} />
-              <Route exact strict path="/remove/:tokens" component={RedirectOldRemoveLiquidityPathStructure} />
               <Route exact strict path="/remove/:currencyIdA/:currencyIdB" component={RemoveLiquidity} />
 
               {/* <Route exact strict path="/claim" component={OpenClaimAddressModalAndRedirectToSwap} />
               <Route exact strict path="/send" component={RedirectPathToSwapOnly} />
+              <Route exact strict path="/remove/:tokens" component={RedirectOldRemoveLiquidityPathStructure} />
               <Route exact strict path="/find" component={PoolFinder} />
               <Route exact strict path="/uni" component={Earn} />
               <Route exact strict path="/vote" component={Vote} />
