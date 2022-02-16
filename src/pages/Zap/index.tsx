@@ -13,11 +13,17 @@ import SwapWidget from '../../assets/jedi/SwapWidget.svg'
 import { useActiveStarknetReact } from '../../hooks'
 import { ButtonPrimary } from '../../components/Button'
 import { useWalletModalToggle } from '../../state/application/hooks'
+import { useUserSlippageTolerance } from '../../state/user/hooks'
+import { useZapState } from '../../state/zap/hooks'
 
 export default function Zap() {
   const { account } = useActiveStarknetReact()
 
   const toggleWalletModal = useWalletModalToggle()
+
+  const [allowedSlippage] = useUserSlippageTolerance()
+
+  const { indepenentField, typedValue, recipient } = useZapState()
 
   const handleTypeInput = () => {
     console.log('Handle Input')
@@ -52,6 +58,9 @@ export default function Zap() {
               showMaxButton={true}
               onUserInput={handleTypeInput}
               onMax={handleMaxInput}
+              onCurrencySelect={() => {
+                console.log('currency select')
+              }}
             />
 
             <AutoColumn justify="space-between">
@@ -69,7 +78,7 @@ export default function Zap() {
               <DMSansText.body>Balance: 0</DMSansText.body>
             </HeaderRow>
             <CurrencyInputPanel
-              id="zap-currency-input"
+              id="zap-currency-output"
               value={''}
               showMaxButton={false}
               onUserInput={handleTypeInput}
