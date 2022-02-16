@@ -5,9 +5,10 @@ import ERC20_ABI from '../constants/abis/erc20.json'
 import { getContract } from '../utils'
 import { useActiveStarknetReact } from './index'
 import REGISTRY_ABI from '../constants/abis/Registry.json'
-import { REGISTRY_ADDRESS, ROUTER_ADDRESS } from '../constants'
+import { REGISTRY_ADDRESS, ROUTER_ADDRESS, ZAP_IN_ADDRESS } from '../constants'
 import JediSwapRouterABI from '../constants/abis/Router.json'
 import { MULTICALL_NETWORKS, MULTICALL_ABI } from '../constants/multicall'
+import JediSwapZapInABI from '../constants/abis/ZapIn.json'
 
 // returns null on errors
 function useContract(address: string | undefined, ABI: any, withSignerIfPossible = true): Contract | null {
@@ -53,4 +54,8 @@ export function useMulticallContract(): Contract | null {
   const { chainId } = useActiveStarknetReact()
 
   return useContract(MULTICALL_NETWORKS[chainId ?? 5], MULTICALL_ABI, false)
+}
+
+export function useZapInContract(): Contract | null {
+  return useContract(ZAP_IN_ADDRESS, JediSwapZapInABI, true)
 }
