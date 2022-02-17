@@ -292,7 +292,7 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
             <FixedHeightRow>
               <DMSansText.mediumBody>Your pool share:</DMSansText.mediumBody>
               <DMSansText.mediumBody>
-                {poolTokenPercentage ? poolTokenPercentage.toFixed(2) + '%' : '-'}
+                {poolTokenPercentage ? poolTokenPercentage.toSignificant(6) + '%' : '-'}
               </DMSansText.mediumBody>
             </FixedHeightRow>
 
