@@ -219,39 +219,41 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
   const backgroundColor = useColor(pair?.token0)
 
   return (
-    <JediPositionCard style={{ cursor: 'pointer' }} border={border} onClick={() => setShowMore(!showMore)}>
+    <JediPositionCard /*style={{ cursor: 'pointer' }}*/ border={border}>
       <CardNoise />
       <AutoColumn gap="16px">
-        <FixedHeightRow>
-          <RowFixed>
-            <DoubleCurrencyLogo currency0={currency0} currency1={currency1} margin={true} size={20} />
-            <DMSansText.mediumHeader>
-              {!currency0 || !currency1 ? <Dots>Loading</Dots> : `${currency0.symbol} / ${currency1.symbol}`}
-            </DMSansText.mediumHeader>
-          </RowFixed>
+        <ButtonEmpty padding="0" width="100%" onClick={() => setShowMore(!showMore)}>
+          <FixedHeightRow>
+            <RowFixed>
+              <DoubleCurrencyLogo currency0={currency0} currency1={currency1} margin={true} size={20} />
+              <DMSansText.mediumHeader>
+                {!currency0 || !currency1 ? <Dots>Loading</Dots> : `${currency0.symbol} / ${currency1.symbol}`}
+              </DMSansText.mediumHeader>
+            </RowFixed>
 
-          <RowFixed gap="8px">
-            <ButtonEmpty
+            <RowFixed gap="8px">
+              {/* <ButtonEmpty
               padding="6px 8px"
               borderRadius="12px"
               width="fit-content"
               onClick={() => setShowMore(!showMore)}
-            >
+            > */}
               {showMore ? (
                 <>
                   {' '}
                   Manage
-                  <ChevronUp size="20" style={{ marginLeft: '10px' }} />
+                  <ChevronUp size="20" /*style={{ marginLeft: '10px' }}*/ />
                 </>
               ) : (
                 <>
                   Manage
-                  <ChevronDown size="20" style={{ marginLeft: '10px' }} />
+                  <ChevronDown size="20" /*style={{ marginLeft: '10px' }}*/ />
                 </>
               )}
-            </ButtonEmpty>
-          </RowFixed>
-        </FixedHeightRow>
+              {/* </ButtonEmpty> */}
+            </RowFixed>
+          </FixedHeightRow>
+        </ButtonEmpty>
 
         {showMore && (
           <AutoColumn gap="10px">
