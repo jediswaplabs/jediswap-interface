@@ -1,4 +1,4 @@
-import { Currency, Pair } from '@jediswap/sdk'
+import { Currency, Pair, LPToken } from '@jediswap/sdk'
 import React, { useState, useContext, useCallback } from 'react'
 import styled, { ThemeContext } from 'styled-components'
 import { darken } from 'polished'
@@ -13,6 +13,7 @@ import { ReactComponent as DropDown } from '../../assets/images/dropdown.svg'
 
 import { useActiveStarknetReact } from '../../hooks'
 import { useTranslation } from 'react-i18next'
+import { AutoColumn, ColumnCenter } from '../Column'
 
 const InputRow = styled.div<{ selected: boolean }>`
   ${({ theme }) => theme.flexRowNoWrap}
@@ -114,6 +115,11 @@ const StyledTokenName = styled.span<{ active?: boolean }>`
   letter-spacing: 0px;
 `
 
+// const LPWrapper = styled.div`
+// display: flex ;
+// flex-direction: co;
+// `
+
 const StyledBalanceMax = styled.button`
   position: absolute;
   right: 13px;
@@ -160,6 +166,8 @@ interface CurrencyInputPanelProps {
   id: string
   showCommonBases?: boolean
   customBalanceText?: string
+  showLPTokens?: boolean
+  disableInput?: boolean
 }
 
 export default function CurrencyInputPanel({
@@ -176,7 +184,9 @@ export default function CurrencyInputPanel({
   hideInput = false,
   otherCurrency,
   id,
-  showCommonBases
+  showCommonBases,
+  showLPTokens = false,
+  disableInput = false
 }: // customBalanceText
 CurrencyInputPanelProps) {
   const { t } = useTranslation()
@@ -229,19 +239,36 @@ CurrencyInputPanelProps) {
               {pair ? (
                 <DoubleCurrencyLogo currency0={pair.token0} currency1={pair.token1} size={24} />
               ) : currency ? (
-                <CurrencyLogo currency={currency} size={'24px'} />
+                currency instanceof LPToken ? (
+                  <DoubleCurrencyLogo currency0={currency.token0} currency1={currency.token1} size={24} />
+                ) : (
+                  <CurrencyLogo currency={currency} size={'24px'} />
+                )
               ) : null}
               {pair ? (
                 <StyledTokenName className="pair-name-container" style={{ fontSize: '14px' }}>
                   {pair?.token0.symbol} : {pair?.token1.symbol}
                 </StyledTokenName>
+              ) : currency ? (
+                currency instanceof LPToken ? (
+                  <StyledTokenName active={Boolean(currency && currency.symbol)} style={{ fontSize: '14px' }}>
+                    <ColumnCenter>
+                      <div>{currency.token0.symbol}</div>
+                      <div>/ {currency.token1.symbol}</div>
+                    </ColumnCenter>
+                  </StyledTokenName>
+                ) : (
+                  <StyledTokenName className="token-symbol-container" active={Boolean(currency && currency.symbol)}>
+                    {currency && currency.symbol && currency.symbol.length > 20
+                      ? currency.symbol.slice(0, 4) +
+                        '...' +
+                        currency.symbol.slice(currency.symbol.length - 5, currency.symbol.length)
+                      : currency?.symbol}
+                  </StyledTokenName>
+                )
               ) : (
-                <StyledTokenName className="token-symbol-container" active={Boolean(currency && currency.symbol)}>
-                  {(currency && currency.symbol && currency.symbol.length > 20
-                    ? currency.symbol.slice(0, 4) +
-                      '...' +
-                      currency.symbol.slice(currency.symbol.length - 5, currency.symbol.length)
-                    : currency?.symbol) || t('selectToken')}
+                <StyledTokenName className="token-symbol-container" active={false}>
+                  {t('selectToken')}
                 </StyledTokenName>
               )}
               {!disableCurrencySelect && <StyledDropDown selected={!!currency} />}
@@ -257,6 +284,7 @@ CurrencyInputPanelProps) {
                   onUserInput(val)
                 }}
                 style={showMaxButton ? { paddingRight: '60px' } : { paddingRight: '12px' }}
+                disabled={disableInput}
               />
               {account && currency && showMaxButton && label !== 'To' && (
                 <StyledBalanceMax onClick={onMax}>MAX</StyledBalanceMax>
@@ -273,6 +301,7 @@ CurrencyInputPanelProps) {
           selectedCurrency={currency}
           otherSelectedCurrency={otherCurrency}
           showCommonBases={showCommonBases}
+          showLPTokens={showLPTokens}
         />
       )}
     </InputPanel>

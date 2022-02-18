@@ -17,10 +17,10 @@ interface DoubleCurrencyLogoProps {
   currency1?: Currency
 }
 
-const HigherLogo = styled(CurrencyLogo)`
+const HigherLogoDiv = styled.div`
   z-index: 2;
 `
-const CoveredLogo = styled(CurrencyLogo)<{ sizeraw: number }>`
+const CoveredLogoDiv = styled.div<{ sizeraw: number }>`
   position: absolute;
   left: ${({ sizeraw }) => '-' + (sizeraw / 2).toString() + 'px'} !important;
 `
@@ -33,8 +33,16 @@ export default function DoubleCurrencyLogo({
 }: DoubleCurrencyLogoProps) {
   return (
     <Wrapper sizeraw={size} margin={margin}>
-      {currency0 && <HigherLogo currency={currency0} size={size.toString() + 'px'} />}
-      {currency1 && <CoveredLogo currency={currency1} size={size.toString() + 'px'} sizeraw={size} />}
+      {currency0 && (
+        <HigherLogoDiv>
+          <CurrencyLogo currency={currency0} size={size.toString() + 'px'} filled={true} />
+        </HigherLogoDiv>
+      )}
+      {currency1 && (
+        <CoveredLogoDiv sizeraw={size}>
+          <CurrencyLogo currency={currency1} size={size.toString() + 'px'} filled={true} />
+        </CoveredLogoDiv>
+      )}
     </Wrapper>
   )
 }

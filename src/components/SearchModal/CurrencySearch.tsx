@@ -6,7 +6,7 @@ import { FixedSizeList } from 'react-window'
 import { Text } from 'rebass'
 import { ThemeContext } from 'styled-components'
 import { useActiveStarknetReact } from '../../hooks'
-import { useAllTokens, useToken } from '../../hooks/Tokens'
+import { useAllTokens, useJediLPTokens, useToken } from '../../hooks/Tokens'
 import { useSelectedListInfo } from '../../state/lists/hooks'
 import { CloseIcon, LinkStyledButton, TYPE } from '../../theme'
 import { isAddress } from '../../utils'
@@ -33,6 +33,7 @@ interface CurrencySearchProps {
   otherSelectedCurrency?: Currency | null
   showCommonBases?: boolean
   onChangeList: () => void
+  showLPTokens?: boolean
 }
 
 export function CurrencySearch({
@@ -42,7 +43,8 @@ export function CurrencySearch({
   showCommonBases,
   onDismiss,
   isOpen,
-  onChangeList
+  onChangeList,
+  showLPTokens = false
 }: CurrencySearchProps) {
   const { t } = useTranslation()
   const { chainId } = useActiveStarknetReact()
@@ -52,6 +54,7 @@ export function CurrencySearch({
   const [searchQuery, setSearchQuery] = useState<string>('')
   const [invertSearchOrder, setInvertSearchOrder] = useState<boolean>(false)
   const allTokens = useAllTokens()
+  const jediLPTokens = useJediLPTokens()
 
   // if they input an address, use it
   const isAddressSearch = isAddress(searchQuery)
@@ -92,8 +95,8 @@ export function CurrencySearch({
       }
       return []
     }
-    return filterTokens(Object.values(allTokens), searchQuery)
-  }, [isAddressSearch, allTokens, searchQuery, searchToken, chainId])
+    return filterTokens(Object.values(showLPTokens ? jediLPTokens : allTokens), searchQuery)
+  }, [isAddressSearch, showLPTokens, jediLPTokens, allTokens, searchQuery, searchToken, chainId])
 
   const filteredSortedTokens: Token[] = useMemo(() => {
     if (searchToken) return [searchToken]
@@ -162,7 +165,7 @@ export function CurrencySearch({
       <PaddedColumn gap="20px">
         <RowBetween>
           <Text fontWeight={400} fontSize={20} color={'#FFFFFF'}>
-            Select Token
+            {showLPTokens ? 'Select LP Token' : 'Select Token'}
             {/* <QuestionHelper text="Find a token by searching for its name or symbol or by pasting its address below." /> */}
           </Text>
           <CloseIcon onClick={onDismiss} />
@@ -194,7 +197,7 @@ export function CurrencySearch({
           {({ height }) => (
             <CurrencyList
               height={height}
-              showETH={showTOKEN0}
+              showETH={showTOKEN0 && !showLPTokens}
               currencies={filteredSortedTokens}
               onCurrencySelect={handleCurrencySelect}
               otherCurrency={otherSelectedCurrency}

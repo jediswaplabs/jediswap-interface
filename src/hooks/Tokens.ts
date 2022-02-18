@@ -11,6 +11,7 @@ import { useActiveStarknetReact } from './index'
 import { useTokenContract } from './useContract'
 import { useStarknetCall, NEVER_RELOAD } from './useStarknet'
 import { useSingleCallResult } from '../state/multicall/hooks'
+import { jediLPTokenList } from '../constants/jediLPTokenList'
 // import { BigNumberish } from 'starknet/dist/utils/number'
 
 export function useAllTokens(): { [address: string]: Token } {
@@ -35,6 +36,15 @@ export function useAllTokens(): { [address: string]: Token } {
         )
     )
   }, [chainId, userAddedTokens, allTokens])
+}
+
+export function useJediLPTokens(): { [address: string]: Token } {
+  return useMemo(
+    () => ({
+      ...jediLPTokenList
+    }),
+    []
+  )
 }
 
 // Check if currency is included in custom list from user storage
@@ -70,7 +80,10 @@ function parseStringFromArgs(data: any, isHexNumber?: boolean): string | undefin
 // otherwise returns the token
 export function useToken(tokenAddress?: string): Token | undefined | null {
   const { chainId } = useActiveStarknetReact()
-  const tokens = useAllTokens()
+  const currencyTokens = useAllTokens()
+  const lpTokens = useJediLPTokens()
+
+  const tokens = { ...currencyTokens, ...lpTokens }
 
   const address = isAddress(tokenAddress)
   const token: Token | undefined = address ? tokens[address] : undefined

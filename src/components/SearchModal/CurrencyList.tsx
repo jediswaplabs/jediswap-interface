@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, currencyEquals, TOKEN0, Token, WTOKEN0 } from '@jediswap/sdk'
+import { Currency, CurrencyAmount, currencyEquals, TOKEN0, Token, WTOKEN0, LPToken } from '@jediswap/sdk'
 import React, { CSSProperties, MutableRefObject, useCallback, useEffect, useMemo } from 'react'
 import { FixedSizeList } from 'react-window'
 import { Text } from 'rebass'
@@ -20,6 +20,7 @@ import { PlusCircle } from 'react-feather'
 import { ButtonEmpty } from '../Button'
 import { ArgentXConnector } from '@web3-starknet-react/argentx-connector'
 import { useAddTokenToWallet } from '../../hooks/useAddTokenToWallet'
+import DoubleCurrencyLogo from '../DoubleLogo'
 
 function currencyKey(currency: Currency): string {
   return currency instanceof Token ? currency.address : currency === TOKEN0 ? 'TOKEN0' : ''
@@ -133,7 +134,11 @@ function CurrencyRow({
       disabled={isSelected}
       selected={otherSelected}
     >
-      <CurrencyLogo currency={currency} size={'16px'} />
+      {currency instanceof LPToken ? (
+        <DoubleCurrencyLogo currency0={currency.token0} currency1={currency.token1} size={16} />
+      ) : (
+        <CurrencyLogo currency={currency} size={'16px'} />
+      )}
       <Column>
         <Row gap="15px">
           <Text

@@ -2,25 +2,25 @@ import { createReducer } from '@reduxjs/toolkit'
 import { Field, replaceZapState, selectCurrency, typeInput, setRecipient } from './actions'
 
 export interface ZapState {
-  readonly indepenentField: Field
+  readonly independentField: Field
   readonly typedValue: string
   readonly [Field.INPUT]: {
     readonly currencyId: string | undefined
   }
   readonly [Field.OUTPUT]: {
-    readonly lpTokenId: string | undefined
+    readonly currencyId: string | undefined
   }
   readonly recipient: string | null
 }
 
 const initialState: ZapState = {
-  indepenentField: Field.INPUT,
+  independentField: Field.INPUT,
   typedValue: '',
   [Field.INPUT]: {
     currencyId: ''
   },
   [Field.OUTPUT]: {
-    lpTokenId: ''
+    currencyId: ''
   },
   recipient: null
 }
@@ -35,14 +35,21 @@ export default createReducer<ZapState>(initialState, builder => {
             currencyId: inputCurrencyId
           },
           [Field.OUTPUT]: {
-            lpTokenId: outputLPTokenId
+            currencyId: outputLPTokenId
           },
-          indepenentField: field,
+          independentField: field,
           typedValue: typedValue,
           recipient
         }
       }
     )
+    .addCase(selectCurrency, (state, { payload: { currencyId, field } }) => {
+      // const otherField = field === Field.INPUT ? Field.OUTPUT : Field.INPUT
+      return {
+        ...state,
+        [field]: { currencyId: currencyId }
+      }
+    })
     .addCase(typeInput, (state, { payload: { field, typedValue } }) => {
       return {
         ...state,

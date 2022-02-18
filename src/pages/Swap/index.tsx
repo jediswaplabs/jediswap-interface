@@ -35,7 +35,7 @@ import useToggledVersion, { DEFAULT_VERSION, Version } from '../../hooks/useTogg
 import { useToggleSettingsMenu, useWalletModalToggle } from '../../state/application/hooks'
 import { Field } from '../../state/swap/actions'
 import {
-  useDefaultsFromURLSearch,
+  useSwapDefaultsFromURLSearch,
   useDerivedSwapInfo,
   useSwapActionHandlers,
   useSwapState
@@ -73,8 +73,8 @@ const MintButton = styled(ButtonOutlined)`
 `
 
 export default function Swap() {
-  const [ttl, setTtl] = useUserTransactionTTL()
-  const loadedUrlParams = useDefaultsFromURLSearch()
+  const [ttl] = useUserTransactionTTL()
+  const loadedUrlParams = useSwapDefaultsFromURLSearch()
 
   // token warning stuff
   const [loadedInputCurrency, loadedOutputCurrency] = [
