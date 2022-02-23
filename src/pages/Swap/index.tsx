@@ -175,26 +175,6 @@ export default function Swap() {
 
   const [mintState, mintCallback] = useMintCallback(mintAddress)
 
-  // useEffect(() => {
-  //   let routeTimeout
-
-  //   if (noRoute) {
-  //     if (!routeLoading) setRouteLoading(true)
-
-  //     routeTimeout = setTimeout(() => {
-  //       setRouteLoading(false)
-  //     }, 5000)
-  //   } else {
-  //     setRouteLoading(false)
-  //   }
-
-  //   return () => {
-  //     if (routeTimeout) {
-  //       clearTimeout(routeTimeout)
-  //     }
-  //   }
-  // }, [noRoute, routeLoading])
-
   // check whether the user has approved the router on the input token
   const [approval, approveCallback] = useApproveCallbackFromTrade(trade, allowedSlippage)
 
