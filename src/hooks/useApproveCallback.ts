@@ -2,7 +2,7 @@ import { MaxUint256 } from '@ethersproject/constants'
 import { TransactionResponse } from '@ethersproject/providers'
 import { Trade, TokenAmount, CurrencyAmount, TOKEN0, WTOKEN0, Token } from '@jediswap/sdk'
 import { useCallback, useMemo } from 'react'
-import { ROUTER_ADDRESS } from '../constants'
+import { ROUTER_ADDRESS, ZAP_IN_ADDRESS } from '../constants'
 import { useTokenAllowance } from '../data/Allowances'
 // import { getTradeVersion, useV1TradeExchangeAddress } from '../data/V1'
 import { Field } from '../state/swap/actions'
@@ -110,12 +110,14 @@ export function useApproveCallback(
   return [approvalState, approve]
 }
 
+export type TradeType = 'swap' | 'zap'
+
 // wraps useApproveCallback in the context of a swap
-export function useApproveCallbackFromTrade(trade?: Trade, allowedSlippage = 0) {
+export function useApproveCallbackFromTrade(trade?: Trade, allowedSlippage = 0, tradeType: TradeType = 'swap') {
   const amountToApprove = useMemo(
     () => (trade ? computeSlippageAdjustedAmounts(trade, allowedSlippage)[Field.INPUT] : undefined),
     [trade, allowedSlippage]
   )
 
-  return useApproveCallback(amountToApprove, ROUTER_ADDRESS)
+  return useApproveCallback(amountToApprove, tradeType === 'zap' ? ZAP_IN_ADDRESS : ROUTER_ADDRESS)
 }

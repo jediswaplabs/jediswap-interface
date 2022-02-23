@@ -1,17 +1,17 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { SwapPoolTabs } from '../../components/NavigationTabs'
 import AppBody from '../AppBody'
-import { Wrapper, HeaderRow, ZapHeader, StyledZapIcon } from './styleds'
+import { Wrapper, HeaderRow, ZapHeader, HeaderNote, ZapHeaderInfo } from './styleds'
 import Settings from '../../components/Settings'
 import { DMSansText } from '../../theme'
-import { AutoColumn } from '../../components/Column'
+import Column, { AutoColumn } from '../../components/Column'
 import CurrencyInputPanel from '../../components/CurrencyInputPanel'
-import { AutoRow } from '../../components/Row'
+import { AutoRow, RowBetween, RowCentered } from '../../components/Row'
 import { ArrowWrapper, BottomGrouping } from '../../components/swap/styleds'
 import { Icon, IconWrapper } from '../Swap/styleds'
 import SwapWidget from '../../assets/jedi/SwapWidget.svg'
 import { useActiveStarknetReact } from '../../hooks'
-import { ButtonPrimary } from '../../components/Button'
+import { ButtonConfirmed, ButtonError, ButtonPrimary, RedGradientButton } from '../../components/Button'
 import { useWalletModalToggle } from '../../state/application/hooks'
 import { useUserSlippageTolerance } from '../../state/user/hooks'
 import {
@@ -21,11 +21,16 @@ import {
   useZapState
 } from '../../state/zap/hooks'
 import { Field } from '../../state/zap/actions'
-import { CurrencyAmount, TokenAmount } from '@jediswap/sdk'
+import { CurrencyAmount, JSBI, TokenAmount } from '@jediswap/sdk'
 import { tryParseAmount } from '../../state/swap/hooks'
-import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
+import { ApprovalState, useApproveCallback, useApproveCallbackFromTrade } from '../../hooks/useApproveCallback'
 import { ZAP_IN_ADDRESS } from '../../constants'
 import { maxAmountSpend } from '../../utils/maxAmountSpend'
+import Loader from '../../components/Loader'
+import { Text } from 'rebass'
+import ProgressSteps from '../../components/ProgressSteps'
+import ZapIcon from '../../assets/jedi/zap.svg'
+import { SwapArrowDown } from '../../components/SwapArrowDown'
 
 export default function Zap() {
   const loadedUrlParams = useZapDefaultsFromURLSearch()
@@ -40,35 +45,54 @@ export default function Zap() {
 
   const { onCurrencySelection, onUserInput, onChangeRecipient } = useZapActionHandlers()
 
-  const { currencies, currencyBalances, parsedAmount, inputError: zapInputError } = useDerivedZapInfo()
-
-  const [approvalSubmitted, setApprovalSubmitted] = useState<boolean>(false)
+  const {
+    currencies,
+    currencyBalances,
+    parsedAmount,
+    inputError: zapInputError,
+    lpAmountOut,
+    tradeLoading,
+    zapTrade
+  } = useDerivedZapInfo()
 
   const parsedAmounts = {
     [Field.INPUT]: parsedAmount,
 
     // TODO: Get correct OUTPUT amount
-    [Field.OUTPUT]: tryParseAmount(currencyBalances[Field.OUTPUT]?.toExact(), currencies[Field.OUTPUT])
+    [Field.OUTPUT]: lpAmountOut
   }
 
-  const dependentField: Field = independentField === Field.INPUT ? Field.OUTPUT : Field.INPUT
+  // const dependentField: Field = Field.OUTPUT
+
+  // const formattedOutput = tradeLoading ? 'Loading...' : parsedAmounts[Field.OUTPUT]?.toSignificant(6) ?? ''
 
   const formattedAmounts = {
-    [independentField]: typedValue,
-    [dependentField]: parsedAmounts[dependentField]?.toSignificant(6) ?? ''
+    [Field.INPUT]: typedValue,
+    [Field.OUTPUT]: parsedAmounts[Field.OUTPUT]?.toSignificant(6) ?? ''
   }
+
+  const route = zapTrade?.route
+  console.log('🚀 ~ file: index.tsx ~ line 73 ~ Zap ~ route', route)
+
+  const userHasSpecifiedInputOutput = Boolean(
+    currencies[Field.INPUT] && currencies[Field.OUTPUT] && parsedAmounts[independentField]?.greaterThan(JSBI.BigInt(0))
+  )
+
+  const noRoute = !route
 
   const isValid = !zapInputError
 
-  const [approval, approveCallback] = useApproveCallback(parsedAmount, ZAP_IN_ADDRESS)
+  const [approvalState, approveCallback] = useApproveCallbackFromTrade(zapTrade, allowedSlippage, 'zap')
+
+  const [approvalSubmitted, setApprovalSubmitted] = useState<boolean>(false)
 
   useEffect(() => {
-    if (approval === ApprovalState.PENDING) {
+    if (approvalState === ApprovalState.PENDING) {
       setApprovalSubmitted(true)
     } else if (ApprovalState.NOT_APPROVED && approvalSubmitted) {
       setApprovalSubmitted(false)
     }
-  }, [approval, approvalSubmitted])
+  }, [approvalState, approvalSubmitted])
 
   const maxAmountInput: CurrencyAmount | undefined = maxAmountSpend(currencyBalances[Field.INPUT])
   const atMaxAmountInput = Boolean(maxAmountInput && parsedAmounts[Field.INPUT]?.equalTo(maxAmountInput))
@@ -80,9 +104,9 @@ export default function Zap() {
 
   const showApproveFlow =
     !zapInputError &&
-    (approval === ApprovalState.NOT_APPROVED ||
-      approval === ApprovalState.PENDING ||
-      (approvalSubmitted && approval === ApprovalState.APPROVED))
+    (approvalState === ApprovalState.NOT_APPROVED ||
+      approvalState === ApprovalState.PENDING ||
+      (approvalSubmitted && approvalState === ApprovalState.APPROVED))
 
   const handleTypeInput = useCallback(
     (value: string) => {
@@ -127,14 +151,19 @@ export default function Zap() {
         <SwapPoolTabs active={'zap'} />
         <Wrapper>
           {/* TODO: Implement ConfirmZapModal */}
-          <div style={{ marginBottom: '30px' }}>
+          <AutoColumn gap="14px" style={{ marginBottom: '18px' }}>
             <HeaderRow>
               <ZapHeader>
-                Zap <StyledZapIcon />
+                Zap <img src={ZapIcon} />
               </ZapHeader>
               <Settings />
             </HeaderRow>
-          </div>
+            <ZapHeaderInfo fontSize={16}>
+              Zap helps you convert any of your tokens into LP tokens with 1-click
+            </ZapHeaderInfo>
+            <HeaderNote> WARNING: Zap can cause slippage. Small amounts only.</HeaderNote>
+          </AutoColumn>
+
           <HeaderRow style={{ marginBottom: '16px' }}>
             <DMSansText.body>From</DMSansText.body>
             <DMSansText.body>Balance: {currencyBalances.INPUT?.toSignificant(6) ?? 0}</DMSansText.body>
@@ -151,17 +180,19 @@ export default function Zap() {
               otherCurrency={currencies[Field.OUTPUT]}
             />
 
-            <AutoColumn justify="space-between">
+            <AutoColumn justify="space-between" style={{ margin: '16px 0 7.5px' }}>
               <AutoRow justify="center">
-                <ArrowWrapper>
-                  <IconWrapper>
-                    <Icon noMargin unlimited src={SwapWidget} />
-                  </IconWrapper>
-                </ArrowWrapper>
+                <SwapArrowDown wrapperSize={36} iconSize={20} />
               </AutoRow>
             </AutoColumn>
-            <HeaderRow style={{ marginBottom: '16px' }}>
-              {/* TODO: Add marginTop to HeaderRow if OutputPair Balance's length > 10. Check Swap */}
+
+            <HeaderRow
+              style={{
+                marginBottom: '16px',
+                marginTop:
+                  currencyBalances.OUTPUT && currencyBalances.OUTPUT?.toSignificant(6).length > 10 ? '10px' : '0'
+              }}
+            >
               <DMSansText.body>To LP (estimated)</DMSansText.body>
               <DMSansText.body>Balance: {currencyBalances.OUTPUT?.toSignificant(6) ?? 0}</DMSansText.body>
             </HeaderRow>
@@ -179,15 +210,87 @@ export default function Zap() {
             {/* TODO: Implement Price of Zap and Slippage if required  */}
           </AutoColumn>
 
-          <BottomGrouping>
+          <BottomGrouping marginTop="50px">
             {!account ? (
               <ButtonPrimary fontSize={20} onClick={toggleWalletModal}>
                 Connect Wallet
               </ButtonPrimary>
+            ) : noRoute && userHasSpecifiedInputOutput ? (
+              <RedGradientButton fontSize={20} style={{ textAlign: 'center' }} disabled>
+                {tradeLoading ? 'Fetching LP Amount...' : 'Insufficient liquidity for this trade'}
+              </RedGradientButton>
+            ) : showApproveFlow ? (
+              <RowBetween>
+                <ButtonConfirmed
+                  onClick={approveCallback}
+                  disabled={approvalState !== ApprovalState.NOT_APPROVED || approvalSubmitted}
+                  width="48%"
+                  altDisabledStyle={approvalState === ApprovalState.PENDING} // show solid button while waiting
+                  confirmed={approvalState === ApprovalState.APPROVED}
+                  fontSize={20}
+                >
+                  {approvalState === ApprovalState.PENDING ? (
+                    <AutoRow gap="6px" justify="center">
+                      Approving <Loader stroke="white" />
+                    </AutoRow>
+                  ) : approvalSubmitted && approvalState === ApprovalState.APPROVED ? (
+                    'Approved'
+                  ) : (
+                    'Approve ' + currencies[Field.INPUT]?.symbol
+                  )}
+                </ButtonConfirmed>
+                <ButtonError
+                  fontSize={20}
+                  onClick={() => {
+                    // if (isExpertMode) {
+                    //   handleSwap()
+                    // } else {
+                    //   setSwapState({
+                    //     tradeToConfirm: trade,
+                    //     attemptingTxn: false,
+                    //     swapErrorMessage: undefined,
+                    //     showConfirm: true,
+                    //     txHash: undefined
+                    //   })
+                    // }
+                  }}
+                  width="48%"
+                  id="swap-button"
+                  disabled={!isValid || approvalState !== ApprovalState.APPROVED}
+                >
+                  <Text fontSize={16} fontWeight={500}>
+                    Zap
+                  </Text>
+                </ButtonError>
+              </RowBetween>
+            ) : insufficientBalanceError ? (
+              <RedGradientButton id="swap-button" disabled>
+                {zapInputError}
+              </RedGradientButton>
             ) : (
-              <ButtonPrimary fontSize={20} disabled>
-                Enter an amount
-              </ButtonPrimary>
+              <ButtonError
+                onClick={() => {
+                  // setZapState({
+                  //   tradeToConfirm: trade,
+                  //   attemptingTxn: false,
+                  //   swapErrorMessage: undefined,
+                  //   showConfirm: true,
+                  //   txHash: undefined
+                  // })
+                }}
+                id="zap-button"
+                disabled={!isValid /*|| !!swapCallbackError */}
+                error={false /* &&  !swapCallbackError */}
+              >
+                <Text fontSize={20} fontWeight={500}>
+                  {zapInputError ? zapInputError : 'Zap'}
+                </Text>
+              </ButtonError>
+            )}
+            {showApproveFlow && (
+              <Column style={{ marginTop: '1rem' }}>
+                <ProgressSteps steps={[approvalState === ApprovalState.APPROVED]} />
+              </Column>
             )}
           </BottomGrouping>
         </Wrapper>

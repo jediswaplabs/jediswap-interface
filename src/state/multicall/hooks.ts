@@ -184,7 +184,11 @@ export function useSingleContractMultipleData(
 
   const calls = useMemo(
     () =>
-      contract && isAddress(contract.connectedTo) && methodName && callInputs && callInputs.length > 0
+      contract &&
+      isAddress(contract.connectedTo) &&
+      methodName &&
+      callInputs &&
+      callInputs.filter(input => typeof input !== 'undefined').length > 0
         ? callInputs.map<Call>(inputs => {
             const { calldata_len, calldata } = computeCallDataProps(inputs)
 
