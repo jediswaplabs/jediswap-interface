@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, Token, TOKEN0 } from '@jediswap/sdk'
+import { Currency, CurrencyAmount, Token, TOKEN0, LPToken, TokenAmount, Trade } from '@jediswap/sdk'
 import { ParsedQs } from 'qs'
 import { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -6,6 +6,7 @@ import { useActiveStarknetReact } from '../../hooks'
 import { useCurrency } from '../../hooks/Tokens'
 import { useAddressNormalizer } from '../../hooks/useAddressNormalizer'
 import useParsedQueryString from '../../hooks/useParsedQueryString'
+import { useLPOutAmount, useZapTrades } from '../../hooks/Zap'
 import { isAddress } from '../../utils'
 import { AppDispatch, AppState } from '../index'
 import {
@@ -69,7 +70,11 @@ export function useDerivedZapInfo(): {
   currencies: { [field in Field]?: Currency }
   currencyBalances: { [field in Field]?: CurrencyAmount }
   parsedAmount: CurrencyAmount | undefined
+  lpAmountOut: TokenAmount | undefined
+  zapTrade: Trade | undefined
+  // zapTrade: any
   inputError?: string
+  tradeLoading?: boolean
 } {
   const { account } = useActiveStarknetReact()
 
@@ -95,6 +100,14 @@ export function useDerivedZapInfo(): {
   ])
 
   const parsedAmount = tryParseAmount(typedValue, inputCurrency ?? undefined)
+
+  const outputLpToken = outputLPCurrency instanceof LPToken ? outputLPCurrency : undefined
+
+  const [zapTrade, zapLoading] = useZapTrades(parsedAmount, outputLpToken)
+  console.log('🚀 ~ file: hooks.tsx ~ line 103 ~ useDerivedZapInfo ~ zapTrade', zapTrade)
+
+  const [lpAmountOut, lpAmountTrade, lpLoading] = useLPOutAmount(parsedAmount, outputLpToken, zapTrade)
+  console.log('🚀 ~ file: hooks.tsx ~ line 110 ~ useDerivedZapInfo ~ lpAmountTrade', lpAmountTrade)
 
   const currencyBalances = {
     [Field.INPUT]: relevantTokenBalances[0],
@@ -134,7 +147,10 @@ export function useDerivedZapInfo(): {
     currencies,
     currencyBalances,
     parsedAmount,
-    inputError
+    lpAmountOut,
+    zapTrade: lpAmountTrade ?? undefined,
+    inputError,
+    tradeLoading: zapLoading || lpLoading
   }
 }
 
