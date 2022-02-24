@@ -31,6 +31,7 @@ import { Text } from 'rebass'
 import ProgressSteps from '../../components/ProgressSteps'
 import ZapIcon from '../../assets/jedi/zap.svg'
 import { SwapArrowDown } from '../../components/SwapArrowDown'
+import { useZapCallback } from '../../hooks/useZapCallback'
 
 export default function Zap() {
   const loadedUrlParams = useZapDefaultsFromURLSearch()
@@ -54,6 +55,7 @@ export default function Zap() {
     tradeLoading,
     zapTrade
   } = useDerivedZapInfo()
+  console.log('🚀 ~ file: index.tsx ~ line 58 ~ Zap ~ lpAmountOut', lpAmountOut)
 
   const parsedAmounts = {
     [Field.INPUT]: parsedAmount,
@@ -93,6 +95,13 @@ export default function Zap() {
       setApprovalSubmitted(false)
     }
   }, [approvalState, approvalSubmitted])
+
+  const { callback: zapCallback, error: zapCallbackError } = useZapCallback(
+    zapTrade,
+    lpAmountOut,
+    allowedSlippage,
+    recipient
+  )
 
   const maxAmountInput: CurrencyAmount | undefined = maxAmountSpend(currencyBalances[Field.INPUT])
   const atMaxAmountInput = Boolean(maxAmountInput && parsedAmounts[Field.INPUT]?.equalTo(maxAmountInput))
@@ -144,6 +153,13 @@ export default function Zap() {
   const handleMaxInput = useCallback(() => {
     maxAmountInput && onUserInput(Field.INPUT, maxAmountInput.toExact())
   }, [maxAmountInput, onUserInput])
+
+  const handleZap = useCallback(() => {
+    if (!zapCallback) {
+      return
+    }
+    zapCallback().then(hash => console.log('Zap Hash: ', hash))
+  }, [zapCallback])
 
   return (
     <>
@@ -243,7 +259,7 @@ export default function Zap() {
                   fontSize={20}
                   onClick={() => {
                     // if (isExpertMode) {
-                    //   handleSwap()
+                    handleZap()
                     // } else {
                     //   setSwapState({
                     //     tradeToConfirm: trade,
@@ -270,6 +286,7 @@ export default function Zap() {
             ) : (
               <ButtonError
                 onClick={() => {
+                  handleZap()
                   // setZapState({
                   //   tradeToConfirm: trade,
                   //   attemptingTxn: false,

@@ -1,3 +1,4 @@
+import { INITIAL_ALLOWED_SLIPPAGE } from './../constants/index'
 import { BLOCKED_PRICE_IMPACT_NON_EXPERT } from '../constants'
 import { CurrencyAmount, Fraction, JSBI, Percent, TokenAmount, Trade } from '@jediswap/sdk'
 import { ALLOWED_PRICE_IMPACT_HIGH, ALLOWED_PRICE_IMPACT_LOW, ALLOWED_PRICE_IMPACT_MEDIUM } from '../constants'
@@ -74,4 +75,18 @@ export function formatExecutionPrice(trade?: Trade, inverted?: boolean, separato
     : `1 ${trade.inputAmount.currency.symbol} ${separator} ${trade.executionPrice.toSignificant(5)} ${
         trade.outputAmount.currency.symbol
       } `
+}
+
+export function computeSlippageAdjustedLPAmount(
+  lpTokenAmount: TokenAmount,
+  slippageTolerance: number = INITIAL_ALLOWED_SLIPPAGE
+) {
+  const slippagePercent = basisPointsToPercent(slippageTolerance)
+
+  const slippageAdjustedAmountOut = new Fraction(JSBI.BigInt(1))
+    .add(slippagePercent)
+    .invert()
+    .multiply(lpTokenAmount.raw).quotient
+
+  return new TokenAmount(lpTokenAmount.token, slippageAdjustedAmountOut)
 }
