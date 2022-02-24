@@ -153,16 +153,16 @@ export function useLPOutAmount(
     amountOut0 = new TokenAmount(inputToken, JSBI.divide(tokenAmountIn.raw, JSBI.BigInt(2)))
     ;[amountOut1] = lpPair.getOutputAmount(amountOut0)
 
-    lpAmountByToken0 = calculateLPAmount(amountOut0, lpPair.liquidityToken, lpPair.reserve0, totalSupply)
-    lpAmountByToken1 = calculateLPAmount(amountOut1, lpPair.liquidityToken, lpPair.reserve1, totalSupply)
+    lpAmountByToken0 = calculateLPAmount(amountOut0, lpTokenOut, lpPair.reserve0, totalSupply)
+    lpAmountByToken1 = calculateLPAmount(amountOut1, lpTokenOut, lpPair.reserve1, totalSupply)
 
     return [minLPAmountOut(lpAmountByToken0, lpAmountByToken1), trades.tradeToken1Out, false]
   } else if (lpPair.token1.equals(inputToken)) {
     amountOut1 = new TokenAmount(inputToken, JSBI.divide(tokenAmountIn.raw, JSBI.BigInt(2)))
     ;[amountOut0] = lpPair.getOutputAmount(amountOut1)
 
-    lpAmountByToken0 = calculateLPAmount(amountOut0, lpPair.liquidityToken, lpPair.reserve0, totalSupply)
-    lpAmountByToken1 = calculateLPAmount(amountOut1, lpPair.liquidityToken, lpPair.reserve1, totalSupply)
+    lpAmountByToken0 = calculateLPAmount(amountOut0, lpTokenOut, lpPair.reserve0, totalSupply)
+    lpAmountByToken1 = calculateLPAmount(amountOut1, lpTokenOut, lpPair.reserve1, totalSupply)
 
     return [minLPAmountOut(lpAmountByToken0, lpAmountByToken1), trades.tradeToken0Out, false]
   } else {
@@ -187,8 +187,8 @@ export function useLPOutAmount(
       ;[token1AmountTrade0] = lpPair.getOutputAmount(token0AmountTrade0)
 
       lpAmountTrade0 = minLPAmountOut(
-        calculateLPAmount(token0AmountTrade0, lpPair.liquidityToken, lpPair.reserve0, totalSupply),
-        calculateLPAmount(token1AmountTrade0, lpPair.liquidityToken, lpPair.reserve1, totalSupply)
+        calculateLPAmount(token0AmountTrade0, lpTokenOut, lpPair.reserve0, totalSupply),
+        calculateLPAmount(token1AmountTrade0, lpTokenOut, lpPair.reserve1, totalSupply)
       )
     }
 
@@ -203,8 +203,8 @@ export function useLPOutAmount(
       ;[token0AmountTrade1] = lpPair.getOutputAmount(token1AmountTrade1)
 
       lpAmountTrade1 = minLPAmountOut(
-        calculateLPAmount(token1AmountTrade1, lpPair.liquidityToken, lpPair.reserve0, totalSupply),
-        calculateLPAmount(token0AmountTrade1, lpPair.liquidityToken, lpPair.reserve1, totalSupply)
+        calculateLPAmount(token1AmountTrade1, lpTokenOut, lpPair.reserve0, totalSupply),
+        calculateLPAmount(token0AmountTrade1, lpTokenOut, lpPair.reserve1, totalSupply)
       )
     }
 
