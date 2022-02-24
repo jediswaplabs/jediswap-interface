@@ -1,14 +1,23 @@
+import { validateAndParseAddress } from '@jediswap/starknet'
 import { ChainId, JSBI, Percent, Token, WTOKEN0 } from '@jediswap/sdk'
 import { AbstractConnector } from '@web3-starknet-react/abstract-connector'
-import { STABLE_TOKEN0, TOKEN0, TOKEN1, TOKEN2 } from './jediTokens'
+import { TOKEN0, TOKEN1, TOKEN2 } from './jediTokens'
 
 // import { fortmatic, injected, portis, walletconnect, walletlink, argentX } from '../connectors'
 import { argentX } from '../connectors'
 import ARGENTX_ICON from '../assets/images/argentx.png'
 
-export const REGISTRY_ADDRESS = '0x8b2d26fcdc87d11c784a07353ca529622775162cebb555a2824dac27f9ff07'
-export const ROUTER_ADDRESS = '0x42426b8af6cfdefba38684677968f7674a24f8fd161e52b8b5f5b481d522366'
-export const ZAP_IN_ADDRESS = '0x0235b6d1ea9fa528a7f2c25f60e8972f2a8d7724b03a1a17018c2eddcbeffc44'
+export const REGISTRY_ADDRESS = validateAndParseAddress(
+  '0x413ba8d51ec05be863eb82314f0cf0ffceff949e76c87cae0a4bd7f89cfc2b1'
+)
+
+export const ROUTER_ADDRESS = validateAndParseAddress(
+  '0x1ea2f12a70ad6a052f99a49dace349996a8e968a0d6d4e9ec34e0991e6d5e5e'
+)
+
+export const ZAP_IN_ADDRESS = validateAndParseAddress(
+  '0x263acca23357479031157e30053fe10598077f24f427ac1b1de85487f5cd124'
+)
 
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000000000000000000000000000'
 
