@@ -124,13 +124,13 @@ export function useZapCallback(
     console.log('🚀 ~ file: useZapCallback.ts ~ line 124 ~ returnuseMemo ~ inputToken', inputToken)
 
     const minLPAmountOut = computeSlippageAdjustedLPAmount(lpAmountOut, 5000)
-    console.log(
-      '🚀 ~ file: useZapCallback.ts ~ line 127 ~ returnuseMemo ~ minLPAmountOut',
-      allowedSlippage,
-      minLPAmountOut.toSignificant(6)
-    )
+    // console.log(
+    //   '🚀 ~ file: useZapCallback.ts ~ line 127 ~ returnuseMemo ~ minLPAmountOut',
+    //   allowedSlippage,
+    //   minLPAmountOut?.toSignificant(6)
+    // )
 
-    if (!inputToken) {
+    if (!inputToken || !minLPAmountOut) {
       return { state: ZapCallbackState.INVALID, callback: null, error: 'Input Token Missing' }
     }
 
@@ -159,7 +159,7 @@ export function useZapCallback(
         const [amountIn, amountOut, path, to, deadline] = args
 
         const uint256AmountIn = uint256.bnToUint256(amountIn as string)
-        const uint256_LP_AmountOut = uint256.bnToUint256(minLPAmountOut.raw.toString())
+        const uint256_LP_AmountOut = uint256.bnToUint256(minLPAmountOut?.raw.toString())
         console.log('🚀 ~ file: useZapCallback.ts ~ line 158 ~ onZap ~ uint256_LP_AmountOut', uint256_LP_AmountOut)
 
         const zapArgs: Args = {
@@ -197,7 +197,7 @@ export function useZapCallback(
           })
           .catch((error: any) => {
             // if the user rejected the tx, pass this along
-            if (error?.code === 4001) {
+            if ((error?.message as string).toLowerCase() === 'user abort') {
               throw new Error('Transaction rejected.')
             } else {
               // otherwise, the error was unexpected and we need to convey that

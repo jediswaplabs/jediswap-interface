@@ -21,7 +21,7 @@ import {
   useZapState
 } from '../../state/zap/hooks'
 import { Field } from '../../state/zap/actions'
-import { CurrencyAmount, JSBI, TokenAmount } from '@jediswap/sdk'
+import { CurrencyAmount, JSBI, TokenAmount, Trade } from '@jediswap/sdk'
 import { tryParseAmount } from '../../state/swap/hooks'
 import { ApprovalState, useApproveCallback, useApproveCallbackFromTrade } from '../../hooks/useApproveCallback'
 import { ZAP_IN_ADDRESS } from '../../constants'
@@ -32,6 +32,9 @@ import ProgressSteps from '../../components/ProgressSteps'
 import ZapIcon from '../../assets/jedi/zap.svg'
 import { SwapArrowDown } from '../../components/SwapArrowDown'
 import { useZapCallback } from '../../hooks/useZapCallback'
+import { computeTradePriceBreakdown } from '../../utils/prices'
+import confirmPriceImpactWithoutFee from '../../components/swap/confirmPriceImpactWithoutFee'
+import ConfirmZapModal from '../../components/Zap/ConfirmZapModal'
 
 export default function Zap() {
   const loadedUrlParams = useZapDefaultsFromURLSearch()
@@ -74,7 +77,7 @@ export default function Zap() {
   }
 
   const route = zapTrade?.route
-  console.log('🚀 ~ file: index.tsx ~ line 73 ~ Zap ~ route', route)
+  // console.log('🚀 ~ file: index.tsx ~ line 73 ~ Zap ~ route', route)
 
   const userHasSpecifiedInputOutput = Boolean(
     currencies[Field.INPUT] && currencies[Field.OUTPUT] && parsedAmounts[independentField]?.greaterThan(JSBI.BigInt(0))
@@ -103,12 +106,27 @@ export default function Zap() {
     recipient
   )
 
+  // modal and loading
+  const [{ showConfirm, tradeToConfirm, zapErrorMessage, attemptingTxn, txHash }, setZapState] = useState<{
+    showConfirm: boolean
+    tradeToConfirm: Trade | undefined
+    attemptingTxn: boolean
+    zapErrorMessage: string | undefined
+    txHash: string | undefined
+  }>({
+    showConfirm: false,
+    tradeToConfirm: undefined,
+    attemptingTxn: false,
+    zapErrorMessage: undefined,
+    txHash: undefined
+  })
+
   const maxAmountInput: CurrencyAmount | undefined = maxAmountSpend(currencyBalances[Field.INPUT])
   const atMaxAmountInput = Boolean(maxAmountInput && parsedAmounts[Field.INPUT]?.equalTo(maxAmountInput))
 
-  // errors
   const [showInverted, setShowInverted] = useState<boolean>(false)
 
+  // errors
   const insufficientBalanceError = zapInputError?.includes('balance')
 
   const showApproveFlow =
@@ -116,6 +134,8 @@ export default function Zap() {
     (approvalState === ApprovalState.NOT_APPROVED ||
       approvalState === ApprovalState.PENDING ||
       (approvalSubmitted && approvalState === ApprovalState.APPROVED))
+
+  const { priceImpactWithoutFee } = computeTradePriceBreakdown(zapTrade)
 
   const handleTypeInput = useCallback(
     (value: string) => {
@@ -155,11 +175,40 @@ export default function Zap() {
   }, [maxAmountInput, onUserInput])
 
   const handleZap = useCallback(() => {
+    if (priceImpactWithoutFee && !confirmPriceImpactWithoutFee(priceImpactWithoutFee)) {
+      return
+    }
     if (!zapCallback) {
       return
     }
-    zapCallback().then(hash => console.log('Zap Hash: ', hash))
-  }, [zapCallback])
+    setZapState({ attemptingTxn: true, tradeToConfirm, showConfirm, zapErrorMessage: undefined, txHash: undefined })
+    zapCallback()
+      .then(hash => {
+        setZapState({ attemptingTxn: false, tradeToConfirm, showConfirm, zapErrorMessage: undefined, txHash: hash })
+      })
+      .catch(error => {
+        console.error(error)
+        setZapState({
+          attemptingTxn: false,
+          tradeToConfirm,
+          showConfirm,
+          zapErrorMessage: error.message,
+          txHash: undefined
+        })
+      })
+  }, [priceImpactWithoutFee, showConfirm, tradeToConfirm, zapCallback])
+
+  const handleConfirmDismiss = useCallback(() => {
+    setZapState({ showConfirm: false, tradeToConfirm, attemptingTxn, zapErrorMessage, txHash })
+    // if there was a tx hash, we want to clear the input
+    if (txHash) {
+      onUserInput(Field.INPUT, '')
+    }
+  }, [attemptingTxn, onUserInput, zapErrorMessage, tradeToConfirm, txHash])
+
+  const handleAcceptChanges = useCallback(() => {
+    setZapState({ tradeToConfirm: zapTrade, zapErrorMessage, txHash, attemptingTxn, showConfirm })
+  }, [attemptingTxn, showConfirm, zapErrorMessage, zapTrade, txHash])
 
   return (
     <>
@@ -167,6 +216,20 @@ export default function Zap() {
         <SwapPoolTabs active={'zap'} />
         <Wrapper>
           {/* TODO: Implement ConfirmZapModal */}
+          <ConfirmZapModal
+            isOpen={showConfirm}
+            trade={zapTrade}
+            lpAmountOut={lpAmountOut}
+            originalTrade={tradeToConfirm}
+            onAcceptChanges={handleAcceptChanges}
+            attemptingTxn={attemptingTxn}
+            txHash={txHash}
+            recipient={recipient}
+            allowedSlippage={allowedSlippage}
+            onConfirm={handleZap}
+            zapErrorMessage={zapErrorMessage}
+            onDismiss={handleConfirmDismiss}
+          />
           <AutoColumn gap="14px" style={{ marginBottom: '18px' }}>
             <HeaderRow>
               <ZapHeader>
@@ -258,17 +321,13 @@ export default function Zap() {
                 <ButtonError
                   fontSize={20}
                   onClick={() => {
-                    // if (isExpertMode) {
-                    handleZap()
-                    // } else {
-                    //   setSwapState({
-                    //     tradeToConfirm: trade,
-                    //     attemptingTxn: false,
-                    //     swapErrorMessage: undefined,
-                    //     showConfirm: true,
-                    //     txHash: undefined
-                    //   })
-                    // }
+                    setZapState({
+                      tradeToConfirm: zapTrade,
+                      attemptingTxn: false,
+                      zapErrorMessage: undefined,
+                      showConfirm: true,
+                      txHash: undefined
+                    })
                   }}
                   width="48%"
                   id="swap-button"
@@ -286,14 +345,14 @@ export default function Zap() {
             ) : (
               <ButtonError
                 onClick={() => {
-                  handleZap()
-                  // setZapState({
-                  //   tradeToConfirm: trade,
-                  //   attemptingTxn: false,
-                  //   swapErrorMessage: undefined,
-                  //   showConfirm: true,
-                  //   txHash: undefined
-                  // })
+                  // handleZap()
+                  setZapState({
+                    tradeToConfirm: zapTrade,
+                    attemptingTxn: false,
+                    zapErrorMessage: undefined,
+                    showConfirm: true,
+                    txHash: undefined
+                  })
                 }}
                 id="zap-button"
                 disabled={!isValid /*|| !!swapCallbackError */}

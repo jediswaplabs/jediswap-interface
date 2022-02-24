@@ -1,6 +1,6 @@
 import { INITIAL_ALLOWED_SLIPPAGE } from './../constants/index'
 import { BLOCKED_PRICE_IMPACT_NON_EXPERT } from '../constants'
-import { CurrencyAmount, Fraction, JSBI, Percent, TokenAmount, Trade } from '@jediswap/sdk'
+import { CurrencyAmount, Fraction, JSBI, Percent, Price, TokenAmount, Trade } from '@jediswap/sdk'
 import { ALLOWED_PRICE_IMPACT_HIGH, ALLOWED_PRICE_IMPACT_LOW, ALLOWED_PRICE_IMPACT_MEDIUM } from '../constants'
 import { Field } from '../state/swap/actions'
 import { basisPointsToPercent } from './index'
@@ -77,10 +77,33 @@ export function formatExecutionPrice(trade?: Trade, inverted?: boolean, separato
       } `
 }
 
+export function formatZapExecutionPrice(
+  trade?: Trade,
+  lpAmountOut?: TokenAmount,
+  inverted?: boolean,
+  separator = '~'
+): string {
+  if (!trade || !lpAmountOut) {
+    return ''
+  }
+
+  const { inputAmount } = trade
+
+  const zapExecutionPrice = new Price(inputAmount.currency, lpAmountOut.currency, inputAmount.raw, lpAmountOut.raw)
+
+  const lpSymbol = lpAmountOut.currency.symbol?.split('-').join('/')
+
+  return inverted
+    ? `1 ${lpSymbol} ${separator} ${zapExecutionPrice.invert().toSignificant(3)} ${trade.inputAmount.currency.symbol}`
+    : `1 ${trade.inputAmount.currency.symbol} ${separator} ${zapExecutionPrice.toSignificant(3)} ${lpSymbol} `
+}
+
 export function computeSlippageAdjustedLPAmount(
-  lpTokenAmount: TokenAmount,
+  lpTokenAmount: TokenAmount | undefined,
   slippageTolerance: number = INITIAL_ALLOWED_SLIPPAGE
 ) {
+  if (!lpTokenAmount) return
+
   const slippagePercent = basisPointsToPercent(slippageTolerance)
 
   const slippageAdjustedAmountOut = new Fraction(JSBI.BigInt(1))
