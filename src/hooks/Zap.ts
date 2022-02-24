@@ -146,65 +146,61 @@ export function useLPOutAmount(
   let amountOut0: TokenAmount, amountOut1: TokenAmount
   let lpAmountByToken0: TokenAmount, lpAmountByToken1: TokenAmount
 
-  if (!tokenAmountIn || !inputToken || !totalSupply || !trades || !lpPair)
+  if (!tokenAmountIn || !inputToken || !totalSupply || !trades || !lpPair || !lpTokenOut)
     return [undefined, undefined, lpPairState === PairState.LOADING]
 
   if (lpPair.token0.equals(inputToken)) {
     amountOut0 = new TokenAmount(inputToken, JSBI.divide(tokenAmountIn.raw, JSBI.BigInt(2)))
     ;[amountOut1] = lpPair.getOutputAmount(amountOut0)
 
-    lpAmountByToken0 = calculateLPAmount(amountOut0, lpPair.reserve0, totalSupply)
-    lpAmountByToken1 = calculateLPAmount(amountOut1, lpPair.reserve1, totalSupply)
+    lpAmountByToken0 = calculateLPAmount(amountOut0, lpPair.liquidityToken, lpPair.reserve0, totalSupply)
+    lpAmountByToken1 = calculateLPAmount(amountOut1, lpPair.liquidityToken, lpPair.reserve1, totalSupply)
 
     return [minLPAmountOut(lpAmountByToken0, lpAmountByToken1), trades.tradeToken1Out, false]
   } else if (lpPair.token1.equals(inputToken)) {
     amountOut1 = new TokenAmount(inputToken, JSBI.divide(tokenAmountIn.raw, JSBI.BigInt(2)))
     ;[amountOut0] = lpPair.getOutputAmount(amountOut1)
 
-    lpAmountByToken0 = calculateLPAmount(amountOut0, lpPair.reserve0, totalSupply)
-    lpAmountByToken1 = calculateLPAmount(amountOut1, lpPair.reserve1, totalSupply)
+    lpAmountByToken0 = calculateLPAmount(amountOut0, lpPair.liquidityToken, lpPair.reserve0, totalSupply)
+    lpAmountByToken1 = calculateLPAmount(amountOut1, lpPair.liquidityToken, lpPair.reserve1, totalSupply)
 
     return [minLPAmountOut(lpAmountByToken0, lpAmountByToken1), trades.tradeToken0Out, false]
   } else {
-    const { tradeToken1Out, tradeToken0Out } = trades
+    const { tradeToken0Out, tradeToken1Out } = trades
 
     if (!tradeToken1Out && !tradeToken0Out) return [undefined, undefined, false]
 
-    let amountOfToken0ByTrade0: TokenAmount | undefined, amountOfToken1ByTrade0: TokenAmount | undefined
-    let amountOfToken0ByTrade1: TokenAmount | undefined, amountOfToken1ByTrade1: TokenAmount | undefined
+    let token0AmountTrade0: TokenAmount | undefined, token1AmountTrade0: TokenAmount | undefined
+    let token0AmountTrade1: TokenAmount | undefined, token1AmountTrade1: TokenAmount | undefined
 
-    let lpAmountByTrade0: TokenAmount | undefined, lpAmountByTrade1: TokenAmount | undefined
+    let lpAmountTrade0: TokenAmount | undefined, lpAmountTrade1: TokenAmount | undefined
+
+    // Calculate LPAmount when tradeToken0Out is used
+    if (tradeToken0Out) {
+      // Amount of Token0
+
+      token0AmountTrade0 = wrappedCurrencyAmount(tradeToken0Out.outputAmount, chainId)
+
+      if (!token0AmountTrade0) return [undefined, undefined, false]
+      ;[token1AmountTrade0] = lpPair.getOutputAmount(token0AmountTrade0)
+
+      lpAmountTrade0 = minLPAmountOut(
+        calculateLPAmount(token0AmountTrade0, lpPair.liquidityToken, lpPair.reserve0, totalSupply),
+        calculateLPAmount(token1AmountTrade0, lpPair.liquidityToken, lpPair.reserve1, totalSupply)
+      )
+    }
 
     // Calculate LPAmount when tradeToken1Out is used
     if (tradeToken1Out) {
       // Amount of Token0
-      const outputAmount = wrappedCurrencyAmount(tradeToken1Out.outputAmount, chainId)
+      token1AmountTrade1 = wrappedCurrencyAmount(tradeToken1Out.outputAmount, chainId)
 
-      if (!outputAmount) return [undefined, undefined, false]
+      if (!token1AmountTrade1) return [undefined, undefined, false]
+      ;[token0AmountTrade1] = lpPair.getOutputAmount(token1AmountTrade1)
 
-      amountOfToken0ByTrade0 = outputAmount
-      ;[amountOfToken1ByTrade0] = lpPair.getOutputAmount(amountOfToken0ByTrade0)
-
-      lpAmountByTrade0 = minLPAmountOut(
-        calculateLPAmount(amountOfToken0ByTrade0, lpPair.reserve0, totalSupply),
-        calculateLPAmount(amountOfToken1ByTrade0, lpPair.reserve1, totalSupply)
-      )
-    }
-
-    // Calculate LPAmount when tradeToken0Out is used
-    if (tradeToken0Out) {
-      // Amount of Token1
-
-      const outputAmount = wrappedCurrencyAmount(tradeToken0Out.outputAmount, chainId)
-
-      if (!outputAmount) return [undefined, undefined, false]
-
-      amountOfToken1ByTrade1 = outputAmount
-      ;[amountOfToken0ByTrade1] = lpPair.getOutputAmount(amountOfToken1ByTrade1)
-
-      lpAmountByTrade1 = minLPAmountOut(
-        calculateLPAmount(amountOfToken0ByTrade1, lpPair.reserve0, totalSupply),
-        calculateLPAmount(amountOfToken1ByTrade1, lpPair.reserve1, totalSupply)
+      lpAmountTrade1 = minLPAmountOut(
+        calculateLPAmount(token1AmountTrade1, lpPair.liquidityToken, lpPair.reserve0, totalSupply),
+        calculateLPAmount(token0AmountTrade1, lpPair.liquidityToken, lpPair.reserve1, totalSupply)
       )
     }
 
@@ -212,21 +208,21 @@ export function useLPOutAmount(
 
     // Case 1: No trade0 and No trade1 ==> return undefined
 
-    if (!lpAmountByTrade0 && !lpAmountByTrade1) return [undefined, undefined, false]
+    if (!lpAmountTrade0 && !lpAmountTrade1) return [undefined, undefined, false]
 
     // Case 2: trade0 but no trade1 ==> return [lpAmountByTrade0, Trade0]
 
-    if (lpAmountByTrade0 && !lpAmountByTrade1) return [lpAmountByTrade0, tradeToken1Out, false]
+    if (lpAmountTrade0 && !lpAmountTrade1) return [lpAmountTrade0, tradeToken1Out, false]
 
     // Case 3: trade1 but no trade0 ==> return [lpAmountByTrade1, Trade1]
 
-    if (!lpAmountByTrade0 && lpAmountByTrade1) return [lpAmountByTrade1, tradeToken0Out, false]
+    if (!lpAmountTrade0 && lpAmountTrade1) return [lpAmountTrade1, tradeToken0Out, false]
 
     // Case 4: trade0 and trade1 ==> return [maxLpAmount(), tradeThatGiveThisAmount]
 
-    if (lpAmountByTrade0 && lpAmountByTrade1) {
-      const finalLPAmount = maxLPAmountOut(lpAmountByTrade0, lpAmountByTrade1)
-      const finalTrade = finalLPAmount === lpAmountByTrade0 ? tradeToken1Out : tradeToken0Out
+    if (lpAmountTrade0 && lpAmountTrade1) {
+      const finalLPAmount = maxLPAmountOut(lpAmountTrade0, lpAmountTrade1)
+      const finalTrade = finalLPAmount === lpAmountTrade0 ? tradeToken0Out : tradeToken1Out
 
       return [finalLPAmount, finalTrade, false]
     }
@@ -237,12 +233,13 @@ export function useLPOutAmount(
 
 export function calculateLPAmount(
   tokenAmount: TokenAmount,
+  lpTokenOut: Token,
   reserve: TokenAmount,
   totalSupply: TokenAmount
 ): TokenAmount {
   const amount = JSBI.divide(JSBI.multiply(tokenAmount.raw, totalSupply.raw), reserve.raw)
 
-  return new TokenAmount(tokenAmount.token, amount)
+  return new TokenAmount(lpTokenOut, amount)
 }
 
 export function minLPAmountOut(lpAmount1: TokenAmount, lpAmount2: TokenAmount): TokenAmount {
@@ -252,8 +249,3 @@ export function minLPAmountOut(lpAmount1: TokenAmount, lpAmount2: TokenAmount): 
 export function maxLPAmountOut(lpAmount1: TokenAmount, lpAmount2: TokenAmount): TokenAmount {
   return JSBI.GT(lpAmount1.raw, lpAmount2) ? lpAmount1 : lpAmount2
 }
-
-/**
- * Given two trades, return the trade that gives maxLPAmounts. Also return LPAmounts
- */
-// export function maxLPTrade()
