@@ -72,7 +72,7 @@ const LiquidityTokens = styled.div`
   font-size: 40px;
   font-weight: 700;
   line-height: 30px;
-  margin-right: 5px;
+  margin-right: 16px;
   max-width: 200px;
   overflow: hidden;
   text-overflow: ellipsis;

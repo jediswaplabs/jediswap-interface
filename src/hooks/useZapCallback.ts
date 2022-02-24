@@ -123,11 +123,11 @@ export function useZapCallback(
     const inputToken = wrappedCurrency(trade.inputAmount.currency, chainId)
     console.log('🚀 ~ file: useZapCallback.ts ~ line 124 ~ returnuseMemo ~ inputToken', inputToken)
 
-    const minLPAmountOut = computeSlippageAdjustedLPAmount(lpAmountOut, allowedSlippage)
+    const minLPAmountOut = computeSlippageAdjustedLPAmount(lpAmountOut, 5000)
     console.log(
       '🚀 ~ file: useZapCallback.ts ~ line 127 ~ returnuseMemo ~ minLPAmountOut',
       allowedSlippage,
-      minLPAmountOut
+      minLPAmountOut.toSignificant(6)
     )
 
     if (!inputToken) {

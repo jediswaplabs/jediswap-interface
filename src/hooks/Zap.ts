@@ -179,9 +179,11 @@ export function useLPOutAmount(
     if (tradeToken0Out) {
       // Amount of Token0
 
-      token0AmountTrade0 = wrappedCurrencyAmount(tradeToken0Out.outputAmount, chainId)
+      const outputAmount = wrappedCurrencyAmount(tradeToken0Out.outputAmount, chainId)
 
-      if (!token0AmountTrade0) return [undefined, undefined, false]
+      if (!outputAmount) return [undefined, undefined, false]
+
+      token0AmountTrade0 = new TokenAmount(outputAmount.token, JSBI.divide(outputAmount.raw, JSBI.BigInt(2)))
       ;[token1AmountTrade0] = lpPair.getOutputAmount(token0AmountTrade0)
 
       lpAmountTrade0 = minLPAmountOut(
@@ -193,9 +195,11 @@ export function useLPOutAmount(
     // Calculate LPAmount when tradeToken1Out is used
     if (tradeToken1Out) {
       // Amount of Token0
-      token1AmountTrade1 = wrappedCurrencyAmount(tradeToken1Out.outputAmount, chainId)
+      const outputAmount = wrappedCurrencyAmount(tradeToken1Out.outputAmount, chainId)
 
-      if (!token1AmountTrade1) return [undefined, undefined, false]
+      if (!outputAmount) return [undefined, undefined, false]
+
+      token1AmountTrade1 = new TokenAmount(outputAmount.token, JSBI.divide(outputAmount.raw, JSBI.BigInt(2)))
       ;[token0AmountTrade1] = lpPair.getOutputAmount(token1AmountTrade1)
 
       lpAmountTrade1 = minLPAmountOut(
@@ -212,15 +216,20 @@ export function useLPOutAmount(
 
     // Case 2: trade0 but no trade1 ==> return [lpAmountByTrade0, Trade0]
 
-    if (lpAmountTrade0 && !lpAmountTrade1) return [lpAmountTrade0, tradeToken1Out, false]
+    if (lpAmountTrade0 && !lpAmountTrade1) return [lpAmountTrade0, tradeToken0Out, false]
 
     // Case 3: trade1 but no trade0 ==> return [lpAmountByTrade1, Trade1]
 
-    if (!lpAmountTrade0 && lpAmountTrade1) return [lpAmountTrade1, tradeToken0Out, false]
+    if (!lpAmountTrade0 && lpAmountTrade1) return [lpAmountTrade1, tradeToken1Out, false]
 
     // Case 4: trade0 and trade1 ==> return [maxLpAmount(), tradeThatGiveThisAmount]
 
     if (lpAmountTrade0 && lpAmountTrade1) {
+      console.log(
+        '🚀 ~ file: Zap.ts ~ line 224 ~ lpAmountTrade0, lpAmountTrade1',
+        lpAmountTrade0.toSignificant(4),
+        lpAmountTrade1.toSignificant(4)
+      )
       const finalLPAmount = maxLPAmountOut(lpAmountTrade0, lpAmountTrade1)
       const finalTrade = finalLPAmount === lpAmountTrade0 ? tradeToken0Out : tradeToken1Out
 
@@ -243,9 +252,9 @@ export function calculateLPAmount(
 }
 
 export function minLPAmountOut(lpAmount1: TokenAmount, lpAmount2: TokenAmount): TokenAmount {
-  return JSBI.LT(lpAmount1.raw, lpAmount2) ? lpAmount1 : lpAmount2
+  return JSBI.LT(lpAmount1.raw, lpAmount2.raw) ? lpAmount1 : lpAmount2
 }
 
 export function maxLPAmountOut(lpAmount1: TokenAmount, lpAmount2: TokenAmount): TokenAmount {
-  return JSBI.GT(lpAmount1.raw, lpAmount2) ? lpAmount1 : lpAmount2
+  return JSBI.GT(lpAmount1.raw, lpAmount2.raw) ? lpAmount1 : lpAmount2
 }
