@@ -486,7 +486,7 @@ export default function Swap() {
                   </RowBetween>
                 )}
 
-                {allowedSlippage !== INITIAL_ALLOWED_SLIPPAGE && (
+                {allowedSlippage && (
                   <RowBetween align="center">
                     <DMSansText.body fontSize={14}>Slippage Tolerance</DMSansText.body>
                     <DMSansText.body fontSize={14}>{allowedSlippage / 100}%</DMSansText.body>
