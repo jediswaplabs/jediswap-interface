@@ -54,6 +54,7 @@ import HeaderIcon from '../../assets/jedi/SwapPanel_headerItem.svg'
 import SwapWidget from '../../assets/jedi/SwapWidget.svg'
 import { jediTokensList, TOKEN0 } from '../../constants/jediTokens'
 import { MintState, useMintCallback } from '../../hooks/useMintCallback'
+import { useUserTransactionTTL } from '../../state/user/hooks'
 // import BackdropImage from '../../assets/jedi/Backdrop.svg'
 
 const HeaderRow = styled.div`
@@ -133,6 +134,7 @@ const MintButton = styled(ButtonOutlined)`
 `
 
 export default function Swap() {
+  const [ttl, setTtl] = useUserTransactionTTL()
   const loadedUrlParams = useDefaultsFromURLSearch()
 
   // token warning stuff
@@ -488,6 +490,13 @@ export default function Swap() {
                   <RowBetween align="center">
                     <DMSansText.body fontSize={14}>Slippage Tolerance</DMSansText.body>
                     <DMSansText.body fontSize={14}>{allowedSlippage / 100}%</DMSansText.body>
+                  </RowBetween>
+                )}
+
+                {Boolean(trade) && ttl && (
+                  <RowBetween align="center">
+                    <DMSansText.body fontSize={14}> Transaction Deadline</DMSansText.body>
+                    <DMSansText.body fontSize={14}>{ttl / 60} mins.</DMSansText.body>
                   </RowBetween>
                 )}
               </AutoColumn>
