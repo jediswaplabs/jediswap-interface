@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, Fraction, Percent } from '@uniswap/sdk'
+import { Currency, CurrencyAmount, Fraction, Percent } from '@jediswap/sdk'
 import React from 'react'
 import { Text } from 'rebass'
 import { ButtonGradient } from '../../components/Button'
