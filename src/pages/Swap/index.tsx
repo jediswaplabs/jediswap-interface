@@ -493,10 +493,10 @@ export default function Swap() {
                   </RowBetween>
                 )}
 
-                {!!ttl && (
+                {Boolean(trade) && ttl && (
                   <RowBetween align="center">
                     <DMSansText.body fontSize={14}> Transaction Deadline</DMSansText.body>
-                    <DMSansText.body fontSize={14}>{ttl / 60} Min.</DMSansText.body>
+                    <DMSansText.body fontSize={14}>{ttl / 60} mins.</DMSansText.body>
                   </RowBetween>
                 )}
               </AutoColumn>
