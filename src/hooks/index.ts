@@ -55,7 +55,7 @@ export function useInactiveListener(suppress = false) {
   useEffect(() => {
     const { starknet } = window
 
-    if (starknet && starknet.on && !active && !error && !suppress) {
+    if (starknet && !active && !error && !suppress) {
       const handleChainChanged = () => {
         // eat errors
         activate(argentX, undefined, true).catch(error => {
