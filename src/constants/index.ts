@@ -1,7 +1,7 @@
 import { validateAndParseAddress } from '@jediswap/starknet'
 import { ChainId, JSBI, Percent, Token, WTOKEN0 } from '@jediswap/sdk'
 import { AbstractConnector } from '@web3-starknet-react/abstract-connector'
-import { TOKEN0, TOKEN1, TOKEN2 } from './jediTokens'
+import { TOKEN0, TOKEN1, TOKEN2, TOKEN3 } from './jediTokens'
 
 // import { fortmatic, injected, portis, walletconnect, walletlink, argentX } from '../connectors'
 import { argentX } from '../connectors'
@@ -80,7 +80,7 @@ export const SUGGESTED_BASES: ChainTokenList = {
 // used to construct the list of all pairs we consider by default in the frontend
 export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
   ...WTOKEN0_ONLY,
-  [ChainId.GÖRLI]: [TOKEN0]
+  [ChainId.GÖRLI]: [TOKEN0, TOKEN3]
 }
 
 export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } = {
@@ -90,7 +90,8 @@ export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } 
     //   new Token(ChainId.GÖRLI, '0x39AA39c021dfbaE8faC545936693aC917d5E7563', 8, 'cUSDC', 'Compound USD Coin')
     // ],
     [TOKEN0, TOKEN1],
-    [TOKEN0, TOKEN2]
+    [TOKEN0, TOKEN2],
+    [TOKEN0, TOKEN3]
     // [DAI, USDT]
   ]
 }
