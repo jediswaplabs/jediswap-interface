@@ -18,21 +18,25 @@ export function useEagerConnect() {
   const [tried, setTried] = useState(false)
 
   useEffect(() => {
-    argentX.isAuthorized().then(isAuthorized => {
-      if (isAuthorized) {
-        activate(argentX, undefined, true).catch(() => {
-          setTried(true)
-        })
-      } else {
-        if (isMobile && window.starknet) {
+    setTimeout(() => {
+      argentX.isAuthorized().then(isAuthorized => {
+        // console.log('Authorized immedietly: ', isAuthorized)
+
+        if (isAuthorized) {
           activate(argentX, undefined, true).catch(() => {
             setTried(true)
           })
         } else {
-          setTried(true)
+          if (isMobile && window.starknet) {
+            activate(argentX, undefined, true).catch(() => {
+              setTried(true)
+            })
+          } else {
+            setTried(true)
+          }
         }
-      }
-    })
+      })
+    }, 100)
   }, [activate]) // intentionally only running on mount (make sure it's only mounted once :))
 
   // if the connection worked, wait until we get confirmation of that to flip the flag
