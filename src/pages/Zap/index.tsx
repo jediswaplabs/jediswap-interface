@@ -330,7 +330,7 @@ export default function Zap() {
                     })
                   }}
                   width="48%"
-                  id="swap-button"
+                  id="zap-button"
                   disabled={!isValid || approvalState !== ApprovalState.APPROVED}
                 >
                   <Text fontSize={16} fontWeight={500}>
@@ -339,7 +339,7 @@ export default function Zap() {
                 </ButtonError>
               </RowBetween>
             ) : insufficientBalanceError ? (
-              <RedGradientButton id="swap-button" disabled>
+              <RedGradientButton id="zap-button" disabled>
                 {zapInputError}
               </RedGradientButton>
             ) : (
@@ -355,8 +355,8 @@ export default function Zap() {
                   })
                 }}
                 id="zap-button"
-                disabled={!isValid /*|| !!swapCallbackError */}
-                error={false /* &&  !swapCallbackError */}
+                disabled={!isValid || !!zapCallbackError}
+                error={isValid && !zapCallbackError}
               >
                 <Text fontSize={20} fontWeight={500}>
                   {zapInputError ? zapInputError : 'Zap'}
