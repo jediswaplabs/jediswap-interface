@@ -360,7 +360,8 @@ export default function RemoveLiquidity({
               <AutoColumn gap="20px">
                 <RowBetween>
                   <Text fontWeight={500}>Amount</Text>
-                  <DMSansText.mediumBody>
+
+                  <TYPE.mediumHeader fontSize={16} fontWeight={600}>
                     <ClickableText
                       onClick={() => {
                         setShowDetailed(!showDetailed)
@@ -368,7 +369,7 @@ export default function RemoveLiquidity({
                     >
                       {showDetailed ? 'Simple' : 'Detailed'}
                     </ClickableText>
-                  </DMSansText.mediumBody>
+                  </TYPE.mediumHeader>
                 </RowBetween>
                 <Row style={{ alignItems: 'flex-end' }}>
                   <Text fontSize={72} fontWeight={500}>

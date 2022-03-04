@@ -11,7 +11,6 @@ const CopyIcon = styled(LinkStyledButton)`
   display: flex;
   text-decoration: none;
   font-size: 0.875rem;
-  letter-spacing: 0px;
   font-family: 'DM Sans', sans-serif;
 
   :hover,
@@ -24,7 +23,6 @@ const CopyIcon = styled(LinkStyledButton)`
 const TransactionStatusText = styled.span`
   /* margin-left: 0.25rem; */
   font-size: 0.875rem;
-  letter-spacing: 0px;
   font-family: 'DM Sans', sans-serif;
   ${({ theme }) => theme.flexRowNoWrap};
   align-items: center;

@@ -33,7 +33,6 @@ const StyledBalanceText = styled(Text)`
   text-overflow: ellipsis;
 
   font-family: 'DM Sans', sans-serif;
-  letter-spacing: 0px;
   font-weight: 500;
 `
 

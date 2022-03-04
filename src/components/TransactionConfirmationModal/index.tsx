@@ -20,7 +20,6 @@ const Wrapper = styled.div`
   background: linear-gradient(to top right, #50d5ff, #ef35ff);
   color: ${({ theme }) => theme.jediWhite};
   font-family: 'DM Sans', sans-serif;
-  letter-spacing: 0px;
   /* border-radius: 8px; */
   padding: 1px;
 `
@@ -172,11 +171,11 @@ export function ConfirmationModalContent({
         <TextWrapper>
           <RowBetween>
             <Text
-              fontWeight={titleFont?.weight ?? 400}
-              fontSize={titleFont?.size ?? 20}
-              fontFamily={titleFont?.family ?? 'Soloist Title'}
-              letterSpacing={titleFont?.letterSpacing ?? '-0.1em'}
-              lineHeight={titleFont?.lineHeight}
+              fontWeight={titleFont?.weight ?? 800}
+              fontSize={titleFont?.size ?? '21px'}
+              fontFamily={titleFont?.family}
+              letterSpacing={titleFont?.letterSpacing}
+              lineHeight={titleFont?.lineHeight ?? '100%'}
             >
               {title}
             </Text>

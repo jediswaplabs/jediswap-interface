@@ -67,7 +67,6 @@ const MintButton = styled(ButtonOutlined)`
   font-family: 'DM Sans', sans-serif;
   font-size: 16px;
   font-weight: 500;
-  letter-spacing: 0px;
   border-color: ${({ theme }) => theme.jediBlue};
   color: ${({ theme }) => theme.jediWhite};
 `

@@ -30,7 +30,6 @@ const HeaderRow = styled.div`
   /* padding: 2rem 2rem; */
   font-weight: 400;
   font-size: 1.25rem;
-  letter-spacing: -10%;
   color: ${({ theme }) => theme.jediWhite};
   ${({ theme }) => theme.mediaWidth.upToMedium`
     padding: 1rem;
@@ -118,7 +117,6 @@ const LowerSection = styled.div`
   overflow: auto;
   text-align: center;
   font-family: 'DM Sans', sans-serif;
-  letter-spacing: 0px;
   font-weight: 700;
   font-size: 1rem;
   color: ${({ theme }) => theme.jediWhite};
@@ -142,7 +140,6 @@ const AccountControl = styled.div`
   font-weight: 500;
   font-size: 1.25rem;
   font-family: 'DM Sans', sans-serif;
-  letter-spacing: 0px;
   color: ${({ theme }) => theme.jediWhite};
 
   a:hover {
@@ -192,7 +189,6 @@ const WalletName = styled.div`
   font-weight: 500;
   color: ${({ theme }) => theme.jediWhite};
   font-family: 'DM Sans', sans-serif;
-  letter-spacing: 0px;
 `
 
 const IconWrapper = styled.div<{ size?: number }>`

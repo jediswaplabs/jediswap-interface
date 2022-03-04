@@ -173,10 +173,10 @@ export const TYPE = {
     return <TextWrapper fontWeight={400} fontSize={16} color={'text1'} {...props} />
   },
   largeHeader(props: TextProps) {
-    return <TextWrapper fontWeight={600} color={'text1'} fontSize={24} {...props} />
+    return <TextWrapper fontWeight={700} color={'text1'} fontSize={24} {...props} />
   },
   mediumHeader(props: TextProps) {
-    return <TextWrapper fontWeight={500} color={'text1'} fontSize={20} {...props} />
+    return <TextWrapper fontWeight={600} color={'text1'} fontSize={20} {...props} />
   },
   subHeader(props: TextProps) {
     return <TextWrapper fontWeight={400} color={'text1'} fontSize={14} {...props} />
@@ -206,7 +206,6 @@ export const TYPE = {
 
 const DMSansTextWrapper = styled(TextWrapper)`
   font-family: 'DM Sans', sans-serif;
-  letter-spacing: 0px;
   color: ${({ theme }) => theme.jediWhite};
   line-height: 100%;
 `
@@ -237,15 +236,13 @@ export const DMSansText = {
 
 export const FixedGlobalStyle = createGlobalStyle`
 html, input, textarea, button {
-  font-family: 'Soloist Title', sans-serif;
+  font-family: 'Avenir LT Std', sans-serif;
   font-display: fallback;
-  letter-spacing: -0.1em;
-}
+ }
 @supports (font-variation-settings: normal) {
   html, input, textarea, button {
-    font-family: 'Soloist Title', sans-serif;
-    letter-spacing: -0.1em;
-  }
+    font-family: 'Avenir LT Std', sans-serif;
+   }
 }
 
 html,

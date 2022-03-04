@@ -215,7 +215,6 @@ export default function Zap() {
       <AppBody>
         <SwapPoolTabs active={'zap'} />
         <Wrapper>
-          {/* TODO: Implement ConfirmZapModal */}
           <ConfirmZapModal
             isOpen={showConfirm}
             trade={zapTrade}

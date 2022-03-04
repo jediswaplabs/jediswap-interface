@@ -274,7 +274,6 @@ export const RedGradientButton = styled(Base)`
   padding: 22px 17px;
   border: none;
   color: ${({ theme }) => theme.jediWhite};
-  letter-spacing: -0.1em;
   text-align: center;
 `
 

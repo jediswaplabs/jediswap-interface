@@ -49,7 +49,6 @@ const BalanceText = styled.div`
   font-style: normal;
   font-weight: 400;
   line-height: 16px;
-  letter-spacing: 0em;
   text-align: center;
   color: ${({ theme }) => theme.jediWhite};
 `
@@ -60,7 +59,6 @@ const Separator = styled.div`
 const HeaderNote = styled.div`
   padding: 10px 12px;
   font-family: 'DM Sans', sans-serif;
-  letter-spacing: 0px;
   font-weight: normal;
   font-size: 14px;
   line-height: 120%;

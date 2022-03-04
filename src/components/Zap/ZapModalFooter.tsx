@@ -2,8 +2,6 @@ import { TokenAmount, Trade, TradeType } from '@jediswap/sdk'
 import React, { useContext, useMemo, useState } from 'react'
 import { Repeat } from 'react-feather'
 import { Text } from 'rebass'
-// import { ThemeContext } from 'styled-components'
-import { Field } from '../../state/swap/actions'
 import { TYPE } from '../../theme'
 import {
   computeSlippageAdjustedAmounts,
@@ -35,7 +33,6 @@ const Wrapper = styled.div`
 
   font-weight: 400;
   line-height: 14px;
-  letter-spacing: 0em;
   text-align: left;
   position: relative;
 `
@@ -179,9 +176,9 @@ export default function ZapModalFooter({
       </AutoColumn>
       <AutoRow>
         <ButtonWrapper>
-          <ButtonError onClick={onConfirm} disabled={disabledConfirm} error={severity > 2} id="confirm-swap-or-send">
+          <ButtonError onClick={onConfirm} disabled={disabledConfirm} error={severity > 2} id="confirm-zap-or-send">
             <Text fontSize={20} fontWeight={500}>
-              {severity > 2 ? 'Swap Anyway' : 'Confirm Swap'}
+              {severity > 2 ? 'Zap Anyway' : 'Confirm Zap'}
             </Text>
           </ButtonError>
         </ButtonWrapper>

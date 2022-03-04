@@ -37,7 +37,6 @@ export const Popup = styled.div`
   padding-right: 35px;
   overflow: hidden;
   font-family: 'DM Sans', sans-serif;
-  letter-spacing: 0;
 
   ${({ theme }) => theme.mediaWidth.upToSmall`
     min-width: 290px;
