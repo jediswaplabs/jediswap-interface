@@ -136,9 +136,7 @@ function TransactionSubmittedContent({
             </ExternalLink>
           )}
           <ButtonGradient onClick={onDismiss} style={{ margin: '20px 0 0 0' }}>
-            <Text fontWeight={500} fontSize={20}>
-              Close
-            </Text>
+            <Text>Close</Text>
           </ButtonGradient>
         </AutoColumn>
       </Section>

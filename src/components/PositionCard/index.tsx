@@ -11,7 +11,7 @@ import { useTokenBalance } from '../../state/wallet/hooks'
 import { DMSansText } from '../../theme'
 import { currencyId } from '../../utils/currencyId'
 import { unwrappedToken } from '../../utils/wrappedCurrency'
-import { ButtonEmpty, ButtonGradient } from '../Button'
+import { ButtonEmpty, ButtonGradient, ButtonPrimary } from '../Button'
 import { transparentize } from 'polished'
 import noise from '../../assets/images/noise.png'
 
@@ -73,6 +73,7 @@ const CardText = styled.div<{
 
 const ManageText = styled.div`
   font-weight: 600;
+  font-size: 16px;
 `
 
 interface PositionCardProps {
@@ -304,24 +305,26 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
               </ExternalLink>
             </ButtonSecondary> */}
             <RowBetween marginTop="15px">
-              <ButtonGradient
+              <ButtonPrimary
                 borderRadius="8px"
                 as={Link}
                 to={`/add/${currencyId(currency0)}/${currencyId(currency1)}`}
                 width="48%"
                 style={{ padding: '12px 8px' }}
+                fontSize={18}
               >
                 Add
-              </ButtonGradient>
-              <ButtonGradient
+              </ButtonPrimary>
+              <ButtonPrimary
                 borderRadius="8px"
                 as={Link}
                 width="48%"
                 to={`/remove/${currencyId(currency0)}/${currencyId(currency1)}`}
                 style={{ padding: '12px 8px' }}
+                fontSize={18}
               >
                 Remove
-              </ButtonGradient>
+              </ButtonPrimary>
             </RowBetween>
           </AutoColumn>
         )}

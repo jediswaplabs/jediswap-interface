@@ -167,9 +167,11 @@ const HideSmall = styled.div`
 
 const NetworkCard = styled(YellowCard)`
   border-radius: 10px;
-  padding: 14px;
+  padding: 12px;
   flex: 1;
-  font-size: 14px;
+  font-size: 16px;
+  font-weight: 600;
+
   ${({ theme }) => theme.mediaWidth.upToSmall`
     margin: 0;
     margin-right: 0.5rem;

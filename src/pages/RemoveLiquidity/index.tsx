@@ -273,9 +273,7 @@ export default function RemoveLiquidity({
           onClick={onRemove}
           style={{ marginTop: '20px', marginBottom: '10px' }}
         >
-          <Text fontWeight={500} fontSize={20}>
-            Confirm
-          </Text>
+          <Text>Confirm</Text>
         </ButtonPrimary>
       </>
     )
@@ -518,9 +516,7 @@ export default function RemoveLiquidity({
                     confirmed={approval === ApprovalState.APPROVED || signatureData !== null}
                     disabled={approval !== ApprovalState.NOT_APPROVED || signatureData !== null}
                     mr="0.5rem"
-                    fontWeight={500}
-                    fontSize={16}
-                    lineHeight={'16px'}
+                    fontSize={18}
                   >
                     {approval === ApprovalState.PENDING ? (
                       <Dots>Approving</Dots>
@@ -538,9 +534,7 @@ export default function RemoveLiquidity({
                     error={!isValid && !!parsedAmounts[Field.CURRENCY_A] && !!parsedAmounts[Field.CURRENCY_B]}
                     style={{ padding: '22px 10px' }}
                   >
-                    <Text fontSize={16} fontWeight={500} lineHeight={'16px'}>
-                      {error || 'Remove'}
-                    </Text>
+                    <Text fontSize={18}>{error || 'Remove'}</Text>
                   </ButtonError>
                 </RowBetween>
               )}

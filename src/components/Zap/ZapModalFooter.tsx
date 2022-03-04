@@ -177,9 +177,7 @@ export default function ZapModalFooter({
       <AutoRow>
         <ButtonWrapper>
           <ButtonError onClick={onConfirm} disabled={disabledConfirm} error={severity > 2} id="confirm-zap-or-send">
-            <Text fontSize={20} fontWeight={500}>
-              {severity > 2 ? 'Zap Anyway' : 'Confirm Zap'}
-            </Text>
+            <Text>{severity > 2 ? 'Zap Anyway' : 'Confirm Zap'}</Text>
           </ButtonError>
         </ButtonWrapper>
         {zapErrorMessage ? <SwapCallbackError error={zapErrorMessage} /> : null}

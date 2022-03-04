@@ -422,11 +422,9 @@ export default function Swap() {
           </AutoColumn>
           <BottomGrouping>
             {!account ? (
-              <ButtonPrimary fontSize={20} onClick={toggleWalletModal}>
-                Connect Wallet
-              </ButtonPrimary>
+              <ButtonPrimary onClick={toggleWalletModal}>Connect Wallet</ButtonPrimary>
             ) : noRoute && userHasSpecifiedInputOutput ? (
-              <RedGradientButton fontSize={20} style={{ textAlign: 'center' }} disabled>
+              <RedGradientButton style={{ textAlign: 'center' }} disabled>
                 {tradeLoading ? 'Fetching route...' : 'Insufficient liquidity for this trade'}
               </RedGradientButton>
             ) : showApproveFlow ? (
@@ -437,7 +435,7 @@ export default function Swap() {
                   width="48%"
                   altDisabledStyle={approval === ApprovalState.PENDING} // show solid button while waiting
                   confirmed={approval === ApprovalState.APPROVED}
-                  fontSize={20}
+                  fontSize={18}
                 >
                   {approval === ApprovalState.PENDING ? (
                     <AutoRow gap="6px" justify="center">
@@ -450,7 +448,7 @@ export default function Swap() {
                   )}
                 </ButtonConfirmed>
                 <ButtonError
-                  fontSize={20}
+                  fontSize={18}
                   onClick={() => {
                     if (isExpertMode) {
                       handleSwap()
@@ -471,7 +469,7 @@ export default function Swap() {
                   }
                   error={isValid && priceImpactSeverity > 2}
                 >
-                  <Text fontSize={16} fontWeight={500}>
+                  <Text>
                     {priceImpactSeverity > 3 && !isExpertMode
                       ? `Price Impact High`
                       : `Swap${priceImpactSeverity > 2 ? ' Anyway' : ''}`}
@@ -501,7 +499,7 @@ export default function Swap() {
                 disabled={!isValid || (priceImpactSeverity > 3 && !isExpertMode) || !!swapCallbackError}
                 error={isValid && priceImpactSeverity > 2 && !swapCallbackError}
               >
-                <Text fontSize={20} fontWeight={500}>
+                <Text>
                   {swapInputError
                     ? swapInputError
                     : priceImpactSeverity > 3 && !isExpertMode
