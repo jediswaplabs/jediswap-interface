@@ -1,5 +1,5 @@
 import { jediTokensList } from './../constants/jediTokens'
-import { Args, uint256, number, Call } from 'starknet'
+import { Args, uint256, number, Call, stark, RawArgs } from 'starknet'
 import { useCallback, useMemo, useState } from 'react'
 import { useActiveStarknetReact } from './index'
 import { useTransactionAdder } from '../state/transactions/hooks'
@@ -45,10 +45,17 @@ export function useMintCallback(): [MintState, () => Promise<void>] {
         tokenAmount ? tokenAmount.raw.toString() : new TokenAmount(token, '1000').raw.toString()
       )
 
+      const mintArgs: RawArgs = {
+        recipient: validatedAddress,
+        amount: { type: 'struct', ...uint256TokenAmount }
+      }
+
+      const mintCalldata = stark.compileCalldata(mintArgs)
+
       return {
         contractAddress: token.address,
         entrypoint: 'mint',
-        calldata: [number.toBN(validatedAddress).toString(), ...Object.values(uint256TokenAmount)]
+        calldata: mintCalldata
       }
     })
 
@@ -72,7 +79,7 @@ export function useMintCallback(): [MintState, () => Promise<void>] {
       })
       .catch((error: Error) => {
         console.debug(`Failed to mint Jedi Test Token`, error)
-        throw error
+        // throw error
       })
   }, [account, addTransaction, jediTokens, validatedAddress])
 
