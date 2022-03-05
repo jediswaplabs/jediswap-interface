@@ -38,7 +38,7 @@ import { ConfirmAddModalBottom } from './ConfirmAddModalBottom'
 import { currencyId } from '../../utils/currencyId'
 import { PoolPriceBar } from './PoolPriceBar'
 import { useRouterContract } from '../../hooks/useContract'
-import { AddTransactionResponse, Args, uint256 } from '@jediswap/starknet'
+import { AddTransactionResponse, Args, uint256 } from 'starknet'
 import { parsedAmountToUint256Args } from '../../utils'
 
 import styled from 'styled-components'
@@ -85,7 +85,7 @@ export default function AddLiquidity({
   },
   history
 }: RouteComponentProps<{ currencyIdA?: string; currencyIdB?: string }>) {
-  const { account, chainId, library } = useActiveStarknetReact()
+  const { account, chainId, library, connectedAddress } = useActiveStarknetReact()
   const theme = useContext(ThemeContext)
 
   const currencyA = useCurrency(currencyIdA)
@@ -165,7 +165,7 @@ export default function AddLiquidity({
   const addTransaction = useTransactionAdder()
 
   async function onAdd() {
-    if (!chainId || !library || !account) return
+    if (!chainId || !library || !account || !connectedAddress) return
     const router = routerContract
 
     const { [Field.CURRENCY_A]: parsedAmountA, [Field.CURRENCY_B]: parsedAmountB } = parsedAmounts
@@ -200,7 +200,7 @@ export default function AddLiquidity({
       amountBDesired: parsedAmountToUint256Args(parsedAmountB.raw),
       amountAMin: parsedAmountToUint256Args(amountsMin[Field.CURRENCY_A]),
       amountBMin: parsedAmountToUint256Args(amountsMin[Field.CURRENCY_B]),
-      to: account,
+      to: connectedAddress,
       deadline: deadline.toHexString()
     }
 

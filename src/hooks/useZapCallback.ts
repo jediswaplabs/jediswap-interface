@@ -1,5 +1,5 @@
 import { BigNumber } from '@ethersproject/bignumber'
-import { Contract, Args, uint256, compileCalldata } from '@jediswap/starknet'
+import { Contract, Args, uint256 } from 'starknet'
 import { JSBI, Percent, Router, SwapParameters as ZapParameters, TokenAmount, Trade, TradeType } from '@jediswap/sdk'
 import { useMemo } from 'react'
 import { BIPS_BASE, INITIAL_ALLOWED_SLIPPAGE } from '../constants'
@@ -47,17 +47,17 @@ function useZapCallArguments(
   allowedSlippage: number = INITIAL_ALLOWED_SLIPPAGE, // in bips
   recipientAddressOrName: string | null // the ENS name or address of the recipient of the trade, or null if zap should be returned to sender
 ): ZapCall[] {
-  const { account, chainId, library } = useActiveStarknetReact()
+  const { account, chainId, library, connectedAddress } = useActiveStarknetReact()
 
   // const { address: recipientAddress } = useENS(recipientAddressOrName)
-  const recipient = recipientAddressOrName === null ? account : recipientAddressOrName
+  const recipient = recipientAddressOrName === null ? connectedAddress : recipientAddressOrName
 
   const deadline = useTransactionDeadline()
 
   const contract: Contract | null = useZapInContract()
 
   return useMemo(() => {
-    if (!trade || !recipient || !library || !account || !chainId || !deadline) {
+    if (!trade || !recipient || !library || !account || !chainId || !deadline || !connectedAddress) {
       return []
     }
 
@@ -88,7 +88,7 @@ function useZapCallArguments(
       )
     }
     return zapMethods.map(parameters => ({ parameters, contract }))
-  }, [account, allowedSlippage, chainId, contract, deadline, library, recipient, trade])
+  }, [account, allowedSlippage, chainId, connectedAddress, contract, deadline, library, recipient, trade])
 }
 
 // returns a function that will execute a zap, if the parameters are all valid

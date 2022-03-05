@@ -1,5 +1,5 @@
 import { jediTokensList } from '../constants/jediTokens'
-import { Args, shortString, number as starkNumber } from '@jediswap/starknet'
+import { Args, shortString, number as starkNumber } from 'starknet'
 import { parseBytes32String } from '@ethersproject/strings'
 import { Currency, TOKEN0, Token, currencyEquals } from '@jediswap/sdk'
 import { useMemo } from 'react'
@@ -9,9 +9,9 @@ import { isAddress } from '../utils'
 
 import { useActiveStarknetReact } from './index'
 import { useTokenContract } from './useContract'
-import { useStarknetCall, NEVER_RELOAD } from './useStarknet'
 import { useSingleCallResult } from '../state/multicall/hooks'
 import { jediLPTokenList } from '../constants/jediLPTokenList'
+import { NEVER_RELOAD } from '../state/multicall/hooks'
 // import { BigNumberish } from 'starknet/dist/utils/number'
 
 export function useAllTokens(): { [address: string]: Token } {

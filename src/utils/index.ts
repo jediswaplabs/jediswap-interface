@@ -1,14 +1,14 @@
-import { BigNumberish } from '@jediswap/starknet/dist/utils/number'
+import { BigNumberish } from 'starknet/dist/utils/number'
 import { AbstractConnector } from '@web3-starknet-react/abstract-connector'
 import { useMemo } from 'react'
 // import { Contract } from '@ethersproject/contracts'
-import { Abi, Contract, Provider, Signer, SignerInterface, uint256 } from '@jediswap/starknet'
+import { Abi, Contract, Provider, Signer, SignerInterface, uint256 } from 'starknet'
 import { BigNumber } from '@ethersproject/bignumber'
 import { ZERO_ADDRESS } from '../constants'
 import { jediTokensList, TOKEN0 } from '../constants/jediTokens'
 import { ChainId, JSBI, Percent, Token, CurrencyAmount, Currency, TOKEN0 as Currency0 } from '@jediswap/sdk'
 import { TokenAddressMap } from '../state/lists/hooks'
-import { validateAndParseAddress } from '@jediswap/starknet'
+import { validateAndParseAddress } from 'starknet'
 import isZero from './isZero'
 import { wrappedCurrency } from './wrappedCurrency'
 
@@ -80,13 +80,13 @@ export function calculateSlippageAmount(value: CurrencyAmount, slippage: number)
 }
 
 // account is optional
-export function getProviderOrSigner(
-  library: Provider,
-  connector?: AbstractConnector,
-  account?: string
-): Provider | SignerInterface | undefined {
-  return account && connector ? connector.getSigner() : library
-}
+// export function getProviderOrSigner(
+//   library: Provider,
+//   connector?: AbstractConnector,
+//   account?: string
+// ): Provider | SignerInterface | undefined {
+//   return account && connector ? connector.getSigner() : library
+// }
 
 // account is optional
 export function getContract(
@@ -102,9 +102,9 @@ export function getContract(
     throw Error(`Invalid 'address' parameter '${address}'.`)
   }
 
-  const providerOrSigner = getProviderOrSigner(library, connector, account)
+  // const providerOrSigner = getProviderOrSigner(library, connector, account)
 
-  return new Contract(ABI as Abi[], address, providerOrSigner)
+  return new Contract(ABI as Abi, address)
 }
 
 // account is optional

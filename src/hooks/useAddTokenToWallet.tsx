@@ -7,7 +7,7 @@ export function useAddTokenToWallet(connector: AbstractConnector | undefined): (
     async (tokenAddress: string) => {
       if (connector && connector instanceof ArgentXConnector) {
         try {
-          await connector.starknet?.request({
+          await window.starknet?.request({
             type: 'wallet_watchAsset',
             params: {
               type: 'ERC20',

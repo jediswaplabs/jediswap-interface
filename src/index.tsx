@@ -21,10 +21,6 @@ import { StarknetReactProvider, createStarknetReactRoot } from '@web3-starknet-r
 
 const StarknetProviderNetwork = createStarknetReactRoot(NetworkContextName)
 
-if ('ethereum' in window) {
-  ;(window.ethereum as any).autoRefreshOnNetworkChange = false
-}
-
 // const GOOGLE_ANALYTICS_ID: string | undefined = process.env.REACT_APP_GOOGLE_ANALYTICS_ID
 // if (typeof GOOGLE_ANALYTICS_ID === 'string') {
 //   ReactGA.initialize(GOOGLE_ANALYTICS_ID)

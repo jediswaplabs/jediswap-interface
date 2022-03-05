@@ -1,4 +1,4 @@
-import { Provider } from '@jediswap/starknet'
+import { Provider } from 'starknet'
 
 export default function getLibrary(provider: any): Provider {
   const library = new Provider(provider)

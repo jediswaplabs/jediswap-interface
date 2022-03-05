@@ -116,8 +116,6 @@ export default function PendingView({
   setWalletView: (walletView: string) => void
   tryActivation: (connector: AbstractConnector) => void
 }) {
-  const isMetamask = window?.ethereum?.isMetaMask
-
   const isStarknetProviderError = error instanceof NoStarknetProviderError
 
   const argentXUrl =

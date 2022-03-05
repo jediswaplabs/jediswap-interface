@@ -19,7 +19,7 @@ import { toV2LiquidityToken, useTrackedTokenPairs } from '../../state/user/hooks
 import { Dots } from '../../components/swap/styleds'
 import { CardSection, DataCard, CardNoise, CardBGImage } from './styleds'
 import { Wrapper } from '../ComingSoon'
-import { validateAndParseAddress } from '@jediswap/starknet'
+import { validateAndParseAddress } from 'starknet'
 
 const PageWrapper = styled(AutoColumn)`
   max-width: 900px;
@@ -116,7 +116,7 @@ const ComingSoonSection = styled(Row)`
 
 export default function Pool() {
   const theme = useContext(ThemeContext)
-  const { account } = useActiveStarknetReact()
+  const { account, connectedAddress } = useActiveStarknetReact()
 
   // fetch the user's balances of all tracked V2 LP tokens
   const trackedTokenPairs = useTrackedTokenPairs()
@@ -133,7 +133,7 @@ export default function Pool() {
     tokenPairsWithLiquidityTokens
   ])
   const [pairsBalances, fetchingPairBalances] = useTokenBalancesWithLoadingIndicator(
-    account ?? undefined,
+    connectedAddress ?? undefined,
     liquidityTokens
   )
 

@@ -1,5 +1,5 @@
 import { ChainId, Token } from '@jediswap/sdk'
-import { validateAndParseAddress } from '@jediswap/starknet'
+import { validateAndParseAddress } from 'starknet'
 
 // JEDI TOKENS
 export const TOKEN0_ADDRESS = validateAndParseAddress(

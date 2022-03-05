@@ -1,5 +1,5 @@
 import { BigNumber } from '@ethersproject/bignumber'
-import { Contract, Args, uint256, compileCalldata } from '@jediswap/starknet'
+import { Contract, Args, uint256 } from 'starknet'
 import { JSBI, Percent, Router, SwapParameters, Trade, TradeType } from '@jediswap/sdk'
 import { useMemo } from 'react'
 import { BIPS_BASE, INITIAL_ALLOWED_SLIPPAGE } from '../constants'
@@ -45,17 +45,17 @@ function useSwapCallArguments(
   allowedSlippage: number = INITIAL_ALLOWED_SLIPPAGE, // in bips
   recipientAddressOrName: string | null // the ENS name or address of the recipient of the trade, or null if swap should be returned to sender
 ): SwapCall[] {
-  const { account, chainId, library } = useActiveStarknetReact()
+  const { connectedAddress, account, chainId, library } = useActiveStarknetReact()
 
   // const { address: recipientAddress } = useENS(recipientAddressOrName)
-  const recipient = recipientAddressOrName === null ? account : recipientAddressOrName
+  const recipient = recipientAddressOrName === null ? connectedAddress : recipientAddressOrName
 
   const deadline = useTransactionDeadline()
 
   const contract: Contract | null = useRouterContract()
 
   return useMemo(() => {
-    if (!trade || !recipient || !library || !account || !chainId || !deadline) {
+    if (!trade || !recipient || !library || !account || !chainId || !deadline || !connectedAddress) {
       return []
     }
 
@@ -86,7 +86,7 @@ function useSwapCallArguments(
       )
     }
     return swapMethods.map(parameters => ({ parameters, contract }))
-  }, [account, allowedSlippage, chainId, contract, deadline, library, recipient, trade])
+  }, [account, allowedSlippage, chainId, connectedAddress, contract, deadline, library, recipient, trade])
 }
 
 // returns a function that will execute a swap, if the parameters are all valid

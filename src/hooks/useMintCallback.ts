@@ -1,4 +1,4 @@
-import { Args, uint256 } from '@jediswap/starknet'
+import { Args, uint256 } from 'starknet'
 import { useCallback, useMemo, useState } from 'react'
 import { useActiveStarknetReact } from './index'
 import { useTransactionAdder } from '../state/transactions/hooks'
@@ -16,18 +16,18 @@ export function useMintCallback(tokenAddress: string | undefined): [MintState, (
   const addTransaction = useTransactionAdder()
   const tokenContract = useTokenContract(tokenAddress, true)
   const token = useToken(tokenAddress)
-  const { account } = useActiveStarknetReact()
+  const { connectedAddress } = useActiveStarknetReact()
 
-  const validatedAccount = isAddress(account)
+  const validatedAddress = isAddress(connectedAddress)
 
   const mintState = useMemo(() => {
-    if (!tokenAddress || !tokenContract || !token || !validatedAccount) return MintState.INVALID
+    if (!tokenAddress || !tokenContract || !token || !validatedAddress) return MintState.INVALID
 
     return MintState.VALID
-  }, [token, tokenAddress, tokenContract, validatedAccount])
+  }, [token, tokenAddress, tokenContract, validatedAddress])
 
   const mintCallback = useCallback(async () => {
-    if (!tokenAddress || !tokenContract || !token || !validatedAccount) return
+    if (!tokenAddress || !tokenContract || !token || !validatedAddress) return
 
     const tokenAmount = tryParseAmount('1000', token)
 
@@ -36,7 +36,7 @@ export function useMintCallback(tokenAddress: string | undefined): [MintState, (
     const uint256TokenAmount = uint256.bnToUint256(tokenAmount.raw.toString())
 
     const mintArgs: Args = {
-      recipient: validatedAccount,
+      recipient: validatedAddress,
       amount: { type: 'struct', ...uint256TokenAmount }
     }
 
@@ -51,7 +51,7 @@ export function useMintCallback(tokenAddress: string | undefined): [MintState, (
         console.debug(`Failed to mint ${token.symbol}`, error)
         throw error
       })
-  }, [addTransaction, token, tokenAddress, tokenContract, validatedAccount])
+  }, [addTransaction, token, tokenAddress, tokenContract, validatedAddress])
 
   return [mintState, mintCallback]
 }

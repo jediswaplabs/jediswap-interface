@@ -1,11 +1,13 @@
-import { Abi, Args, Calldata, compileCalldata, FunctionAbi } from '@jediswap/starknet'
-export function computeCallDataProps(args: Args = {}): { calldata_len: number | string; calldata: Calldata } {
+import { Abi, Args, Calldata, stark, FunctionAbi, RawArgs } from 'starknet'
+export function computeCallDataProps(args: RawArgs = {}): { calldata_len: number | string; calldata: Calldata } {
   //   if (!args) {
   //     return {
   //       calldata_len: 0,
   //       calldata: undefined
   //     }
   //   }
+
+  const { compileCalldata } = stark
 
   const calldata = compileCalldata(args)
 
@@ -29,6 +31,6 @@ export function computeCallDataProps(args: Args = {}): { calldata_len: number | 
   }
 }
 
-export function validateMethodAbi(abi: Abi): abi is FunctionAbi {
-  return abi.type === 'function'
+export function validateMethodAbi(abis: Abi): abis is FunctionAbi[] {
+  return abis.every(abi => abi.type === 'function')
 }

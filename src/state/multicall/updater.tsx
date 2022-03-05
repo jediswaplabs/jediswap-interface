@@ -1,5 +1,5 @@
-import { Contract, FunctionAbi, number, stark, uint256 } from '@jediswap/starknet'
-import { toBN } from '@jediswap/starknet/dist/utils/number'
+import { Contract, FunctionAbi, number, hash, uint256 } from 'starknet'
+import { toBN } from 'starknet/dist/utils/number'
 import { useEffect, useMemo, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useActiveStarknetReact } from '../../hooks'
@@ -34,7 +34,7 @@ async function fetchChunk(
   console.debug('Fetching chunk', multicallContract, chunk, minBlockNumber)
   let resultsBlockNumber, returnData_len, returnData
 
-  const { getSelectorFromName } = stark
+  const { getSelectorFromName } = hash
 
   try {
     const calls = chunk.flatMap(obj => [

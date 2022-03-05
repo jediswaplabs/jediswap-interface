@@ -1,4 +1,4 @@
-import { validateAndParseAddress } from '@jediswap/starknet'
+import { validateAndParseAddress } from 'starknet'
 import { ChainId, JSBI, Percent, Token, WTOKEN0 } from '@jediswap/sdk'
 import { AbstractConnector } from '@web3-starknet-react/abstract-connector'
 import { TOKEN0, TOKEN1, TOKEN2, TOKEN3 } from './jediTokens'

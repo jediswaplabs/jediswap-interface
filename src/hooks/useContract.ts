@@ -1,4 +1,4 @@
-import { Contract } from '@jediswap/starknet'
+import { Contract } from 'starknet'
 import JediswapPairABI from '../constants/abis/Pair.json'
 import { useMemo } from 'react'
 import ERC20_ABI from '../constants/abis/erc20.json'
@@ -18,20 +18,14 @@ function useContract(address: string | undefined, ABI: any, withSignerIfPossible
     if (!address || !ABI || !library) return null
 
     try {
-      const contract = getContract(
-        address,
-        ABI,
-        library,
-        connector,
-        withSignerIfPossible && account ? account : undefined
-      )
+      const contract = getContract(address, ABI, library, connector)
 
       return contract
     } catch (error) {
       console.error('Failed to get contract', error)
       return null
     }
-  }, [address, ABI, library, connector, withSignerIfPossible, account])
+  }, [address, ABI, library, connector])
 }
 
 export function useTokenContract(tokenAddress?: string, withSignerIfPossible?: boolean): Contract | null {

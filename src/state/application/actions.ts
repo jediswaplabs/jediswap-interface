@@ -1,4 +1,4 @@
-import { Status } from '@jediswap/starknet'
+import { Status } from 'starknet'
 import { createAction } from '@reduxjs/toolkit'
 import { TokenList } from '@uniswap/token-lists'
 

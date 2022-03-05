@@ -3,10 +3,9 @@ import { useMemo } from 'react'
 import JediswapPairABI from '../constants/abis/Pair.json'
 import { Interface } from '@ethersproject/abi'
 import { useActiveStarknetReact } from '../hooks'
-import { useMultipleStarknetCallSingleData } from '../hooks/useStarknet'
 
 import { wrappedCurrency } from '../utils/wrappedCurrency'
-import { Abi, Args, uint256 } from '@jediswap/starknet'
+import { Abi, Args, RawArgs, uint256 } from 'starknet'
 import { usePairAddresses } from '../hooks/usePairAddress'
 import { NEVER_RELOAD, useMultipleContractSingleData, useSingleContractMultipleData } from '../state/multicall/hooks'
 import { useRegistryContract } from '../hooks/useContract'
@@ -37,7 +36,7 @@ export function usePairs(currencies: [Currency | undefined, Currency | undefined
 
   // const pairAddresses = usePairAddresses(tokens)
 
-  const callInputs: (Args | undefined)[] = tokens.map(([tokenA, tokenB]) =>
+  const callInputs: (RawArgs | undefined)[] = tokens.map(([tokenA, tokenB]) =>
     tokenA && tokenB && !tokenA.equals(tokenB) ? { token0: tokenA?.address, token1: tokenB?.address } : undefined
   )
   //
@@ -62,7 +61,7 @@ export function usePairs(currencies: [Currency | undefined, Currency | undefined
   //   [tokens]
   // )
 
-  const results = useMultipleContractSingleData(pairAddresses, JediswapPairABI as Abi[], 'get_reserves')
+  const results = useMultipleContractSingleData(pairAddresses, JediswapPairABI as Abi, 'get_reserves')
   // console.log('🚀 ~ file: Reserves.ts ~ line 60 ~ usePairs ~ results', results)
 
   return useMemo(() => {
@@ -102,7 +101,7 @@ export function usePair(tokenA?: Currency, tokenB?: Currency): [PairState, Pair 
 export function useTokenPairsWithLiquidityTokens(pairTokens: [Token, Token][]): [LiquidityPairToken[], boolean] {
   const registryContract = useRegistryContract(true)
 
-  const callInputs: (Args | undefined)[] = pairTokens.map(([tokenA, tokenB]) =>
+  const callInputs: (RawArgs | undefined)[] = pairTokens.map(([tokenA, tokenB]) =>
     tokenA && tokenB && !tokenA.equals(tokenB) ? { token0: tokenA?.address, token1: tokenB?.address } : undefined
   )
 

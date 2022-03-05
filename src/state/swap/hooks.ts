@@ -115,7 +115,7 @@ export function useDerivedSwapInfo(): {
   inputError?: string
   tradeLoading: boolean
 } {
-  const { account } = useActiveStarknetReact()
+  const { account, connectedAddress } = useActiveStarknetReact()
 
   const {
     independentField,
@@ -128,9 +128,9 @@ export function useDerivedSwapInfo(): {
   const inputCurrency = useCurrency(inputCurrencyId)
   const outputCurrency = useCurrency(outputCurrencyId)
   const address = useAddressNormalizer(recipient ?? undefined)
-  const to: string | null = (recipient === null ? account : address) ?? null
+  const to: string | null = (recipient === null ? connectedAddress : address) ?? null
 
-  const relevantTokenBalances = useCurrencyBalances(account ?? undefined, [
+  const relevantTokenBalances = useCurrencyBalances(connectedAddress ?? undefined, [
     inputCurrency ?? undefined,
     outputCurrency ?? undefined
   ])

@@ -279,7 +279,7 @@ export default function AccountDetails({
   ENSName,
   openOptions
 }: AccountDetailsProps) {
-  const { chainId, account, connector } = useActiveStarknetReact()
+  const { chainId, account, connectedAddress, connector } = useActiveStarknetReact()
   const theme = useContext(ThemeContext)
   const dispatch = useDispatch<AppDispatch>()
 
@@ -388,7 +388,7 @@ export default function AccountDetails({
                           <>
                             <div>
                               {getStatusIcon()}
-                              <p> {account && shortenAddress(account)}</p>
+                              <p> {connectedAddress && shortenAddress(connectedAddress)}</p>
                             </div>
                           </>
                         )}
@@ -425,12 +425,12 @@ export default function AccountDetails({
               <>
                 <AccountControl>
                   <div>
-                    {account && (
-                      <Copy toCopy={account}>
+                    {connectedAddress && (
+                      <Copy toCopy={connectedAddress}>
                         <span style={{ marginLeft: '4px' }}>Copy Address</span>
                       </Copy>
                     )}
-                    {chainId && account && (
+                    {chainId && connectedAddress && account && (
                       <AddressLink
                         hasENS={!!ENSName}
                         isENS={true}
@@ -447,13 +447,17 @@ export default function AccountDetails({
               <>
                 <AccountControl>
                   <div>
-                    {account && (
-                      <Copy toCopy={account}>
+                    {connectedAddress && (
+                      <Copy toCopy={connectedAddress}>
                         <span style={{ marginLeft: '8px' }}>Copy Address</span>
                       </Copy>
                     )}
-                    {chainId && account && (
-                      <AddressLink hasENS={!!ENSName} isENS={false} href={getVoyagerLink(chainId, account, 'contract')}>
+                    {chainId && connectedAddress && (
+                      <AddressLink
+                        hasENS={!!ENSName}
+                        isENS={false}
+                        href={getVoyagerLink(chainId, connectedAddress, 'contract')}
+                      >
                         <LinkIcon size={20} style={{ color: '#50D5FF' }} />
                         <span style={{ marginLeft: '8px' }}>View on Voyager</span>
                       </AddressLink>

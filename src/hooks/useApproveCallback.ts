@@ -11,7 +11,7 @@ import { computeSlippageAdjustedAmounts } from '../utils/prices'
 import { calculateGasMargin } from '../utils'
 import { useTokenContract } from './useContract'
 import { useActiveStarknetReact } from './index'
-import { AddTransactionResponse, Args, uint256 } from '@jediswap/starknet'
+import { AddTransactionResponse, Args, uint256 } from 'starknet'
 
 export enum ApprovalState {
   UNKNOWN,
@@ -25,7 +25,7 @@ export function useApproveCallback(
   amountToApprove?: CurrencyAmount,
   spender?: string
 ): [ApprovalState, () => Promise<void>] {
-  const { account, chainId, library } = useActiveStarknetReact()
+  const { connectedAddress, chainId, library } = useActiveStarknetReact()
   const token: Token | undefined =
     amountToApprove instanceof TokenAmount
       ? amountToApprove.token
@@ -33,7 +33,7 @@ export function useApproveCallback(
       ? WTOKEN0[chainId ?? 5]
       : undefined
 
-  const currentAllowance = useTokenAllowance(token, account ?? undefined, spender)
+  const currentAllowance = useTokenAllowance(token, connectedAddress ?? undefined, spender)
   const pendingApproval = useHasPendingApproval(token?.address, spender)
 
   // check the current approval status

@@ -192,8 +192,8 @@ CurrencyInputPanelProps) {
   const { t } = useTranslation()
 
   const [modalOpen, setModalOpen] = useState(false)
-  const { account } = useActiveStarknetReact()
-  const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, currency ?? undefined)
+  const { connectedAddress } = useActiveStarknetReact()
+  const selectedCurrencyBalance = useCurrencyBalance(connectedAddress ?? undefined, currency ?? undefined)
   const theme = useContext(ThemeContext)
 
   const handleDismissSearch = useCallback(() => {
@@ -209,7 +209,7 @@ CurrencyInputPanelProps) {
               <TYPE.body color={theme.text2} fontWeight={500} fontSize={14}>
                 {label}
               </TYPE.body>
-              {account && (
+              {connectedAddress && (
                 <TYPE.body
                   onClick={onMax}
                   color={theme.text2}
@@ -286,7 +286,7 @@ CurrencyInputPanelProps) {
                 style={showMaxButton ? { paddingRight: '60px' } : { paddingRight: '12px' }}
                 disabled={disableInput}
               />
-              {account && currency && showMaxButton && label !== 'To' && (
+              {connectedAddress && currency && showMaxButton && label !== 'To' && (
                 <StyledBalanceMax onClick={onMax}>MAX</StyledBalanceMax>
               )}
             </>
