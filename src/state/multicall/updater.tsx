@@ -16,6 +16,7 @@ import {
   parseCallKey,
   updateMulticallResults
 } from './actions'
+import BN from 'bn.js'
 
 // chunk calls so we do not exceed the gas limit
 const CALL_CHUNK_SIZE = 500
@@ -30,7 +31,7 @@ async function fetchChunk(
   multicallContract: Contract,
   chunk: Call[],
   minBlockNumber: number
-): Promise<{ results: string[]; blockNumber: number }> {
+): Promise<{ results: BN[]; blockNumber: number }> {
   console.debug('Fetching chunk', multicallContract, chunk, minBlockNumber)
   let resultsBlockNumber, returnData_len, returnData
 
@@ -262,13 +263,18 @@ export default function Updater(): null {
           .then(({ results: returnData, blockNumber: fetchBlockNumber }) => {
             cancellations.current = { cancellations: [], blockNumber: latestBlockNumber }
 
+            console.log('🚀 ~ file: updater.tsx ~ line 305 ~ .then ~ returnData', returnData)
+
             // accumulates the length of all previous indices
             const firstCallKeyIndex = chunkedCalls.slice(0, index).reduce<number>((memo, curr) => memo + curr.length, 0)
 
             const lastCallKeyIndex = firstCallKeyIndex + returnData.length
 
             const uint256ReturnData: Array<string> = []
-            const returnDataIterator = returnData.flat()[Symbol.iterator]()
+
+            const bnToHexArray = returnData.map(data => number.toHex(data))
+
+            const returnDataIterator = bnToHexArray.flat()[Symbol.iterator]()
 
             dispatch(
               updateMulticallResults({
@@ -278,7 +284,7 @@ export default function Updater(): null {
                   .reduce<{ [callKey: string]: string | null }>((memo, callKey, i) => {
                     const methodAbi = debouncedListeners?.[chainId]?.[callKey]?.methodAbi
 
-                    const parsedReturnData: string = parseReturnData(i, returnData, returnDataIterator, methodAbi)
+                    const parsedReturnData: string = parseReturnData(i, bnToHexArray, returnDataIterator, methodAbi)
 
                     memo[callKey] = parsedReturnData
 
