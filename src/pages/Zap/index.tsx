@@ -215,7 +215,6 @@ export default function Zap() {
       <AppBody>
         <SwapPoolTabs active={'zap'} />
         <Wrapper>
-          {/* TODO: Implement ConfirmZapModal */}
           <ConfirmZapModal
             isOpen={showConfirm}
             trade={zapTrade}
@@ -306,7 +305,7 @@ export default function Zap() {
                   width="48%"
                   altDisabledStyle={approvalState === ApprovalState.PENDING} // show solid button while waiting
                   confirmed={approvalState === ApprovalState.APPROVED}
-                  fontSize={20}
+                  fontSize={18}
                 >
                   {approvalState === ApprovalState.PENDING ? (
                     <AutoRow gap="6px" justify="center">
@@ -319,7 +318,7 @@ export default function Zap() {
                   )}
                 </ButtonConfirmed>
                 <ButtonError
-                  fontSize={20}
+                  fontSize={18}
                   onClick={() => {
                     setZapState({
                       tradeToConfirm: zapTrade,
@@ -333,9 +332,7 @@ export default function Zap() {
                   id="zap-button"
                   disabled={!isValid || approvalState !== ApprovalState.APPROVED}
                 >
-                  <Text fontSize={16} fontWeight={500}>
-                    Zap
-                  </Text>
+                  Zap
                 </ButtonError>
               </RowBetween>
             ) : insufficientBalanceError ? (
@@ -356,11 +353,8 @@ export default function Zap() {
                 }}
                 id="zap-button"
                 disabled={!isValid || !!zapCallbackError}
-                error={isValid && !zapCallbackError}
               >
-                <Text fontSize={20} fontWeight={500}>
-                  {zapInputError ? zapInputError : 'Zap'}
-                </Text>
+                <Text>{zapInputError ? zapInputError : 'Zap'}</Text>
               </ButtonError>
             )}
             {showApproveFlow && (

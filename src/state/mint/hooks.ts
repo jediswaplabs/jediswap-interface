@@ -142,6 +142,10 @@ export function useDerivedMintInfo(
     error = 'Connect Wallet'
   }
 
+  if (!currencies[Field.CURRENCY_A] || !currencies[Field.CURRENCY_B]) {
+    error = error ?? 'Select Tokens'
+  }
+
   if (pairState === PairState.INVALID) {
     error = error ?? 'Invalid pair'
   }

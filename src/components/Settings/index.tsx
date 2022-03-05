@@ -208,7 +208,7 @@ export default function SettingsTab() {
         <MenuGradientWrapper>
           <MenuFlyout>
             <AutoColumn gap="md" style={{ padding: '1rem' }}>
-              <Text fontWeight={600} fontSize={14}>
+              <Text fontWeight={700} fontSize={16}>
                 Settings
               </Text>
               <TransactionSettings

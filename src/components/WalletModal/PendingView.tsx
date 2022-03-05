@@ -19,7 +19,6 @@ const PendingSection = styled.div`
   justify-content: center;
   width: 100%;
   font-family: 'DM Sans', sans-serif;
-  letter-spacing: 0px;
   color: ${({ theme }) => theme.jediWhite};
   background: ${({ theme }) => theme.jediNavyBlue};
   & > * {
@@ -81,7 +80,6 @@ const StarknetDownloadButton = styled(ButtonOutlined)`
   font-weight: 600;
   border-color: #ff875b;
   color: ${({ theme }) => theme.jediWhite};
-  letter-spacing: 0px;
   flex: 1;
 
   &:hover {

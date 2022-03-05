@@ -10,12 +10,10 @@ export const ClickableText = styled(Text)`
 
 export const HeaderRow = styled.div`
   display: flex;
-  // font-family: Soloist Title;
   font-size: 24px;
   // font-style: normal;
-  font-weight: 400;
-  line-height: 24px;
-  letter-spacing: -0.1em;
+  font-weight: 800;
+  line-height: 100%;
   text-align: center;
   justify-content: space-between;
   color: ${({ theme }) => theme.jediWhite};
@@ -40,7 +38,6 @@ export const BalanceText = styled.div`
   font-style: normal;
   font-weight: 400;
   line-height: 16px;
-  letter-spacing: 0em;
   text-align: center;
   color: ${({ theme }) => theme.jediWhite};
   margin-bottom: 16px;

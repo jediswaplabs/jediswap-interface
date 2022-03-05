@@ -10,17 +10,19 @@ export const ZapHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 8px;
+
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 100%;
 `
 
 export const HeaderRow = styled.div`
   display: flex;
-  // font-family: Soloist Title;
   font-size: 24px;
   // font-style: normal;
   font-weight: 400;
   line-height: 24px;
-  letter-spacing: -0.1em;
   text-align: center;
   justify-content: space-between;
   color: ${({ theme }) => theme.jediWhite};
@@ -30,7 +32,6 @@ export const HeaderRow = styled.div`
 export const HeaderNote = styled.div`
   padding: 10px 12px;
   font-family: 'DM Sans', sans-serif;
-  letter-spacing: 0px;
   font-weight: normal;
   font-size: 14px;
   line-height: 120%;

@@ -49,7 +49,6 @@ const BalanceText = styled.div`
   font-style: normal;
   font-weight: 400;
   line-height: 16px;
-  letter-spacing: 0em;
   text-align: center;
   color: ${({ theme }) => theme.jediWhite};
 `
@@ -60,7 +59,6 @@ const Separator = styled.div`
 const HeaderNote = styled.div`
   padding: 10px 12px;
   font-family: 'DM Sans', sans-serif;
-  letter-spacing: 0px;
   font-weight: normal;
   font-size: 14px;
   line-height: 120%;
@@ -452,6 +450,7 @@ export default function AddLiquidity({
                           onClick={approveACallback}
                           disabled={approvalA === ApprovalState.PENDING}
                           width={approvalB !== ApprovalState.APPROVED ? '48%' : '100%'}
+                          fontSize={approvalB !== ApprovalState.APPROVED ? 18 : 21}
                         >
                           {approvalA === ApprovalState.PENDING ? (
                             <Dots>Approving {currencies[Field.CURRENCY_A]?.symbol}</Dots>
@@ -465,6 +464,7 @@ export default function AddLiquidity({
                           onClick={approveBCallback}
                           disabled={approvalB === ApprovalState.PENDING}
                           width={approvalA !== ApprovalState.APPROVED ? '48%' : '100%'}
+                          fontSize={approvalA !== ApprovalState.APPROVED ? 18 : 21}
                         >
                           {approvalB === ApprovalState.PENDING ? (
                             <Dots>Approving {currencies[Field.CURRENCY_B]?.symbol}</Dots>
@@ -482,9 +482,7 @@ export default function AddLiquidity({
                   disabled={!isValid || approvalA !== ApprovalState.APPROVED || approvalB !== ApprovalState.APPROVED}
                   error={!isValid && !!parsedAmounts[Field.CURRENCY_A] && !!parsedAmounts[Field.CURRENCY_B]}
                 >
-                  <Text fontSize={20} fontWeight={500}>
-                    {error ?? 'Supply'}
-                  </Text>
+                  <Text>{error ?? 'Supply'}</Text>
                 </ButtonError>
               </AutoColumn>
             )}

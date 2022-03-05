@@ -67,7 +67,6 @@ const HeaderText = styled.div`
   font-size: 1rem;
   font-weight: 500;
   font-family: 'DM Sans', sans-serif;
-  letter-spacing: 0px;
 `
 
 const SubHeader = styled.div`
@@ -75,7 +74,6 @@ const SubHeader = styled.div`
   margin-top: 10px;
   font-size: 12px;
   font-family: 'DM Sans', sans-serif;
-  letter-spacing: 0px;
 `
 
 const IconWrapper = styled.div<{ size?: number | null }>`

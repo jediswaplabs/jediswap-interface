@@ -167,9 +167,11 @@ const HideSmall = styled.div`
 
 const NetworkCard = styled(YellowCard)`
   border-radius: 10px;
-  padding: 14px;
+  padding: 12px;
   flex: 1;
-  font-size: 14px;
+  font-size: 16px;
+  font-weight: 600;
+
   ${({ theme }) => theme.mediaWidth.upToSmall`
     margin: 0;
     margin-right: 0.5rem;
@@ -224,15 +226,14 @@ const StyledNavLink = styled(NavLink).attrs({
   margin: 0 12px;
   padding: 12px 0;
 
-font-weight: 400;
-line-height: 16px;
-letter-spacing: -0.1em;
-text-align: center;
+  font-weight: 800;
+  line-height: 100%;
+  text-align: center;
+  text-transform: uppercase;
 
 
   &.${activeClassName} {
- 
-    font-weight: 600;
+    
     color:rgba(255, 255, 255, 0.8);
     /* border-bottom: 2px solid rgba(49, 255, 156, 0.5); */
     /* display: block; */
@@ -311,7 +312,6 @@ const StarkNetCard = styled.div`
   font-style: normal;
   font-weight: 400;
   line-height: 20px;
-  letter-spacing: 0px;
   // text-align: center;
 `
 
@@ -359,13 +359,13 @@ function Header({ history }: { history: any }) {
             history.location.pathname.includes('/remove')
           }
         >
-          {t('pool')}
+          {t('Pool')}
         </StyledNavLink>
         <StyledNavLink id={`swap-nav-link`} to={'/zap'} isActive={() => history.location.pathname.includes('/zap')}>
-          {t('zap')}
+          {t('Zap')}
         </StyledNavLink>
         <StyledNavLink id={`swap-nav-link`} to={'/stake'} isActive={() => history.location.pathname.includes('/stake')}>
-          {t('stake')}
+          {t('Stake')}
         </StyledNavLink>
         {/* <StyledNavLink id={`stake-nav-link`} to={'/uni'} isActive={() => history.location.pathname.includes('/uni')}>
             UNI

@@ -24,7 +24,6 @@ const SlippageText = styled.div`
   font-style: normal;
   font-weight: 400;
   line-height: 20px;
-  letter-spacing: 0px;
   text-align: left;
 `
 
@@ -66,7 +65,6 @@ const Option = styled(FancyButton)<{ active: boolean }>`
   background-color: ${({ active, theme }) => (active ? theme.jediNavyBlue : 'transparent')};
   color: ${({ active, theme }) => (active ? theme.white : theme.jediWhite)};
   font-family: 'DM Sans', sans-serif;
-  letter-spacing: 0px;
   border-radius: 4px;
   border-color: ${({ active, theme }) => active && theme.jediBlue};
 `
@@ -99,8 +97,7 @@ const OptionCustom = styled(FancyButton)<{ active?: boolean; warning?: boolean }
   background-color: ${({ theme }) => theme.jediNavyBlue};
   color: ${({ active, theme }) => (active ? theme.white : theme.jediWhite)};
   font-family: 'DM Sans', sans-serif;
-  letter-spacing: 0px;
-  border-radius: 4px;
+   border-radius: 4px;
   border-color: ${({ active, theme }) => active && theme.jediBlue};
   margin-right: 16px;
   padding-left:5px ;
@@ -114,8 +111,7 @@ const OptionCustom = styled(FancyButton)<{ active?: boolean; warning?: boolean }
     border-radius: 4px;
     background-color: transparent;
     font-family: 'DM Sans', sans-serif;
-    letter-spacing: 0px;
-    font-size: 16px;
+     font-size: 16px;
   }
 `
 
@@ -130,7 +126,6 @@ const MinutesText = styled.div`
   font-family: 'DM Sans', sans-serif;
   font-size: 14px;
   padding-left: 8px;
-  letter-spacing: 0px;
   color: ${({ theme }) => theme.jediWhite};
 `
 
