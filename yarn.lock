@@ -3049,10 +3049,10 @@
   dependencies:
     "@web3-starknet-react/types" "^1.0.0"
 
-"@web3-starknet-react/argentx-connector@^1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@web3-starknet-react/argentx-connector/-/argentx-connector-1.0.2.tgz#50dcc7d88129819cdcbd7cc930e3df32dc369a09"
-  integrity sha512-C6k/JfFY5sRKisSJXWynLslVqxXvHQAL7pE031RzfqknrCI1anz4tYq/Kv4i6Y3Ao3mg4ZQDrUpwjfC3lLN6sQ==
+"@web3-starknet-react/argentx-connector@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@web3-starknet-react/argentx-connector/-/argentx-connector-1.0.3.tgz#5791ffdd46e572a350c05c828215022928a7d4ec"
+  integrity sha512-bxmNuIh14Y9RFNO0eYEhgfToUc4j1XUXJL20j5Y3QFWMMjWTtxDnekvaSxlqDVf4P7ldKRKgNcMdBOZKWxcYUw==
   dependencies:
     "@web3-starknet-react/abstract-connector" "^1.0.0"
     "@web3-starknet-react/types" "^1.0.0"
