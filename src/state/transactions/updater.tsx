@@ -50,12 +50,7 @@ export default function Updater(): null {
           .getTransactionReceipt({ txHash: hash })
           .then(receipt => {
             if (receipt) {
-              if (
-                !transactions[hash].receipt ||
-                (transactions[hash].receipt?.status !== receipt.status &&
-                  receipt.block_number &&
-                  typeof receipt.block_number === 'number')
-              ) {
+              if (!transactions[hash].receipt || transactions[hash].receipt?.status !== receipt.status) {
                 dispatch(
                   updateTransaction({
                     chainId,
