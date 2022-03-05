@@ -1,4 +1,4 @@
-import { Contract, AddTransactionResponse, Args } from 'starknet'
+import { Contract, AddTransactionResponse, Args, stark, Call, RawArgs } from 'starknet'
 // import { TransactionResponse } from '@ethersproject/providers'
 import { Currency, currencyEquals, TOKEN0, Percent, WTOKEN0 } from '@jediswap/sdk'
 import React, { useCallback, useContext, useMemo, useState } from 'react'
@@ -42,6 +42,7 @@ import { useWalletModalToggle } from '../../state/application/hooks'
 import { useUserSlippageTolerance } from '../../state/user/hooks'
 
 import { parsedAmountToUint256Args } from '../../utils'
+import { useApprovalCall } from '../../hooks/useApproveCall'
 
 export default function RemoveLiquidity({
   history,
@@ -107,22 +108,11 @@ export default function RemoveLiquidity({
   // pair contract
   const pairContract: Contract | null = usePairContract(pair?.liquidityToken?.address)
 
-  // allowance handling
-  const [signatureData, setSignatureData] = useState<{ v: number; r: string; s: string; deadline: number } | null>(null)
-  const [approval, approveCallback] = useApproveCallback(parsedAmounts[Field.LIQUIDITY], ROUTER_ADDRESS)
-
-  async function onAttemptToApprove() {
-    if (!pairContract || !pair || !library || !deadline) throw new Error('missing dependencies')
-    const liquidityAmount = parsedAmounts[Field.LIQUIDITY]
-    if (!liquidityAmount) throw new Error('missing liquidity amount')
-
-    approveCallback()
-  }
+  const approvalCall = useApprovalCall(parsedAmounts[Field.LIQUIDITY], ROUTER_ADDRESS)
 
   // wrapped onUserInput to clear signatures
   const onUserInput = useCallback(
     (field: Field, typedValue: string) => {
-      setSignatureData(null)
       return _onUserInput(field, typedValue)
     },
     [_onUserInput]
@@ -142,6 +132,11 @@ export default function RemoveLiquidity({
   const addTransaction = useTransactionAdder()
   async function onRemove() {
     if (!chainId || !library || !account || !deadline || !connectedAddress) throw new Error('missing dependencies')
+
+    if (!router?.connectedTo) return
+
+    if (!approvalCall) return
+
     const { [Field.CURRENCY_A]: currencyAmountA, [Field.CURRENCY_B]: currencyAmountB } = parsedAmounts
     if (!currencyAmountA || !currencyAmountB) {
       throw new Error('missing currency amounts')
@@ -162,7 +157,7 @@ export default function RemoveLiquidity({
 
     if (!tokenA || !tokenB) throw new Error('could not wrap')
 
-    const removeLiquidityArgs: Args = {
+    const removeLiquidityArgs: RawArgs = {
       tokenA: wrappedCurrency(currencyA, chainId)?.address ?? '',
       tokenB: wrappedCurrency(currencyB, chainId)?.address ?? '',
       liquidity: parsedAmountToUint256Args(liquidityAmount.raw),
@@ -172,9 +167,18 @@ export default function RemoveLiquidity({
       deadline: deadline.toHexString()
     }
 
+    const removeLiquidityCalldata = stark.compileCalldata(removeLiquidityArgs)
+
+    const removeLiquidityCall: Call = {
+      contractAddress: router.connectedTo,
+      entrypoint: 'remove_liquidity',
+      calldata: removeLiquidityCalldata
+    }
+
     setAttemptingTxn(true)
-    await router
-      ?.invoke('remove_liquidity', removeLiquidityArgs)
+
+    await account
+      .execute([approvalCall, removeLiquidityCall])
       .then((response: AddTransactionResponse) => {
         setAttemptingTxn(false)
 
@@ -268,11 +272,7 @@ export default function RemoveLiquidity({
             </RowBetween>
           </>
         )}
-        <ButtonPrimary
-          disabled={!(approval === ApprovalState.APPROVED || signatureData !== null)}
-          onClick={onRemove}
-          style={{ marginTop: '20px', marginBottom: '10px' }}
-        >
+        <ButtonPrimary onClick={onRemove} style={{ marginTop: '20px', marginBottom: '10px' }}>
           <Text>Confirm</Text>
         </ButtonPrimary>
       </>
@@ -320,7 +320,6 @@ export default function RemoveLiquidity({
 
   const handleDismissConfirmation = useCallback(() => {
     setShowConfirm(false)
-    setSignatureData(null) // important that we clear signature data to avoid bad sigs
     // if there was a tx hash, we want to clear the input
     if (txHash) {
       onUserInput(Field.LIQUIDITY_PERCENT, '0')
@@ -511,26 +510,11 @@ export default function RemoveLiquidity({
                 <ButtonLight onClick={toggleWalletModal}>Connect Wallet</ButtonLight>
               ) : (
                 <RowBetween>
-                  <ButtonConfirmed
-                    onClick={onAttemptToApprove}
-                    confirmed={approval === ApprovalState.APPROVED || signatureData !== null}
-                    disabled={approval !== ApprovalState.NOT_APPROVED || signatureData !== null}
-                    mr="0.5rem"
-                    fontSize={18}
-                  >
-                    {approval === ApprovalState.PENDING ? (
-                      <Dots>Approving</Dots>
-                    ) : approval === ApprovalState.APPROVED || signatureData !== null ? (
-                      'Approved'
-                    ) : (
-                      'Approve'
-                    )}
-                  </ButtonConfirmed>
                   <ButtonError
                     onClick={() => {
                       setShowConfirm(true)
                     }}
-                    disabled={!isValid || (signatureData === null && approval !== ApprovalState.APPROVED)}
+                    disabled={!isValid}
                     error={!isValid && !!parsedAmounts[Field.CURRENCY_A] && !!parsedAmounts[Field.CURRENCY_B]}
                     style={{ padding: '22px 10px' }}
                   >
