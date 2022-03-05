@@ -1,4 +1,4 @@
-import { Args, uint256 } from 'starknet'
+import { Args, uint256, number } from 'starknet'
 import { useCallback, useMemo, useState } from 'react'
 import { useActiveStarknetReact } from './index'
 import { useTransactionAdder } from '../state/transactions/hooks'
@@ -16,7 +16,7 @@ export function useMintCallback(tokenAddress: string | undefined): [MintState, (
   const addTransaction = useTransactionAdder()
   const tokenContract = useTokenContract(tokenAddress, true)
   const token = useToken(tokenAddress)
-  const { connectedAddress } = useActiveStarknetReact()
+  const { connectedAddress, account } = useActiveStarknetReact()
 
   const validatedAddress = isAddress(connectedAddress)
 
@@ -27,11 +27,13 @@ export function useMintCallback(tokenAddress: string | undefined): [MintState, (
   }, [token, tokenAddress, tokenContract, validatedAddress])
 
   const mintCallback = useCallback(async () => {
-    if (!tokenAddress || !tokenContract || !token || !validatedAddress) return
+    if (!tokenAddress || !tokenContract || !token || !validatedAddress || !account) return
 
     const tokenAmount = tryParseAmount('1000', token)
 
     if (!tokenAmount) return
+
+    if (!tokenContract.connectedTo) return
 
     const uint256TokenAmount = uint256.bnToUint256(tokenAmount.raw.toString())
 
@@ -40,8 +42,14 @@ export function useMintCallback(tokenAddress: string | undefined): [MintState, (
       amount: { type: 'struct', ...uint256TokenAmount }
     }
 
-    return tokenContract
-      .invoke('mint', mintArgs)
+    // return tokenContract
+    //   .invoke('mint', mintArgs)
+    return account
+      .execute({
+        contractAddress: tokenContract.connectedTo,
+        entrypoint: 'mint',
+        calldata: [number.toBN(validatedAddress).toString(), ...Object.values(uint256TokenAmount)]
+      })
       .then(response => {
         addTransaction(response, {
           summary: `Mint ${tokenAmount.toExact()} ${token.symbol}`
@@ -51,7 +59,7 @@ export function useMintCallback(tokenAddress: string | undefined): [MintState, (
         console.debug(`Failed to mint ${token.symbol}`, error)
         throw error
       })
-  }, [addTransaction, token, tokenAddress, tokenContract, validatedAddress])
+  }, [account, addTransaction, token, tokenAddress, tokenContract, validatedAddress])
 
   return [mintState, mintCallback]
 }
