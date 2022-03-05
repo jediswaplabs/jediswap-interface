@@ -1,5 +1,5 @@
 import { BigNumber } from '@ethersproject/bignumber'
-import { Contract, Args, uint256 } from 'starknet'
+import { Contract, Args, uint256, RawArgs, stark, Call } from 'starknet'
 import { JSBI, Percent, Router, SwapParameters as ZapParameters, TokenAmount, Trade, TradeType } from '@jediswap/sdk'
 import { useMemo } from 'react'
 import { BIPS_BASE, INITIAL_ALLOWED_SLIPPAGE } from '../constants'
@@ -11,6 +11,7 @@ import { useActiveStarknetReact } from './index'
 import useTransactionDeadline from './useTransactionDeadline'
 import { wrappedCurrency } from '../utils/wrappedCurrency'
 import { computeSlippageAdjustedLPAmount } from '../utils/prices'
+import { useApprovalCallFromTrade } from './useApproveCall'
 // import useENS from './useENS'
 
 export enum ZapCallbackState {
@@ -101,6 +102,7 @@ export function useZapCallback(
 ): { state: ZapCallbackState; callback: null | (() => Promise<string>); error: string | null } {
   const { account, chainId, library } = useActiveStarknetReact()
 
+  const approvalCall = useApprovalCallFromTrade(trade, allowedSlippage, 'zap')
   const zapCalls = useZapCallArguments(trade, allowedSlippage, recipientAddressOrName)
 
   const addTransaction = useTransactionAdder()
@@ -134,6 +136,10 @@ export function useZapCallback(
       return { state: ZapCallbackState.INVALID, callback: null, error: 'Input Token Missing' }
     }
 
+    if (!approvalCall) {
+      return { state: ZapCallbackState.INVALID, callback: null, error: 'Missing approval call' }
+    }
+
     return {
       state: ZapCallbackState.VALID,
       callback: async function onZap(): Promise<string> {
@@ -160,9 +166,8 @@ export function useZapCallback(
 
         const uint256AmountIn = uint256.bnToUint256(amountIn as string)
         const uint256_LP_AmountOut = uint256.bnToUint256(minLPAmountOut?.raw.toString())
-        console.log('🚀 ~ file: useZapCallback.ts ~ line 158 ~ onZap ~ uint256_LP_AmountOut', uint256_LP_AmountOut)
 
-        const zapArgs: Args = {
+        const zapArgs: RawArgs = {
           from_token_address: inputToken.address,
           pair_address: lpAmountOut.token.address,
           amount: { type: 'struct', ...uint256AmountIn },
@@ -171,8 +176,16 @@ export function useZapCallback(
           transfer_residual: '1'
         }
 
-        return contract
-          .invoke('zap_in', zapArgs)
+        const zapCalldata = stark.compileCalldata(zapArgs)
+
+        const zapCall: Call = {
+          contractAddress: contract.connectedTo ?? '',
+          entrypoint: 'zap_in',
+          calldata: zapCalldata
+        }
+
+        return account
+          .execute([approvalCall, zapCall])
           .then(response => {
             const inputSymbol = trade.inputAmount.currency.symbol
             const outputSymbol = lpAmountOut.token.symbol
