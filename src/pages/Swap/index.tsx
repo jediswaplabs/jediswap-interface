@@ -173,7 +173,7 @@ export default function Swap() {
   )
   const noRoute = !route
 
-  const [mintState, mintCallback] = useMintCallback(mintAddress)
+  const [mintState, mintCallback] = useMintCallback()
 
   // check whether the user has approved the router on the input token
   const [approval, approveCallback] = useApproveCallbackFromTrade(trade, allowedSlippage)
@@ -279,18 +279,21 @@ export default function Swap() {
     onCurrencySelection
   ])
 
-  const handleMint = useCallback((tokenAddress: string) => {
-    setMintAddress(tokenAddress)
-  }, [])
+  const handleMint = useCallback(() => {
+    // setMintAddress(tokenAddress)
+    mintCallback().then(() => {
+      console.log(`Minting ${mintAddress}`)
+    })
+  }, [mintAddress, mintCallback])
 
-  useEffect(() => {
-    if (mintAddress && mintState === MintState.VALID) {
-      mintCallback().then(() => {
-        console.log(`Minting ${mintAddress}`)
-        setMintAddress(undefined)
-      })
-    }
-  }, [mintAddress, mintCallback, mintState])
+  // useEffect(() => {
+  //   if (mintAddress && mintState === MintState.VALID) {
+  //     mintCallback().then(() => {
+  //       console.log(`Minting ${mintAddress}`)
+  //       setMintAddress(undefined)
+  //     })
+  //   }
+  // }, [mintAddress, mintCallback, mintState])
 
   return (
     <>
@@ -529,11 +532,9 @@ export default function Swap() {
       {account && (
         <MintSection>
           <AutoRow justify={'center'}>
-            {Object.entries({ [TOKEN0.address]: TOKEN0, ...jediTokensList }).map(([tokenAddress, token]) => (
-              <AutoColumn key={tokenAddress} style={{ margin: '6px' }}>
-                <MintButton onClick={() => handleMint(tokenAddress)}> Mint {token.symbol} </MintButton>
-              </AutoColumn>
-            ))}
+            <AutoColumn style={{ margin: '6px' }}>
+              <MintButton onClick={handleMint}> Mint Jedi Test Tokens </MintButton>
+            </AutoColumn>
           </AutoRow>
         </MintSection>
       )}
