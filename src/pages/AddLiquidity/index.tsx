@@ -38,10 +38,11 @@ import { ConfirmAddModalBottom } from './ConfirmAddModalBottom'
 import { currencyId } from '../../utils/currencyId'
 import { PoolPriceBar } from './PoolPriceBar'
 import { useRouterContract } from '../../hooks/useContract'
-import { AddTransactionResponse, Args, uint256 } from 'starknet'
+import { AddTransactionResponse, Args, Call, RawArgs, stark, uint256 } from 'starknet'
 import { parsedAmountToUint256Args } from '../../utils'
 
 import styled from 'styled-components'
+import { useApprovalCall } from '../../hooks/useApproveCall'
 
 const BalanceText = styled.div`
   font-family: 'DM Sans', sans-serif;
@@ -157,14 +158,21 @@ export default function AddLiquidity({
   )
 
   // check whether the user has approved the router on the tokens
-  const [approvalA, approveACallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_A], ROUTER_ADDRESS)
-  const [approvalB, approveBCallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_B], ROUTER_ADDRESS)
+  // const [approvalA, approveACallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_A], ROUTER_ADDRESS)
+  // const [approvalB, approveBCallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_B], ROUTER_ADDRESS)
+  const approvalACall = useApprovalCall(parsedAmounts[Field.CURRENCY_A], ROUTER_ADDRESS)
+  const approvalBCall = useApprovalCall(parsedAmounts[Field.CURRENCY_B], ROUTER_ADDRESS)
 
   const addTransaction = useTransactionAdder()
 
   async function onAdd() {
     if (!chainId || !library || !account || !connectedAddress) return
+
+    if (!approvalACall || !approvalBCall) return
+
     const router = routerContract
+
+    if (!router?.connectedTo) return
 
     const { [Field.CURRENCY_A]: parsedAmountA, [Field.CURRENCY_B]: parsedAmountB } = parsedAmounts
     if (!parsedAmountA || !parsedAmountB || !currencyA || !currencyB || !deadline) {
@@ -191,7 +199,7 @@ export default function AddLiquidity({
     //   deadline.toHexString()
     // ]
 
-    const args: Args = {
+    const args: RawArgs = {
       tokenA: wrappedCurrency(currencyA, chainId)?.address ?? '',
       tokenB: wrappedCurrency(currencyB, chainId)?.address ?? '',
       amountADesired: parsedAmountToUint256Args(parsedAmountA.raw),
@@ -204,9 +212,17 @@ export default function AddLiquidity({
 
     // value = null
 
+    const calldata = stark.compileCalldata(args)
+
+    const addLiquidityCall: Call = {
+      contractAddress: router.connectedTo,
+      entrypoint: 'add_liquidity',
+      calldata
+    }
+
     setAttemptingTxn(true)
-    await router
-      ?.invoke('add_liquidity', args)
+    await account
+      .execute([approvalACall, approvalBCall, addLiquidityCall])
       .then(response => {
         setAttemptingTxn(false)
 
@@ -439,47 +455,11 @@ export default function AddLiquidity({
               <ButtonGradient onClick={toggleWalletModal}>Connect Wallet</ButtonGradient>
             ) : (
               <AutoColumn gap={'md'}>
-                {(approvalA === ApprovalState.NOT_APPROVED ||
-                  approvalA === ApprovalState.PENDING ||
-                  approvalB === ApprovalState.NOT_APPROVED ||
-                  approvalB === ApprovalState.PENDING) &&
-                  isValid && (
-                    <RowBetween>
-                      {approvalA !== ApprovalState.APPROVED && (
-                        <ButtonPrimary
-                          onClick={approveACallback}
-                          disabled={approvalA === ApprovalState.PENDING}
-                          width={approvalB !== ApprovalState.APPROVED ? '48%' : '100%'}
-                          fontSize={approvalB !== ApprovalState.APPROVED ? 18 : 21}
-                        >
-                          {approvalA === ApprovalState.PENDING ? (
-                            <Dots>Approving {currencies[Field.CURRENCY_A]?.symbol}</Dots>
-                          ) : (
-                            'Approve ' + currencies[Field.CURRENCY_A]?.symbol
-                          )}
-                        </ButtonPrimary>
-                      )}
-                      {approvalB !== ApprovalState.APPROVED && (
-                        <ButtonPrimary
-                          onClick={approveBCallback}
-                          disabled={approvalB === ApprovalState.PENDING}
-                          width={approvalA !== ApprovalState.APPROVED ? '48%' : '100%'}
-                          fontSize={approvalA !== ApprovalState.APPROVED ? 18 : 21}
-                        >
-                          {approvalB === ApprovalState.PENDING ? (
-                            <Dots>Approving {currencies[Field.CURRENCY_B]?.symbol}</Dots>
-                          ) : (
-                            'Approve ' + currencies[Field.CURRENCY_B]?.symbol
-                          )}
-                        </ButtonPrimary>
-                      )}
-                    </RowBetween>
-                  )}
                 <ButtonError
                   onClick={() => {
                     expertMode ? onAdd() : setShowConfirm(true)
                   }}
-                  disabled={!isValid || approvalA !== ApprovalState.APPROVED || approvalB !== ApprovalState.APPROVED}
+                  disabled={!isValid}
                   error={!isValid && !!parsedAmounts[Field.CURRENCY_A] && !!parsedAmounts[Field.CURRENCY_B]}
                 >
                   <Text>{error ?? 'Supply'}</Text>
