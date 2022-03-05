@@ -36,7 +36,6 @@ const LiquidityWrapperCard = styled(DataCard)`
   overflow: hidden;
   border: 1px solid ${({ theme }) => theme.jediBlue};
   font-family: 'DM Sans', sans-serif;
-  letter-spacing: 0px;
   box-shadow: inset 0px 30.0211px 0.1072px -27.7118px rgba(255, 255, 255, 0.5),
     inset 0px 5.38841px 8.46749px -3.07909px #ffffff, inset 0px -63.1213px 52.3445px -49.2654px rgba(96, 68, 145, 0.3),
     inset 0px 75.4377px 76.9772px -36.9491px rgba(202, 172, 255, 0.3),
@@ -82,8 +81,7 @@ const CreatePoolButton = styled(ResponsiveButtonSecondary)`
   border: 2px solid ${({ theme }) => theme.jediWhite};
   font-size: 16px;
   line-height: 20px;
-  letter-spacing: -3px;
-  color: ${({ theme }) => theme.jediWhite};
+   color: ${({ theme }) => theme.jediWhite};
   border-radius: 8px;
 
   :hover {
@@ -222,15 +220,15 @@ export default function Pool() {
 
             {!account ? (
               <Card padding="40px">
-                <TYPE.body color={theme.jediBlue} textAlign="center">
+                <TYPE.mediumHeader color={theme.jediBlue} textAlign="center">
                   Connect to a wallet to view your liquidity
-                </TYPE.body>
+                </TYPE.mediumHeader>
               </Card>
             ) : pairIsLoading ? (
               <EmptyProposals>
-                <TYPE.body color={theme.jediBlue} textAlign="center">
+                <TYPE.mediumHeader color={theme.jediBlue} textAlign="center">
                   <Dots>Loading</Dots>
-                </TYPE.body>
+                </TYPE.mediumHeader>
               </EmptyProposals>
             ) : allPairsWithLiquidity?.length > 0 ? (
               <>

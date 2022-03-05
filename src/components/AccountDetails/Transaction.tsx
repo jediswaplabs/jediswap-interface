@@ -18,7 +18,6 @@ const TransactionStatusText = styled.div`
   /* display: flex;
   align-items: center; */
   font-family: 'DM Sans', sans-serif;
-  letter-spacing: 0px;
   font-weight: 400;
   font-size: 0.875rem;
   overflow: hidden;
@@ -49,7 +48,6 @@ const PendingText = styled.div`
   font-style: normal;
   font-weight: 400;
   line-height: 20px;
-  letter-spacing: 0px;
   text-align: left;
   color: ${({ theme }) => theme.jediPink};
 `

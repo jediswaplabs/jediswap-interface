@@ -15,8 +15,9 @@ const Base = styled(RebassButton)<{
 }>`
   padding: ${({ padding }) => (padding ? padding : '22px 10px')};
   width: ${({ width }) => (width ? width : '100%')};
-  font-size: ${({ fontSize }) => (fontSize ? `${fontSize}px` : '16px')};
-  font-weight: 500;
+  font-size: ${({ fontSize }) => (fontSize ? `${fontSize}px` : '24px')};
+  line-height: 20px;
+  font-weight: 800;
   text-align: center;
   border-radius: 8px;
   border-radius: ${({ borderRadius }) => borderRadius && borderRadius};
@@ -100,8 +101,8 @@ export const ButtonLight = styled(Base)`
 export const ButtonGray = styled(Base)`
   background-color: ${({ theme }) => theme.bg3};
   color: ${({ theme }) => theme.text2};
-  font-size: 16px;
-  font-weight: 500;
+  /* font-size: 16px;
+  font-weight: 500; */
   &:focus {
     box-shadow: 0 0 0 1pt ${({ theme, disabled }) => !disabled && darken(0.05, theme.bg2)};
     background-color: ${({ theme, disabled }) => !disabled && darken(0.05, theme.bg2)};
@@ -274,7 +275,6 @@ export const RedGradientButton = styled(Base)`
   padding: 22px 17px;
   border: none;
   color: ${({ theme }) => theme.jediWhite};
-  letter-spacing: -0.1em;
   text-align: center;
 `
 

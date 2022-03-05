@@ -92,7 +92,6 @@ const Blurb = styled.div`
   margin-top: 2rem;
   font-family: 'DM Sans', sans-serif;
   font-size: 1rem;
-  letter-spacing: 0px;
   color: ${({ theme }) => theme.jediWhite};
   ${({ theme }) => theme.mediaWidth.upToMedium`
     margin: 1rem;

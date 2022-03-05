@@ -119,15 +119,12 @@ const Text = styled.p`
   font-weight: 500;
   font-size: 16px;
   line-height: 20px;
-  letter-spacing: 1px;
 `
 const ConnectStateText = styled(Text)`
-  font-family: Soloist Title;
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
   line-height: 20px;
-  letter-spacing: -2px;
   text-align: left;
 `
 const NetworkIcon = styled.img`

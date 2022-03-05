@@ -33,7 +33,6 @@ const Wrapper = styled.div`
 
   font-weight: 400;
   line-height: 14px;
-  letter-spacing: 0em;
   text-align: left;
   position: relative;
 `
@@ -191,9 +190,7 @@ export default function SwapModalFooter({
       <AutoRow>
         <ButtonWrapper>
           <ButtonError onClick={onConfirm} disabled={disabledConfirm} error={severity > 2} id="confirm-swap-or-send">
-            <Text fontSize={20} fontWeight={500}>
-              {severity > 2 ? 'Swap Anyway' : 'Confirm Swap'}
-            </Text>
+            <Text>{severity > 2 ? 'Swap Anyway' : 'Confirm Swap'}</Text>
           </ButtonError>
         </ButtonWrapper>
         {swapErrorMessage ? <SwapCallbackError error={swapErrorMessage} /> : null}

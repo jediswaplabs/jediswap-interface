@@ -11,7 +11,7 @@ import { useTokenBalance } from '../../state/wallet/hooks'
 import { DMSansText } from '../../theme'
 import { currencyId } from '../../utils/currencyId'
 import { unwrappedToken } from '../../utils/wrappedCurrency'
-import { ButtonEmpty, ButtonGradient } from '../Button'
+import { ButtonEmpty, ButtonGradient, ButtonPrimary } from '../Button'
 import { transparentize } from 'polished'
 import noise from '../../assets/images/noise.png'
 
@@ -64,12 +64,16 @@ const CardText = styled.div<{
   fontColor?: string
 }>`
   font-family: 'DM Sans', sans-serif;
-  letter-spacing: 0px;
   color: ${({ fontColor, theme }) => (fontColor ? fontColor : theme.jediWhite)};
   font-weight: ${({ fontWeight }) => (fontWeight ? fontWeight : 'normal')};
   font-size: ${({ fontSize }) => (fontSize ? `${fontSize}px` : '14px')};
   line-height: ${({ lineHeight }) => (lineHeight ? lineHeight : '140%')};
   text-align: ${({ textAlign }) => (textAlign ? textAlign : 'center')};
+`
+
+const ManageText = styled.div`
+  font-weight: 600;
+  font-size: 16px;
 `
 
 interface PositionCardProps {
@@ -225,7 +229,9 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
         <ButtonEmpty padding="0" width="100%" onClick={() => setShowMore(!showMore)}>
           <FixedHeightRow>
             <RowFixed>
-              <DoubleCurrencyLogo currency0={currency0} currency1={currency1} margin={true} size={20} />
+              <div style={{ color: 'white' }}>
+                <DoubleCurrencyLogo currency0={currency0} currency1={currency1} margin={true} size={20} />
+              </div>
               <DMSansText.mediumHeader>
                 {!currency0 || !currency1 ? <Dots>Loading</Dots> : `${currency0.symbol} / ${currency1.symbol}`}
               </DMSansText.mediumHeader>
@@ -238,18 +244,12 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
               width="fit-content"
               onClick={() => setShowMore(!showMore)}
             > */}
-              {showMore ? (
-                <>
-                  {' '}
-                  Manage
-                  <ChevronUp size="20" /*style={{ marginLeft: '10px' }}*/ />
-                </>
-              ) : (
-                <>
-                  Manage
-                  <ChevronDown size="20" /*style={{ marginLeft: '10px' }}*/ />
-                </>
-              )}
+
+              <>
+                <ManageText>Manage</ManageText>
+                {showMore ? <ChevronUp size="20" /> : <ChevronDown size="20" />}
+              </>
+
               {/* </ButtonEmpty> */}
             </RowFixed>
           </FixedHeightRow>
@@ -296,24 +296,26 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
               </DMSansText.mediumBody>
             </FixedHeightRow>
             <RowBetween marginTop="15px">
-              <ButtonGradient
+              <ButtonPrimary
                 borderRadius="8px"
                 as={Link}
                 to={`/add/${currencyId(currency0)}/${currencyId(currency1)}`}
                 width="48%"
                 style={{ padding: '12px 8px' }}
+                fontSize={18}
               >
                 Add
-              </ButtonGradient>
-              <ButtonGradient
+              </ButtonPrimary>
+              <ButtonPrimary
                 borderRadius="8px"
                 as={Link}
                 width="48%"
                 to={`/remove/${currencyId(currency0)}/${currencyId(currency1)}`}
                 style={{ padding: '12px 8px' }}
+                fontSize={18}
               >
                 Remove
-              </ButtonGradient>
+              </ButtonPrimary>
             </RowBetween>
           </AutoColumn>
         )}

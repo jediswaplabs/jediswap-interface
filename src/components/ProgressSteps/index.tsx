@@ -11,7 +11,6 @@ const Grouping = styled(RowBetween)`
   width: 50%;
   font-family: 'DM Sans', sans-serif;
   font-size: 18px;
-  letter-spacing: 0px;
   font-weight: 700;
 `
 

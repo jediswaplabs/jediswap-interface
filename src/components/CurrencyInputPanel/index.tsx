@@ -30,8 +30,7 @@ const CurrencySelect = styled.button<{ selected: boolean }>`
   max-width: 132px;
   font-size: 12px;
   font-family: 'DM Sans', sans-serif;
-  letter-spacing: 0px;
-  font-weight: 700;
+   font-weight: 700;
   /* background-color: ${({ selected, theme }) => (selected ? theme.bg1 : theme.primary1)}; */
   background: rgba(196, 196, 196, 0.01);
   /* color: ${({ selected, theme }) => (selected ? theme.text1 : theme.white)}; */
@@ -112,8 +111,7 @@ const StyledTokenName = styled.span<{ active?: boolean }>`
   display: flex;
   align-items: center;
   white-space: nowrap;
-  letter-spacing: 0px;
-`
+ `
 
 // const LPWrapper = styled.div`
 // display: flex ;
@@ -132,8 +130,7 @@ const StyledBalanceMax = styled.button`
   font-weight: normal;
   font-size: 12px;
   line-height: 100%;
-  letter-spacing: 0px;
-  padding: 6px 11px;
+   padding: 6px 11px;
   cursor: pointer;
   margin-right: 0.5rem;
   color: ${({ theme }) => theme.jediWhite};
