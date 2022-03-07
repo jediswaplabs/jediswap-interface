@@ -235,9 +235,9 @@ export function useZapCallback(
     account,
     chainId,
     recipient,
-    allowedSlippage,
     recipientAddressOrName,
     zapCalls,
+    approvalCallback,
     addTransaction
   ])
 }
