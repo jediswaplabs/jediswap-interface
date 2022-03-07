@@ -178,7 +178,7 @@ export function useZapCallback(
           amount: { type: 'struct', ...uint256AmountIn },
           min_pool_token: { type: 'struct', ...uint256_LP_AmountOut },
           path,
-          transfer_residual: '1'
+          transfer_residual: '0'
         }
 
         const zapCalldata = stark.compileCalldata(zapArgs)
