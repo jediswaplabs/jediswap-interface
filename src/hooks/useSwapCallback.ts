@@ -99,7 +99,7 @@ export function useSwapCallback(
 ): { state: SwapCallbackState; callback: null | (() => Promise<string>); error: string | null } {
   const { account, chainId, library } = useActiveStarknetReact()
 
-  const approvalCall = useApprovalCallFromTrade(trade, allowedSlippage)
+  const approvalCallback = useApprovalCallFromTrade(trade, allowedSlippage)
   const swapCalls = useSwapCallArguments(trade, allowedSlippage, recipientAddressOrName)
 
   const addTransaction = useTransactionAdder()
@@ -119,9 +119,9 @@ export function useSwapCallback(
       }
     }
 
-    if (!approvalCall) {
-      return { state: SwapCallbackState.INVALID, callback: null, error: 'Missing approval call' }
-    }
+    // if (!approvalCall) {
+    //   return { state: SwapCallbackState.INVALID, callback: null, error: 'Missing approval call' }
+    // }
 
     return {
       state: SwapCallbackState.VALID,
@@ -179,6 +179,12 @@ export function useSwapCallback(
         //   throw new Error('Unexpected error. Please contact support: none of the calls threw an error')
         // }
 
+        const approval = approvalCallback()
+
+        if (!approval) {
+          throw new Error('Unexpected Approval Call error')
+        }
+
         const {
           call: {
             contract,
@@ -210,7 +216,7 @@ export function useSwapCallback(
         }
 
         return account
-          .execute([approvalCall, swapCall])
+          .execute([approval, swapCall])
           .then(response => {
             const inputSymbol = trade.inputAmount.currency.symbol
             const outputSymbol = trade.outputAmount.currency.symbol
@@ -246,5 +252,5 @@ export function useSwapCallback(
       },
       error: null
     }
-  }, [trade, library, account, chainId, recipient, approvalCall, recipientAddressOrName, swapCalls, addTransaction])
+  }, [trade, library, account, chainId, recipient, recipientAddressOrName, swapCalls, approvalCallback, addTransaction])
 }

@@ -263,7 +263,7 @@ export default function Updater(): null {
           .then(({ results: returnData, blockNumber: fetchBlockNumber }) => {
             cancellations.current = { cancellations: [], blockNumber: latestBlockNumber }
 
-            console.log('🚀 ~ file: updater.tsx ~ line 305 ~ .then ~ returnData', returnData)
+            // console.log('🚀 ~ file: updater.tsx ~ line 305 ~ .then ~ returnData', returnData)
 
             // accumulates the length of all previous indices
             const firstCallKeyIndex = chunkedCalls.slice(0, index).reduce<number>((memo, curr) => memo + curr.length, 0)

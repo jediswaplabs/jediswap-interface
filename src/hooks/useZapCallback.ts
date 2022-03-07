@@ -102,7 +102,7 @@ export function useZapCallback(
 ): { state: ZapCallbackState; callback: null | (() => Promise<string>); error: string | null } {
   const { account, chainId, library } = useActiveStarknetReact()
 
-  const approvalCall = useApprovalCallFromTrade(trade, allowedSlippage, 'zap')
+  const approvalCallback = useApprovalCallFromTrade(trade, allowedSlippage, 'zap')
   const zapCalls = useZapCallArguments(trade, allowedSlippage, recipientAddressOrName)
 
   const addTransaction = useTransactionAdder()
@@ -123,7 +123,6 @@ export function useZapCallback(
     }
 
     const inputToken = wrappedCurrency(trade.inputAmount.currency, chainId)
-    console.log('🚀 ~ file: useZapCallback.ts ~ line 124 ~ returnuseMemo ~ inputToken', inputToken)
 
     const minLPAmountOut = computeSlippageAdjustedLPAmount(lpAmountOut, 5000)
     // console.log(
@@ -136,9 +135,9 @@ export function useZapCallback(
       return { state: ZapCallbackState.INVALID, callback: null, error: 'Input Token Missing' }
     }
 
-    if (!approvalCall) {
-      return { state: ZapCallbackState.INVALID, callback: null, error: 'Missing approval call' }
-    }
+    // if (!approvalCall) {
+    //   return { state: ZapCallbackState.INVALID, callback: null, error: 'Missing approval call' }
+    // }
 
     return {
       state: ZapCallbackState.VALID,
@@ -154,6 +153,12 @@ export function useZapCallback(
             return { call }
           })
         )
+
+        const approval = approvalCallback()
+
+        if (!approval) {
+          throw new Error('Unexpected Approval Call error')
+        }
 
         const {
           call: {
@@ -185,7 +190,7 @@ export function useZapCallback(
         }
 
         return account
-          .execute([approvalCall, zapCall])
+          .execute([approval, zapCall])
           .then(response => {
             const inputSymbol = trade.inputAmount.currency.symbol
             const outputSymbol = lpAmountOut.token.symbol

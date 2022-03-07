@@ -1,5 +1,5 @@
 import { CurrencyAmount, Token, TOKEN0, TokenAmount, Trade, WTOKEN0 } from '@jediswap/sdk'
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import { Call, RawArgs, stark, uint256 } from 'starknet'
 import { useActiveStarknetReact } from '.'
 import { ROUTER_ADDRESS, ZAP_IN_ADDRESS } from '../constants'
@@ -8,7 +8,7 @@ import { Field as ZapField } from '../state/zap/actions'
 import { computeSlippageAdjustedAmounts } from '../utils/prices'
 import { TradeType } from './useApproveCallback'
 
-export function useApprovalCall(amountToApprove?: CurrencyAmount, spender?: string) {
+export function useApprovalCall(amountToApprove?: CurrencyAmount, spender?: string): () => Call | null {
   const { chainId } = useActiveStarknetReact()
   const token: Token | undefined =
     amountToApprove instanceof TokenAmount
@@ -17,37 +17,39 @@ export function useApprovalCall(amountToApprove?: CurrencyAmount, spender?: stri
       ? WTOKEN0[chainId ?? 5]
       : undefined
 
-  if (!token) {
-    console.error('no token')
-    return
-  }
+  return useCallback(() => {
+    if (!token) {
+      console.error('no token')
+      return null
+    }
 
-  if (!amountToApprove) {
-    console.error('missing amount to approve')
-    return
-  }
+    if (!amountToApprove) {
+      console.error('missing amount to approve')
+      return null
+    }
 
-  if (!spender) {
-    console.error('no spender')
-    return
-  }
+    if (!spender) {
+      console.error('no spender')
+      return null
+    }
 
-  const uint256AmountToApprove = uint256.bnToUint256(amountToApprove.raw.toString())
+    const uint256AmountToApprove = uint256.bnToUint256(amountToApprove.raw.toString())
 
-  const approveArgs: RawArgs = {
-    spender,
-    amount: { type: 'struct', ...uint256AmountToApprove }
-  }
+    const approveArgs: RawArgs = {
+      spender,
+      amount: { type: 'struct', ...uint256AmountToApprove }
+    }
 
-  const approveCalldata = stark.compileCalldata(approveArgs)
+    const approveCalldata = stark.compileCalldata(approveArgs)
 
-  const approveCall: Call = {
-    contractAddress: token.address,
-    entrypoint: 'approve',
-    calldata: approveCalldata
-  }
+    const approveCall: Call = {
+      contractAddress: token.address,
+      entrypoint: 'approve',
+      calldata: approveCalldata
+    }
 
-  return approveCall
+    return approveCall
+  }, [amountToApprove, spender, token])
 }
 
 export function useApprovalCallFromTrade(trade?: Trade, allowedSlippage = 0, tradeType: TradeType = 'swap') {

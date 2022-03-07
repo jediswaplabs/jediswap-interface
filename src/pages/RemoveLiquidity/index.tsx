@@ -108,7 +108,7 @@ export default function RemoveLiquidity({
   // pair contract
   const pairContract: Contract | null = usePairContract(pair?.liquidityToken?.address)
 
-  const approvalCall = useApprovalCall(parsedAmounts[Field.LIQUIDITY], ROUTER_ADDRESS)
+  const approvalCallback = useApprovalCall(parsedAmounts[Field.LIQUIDITY], ROUTER_ADDRESS)
 
   // wrapped onUserInput to clear signatures
   const onUserInput = useCallback(
@@ -135,7 +135,9 @@ export default function RemoveLiquidity({
 
     if (!router?.connectedTo) return
 
-    if (!approvalCall) return
+    const approval = approvalCallback()
+
+    if (!approval) return
 
     const { [Field.CURRENCY_A]: currencyAmountA, [Field.CURRENCY_B]: currencyAmountB } = parsedAmounts
     if (!currencyAmountA || !currencyAmountB) {
@@ -178,7 +180,7 @@ export default function RemoveLiquidity({
     setAttemptingTxn(true)
 
     await account
-      .execute([approvalCall, removeLiquidityCall])
+      .execute([approval, removeLiquidityCall])
       .then((response: AddTransactionResponse) => {
         setAttemptingTxn(false)
 

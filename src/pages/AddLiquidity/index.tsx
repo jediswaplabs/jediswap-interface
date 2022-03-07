@@ -160,15 +160,18 @@ export default function AddLiquidity({
   // check whether the user has approved the router on the tokens
   // const [approvalA, approveACallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_A], ROUTER_ADDRESS)
   // const [approvalB, approveBCallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_B], ROUTER_ADDRESS)
-  const approvalACall = useApprovalCall(parsedAmounts[Field.CURRENCY_A], ROUTER_ADDRESS)
-  const approvalBCall = useApprovalCall(parsedAmounts[Field.CURRENCY_B], ROUTER_ADDRESS)
+  const approvalACallback = useApprovalCall(parsedAmounts[Field.CURRENCY_A], ROUTER_ADDRESS)
+  const approvalBCallback = useApprovalCall(parsedAmounts[Field.CURRENCY_B], ROUTER_ADDRESS)
 
   const addTransaction = useTransactionAdder()
 
   async function onAdd() {
     if (!chainId || !library || !account || !connectedAddress) return
 
-    if (!approvalACall || !approvalBCall) return
+    const approvalA = approvalACallback()
+    const approvalB = approvalBCallback()
+
+    if (!approvalA || !approvalB) return
 
     const router = routerContract
 
@@ -222,7 +225,7 @@ export default function AddLiquidity({
 
     setAttemptingTxn(true)
     await account
-      .execute([approvalACall, approvalBCall, addLiquidityCall])
+      .execute([approvalA, approvalB, addLiquidityCall])
       .then(response => {
         setAttemptingTxn(false)
 
