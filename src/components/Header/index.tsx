@@ -167,10 +167,12 @@ const HideSmall = styled.div`
 
 const NetworkCard = styled(YellowCard)`
   border-radius: 10px;
-  padding: 12px;
   flex: 1;
   font-size: 16px;
   font-weight: 600;
+  background-color: ${({ theme }) => theme.jediNavyBlue};
+  color: ${({ theme }) => theme.jediWhite};
+  padding: 0.6875rem 2rem;
 
   ${({ theme }) => theme.mediaWidth.upToSmall`
     margin: 0;

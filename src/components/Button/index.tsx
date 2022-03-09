@@ -243,8 +243,10 @@ const ButtonConfirmedStyle = styled(Base)`
 `
 
 const ButtonErrorStyle = styled(Base)`
-  background-color: ${({ theme }) => theme.red1};
-  border: 1px solid ${({ theme }) => theme.red1};
+  background-color: ${({ theme }) => theme.jediNavyBlue};
+  /* border: 1px solid ${({ theme }) => theme.red1}; */
+  box-shadow: inset 0px 75.4377px 76.9772px -36.9491px rgba(202, 172, 255, 0.3),
+    inset 0px 3.07909px 13.8559px rgba(154, 146, 210, 0.3), inset 0px 0.769772px 30.7909px rgba(227, 222, 255, 0.2);
 
   &:focus {
     box-shadow: 0 0 0 1pt ${({ theme }) => darken(0.05, theme.red1)};
