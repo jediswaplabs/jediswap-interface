@@ -65,7 +65,7 @@ export default function Updater(): null {
                   })
                 )
 
-                if (receipt.status !== 'PENDING') {
+                if (receipt.status !== 'PENDING' && receipt.status !== 'ACCEPTED_ON_L1') {
                   addPopup(
                     {
                       txn: {
