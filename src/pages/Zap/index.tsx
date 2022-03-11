@@ -87,17 +87,17 @@ export default function Zap() {
 
   const isValid = !zapInputError
 
-  const [approvalState, approveCallback] = useApproveCallbackFromTrade(zapTrade, allowedSlippage, 'zap')
+  // const [approvalState, approveCallback] = useApproveCallbackFromTrade(zapTrade, allowedSlippage, 'zap')
 
-  const [approvalSubmitted, setApprovalSubmitted] = useState<boolean>(false)
+  // const [approvalSubmitted, setApprovalSubmitted] = useState<boolean>(false)
 
-  useEffect(() => {
-    if (approvalState === ApprovalState.PENDING) {
-      setApprovalSubmitted(true)
-    } else if (ApprovalState.NOT_APPROVED && approvalSubmitted) {
-      setApprovalSubmitted(false)
-    }
-  }, [approvalState, approvalSubmitted])
+  // useEffect(() => {
+  //   if (approvalState === ApprovalState.PENDING) {
+  //     setApprovalSubmitted(true)
+  //   } else if (ApprovalState.NOT_APPROVED && approvalSubmitted) {
+  //     setApprovalSubmitted(false)
+  //   }
+  // }, [approvalState, approvalSubmitted])
 
   const { callback: zapCallback, error: zapCallbackError } = useZapCallback(
     zapTrade,
@@ -129,11 +129,11 @@ export default function Zap() {
   // errors
   const insufficientBalanceError = zapInputError?.includes('balance')
 
-  const showApproveFlow =
-    !zapInputError &&
-    (approvalState === ApprovalState.NOT_APPROVED ||
-      approvalState === ApprovalState.PENDING ||
-      (approvalSubmitted && approvalState === ApprovalState.APPROVED))
+  // const showApproveFlow =
+  //   !zapInputError &&
+  //   (approvalState === ApprovalState.NOT_APPROVED ||
+  //     approvalState === ApprovalState.PENDING ||
+  //     (approvalSubmitted && approvalState === ApprovalState.APPROVED))
 
   const { priceImpactWithoutFee } = computeTradePriceBreakdown(zapTrade)
 
@@ -154,7 +154,7 @@ export default function Zap() {
   const handleInputSelect = useCallback(
     inputCurrency => {
       console.log('🚀 ~ file: index.tsx ~ line 103 ~ Zap ~ inputCurrency', inputCurrency)
-      setApprovalSubmitted(false)
+      // setApprovalSubmitted(false)
       onCurrencySelection(Field.INPUT, inputCurrency)
       handleTypeInput('')
     },
@@ -297,45 +297,46 @@ export default function Zap() {
               <RedGradientButton fontSize={20} style={{ textAlign: 'center' }} disabled>
                 {tradeLoading ? 'Fetching LP Amount...' : 'Insufficient liquidity for this trade'}
               </RedGradientButton>
-            ) : showApproveFlow ? (
-              <RowBetween>
-                <ButtonConfirmed
-                  onClick={approveCallback}
-                  disabled={approvalState !== ApprovalState.NOT_APPROVED || approvalSubmitted}
-                  width="48%"
-                  altDisabledStyle={approvalState === ApprovalState.PENDING} // show solid button while waiting
-                  confirmed={approvalState === ApprovalState.APPROVED}
-                  fontSize={18}
-                >
-                  {approvalState === ApprovalState.PENDING ? (
-                    <AutoRow gap="6px" justify="center">
-                      Approving <Loader stroke="white" />
-                    </AutoRow>
-                  ) : approvalSubmitted && approvalState === ApprovalState.APPROVED ? (
-                    'Approved'
-                  ) : (
-                    'Approve ' + currencies[Field.INPUT]?.symbol
-                  )}
-                </ButtonConfirmed>
-                <ButtonError
-                  fontSize={18}
-                  onClick={() => {
-                    setZapState({
-                      tradeToConfirm: zapTrade,
-                      attemptingTxn: false,
-                      zapErrorMessage: undefined,
-                      showConfirm: true,
-                      txHash: undefined
-                    })
-                  }}
-                  width="48%"
-                  id="zap-button"
-                  disabled={!isValid || approvalState !== ApprovalState.APPROVED}
-                >
-                  Zap
-                </ButtonError>
-              </RowBetween>
-            ) : insufficientBalanceError ? (
+            ) : //   : showApproveFlow ? (
+            // <RowBetween>
+            //   <ButtonConfirmed
+            //     onClick={approveCallback}
+            //     disabled={approvalState !== ApprovalState.NOT_APPROVED || approvalSubmitted}
+            //     width="48%"
+            //     altDisabledStyle={approvalState === ApprovalState.PENDING} // show solid button while waiting
+            //     confirmed={approvalState === ApprovalState.APPROVED}
+            //     fontSize={18}
+            //   >
+            //     {approvalState === ApprovalState.PENDING ? (
+            //       <AutoRow gap="6px" justify="center">
+            //         Approving <Loader stroke="white" />
+            //       </AutoRow>
+            //     ) : approvalSubmitted && approvalState === ApprovalState.APPROVED ? (
+            //       'Approved'
+            //     ) : (
+            //       'Approve ' + currencies[Field.INPUT]?.symbol
+            //     )}
+            //   </ButtonConfirmed>
+            //   <ButtonError
+            //     fontSize={18}
+            //     onClick={() => {
+            //       setZapState({
+            //         tradeToConfirm: zapTrade,
+            //         attemptingTxn: false,
+            //         zapErrorMessage: undefined,
+            //         showConfirm: true,
+            //         txHash: undefined
+            //       })
+            //     }}
+            //     width="48%"
+            //     id="zap-button"
+            //     disabled={!isValid || approvalState !== ApprovalState.APPROVED}
+            //   >
+            //     Zap
+            //   </ButtonError>
+            // </RowBetween>
+            //   )
+            insufficientBalanceError ? (
               <RedGradientButton id="zap-button" disabled>
                 {zapInputError}
               </RedGradientButton>
@@ -357,11 +358,11 @@ export default function Zap() {
                 <Text>{zapInputError ? zapInputError : 'Zap'}</Text>
               </ButtonError>
             )}
-            {showApproveFlow && (
+            {/* {showApproveFlow && (
               <Column style={{ marginTop: '1rem' }}>
                 <ProgressSteps steps={[approvalState === ApprovalState.APPROVED]} />
               </Column>
-            )}
+            )} */}
           </BottomGrouping>
         </Wrapper>
       </AppBody>

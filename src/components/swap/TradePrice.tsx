@@ -7,6 +7,8 @@ import { ThemeContext } from 'styled-components'
 import { StyledBalanceMaxMini } from './styleds'
 import { formatExecutionPrice } from '../../utils/prices'
 import { DMSansText } from '../../theme'
+import { Icon } from '../../pages/Swap/styleds'
+import PriceInverter from '../../assets/jedi/PriceInverter.svg'
 
 interface TradePriceProps {
   trade?: Trade
@@ -32,7 +34,7 @@ export default function TradePrice({ trade, showInverted, setShowInverted }: Tra
         <>
           {formattedPrice ?? '-'}
           <StyledBalanceMaxMini onClick={() => setShowInverted(!showInverted)}>
-            <Repeat size={14} />
+            <Icon src={PriceInverter} noMargin />
           </StyledBalanceMaxMini>
         </>
       ) : (

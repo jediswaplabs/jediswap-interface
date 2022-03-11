@@ -172,22 +172,10 @@ export default function Swap() {
   )
   const noRoute = !route
 
-  const [mintState, mintCallback] = useMintCallback(mintAddress)
-
-  // check whether the user has approved the router on the input token
-  const [approval, approveCallback] = useApproveCallbackFromTrade(trade, allowedSlippage)
+  const [mintState, mintCallback] = useMintCallback()
 
   // check if user has gone through approval process, used to show two step buttons, reset on token change
   const [approvalSubmitted, setApprovalSubmitted] = useState<boolean>(false)
-
-  // mark when a user has submitted an approval, reset onTokenSelection for input field
-  useEffect(() => {
-    if (approval === ApprovalState.PENDING) {
-      setApprovalSubmitted(true)
-    } else if (ApprovalState.NOT_APPROVED && approvalSubmitted) {
-      setApprovalSubmitted(false)
-    }
-  }, [approval, approvalSubmitted])
 
   const maxAmountInput: CurrencyAmount | undefined = maxAmountSpend(currencyBalances[Field.INPUT])
   const atMaxAmountInput = Boolean(maxAmountInput && parsedAmounts[Field.INPUT]?.equalTo(maxAmountInput))
@@ -240,15 +228,6 @@ export default function Swap() {
 
   const insufficientBalanceError = swapInputError?.includes('balance')
 
-  // show approve flow when: no error on inputs, not approved or pending, or approved in current session
-  // never show if price impact is above threshold in non expert mode
-  const showApproveFlow =
-    !swapInputError &&
-    (approval === ApprovalState.NOT_APPROVED ||
-      approval === ApprovalState.PENDING ||
-      (approvalSubmitted && approval === ApprovalState.APPROVED)) &&
-    !(priceImpactSeverity > 3 && !isExpertMode)
-
   const handleConfirmDismiss = useCallback(() => {
     setSwapState({ showConfirm: false, tradeToConfirm, attemptingTxn, swapErrorMessage, txHash })
     // if there was a tx hash, we want to clear the input
@@ -278,18 +257,21 @@ export default function Swap() {
     onCurrencySelection
   ])
 
-  const handleMint = useCallback((tokenAddress: string) => {
-    setMintAddress(tokenAddress)
-  }, [])
+  const handleMint = useCallback(() => {
+    // setMintAddress(tokenAddress)
+    mintCallback().then(() => {
+      console.log(`Minting ${mintAddress}`)
+    })
+  }, [mintAddress, mintCallback])
 
-  useEffect(() => {
-    if (mintAddress && mintState === MintState.VALID) {
-      mintCallback().then(() => {
-        console.log(`Minting ${mintAddress}`)
-        setMintAddress(undefined)
-      })
-    }
-  }, [mintAddress, mintCallback, mintState])
+  // useEffect(() => {
+  //   if (mintAddress && mintState === MintState.VALID) {
+  //     mintCallback().then(() => {
+  //       console.log(`Minting ${mintAddress}`)
+  //       setMintAddress(undefined)
+  //     })
+  //   }
+  // }, [mintAddress, mintCallback, mintState])
 
   return (
     <>
@@ -395,87 +377,38 @@ export default function Swap() {
               </>
             )}
 
-            <Card padding={'.75rem .75rem 0 .75rem'} borderRadius={'20px'}>
-              <AutoColumn gap="4px">
+            <Card padding={'17px 0'} borderRadius={'20px'}>
+              <AutoColumn gap="10px">
                 {Boolean(trade) && (
                   <RowBetween align="center">
-                    <DMSansText.body fontSize={14}>Price</DMSansText.body>
+                    <DMSansText.body fontSize={16}>Price</DMSansText.body>
                     <TradePrice trade={trade} showInverted={showInverted} setShowInverted={setShowInverted} />
                   </RowBetween>
                 )}
 
-                {allowedSlippage && (
+                {Boolean(trade) && allowedSlippage && (
                   <RowBetween align="center">
-                    <DMSansText.body fontSize={14}>Slippage Tolerance</DMSansText.body>
-                    <DMSansText.body fontSize={14}>{allowedSlippage / 100}%</DMSansText.body>
+                    <DMSansText.body fontSize={16}>Slippage Tolerance</DMSansText.body>
+                    <DMSansText.body fontSize={16}>{allowedSlippage / 100}%</DMSansText.body>
                   </RowBetween>
                 )}
 
                 {Boolean(trade) && ttl && (
                   <RowBetween align="center">
-                    <DMSansText.body fontSize={14}> Transaction Deadline</DMSansText.body>
-                    <DMSansText.body fontSize={14}>{ttl / 60} mins.</DMSansText.body>
+                    <DMSansText.body fontSize={16}> Transaction Deadline</DMSansText.body>
+                    <DMSansText.body fontSize={16}>{ttl / 60} mins.</DMSansText.body>
                   </RowBetween>
                 )}
               </AutoColumn>
             </Card>
           </AutoColumn>
-          <BottomGrouping>
+          <BottomGrouping marginTop={'0px'}>
             {!account ? (
               <ButtonPrimary onClick={toggleWalletModal}>Connect Wallet</ButtonPrimary>
             ) : noRoute && userHasSpecifiedInputOutput ? (
               <RedGradientButton style={{ textAlign: 'center' }} disabled>
                 {tradeLoading ? 'Fetching route...' : 'Insufficient liquidity for this trade'}
               </RedGradientButton>
-            ) : showApproveFlow ? (
-              <RowBetween>
-                <ButtonConfirmed
-                  onClick={approveCallback}
-                  disabled={approval !== ApprovalState.NOT_APPROVED || approvalSubmitted}
-                  width="48%"
-                  altDisabledStyle={approval === ApprovalState.PENDING} // show solid button while waiting
-                  confirmed={approval === ApprovalState.APPROVED}
-                  fontSize={18}
-                >
-                  {approval === ApprovalState.PENDING ? (
-                    <AutoRow gap="6px" justify="center">
-                      Approving <Loader stroke="white" />
-                    </AutoRow>
-                  ) : approvalSubmitted && approval === ApprovalState.APPROVED ? (
-                    'Approved'
-                  ) : (
-                    'Approve ' + currencies[Field.INPUT]?.symbol
-                  )}
-                </ButtonConfirmed>
-                <ButtonError
-                  fontSize={18}
-                  onClick={() => {
-                    if (isExpertMode) {
-                      handleSwap()
-                    } else {
-                      setSwapState({
-                        tradeToConfirm: trade,
-                        attemptingTxn: false,
-                        swapErrorMessage: undefined,
-                        showConfirm: true,
-                        txHash: undefined
-                      })
-                    }
-                  }}
-                  width="48%"
-                  id="swap-button"
-                  disabled={
-                    !isValid || approval !== ApprovalState.APPROVED || (priceImpactSeverity > 3 && !isExpertMode)
-                  }
-                  error={isValid && priceImpactSeverity > 2}
-                >
-                  <Text>
-                    {priceImpactSeverity > 3 && !isExpertMode
-                      ? `Price Impact High`
-                      : `Swap${priceImpactSeverity > 2 ? ' Anyway' : ''}`}
-                  </Text>
-                </ButtonError>
-              </RowBetween>
             ) : insufficientBalanceError ? (
               <RedGradientButton id="swap-button" disabled>
                 {swapInputError}
@@ -508,17 +441,7 @@ export default function Swap() {
                 </Text>
               </ButtonError>
             )}
-            {showApproveFlow && (
-              <Column style={{ marginTop: '1rem' }}>
-                <ProgressSteps steps={[approval === ApprovalState.APPROVED]} />
-              </Column>
-            )}
             {isExpertMode && swapErrorMessage ? <SwapCallbackError error={swapErrorMessage} /> : null}
-            {/* {betterTradeLinkVersion ? (
-              <BetterTradeLink version={betterTradeLinkVersion} />
-            ) : toggledVersion !== DEFAULT_VERSION && defaultTrade ? (
-              <DefaultVersionLink />
-            ) : null} */}
           </BottomGrouping>
         </Wrapper>
       </AppBody>
@@ -526,11 +449,9 @@ export default function Swap() {
       {account && (
         <MintSection>
           <AutoRow justify={'center'}>
-            {Object.entries({ [TOKEN0.address]: TOKEN0, ...jediTokensList }).map(([tokenAddress, token]) => (
-              <AutoColumn key={tokenAddress} style={{ margin: '6px' }}>
-                <MintButton onClick={() => handleMint(tokenAddress)}> Mint {token.symbol} </MintButton>
-              </AutoColumn>
-            ))}
+            <AutoColumn style={{ margin: '6px' }}>
+              <MintButton onClick={handleMint}> Mint Jedi Test Tokens </MintButton>
+            </AutoColumn>
           </AutoRow>
         </MintSection>
       )}

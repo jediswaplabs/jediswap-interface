@@ -88,7 +88,7 @@ const MenuItem = styled(ExternalLink)`
 const CODE_LINK = 'https://github.com/Uniswap/uniswap-interface'
 
 export default function Menu() {
-  const { account } = useActiveStarknetReact()
+  const { connectedAddress } = useActiveStarknetReact()
 
   const node = useRef<HTMLDivElement>()
   const open = useModalOpen(ApplicationModal.MENU)
@@ -125,7 +125,7 @@ export default function Menu() {
             <PieChart size={14} />
             Analytics
           </MenuItem>
-          {account && (
+          {connectedAddress && (
             <ButtonPrimary onClick={openClaimModal} padding="8px 16px" width="100%" borderRadius="12px" mt="0.5rem">
               Claim UNI
             </ButtonPrimary>

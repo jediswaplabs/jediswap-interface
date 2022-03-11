@@ -185,9 +185,9 @@ function StatusIcon({ connector }: { connector: AbstractConnector }) {
 
 function Web3StatusInner() {
   const { t } = useTranslation()
-  const { account, connector, error } = useActiveStarknetReact()
+  const { connectedAddress, connector, error } = useActiveStarknetReact()
 
-  // const { ENSName } = useENSName(account ?? undefined)
+  // const { ENSName } = useENSName(connectedAddress ?? undefined)
 
   const allTransactions = useAllTransactions()
 
@@ -204,7 +204,7 @@ function Web3StatusInner() {
   // const hasSocks = useHasSocks()
   const toggleWalletModal = useWalletModalToggle()
 
-  if (account) {
+  if (connectedAddress) {
     return (
       <Web3StatusConnected id="web3-status-connected" onClick={toggleWalletModal} pending={hasPendingTransactions}>
         {!hasPendingTransactions && connector && <StatusIcon connector={connector} />}
@@ -213,7 +213,7 @@ function Web3StatusInner() {
             <Text>{pending?.length} Pending</Text> <Loader stroke="white" />
           </RowBetween>
         ) : (
-          <Text>{shortenAddress(account)}</Text>
+          <Text>{shortenAddress(connectedAddress)}</Text>
         )}
       </Web3StatusConnected>
     )
@@ -234,10 +234,10 @@ function Web3StatusInner() {
 }
 
 export default function Web3Status() {
-  const { active, account } = useStarknetReact()
+  const { active, connectedAddress } = useStarknetReact()
   const contextNetwork = useStarknetReact(NetworkContextName)
 
-  // const { ENSName } = useENSName(account ?? undefined)
+  // const { ENSName } = useENSName(connectedAddress ?? undefined)
 
   const allTransactions = useAllTransactions()
 

@@ -1,8 +1,7 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { Token, TokenAmount } from '@jediswap/sdk'
-import { uint256 } from '@jediswap/starknet'
+import { uint256 } from 'starknet'
 import { useTokenContract } from '../hooks/useContract'
-import { useStarknetCall } from '../hooks/useStarknet'
 import { useSingleCallResult } from '../state/multicall/hooks'
 
 // returns undefined if input token is undefined, or fails to get token contract,
