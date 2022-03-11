@@ -377,32 +377,32 @@ export default function Swap() {
               </>
             )}
 
-            <Card padding={'.75rem .75rem 0 .75rem'} borderRadius={'20px'}>
-              <AutoColumn gap="4px">
+            <Card padding={'17px 0'} borderRadius={'20px'}>
+              <AutoColumn gap="10px">
                 {Boolean(trade) && (
                   <RowBetween align="center">
-                    <DMSansText.body fontSize={14}>Price</DMSansText.body>
+                    <DMSansText.body fontSize={16}>Price</DMSansText.body>
                     <TradePrice trade={trade} showInverted={showInverted} setShowInverted={setShowInverted} />
                   </RowBetween>
                 )}
 
-                {allowedSlippage && (
+                {Boolean(trade) && allowedSlippage && (
                   <RowBetween align="center">
-                    <DMSansText.body fontSize={14}>Slippage Tolerance</DMSansText.body>
-                    <DMSansText.body fontSize={14}>{allowedSlippage / 100}%</DMSansText.body>
+                    <DMSansText.body fontSize={16}>Slippage Tolerance</DMSansText.body>
+                    <DMSansText.body fontSize={16}>{allowedSlippage / 100}%</DMSansText.body>
                   </RowBetween>
                 )}
 
                 {Boolean(trade) && ttl && (
                   <RowBetween align="center">
-                    <DMSansText.body fontSize={14}> Transaction Deadline</DMSansText.body>
-                    <DMSansText.body fontSize={14}>{ttl / 60} mins.</DMSansText.body>
+                    <DMSansText.body fontSize={16}> Transaction Deadline</DMSansText.body>
+                    <DMSansText.body fontSize={16}>{ttl / 60} mins.</DMSansText.body>
                   </RowBetween>
                 )}
               </AutoColumn>
             </Card>
           </AutoColumn>
-          <BottomGrouping>
+          <BottomGrouping marginTop={'0px'}>
             {!account ? (
               <ButtonPrimary onClick={toggleWalletModal}>Connect Wallet</ButtonPrimary>
             ) : noRoute && userHasSpecifiedInputOutput ? (
