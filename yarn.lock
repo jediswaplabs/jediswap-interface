@@ -1702,10 +1702,10 @@
   resolved "https://registry.yarnpkg.com/@istanbuljs/schema/-/schema-0.1.3.tgz#e45e384e4b8ec16bce2fd903af78450f6bf7ec98"
   integrity sha512-ZXRY4jNvVgSVQ8DL3LTcakaAtXwTVUxE81hslsyD2AtoXW/wVob10HkOJ1X/pAlcI7D+2YoZKg5do8G/w6RYgA==
 
-"@jediswap/sdk@1.4.0":
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/@jediswap/sdk/-/sdk-1.4.0.tgz#22aa1ed10f02695c0778310ab9dd4a7253715a07"
-  integrity sha512-wU57PaMjh6kD1twAZlzCNXvPIWIDshVWO4TWMsQ/+qpOS05p8u+nP8iO6YCHh6eZfbanyO6y/HUgqoufxWPQ7g==
+"@jediswap/sdk@1.5.0":
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/@jediswap/sdk/-/sdk-1.5.0.tgz#07f7f62d99d212ff82b3843539856ad1bc4cf085"
+  integrity sha512-wdrdVtWDw56NBwlbzVnDiUu/ENCUQVyDBOsc32dDFv3kdVNAdKy4T8u9DfB5B66naWnLOC/FlaM8GiKE96EFUA==
   dependencies:
     "@types/bn.js" "^5.1.0"
     "@uniswap/v2-core" "^1.0.0"
@@ -1713,7 +1713,7 @@
     bn.js "^5.2.0"
     decimal.js-light "^2.5.0"
     jsbi "^3.1.1"
-    starknet "^3.2.0"
+    starknet "^3.5.0"
     tiny-invariant "^1.1.0"
     tiny-warning "^1.0.3"
     toformat "^2.0.0"
@@ -3042,33 +3042,33 @@
   resolved "https://registry.yarnpkg.com/@uniswap/v2-core/-/v2-core-1.0.1.tgz#af8f508bf183204779938969e2e54043e147d425"
   integrity sha512-MtybtkUPSyysqLY2U210NBDeCHX+ltHt3oADGdjqoThZaFRDKwM6k1Nb3F0A3hk5hwuQvytFWhrWHOEq6nVJ8Q==
 
-"@web3-starknet-react/abstract-connector@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@web3-starknet-react/abstract-connector/-/abstract-connector-1.0.0.tgz#dd440b2f5c0026ac1921a5c3c33649243e1e69c6"
-  integrity sha512-qm2uymlAGMjPhJtgYc4LHPZ9tGo9IAMZsIORHhIE3aYqdNVcZSroBEJl+o3cC7l3+wLigt7wYO8Ra+TtvOr4+w==
+"@web3-starknet-react/abstract-connector@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@web3-starknet-react/abstract-connector/-/abstract-connector-1.1.0.tgz#77007e6d9ef6ab6671458af17ae6420664e144fe"
+  integrity sha512-xZIEAdKm15DsQ+6qfGQC+YSd8OBZESUfYxPodEBfj12C3B0NZTcEZ70SO4R0AHKjjMPkikjs2Df9oG/37v7QRA==
   dependencies:
-    "@web3-starknet-react/types" "^1.0.0"
+    "@web3-starknet-react/types" "^1.1.0"
 
-"@web3-starknet-react/argentx-connector@^1.0.3":
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/@web3-starknet-react/argentx-connector/-/argentx-connector-1.0.3.tgz#5791ffdd46e572a350c05c828215022928a7d4ec"
-  integrity sha512-bxmNuIh14Y9RFNO0eYEhgfToUc4j1XUXJL20j5Y3QFWMMjWTtxDnekvaSxlqDVf4P7ldKRKgNcMdBOZKWxcYUw==
+"@web3-starknet-react/argentx-connector@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@web3-starknet-react/argentx-connector/-/argentx-connector-1.1.0.tgz#5ff664ebc9b5ec66c714da4c70282e61bc3215fb"
+  integrity sha512-oj8LrAaUiLf3M5lww3M3mOkimLGWIRiIxqRrM9wZVOOpTuO85iPluOg3Cp8Y5moyk4MnANeLzrGv+ezdphJCyw==
   dependencies:
-    "@web3-starknet-react/abstract-connector" "^1.0.0"
-    "@web3-starknet-react/types" "^1.0.0"
+    "@web3-starknet-react/abstract-connector" "^1.1.0"
+    "@web3-starknet-react/types" "^1.1.0"
 
-"@web3-starknet-react/core@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@web3-starknet-react/core/-/core-1.0.0.tgz#33952cc6b734be17d90cd2b1051a7baee764b54e"
-  integrity sha512-YLb/SuoS2aQIndQkkRv4R7BW47nfyq8oy+f38x7GVc1uRF9vZ6CHY0eC8AwDPGYTqPZJF6CF3dR8+50LDpEy9w==
+"@web3-starknet-react/core@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@web3-starknet-react/core/-/core-1.1.0.tgz#1092025d008a415d4f248e3944a871fc16d47f16"
+  integrity sha512-bfswiVtW4+UaCSTYsUYh1HJ6T1gNeR3zy+vqdp0ReHAhbjz8d46L/zjKm4v7b7d09wDJ0ucKEdCz0zXoRQVf9A==
   dependencies:
-    "@web3-starknet-react/abstract-connector" "^1.0.0"
-    "@web3-starknet-react/types" "^1.0.0"
+    "@web3-starknet-react/abstract-connector" "^1.1.0"
+    "@web3-starknet-react/types" "^1.1.0"
 
-"@web3-starknet-react/types@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@web3-starknet-react/types/-/types-1.0.0.tgz#659d55b2fd8a34b079edcd6faba6fc4a7e9e884a"
-  integrity sha512-J145cIHYGOUZvZSj8DkdKTTIFGVRWBRZjUTN5kwdDkdNysX7gT1twa6sTdQ0cvUF6f+3N5hIDVndpe28LMlm6A==
+"@web3-starknet-react/types@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@web3-starknet-react/types/-/types-1.1.0.tgz#129b995b3ee1600e8dddb4f702ba29ac07b88b2d"
+  integrity sha512-TPrT3NerLaKTnB3Ms+EH0Onl8rjGF7G5kbn5oaj3dWQQ4IHrfo3qG9oktVrBHaSDQZF0Tzl/NG+je/XFp6PMWA==
 
 "@webassemblyjs/ast@1.9.0":
   version "1.9.0"
@@ -13247,22 +13247,6 @@ stackframe@^1.1.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/stackframe/-/stackframe-1.2.1.tgz#1033a3473ee67f08e2f2fc8eba6aef4f845124e1"
   integrity sha512-h88QkzREN/hy8eRdyNhhsO7RSJ5oyTqxxmmn0dzBIMUclZsjpfmrsg81vp8mjjAs2vAZ72nyWxRUwSwmh0e4xg==
-
-starknet@^3.2.0:
-  version "3.3.0"
-  resolved "https://registry.yarnpkg.com/starknet/-/starknet-3.3.0.tgz#843927f863ba0257fca29d80aa71bdf76ffce51c"
-  integrity sha512-PsdrnD1dNIbMAePRU3yeDsY1d9m7CaZI6VYKxpgZX+tlb45Zntz4F98bMFo/vvoLCfuubkLmHbNZfc76bcgcRQ==
-  dependencies:
-    axios "^0.23.0"
-    bn.js "^5.2.0"
-    elliptic "^6.5.4"
-    ethereum-cryptography "^0.2.0"
-    hash.js "^1.1.7"
-    json-bigint "^1.0.0"
-    minimalistic-assert "^1.0.1"
-    pako "^2.0.4"
-    superstruct "^0.15.3"
-    url-join "^4.0.1"
 
 starknet@^3.5.0:
   version "3.5.0"
