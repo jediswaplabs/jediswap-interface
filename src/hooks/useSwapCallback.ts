@@ -210,7 +210,7 @@ export function useSwapCallback(
         const swapCalldata = stark.compileCalldata(swapArgs)
 
         const swapCall: Call = {
-          contractAddress: contract.connectedTo ?? '',
+          contractAddress: contract.address,
           entrypoint: methodName,
           calldata: swapCalldata
         }

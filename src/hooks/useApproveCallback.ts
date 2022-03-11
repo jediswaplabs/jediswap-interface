@@ -94,7 +94,7 @@ export function useApproveCallback(
     }
 
     return tokenContract
-      .invoke('approve', approveArgs)
+      .approve(spender, approveArgs.amount)
       .then((response: AddTransactionResponse) => {
         addTransaction(response, {
           summary: 'Approve ' + amountToApprove.currency.symbol,

@@ -26,7 +26,7 @@ export function usePairAddresses(tokens: (Token | undefined)[][]): (string | und
         tokens.map(([tokenA, tokenB]) => {
           if (!tokenA || !tokenB || tokenA.equals(tokenB)) return undefined
           else {
-            return registryContract?.call('get_pair_for', { token0: tokenA.address, token1: tokenB.address })
+            return registryContract?.call('get_pair_for', [tokenA.address, tokenB.address])
           }
           // if (addresses && contractInterface && methodName) {
           //   const contract = new Contract(contractInterface, address)

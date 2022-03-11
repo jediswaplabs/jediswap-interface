@@ -175,7 +175,7 @@ export default function AddLiquidity({
 
     const router = routerContract
 
-    if (!router?.connectedTo) return
+    if (!router) return
 
     const { [Field.CURRENCY_A]: parsedAmountA, [Field.CURRENCY_B]: parsedAmountB } = parsedAmounts
     if (!parsedAmountA || !parsedAmountB || !currencyA || !currencyB || !deadline) {
@@ -218,7 +218,7 @@ export default function AddLiquidity({
     const calldata = stark.compileCalldata(args)
 
     const addLiquidityCall: Call = {
-      contractAddress: router.connectedTo,
+      contractAddress: router.address,
       entrypoint: 'add_liquidity',
       calldata
     }

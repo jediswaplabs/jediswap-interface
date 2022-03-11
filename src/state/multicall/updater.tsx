@@ -50,7 +50,7 @@ async function fetchChunk(
 
     // console.log(`at timestamp ${dateTime.toString()}`, '🚀 ~ file: updater.tsx ~ line 46 ~ calls', calls)
 
-    const response = await multicallContract.call('aggregate', { calls })
+    const response = await multicallContract.aggregate(calls)
     // console.log(`at timestamp ${dateTime.toString()}`, '🚀 ~ file: updater.tsx ~ line 48 ~ response', response)
 
     resultsBlockNumber = response.block_number

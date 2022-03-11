@@ -133,7 +133,7 @@ export default function RemoveLiquidity({
   async function onRemove() {
     if (!chainId || !library || !account || !deadline || !connectedAddress) throw new Error('missing dependencies')
 
-    if (!router?.connectedTo) return
+    if (!router) return
 
     const approval = approvalCallback()
 
@@ -172,7 +172,7 @@ export default function RemoveLiquidity({
     const removeLiquidityCalldata = stark.compileCalldata(removeLiquidityArgs)
 
     const removeLiquidityCall: Call = {
-      contractAddress: router.connectedTo,
+      contractAddress: router.address,
       entrypoint: 'remove_liquidity',
       calldata: removeLiquidityCalldata
     }

@@ -184,7 +184,7 @@ export function useZapCallback(
         const zapCalldata = stark.compileCalldata(zapArgs)
 
         const zapCall: Call = {
-          contractAddress: contract.connectedTo ?? '',
+          contractAddress: contract.address,
           entrypoint: 'zap_in',
           calldata: zapCalldata
         }

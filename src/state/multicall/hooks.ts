@@ -18,7 +18,6 @@ import {
   ListenerOptions
 } from './actions'
 import { computeCallDataProps } from './utils'
-import { isAddress } from '../../utils'
 
 export interface Result extends ReadonlyArray<any> {
   readonly [key: string]: any
@@ -184,17 +183,12 @@ export function useSingleContractMultipleData(
 
   const calls = useMemo(
     () =>
-      contract &&
-      contract.connectedTo &&
-      isAddress(contract.connectedTo) &&
-      methodName &&
-      callInputs &&
-      callInputs.filter(input => typeof input !== 'undefined').length > 0
+      contract && methodName && callInputs && callInputs.filter(input => typeof input !== 'undefined').length > 0
         ? callInputs.map<Call>(inputs => {
             const { calldata_len, calldata } = computeCallDataProps(inputs)
 
             return {
-              address: validateAndParseAddress(contract.connectedTo as string),
+              address: validateAndParseAddress(contract.address),
               methodName,
               calldata_len: calldata_len.toString(),
               calldata
@@ -231,7 +225,7 @@ export function useMultipleContractSingleData(
     () =>
       addresses && addresses.length > 0 && selector && isValidMethodArgs(callInputs)
         ? addresses.map<Call | undefined>(address => {
-            return address && isAddress(address)
+            return address
               ? {
                   address: validateAndParseAddress(address),
                   methodName,
@@ -267,10 +261,10 @@ export function useSingleCallResult(
   const { calldata_len, calldata } = useMemo(() => computeCallDataProps(inputs), [inputs])
 
   const calls = useMemo<Call[]>(() => {
-    return contract && contract.connectedTo && isAddress(contract.connectedTo) && selector && isValidMethodArgs(inputs)
+    return contract && selector && isValidMethodArgs(inputs)
       ? [
           {
-            address: validateAndParseAddress(contract.connectedTo),
+            address: validateAndParseAddress(contract.address),
             methodName,
             calldata_len: calldata_len.toString(),
             calldata
