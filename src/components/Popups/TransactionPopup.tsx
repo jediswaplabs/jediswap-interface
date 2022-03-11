@@ -1,4 +1,4 @@
-import { Status } from '@jediswap/starknet'
+import { Status } from 'starknet'
 import React, { useContext } from 'react'
 import { AlertCircle, CheckCircle } from 'react-feather'
 import styled, { ThemeContext } from 'styled-components'

@@ -1,9 +1,8 @@
-import { useStarknetCall, NEVER_RELOAD } from './useStarknet'
 import { useMemo, useState, useCallback, useEffect } from 'react'
 import { Token } from '@jediswap/sdk'
 import { useRegistryContract } from './useContract'
 import { useBlockNumber } from '../state/application/hooks'
-import { Args } from '@jediswap/starknet'
+import { Args } from 'starknet'
 import useDeepCompareEffect from 'use-deep-compare-effect'
 import { retry } from '../utils/retry'
 
@@ -27,7 +26,7 @@ export function usePairAddresses(tokens: (Token | undefined)[][]): (string | und
         tokens.map(([tokenA, tokenB]) => {
           if (!tokenA || !tokenB || tokenA.equals(tokenB)) return undefined
           else {
-            return registryContract?.call('get_pair_for', { token0: tokenA.address, token1: tokenB.address })
+            return registryContract?.call('get_pair_for', [tokenA.address, tokenB.address])
           }
           // if (addresses && contractInterface && methodName) {
           //   const contract = new Contract(contractInterface, address)

@@ -28,7 +28,7 @@ export function useDerivedBurnInfo(
   }
   error?: string
 } {
-  const { account, chainId } = useActiveStarknetReact()
+  const { account, chainId, connectedAddress } = useActiveStarknetReact()
 
   const { independentField, typedValue } = useBurnState()
 
@@ -38,7 +38,7 @@ export function useDerivedBurnInfo(
   console.log('🚀 ~ file: hooks.ts ~ line 37 ~ pairState', PairState[pairState])
 
   // balances
-  const relevantTokenBalances = useTokenBalances(account ?? undefined, [pair?.liquidityToken])
+  const relevantTokenBalances = useTokenBalances(connectedAddress ?? undefined, [pair?.liquidityToken])
   const userLiquidity: undefined | TokenAmount = relevantTokenBalances?.[pair?.liquidityToken?.address ?? '']
 
   const [tokenA, tokenB] = [wrappedCurrency(currencyA, chainId), wrappedCurrency(currencyB, chainId)]

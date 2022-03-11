@@ -1,9 +1,8 @@
-import { uint256 } from '@jediswap/starknet'
+import { uint256 } from 'starknet'
 import { Token, TokenAmount } from '@jediswap/sdk'
 import { useMemo } from 'react'
 
 import { useTokenContract } from '../hooks/useContract'
-import { useStarknetCall } from '../hooks/useStarknet'
 import { useSingleCallResult } from '../state/multicall/hooks'
 
 export function useTokenAllowance(token?: Token, owner?: string, spender?: string): TokenAmount | undefined {

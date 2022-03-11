@@ -66,7 +66,7 @@ export const StyledBalanceMaxMini = styled.button`
     background-color: ${({ theme }) => theme.bg3};
   }
   :focus {
-    background-color: ${({ theme }) => theme.bg3};
+    /* background-color: ${({ theme }) => theme.bg3}; */
     outline: none;
   }
 `

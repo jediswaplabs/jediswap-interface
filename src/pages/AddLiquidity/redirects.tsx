@@ -1,4 +1,4 @@
-import { validateAndParseAddress } from '@jediswap/starknet'
+import { validateAndParseAddress } from 'starknet'
 import React from 'react'
 import { Redirect, RouteComponentProps } from 'react-router-dom'
 import AddLiquidity from './index'

@@ -1,5 +1,5 @@
-import { Contract, FunctionAbi, number, stark, uint256 } from '@jediswap/starknet'
-import { toBN } from '@jediswap/starknet/dist/utils/number'
+import { Contract, FunctionAbi, number, hash, uint256 } from 'starknet'
+import { toBN } from 'starknet/dist/utils/number'
 import { useEffect, useMemo, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useActiveStarknetReact } from '../../hooks'
@@ -16,6 +16,7 @@ import {
   parseCallKey,
   updateMulticallResults
 } from './actions'
+import BN from 'bn.js'
 
 // chunk calls so we do not exceed the gas limit
 const CALL_CHUNK_SIZE = 500
@@ -30,11 +31,11 @@ async function fetchChunk(
   multicallContract: Contract,
   chunk: Call[],
   minBlockNumber: number
-): Promise<{ results: string[]; blockNumber: number }> {
+): Promise<{ results: BN[]; blockNumber: number }> {
   console.debug('Fetching chunk', multicallContract, chunk, minBlockNumber)
   let resultsBlockNumber, returnData_len, returnData
 
-  const { getSelectorFromName } = stark
+  const { getSelectorFromName } = hash
 
   try {
     const calls = chunk.flatMap(obj => [
@@ -49,7 +50,7 @@ async function fetchChunk(
 
     // console.log(`at timestamp ${dateTime.toString()}`, '🚀 ~ file: updater.tsx ~ line 46 ~ calls', calls)
 
-    const response = await multicallContract.call('aggregate', { calls })
+    const response = await multicallContract.aggregate(calls)
     // console.log(`at timestamp ${dateTime.toString()}`, '🚀 ~ file: updater.tsx ~ line 48 ~ response', response)
 
     resultsBlockNumber = response.block_number
@@ -262,13 +263,18 @@ export default function Updater(): null {
           .then(({ results: returnData, blockNumber: fetchBlockNumber }) => {
             cancellations.current = { cancellations: [], blockNumber: latestBlockNumber }
 
+            // console.log('🚀 ~ file: updater.tsx ~ line 305 ~ .then ~ returnData', returnData)
+
             // accumulates the length of all previous indices
             const firstCallKeyIndex = chunkedCalls.slice(0, index).reduce<number>((memo, curr) => memo + curr.length, 0)
 
             const lastCallKeyIndex = firstCallKeyIndex + returnData.length
 
             const uint256ReturnData: Array<string> = []
-            const returnDataIterator = returnData.flat()[Symbol.iterator]()
+
+            const bnToHexArray = returnData.map(data => number.toHex(data))
+
+            const returnDataIterator = bnToHexArray.flat()[Symbol.iterator]()
 
             dispatch(
               updateMulticallResults({
@@ -278,7 +284,7 @@ export default function Updater(): null {
                   .reduce<{ [callKey: string]: string | null }>((memo, callKey, i) => {
                     const methodAbi = debouncedListeners?.[chainId]?.[callKey]?.methodAbi
 
-                    const parsedReturnData: string = parseReturnData(i, returnData, returnDataIterator, methodAbi)
+                    const parsedReturnData: string = parseReturnData(i, bnToHexArray, returnDataIterator, methodAbi)
 
                     memo[callKey] = parsedReturnData
 

@@ -131,7 +131,7 @@ export default function WalletModal({
   ENSName?: string
 }) {
   // important that these are destructed from the account-specific web3-react context
-  const { active, account, connector, activate, error } = useStarknetReact()
+  const { active, connectedAddress, account, connector, activate, error } = useStarknetReact()
 
   // const connectStarknet = useStarknetConnector({ showModal: true })
 
@@ -200,7 +200,6 @@ export default function WalletModal({
 
   // get wallets user can switch too, depending on device/browser
   function getOptions() {
-    const isMetamask = window.ethereum && window.ethereum.isMetaMask
     return Object.keys(SUPPORTED_WALLETS).map(key => {
       const option = SUPPORTED_WALLETS[key]
       // check for mobile options
@@ -210,7 +209,7 @@ export default function WalletModal({
         //   return null
         // }
 
-        if (!window.web3 && !window.ethereum && option.mobile) {
+        if (!window.starknet && option.mobile) {
           return (
             <Option
               onClick={() => {

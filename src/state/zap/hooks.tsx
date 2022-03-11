@@ -76,7 +76,7 @@ export function useDerivedZapInfo(): {
   inputError?: string
   tradeLoading?: boolean
 } {
-  const { account } = useActiveStarknetReact()
+  const { account, connectedAddress } = useActiveStarknetReact()
 
   const {
     independentField,
@@ -87,14 +87,12 @@ export function useDerivedZapInfo(): {
   } = useZapState()
 
   const inputCurrency = useCurrency(inputCurrencyId)
-  console.log('🚀 ~ file: hooks.tsx ~ line 85 ~ useDerivedZapInfo ~ inputCurrency', inputCurrency)
   const outputLPCurrency = useCurrency(outputLPCurrencyId)
-  console.log('🚀 ~ file: hooks.tsx ~ line 87 ~ useDerivedZapInfo ~ outputLPCurrency', outputLPCurrency)
 
   const address = useAddressNormalizer(recipient ?? undefined)
-  const to: string | null = (recipient === null ? account : address) ?? null
+  const to: string | null = (recipient === null ? connectedAddress : address) ?? null
 
-  const relevantTokenBalances = useCurrencyBalances(account ?? undefined, [
+  const relevantTokenBalances = useCurrencyBalances(connectedAddress ?? undefined, [
     inputCurrency ?? undefined,
     outputLPCurrency ?? undefined
   ])
