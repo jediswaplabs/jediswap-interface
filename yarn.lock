@@ -13264,6 +13264,22 @@ starknet@^3.2.0:
     superstruct "^0.15.3"
     url-join "^4.0.1"
 
+starknet@^3.5.0:
+  version "3.5.0"
+  resolved "https://registry.yarnpkg.com/starknet/-/starknet-3.5.0.tgz#3315e666feebc2e0edfa2ffbc5d36d895384d107"
+  integrity sha512-FCXbL3N0e+lbm5AkdP6WEJm2xaWlRMDHGfxi8YW+hTsklIBmC1owsg7HQqxKWKZR3igusLM61vwLLkg5E/0ccw==
+  dependencies:
+    axios "^0.23.0"
+    bn.js "^5.2.0"
+    elliptic "^6.5.4"
+    ethereum-cryptography "^0.2.0"
+    hash.js "^1.1.7"
+    json-bigint "^1.0.0"
+    minimalistic-assert "^1.0.1"
+    pako "^2.0.4"
+    superstruct "^0.15.3"
+    url-join "^4.0.1"
+
 start-server-and-test@^1.11.0:
   version "1.14.0"
   resolved "https://registry.yarnpkg.com/start-server-and-test/-/start-server-and-test-1.14.0.tgz#c57f04f73eac15dd51733b551d775b40837fdde3"
