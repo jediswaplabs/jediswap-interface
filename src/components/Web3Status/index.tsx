@@ -92,17 +92,18 @@ const Web3StatusConnect = styled(Web3StatusGeneric)<{ faded?: boolean }>`
 `
 
 const Web3StatusConnected = styled(Web3StatusGeneric)<{ pending?: boolean }>`
-  background-color: ${({ pending, theme }) => (pending ? theme.primary1 : 'rgba(255, 255, 255, 0.15)')};
-  border: 2px solid ${({ pending, theme }) => (pending ? theme.primary1 : theme.jediWhite)};
+  background-color: ${({ pending, theme }) => (pending ? theme.primary1 : ' rgba(255, 255, 255, 0.15)')};
+ border: 2px solid transparent;
+  padding: 0.6rem 1rem 0.6rem 0.9rem;
   color: ${({ pending, theme }) => (pending ? theme.white : theme.jediWhite)};
-  padding: 0.4rem 1rem 0.4rem 0.9rem;
+  /* padding: 0.4rem 1rem 0.4rem 0.9rem; */
   
   
   :hover,
   :focus {
      /* background-color: ${({ pending, theme }) =>
        pending ? darken(0.05, theme.primary1) : lighten(0.05, theme.bg2)}; */
-
+border: 2px solid ${({ pending, theme }) => (pending ? theme.primary1 : theme.jediWhite)};
     :focus {
        /* border: 1px solid ${({ pending, theme }) =>
          pending ? darken(0.1, theme.primary1) : darken(0.1, theme.bg3)}; */
