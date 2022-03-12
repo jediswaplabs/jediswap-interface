@@ -9,6 +9,7 @@ import { Abi, Args, RawArgs, uint256 } from 'starknet'
 import { usePairAddresses } from '../hooks/usePairAddress'
 import { NEVER_RELOAD, useMultipleContractSingleData, useSingleContractMultipleData } from '../state/multicall/hooks'
 import { useRegistryContract } from '../hooks/useContract'
+import { isAddress } from '../utils'
 
 export enum PairState {
   LOADING,
@@ -53,6 +54,8 @@ export function usePairs(currencies: [Currency | undefined, Currency | undefined
   const pairAddresses = pairAddressesCallState.map(pairAddress => pairAddress.result?.[0])
   // console.log('🚀 ~ file: Reserves.ts ~ line 50 ~ usePairs ~ pairAddresses', pairAddresses)
 
+  const validatedPairAddresses = pairAddresses.map(address => (isAddress(address) ? address : undefined))
+
   // const pairAddresses = useMemo(
   //   () =>
   //     tokens.map(([tokenA, tokenB]) => {
@@ -61,7 +64,7 @@ export function usePairs(currencies: [Currency | undefined, Currency | undefined
   //   [tokens]
   // )
 
-  const results = useMultipleContractSingleData(pairAddresses, JediswapPairABI as Abi, 'get_reserves')
+  const results = useMultipleContractSingleData(validatedPairAddresses, JediswapPairABI as Abi, 'get_reserves')
   // console.log('🚀 ~ file: Reserves.ts ~ line 60 ~ usePairs ~ results', results)
 
   return useMemo(() => {
