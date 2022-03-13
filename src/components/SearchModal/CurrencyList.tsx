@@ -111,7 +111,7 @@ function CurrencyRow({
   otherSelected: boolean
   style: CSSProperties
 }) {
-  const { account, chainId, connector } = useActiveStarknetReact()
+  const { account, chainId } = useActiveStarknetReact()
   const key = currencyKey(currency)
   const selectedTokenList = useSelectedTokenList()
 
@@ -122,7 +122,7 @@ function CurrencyRow({
   const removeToken = useRemoveUserAddedToken()
   const addToken = useAddUserToken()
 
-  const addTokenToWallet = useAddTokenToWallet(connector)
+  const addTokenToWallet = useAddTokenToWallet()
 
   // only show add or remove buttons if not on selected list
   return (

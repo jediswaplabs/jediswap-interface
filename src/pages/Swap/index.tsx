@@ -55,7 +55,8 @@ import SwapWidget from '../../assets/jedi/SwapWidget.svg'
 import { jediTokensList, TOKEN0 } from '../../constants/jediTokens'
 import { MintState, useMintCallback } from '../../hooks/useMintCallback'
 import { useUserTransactionTTL } from '../../state/user/hooks'
-// import BackdropImage from '../../assets/jedi/Backdrop.svg'
+import { ReactComponent as ArrowRight } from '../../assets/images/arrow-right-blue.svg'
+import { useAddTokenToWallet } from '../../hooks/useAddTokenToWallet'
 
 const MintSection = styled.section`
   margin-top: 3rem;
@@ -69,6 +70,26 @@ const MintButton = styled(ButtonOutlined)`
   font-weight: 500;
   border-color: ${({ theme }) => theme.jediBlue};
   color: ${({ theme }) => theme.jediWhite};
+`
+
+const AddTokenText = styled.div`
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  margin-right: 21px;
+  color: ${({ theme }) => theme.jediBlue};
+`
+
+const AddTokenRow = styled(AutoRow)`
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  margin-top: 28px;
+  color: ${({ theme }) => theme.jediBlue};
+
+  &:hover {
+    cursor: pointer;
+  }
 `
 
 export default function Swap() {
@@ -123,6 +144,7 @@ export default function Swap() {
   // const showWrap: boolean = wrapType !== WrapType.NOT_APPLICABLE
   // const { address: recipientAddress } = useENSAddress(recipient)
 
+  const addTokenToWallet = useAddTokenToWallet()
   const parsedAmounts = {
     [Field.INPUT]: independentField === Field.INPUT ? parsedAmount : trade?.inputAmount,
     [Field.OUTPUT]: independentField === Field.OUTPUT ? parsedAmount : trade?.outputAmount
@@ -522,6 +544,18 @@ export default function Swap() {
           </BottomGrouping>
         </Wrapper>
       </AppBody>
+
+      {trade && (
+        <AddTokenRow
+          justify={'center'}
+          onClick={() =>
+            trade?.outputAmount?.currency instanceof Token && addTokenToWallet(trade?.outputAmount?.currency?.address)
+          }
+        >
+          <AddTokenText>ADD {trade?.outputAmount?.currency?.name} to wallet</AddTokenText>
+          <ArrowRight />
+        </AddTokenRow>
+      )}
 
       {account && (
         <MintSection>
