@@ -1,12 +1,12 @@
 import { createAction } from '@reduxjs/toolkit'
 import { ChainId } from '@jediswap/sdk'
-import { Status } from '@jediswap/starknet'
+import { BlockNumber, Status } from 'starknet'
 
 export interface SerializableTransactionReceipt {
   transactionIndex: number
   blockHash: string
   transactionHash: string
-  blockNumber: number
+  blockNumber: BlockNumber
   status?: Status
 }
 

@@ -4,7 +4,7 @@ import ERC20_ABI from '../../constants/abis/erc20.json'
 import { useAllTokens } from '../../hooks/Tokens'
 import { useActiveStarknetReact } from '../../hooks'
 import { isAddress } from '../../utils'
-import { Abi, uint256 } from '@jediswap/starknet'
+import { Abi, uint256 } from 'starknet'
 import { useAddressNormalizer } from '../../hooks/useAddressNormalizer'
 import { useTokenContract } from '../../hooks/useContract'
 import { useMultipleContractSingleData, useSingleCallResult } from '../multicall/hooks'
@@ -85,7 +85,7 @@ export function useTokenBalancesWithLoadingIndicator(
 
   const validatedTokenAddresses = useMemo(() => validatedTokens.map(vt => vt.address), [validatedTokens])
 
-  const balances = useMultipleContractSingleData(validatedTokenAddresses, ERC20_ABI as Abi[], 'balanceOf', {
+  const balances = useMultipleContractSingleData(validatedTokenAddresses, ERC20_ABI as Abi, 'balanceOf', {
     account: address ?? ''
   })
 
@@ -164,9 +164,9 @@ export function useCurrencyBalance(account?: string, currency?: Currency): Curre
 
 // mimics useAllBalances
 export function useAllTokenBalances(): { [tokenAddress: string]: TokenAmount | undefined } {
-  const { account } = useActiveStarknetReact()
+  const { account, connectedAddress } = useActiveStarknetReact()
   const allTokens = useAllTokens()
   const allTokensArray = useMemo(() => Object.values(allTokens ?? {}), [allTokens])
-  const balances = useTokenBalances(account ?? undefined, allTokensArray)
+  const balances = useTokenBalances(connectedAddress ?? undefined, allTokensArray)
   return balances ?? {}
 }

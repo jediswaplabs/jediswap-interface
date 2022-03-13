@@ -1,4 +1,4 @@
-import { AddTransactionResponse } from '@jediswap/starknet'
+import { AddTransactionResponse } from 'starknet'
 import { useCallback, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -12,7 +12,7 @@ export function useTransactionAdder(): (
   response: AddTransactionResponse,
   customData?: { summary?: string; approval?: { tokenAddress: string; spender: string }; claim?: { recipient: string } }
 ) => void {
-  const { chainId, account } = useActiveStarknetReact()
+  const { chainId, account, connectedAddress } = useActiveStarknetReact()
   const dispatch = useDispatch<AppDispatch>()
 
   return useCallback(
@@ -24,16 +24,16 @@ export function useTransactionAdder(): (
         claim
       }: { summary?: string; claim?: { recipient: string }; approval?: { tokenAddress: string; spender: string } } = {}
     ) => {
-      if (!account) return
+      if (!account || !connectedAddress) return
       if (!chainId) return
 
       const hash = response.transaction_hash
       if (!hash) {
         throw Error('No transaction hash found.')
       }
-      dispatch(addTransaction({ hash, from: account, chainId, approval, summary, claim }))
+      dispatch(addTransaction({ hash, from: connectedAddress, chainId, approval, summary, claim }))
     },
-    [dispatch, chainId, account]
+    [account, connectedAddress, chainId, dispatch]
   )
 }
 

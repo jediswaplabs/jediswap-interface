@@ -41,7 +41,7 @@ const Web3StatusGeneric = styled(ButtonSecondary)`
   ${({ theme }) => theme.flexRowNoWrap}
   width: 100%;
   align-items: center;
-  // padding: 0.5rem;
+  /* padding: 0.5rem; */
   border-radius: 8px;
   cursor: pointer;
   user-select: none;
@@ -56,7 +56,7 @@ const Web3StatusError = styled(Web3StatusGeneric)`
   font-weight: 500;
   :hover,
   :focus {
-    // background-color: ${({ theme }) => darken(0.1, theme.red1)};
+     /* background-color: ${({ theme }) => darken(0.1, theme.red1)}; */
   }
 `
 
@@ -79,51 +79,50 @@ const Web3StatusConnect = styled(Web3StatusGeneric)<{ faded?: boolean }>`
   ${({ faded }) =>
     faded &&
     css`
-      // background-color: ${({ theme }) => theme.primary5};
-      // border: 1px solid ${({ theme }) => theme.primary5};
+       /* background-color: ${({ theme }) => theme.primary5}; */
+       /* border: 1px solid ${({ theme }) => theme.primary5}; */
       color: ${({ theme }) => theme.jediWhite};
 
       :hover,
       :focus {
-        // border: 1px solid ${({ theme }) => darken(0.05, theme.primary4)};
+         /* border: 1px solid ${({ theme }) => darken(0.05, theme.primary4)}; */
         color: ${({ theme }) => darken(0.05, theme.jediWhite)};
       }
     `}
 `
 
 const Web3StatusConnected = styled(Web3StatusGeneric)<{ pending?: boolean }>`
-  background-color: ${({ pending, theme }) => (pending ? theme.primary1 : 'transparent')};
-  border: 1px solid ${({ pending, theme }) => (pending ? theme.primary1 : theme.bg3)};
- 
+  background-color: ${({ pending, theme }) => (pending ? theme.primary1 : ' rgba(255, 255, 255, 0.15)')};
+ border: 2px solid transparent;
+  padding: 0.6rem 1rem 0.6rem 0.9rem;
   color: ${({ pending, theme }) => (pending ? theme.white : theme.jediWhite)};
-  font-weight: 500;
-  padding:10px 30px;
+  /* padding: 0.4rem 1rem 0.4rem 0.9rem; */
   
   
   :hover,
   :focus {
-    // background-color: ${({ pending, theme }) => (pending ? darken(0.05, theme.primary1) : lighten(0.05, theme.bg2))};
-
+     /* background-color: ${({ pending, theme }) =>
+       pending ? darken(0.05, theme.primary1) : lighten(0.05, theme.bg2)}; */
+border: 2px solid ${({ pending, theme }) => (pending ? theme.primary1 : theme.jediWhite)};
     :focus {
-      // border: 1px solid ${({ pending, theme }) => (pending ? darken(0.1, theme.primary1) : darken(0.1, theme.bg3))};
+       /* border: 1px solid ${({ pending, theme }) =>
+         pending ? darken(0.1, theme.primary1) : darken(0.1, theme.bg3)}; */
     }
   }
 `
 
 const Text = styled.p`
-  margin: 0 0.5rem 0 0.25rem;
-  font-size: 1rem;
-  font-weight: 500;
-  font-family: 'DM Sans', sans-serif;
+  margin: 0 0.5rem 0 0.5rem;
+  font-family: 'Avenir LT Std';
   font-style: normal;
-  font-weight: 500;
+  font-weight: 600;
   font-size: 16px;
   line-height: 20px;
 `
 const ConnectStateText = styled(Text)`
   font-size: 16px;
   font-style: normal;
-  font-weight: 400;
+  font-weight: 800;
   line-height: 20px;
   text-align: left;
 `
@@ -186,9 +185,9 @@ function StatusIcon({ connector }: { connector: AbstractConnector }) {
 
 function Web3StatusInner() {
   const { t } = useTranslation()
-  const { account, connector, error } = useActiveStarknetReact()
+  const { connectedAddress, connector, error } = useActiveStarknetReact()
 
-  // const { ENSName } = useENSName(account ?? undefined)
+  // const { ENSName } = useENSName(connectedAddress ?? undefined)
 
   const allTransactions = useAllTransactions()
 
@@ -205,7 +204,7 @@ function Web3StatusInner() {
   // const hasSocks = useHasSocks()
   const toggleWalletModal = useWalletModalToggle()
 
-  if (account) {
+  if (connectedAddress) {
     return (
       <Web3StatusConnected id="web3-status-connected" onClick={toggleWalletModal} pending={hasPendingTransactions}>
         {!hasPendingTransactions && connector && <StatusIcon connector={connector} />}
@@ -214,7 +213,7 @@ function Web3StatusInner() {
             <Text>{pending?.length} Pending</Text> <Loader stroke="white" />
           </RowBetween>
         ) : (
-          <Text>{shortenAddress(account)}</Text>
+          <Text>{shortenAddress(connectedAddress)}</Text>
         )}
       </Web3StatusConnected>
     )
@@ -235,10 +234,10 @@ function Web3StatusInner() {
 }
 
 export default function Web3Status() {
-  const { active, account } = useStarknetReact()
+  const { active, connectedAddress } = useStarknetReact()
   const contextNetwork = useStarknetReact(NetworkContextName)
 
-  // const { ENSName } = useENSName(account ?? undefined)
+  // const { ENSName } = useENSName(connectedAddress ?? undefined)
 
   const allTransactions = useAllTransactions()
 

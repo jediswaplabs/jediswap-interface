@@ -15,14 +15,14 @@ const StyledIdenticonContainer = styled.div`
 export default function Identicon() {
   const ref = useRef<HTMLDivElement>()
 
-  const { account } = useActiveStarknetReact()
+  const { connectedAddress } = useActiveStarknetReact()
 
   useEffect(() => {
-    if (account && ref.current) {
+    if (connectedAddress && ref.current) {
       ref.current.innerHTML = ''
-      ref.current.appendChild(Jazzicon(16, parseInt(account.slice(2, 10), 16)))
+      ref.current.appendChild(Jazzicon(16, parseInt(connectedAddress.slice(2, 10), 16)))
     }
-  }, [account])
+  }, [connectedAddress])
 
   // https://github.com/DefinitelyTyped/DefinitelyTyped/issues/30451
   return <StyledIdenticonContainer ref={ref as any} />

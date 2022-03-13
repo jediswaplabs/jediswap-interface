@@ -7,12 +7,7 @@ declare module 'jazzicon' {
 declare module 'fortmatic'
 
 interface Window {
-  ethereum?: {
-    isMetaMask?: true
-    on?: (...args: any[]) => void
-    removeListener?: (...args: any[]) => void
-  }
-  web3?: {}
+  starknet?: import('@web3-starknet-react/argentx-connector/dist/types').StarknetWindowObject
 }
 
 declare module 'content-hash' {

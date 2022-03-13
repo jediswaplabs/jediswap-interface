@@ -1,9 +1,9 @@
-import { FunctionAbi } from '@jediswap/starknet'
-import { Abi, Args, compileCalldata, number, validateAndParseAddress } from '@jediswap/starknet'
+import { FunctionAbi, hash, RawArgs } from 'starknet'
+import { Abi, Args, number, validateAndParseAddress } from 'starknet'
 // import { Interface, FunctionFragment } from '@ethersproject/abi'
 import { BigNumber } from '@ethersproject/bignumber'
 // import { Contract } from '@ethersproject/contracts'
-import { Contract, stark } from '@jediswap/starknet'
+import { Contract, stark } from 'starknet'
 import { useEffect, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useActiveStarknetReact } from '../../hooks'
@@ -18,7 +18,6 @@ import {
   ListenerOptions
 } from './actions'
 import { computeCallDataProps } from './utils'
-import { isAddress } from '../../utils'
 
 export interface Result extends ReadonlyArray<any> {
   readonly [key: string]: any
@@ -176,7 +175,7 @@ function toCallState(
 export function useSingleContractMultipleData(
   contract: Contract | null | undefined,
   methodName: string,
-  callInputs: (Args | undefined)[],
+  callInputs: (RawArgs | undefined)[],
   options?: ListenerOptions
 ): CallState[] {
   // const fragment = useMemo(() => contract?.interface?.getFunction(methodName), [contract, methodName])
@@ -184,16 +183,12 @@ export function useSingleContractMultipleData(
 
   const calls = useMemo(
     () =>
-      contract &&
-      isAddress(contract.connectedTo) &&
-      methodName &&
-      callInputs &&
-      callInputs.filter(input => typeof input !== 'undefined').length > 0
+      contract && methodName && callInputs && callInputs.filter(input => typeof input !== 'undefined').length > 0
         ? callInputs.map<Call>(inputs => {
             const { calldata_len, calldata } = computeCallDataProps(inputs)
 
             return {
-              address: validateAndParseAddress(contract.connectedTo),
+              address: validateAndParseAddress(contract.address),
               methodName,
               calldata_len: calldata_len.toString(),
               calldata
@@ -215,12 +210,12 @@ export function useSingleContractMultipleData(
 
 export function useMultipleContractSingleData(
   addresses: (string | undefined)[],
-  contractInterface: Abi[] | undefined,
+  contractInterface: Abi | undefined,
   methodName: string,
-  callInputs?: Args,
+  callInputs?: RawArgs,
   options?: ListenerOptions
 ): CallState[] {
-  const selector = useMemo(() => stark.getSelectorFromName(methodName), [methodName])
+  const selector = useMemo(() => hash.getSelectorFromName(methodName), [methodName])
   const callDataProps = useMemo(() => computeCallDataProps(callInputs), [callInputs])
 
   const callDataLength = callDataProps?.calldata_len.toString()
@@ -230,7 +225,7 @@ export function useMultipleContractSingleData(
     () =>
       addresses && addresses.length > 0 && selector && isValidMethodArgs(callInputs)
         ? addresses.map<Call | undefined>(address => {
-            return address && isAddress(address)
+            return address
               ? {
                   address: validateAndParseAddress(address),
                   methodName,
@@ -257,19 +252,19 @@ export function useMultipleContractSingleData(
 export function useSingleCallResult(
   contract: Contract | null | undefined,
   methodName: string,
-  inputs?: Args,
+  inputs?: RawArgs,
   options?: ListenerOptions
 ): CallState {
   //   const fragment = useMemo(() => contract?.interface?.getFunction(methodName), [contract, methodName])
 
-  const selector = useMemo(() => stark.getSelectorFromName(methodName), [methodName])
+  const selector = useMemo(() => hash.getSelectorFromName(methodName), [methodName])
   const { calldata_len, calldata } = useMemo(() => computeCallDataProps(inputs), [inputs])
 
   const calls = useMemo<Call[]>(() => {
-    return contract && isAddress(contract.connectedTo) && selector && isValidMethodArgs(inputs)
+    return contract && selector && isValidMethodArgs(inputs)
       ? [
           {
-            address: validateAndParseAddress(contract.connectedTo),
+            address: validateAndParseAddress(contract.address),
             methodName,
             calldata_len: calldata_len.toString(),
             calldata
@@ -289,7 +284,7 @@ export function useSingleCallResult(
   }, [result, latestBlockNumber])
 }
 
-export function useValidatedMethodAbi(contractAbi: Abi[] | undefined, methodName: string): FunctionAbi | undefined {
+export function useValidatedMethodAbi(contractAbi: Abi | undefined, methodName: string): FunctionAbi | undefined {
   return useMemo(
     () =>
       contractAbi?.filter((abi): abi is FunctionAbi => abi.type === 'function').find(abi => abi.name === methodName),

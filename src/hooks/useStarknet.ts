@@ -1,169 +1,171 @@
-import { useCallback, useEffect, useState } from 'react'
-import { Abi, Args, compileCalldata, Contract } from '@jediswap/starknet'
-import { useActiveStarknetReact } from '.'
-import { useBlockNumber } from '../state/application/hooks'
-import { useTransactionAdder } from '../state/transactions/hooks'
-import { retry } from '../utils/retry'
-import useDeepCompareEffect from 'use-deep-compare-effect'
-import isZero from '../utils/isZero'
+// import { useCallback, useEffect, useState } from 'react'
+// import { Abi, Args, Contract } from 'starknet'
+// import { useActiveStarknetReact } from '.'
+// import { useBlockNumber } from '../state/application/hooks'
+// import { useTransactionAdder } from '../state/transactions/hooks'
+// import { retry } from '../utils/retry'
+// import useDeepCompareEffect from 'use-deep-compare-effect'
+// import isZero from '../utils/isZero'
 
-export interface ListenerOptions {
-  // how often this data should be fetched, by default 1
-  readonly blocksPerFetch?: number
-}
+// export interface ListenerOptions {
+//   // how often this data should be fetched, by default 1
+//   readonly blocksPerFetch?: number
+// }
 
-export interface CallState {
-  result: Args | undefined
-  loading: boolean
-}
+// export interface CallState {
+//   result: Args | undefined
+//   loading: boolean
+// }
 
-const LOADING_STATE_RESULT: CallState = {
-  result: undefined,
-  loading: true
-}
+// const LOADING_STATE_RESULT: CallState = {
+//   result: undefined,
+//   loading: true
+// }
 
-// use this options object
-export const NEVER_RELOAD: ListenerOptions = {
-  blocksPerFetch: Infinity
-}
+// // use this options object
+// export const NEVER_RELOAD: ListenerOptions = {
+//   blocksPerFetch: Infinity
+// }
 
-export function useStarknetCall(
-  contract: Contract | null,
-  methodName: string,
-  args?: any,
-  options?: ListenerOptions
-): Args {
-  const [value, setValue] = useState<Args>({})
-  const blockNumber = useBlockNumber()
+// export function useStarknetCall(
+//   contract: Contract | null,
+//   methodName: string,
+//   args?: any,
+//   options?: ListenerOptions
+// ): Args {
+//   const [value, setValue] = useState<Args>({})
+//   const blockNumber = useBlockNumber()
 
-  const refetchOnBlock = options !== NEVER_RELOAD ? blockNumber : null
+//   const refetchOnBlock = options !== NEVER_RELOAD ? blockNumber : null
 
-  const callContract = useCallback(
-    (contract: Contract) => {
-      try {
-        return contract.call(methodName, args)
-      } catch (error) {
-        throw new Error('Failed Contract call')
-      }
-    },
-    [methodName, args]
-  )
+//   const callContract = useCallback(
+//     (contract: Contract) => {
+//       try {
+//         return contract.call(methodName, args)
+//       } catch (error) {
+//         throw new Error('Failed Contract call')
+//       }
+//     },
+//     [methodName, args]
+//   )
 
-  useEffect(() => {
-    let isCancelled = false
+//   useEffect(() => {
+//     let isCancelled = false
 
-    if (!contract || !methodName) return
+//     if (!contract || !methodName) return
 
-    if (!isCancelled) {
-      const { promise, cancel } = retry(() => callContract(contract), {
-        n: Infinity,
-        minWait: 2500,
-        maxWait: 3500
-      })
+//     if (!isCancelled) {
+//       const { promise, cancel } = retry(() => callContract(contract), {
+//         n: Infinity,
+//         minWait: 2500,
+//         maxWait: 3500
+//       })
 
-      promise.then(call => setValue(call))
-    }
-    return () => {
-      isCancelled = true
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [blockNumber, contract, methodName])
+//       promise.then(call => setValue(call))
+//     }
+//     return () => {
+//       isCancelled = true
+//     }
+//     // eslint-disable-next-line react-hooks/exhaustive-deps
+//   }, [blockNumber, contract, methodName])
 
-  return value
-}
+//   return value
+// }
 
-export function useMultipleStarknetCallSingleData(
-  addresses: (string | undefined)[],
-  contractInterface: Abi[],
-  methodName: string | undefined,
-  args?: Args | undefined,
-  options?: ListenerOptions
-): (Args | undefined)[] {
-  const { library } = useActiveStarknetReact()
-  const blockNumber = useBlockNumber()
-  const [calls, setCalls] = useState<(Args | undefined)[]>([])
+// export function useMultipleStarknetCallSingleData(
+//   addresses: (string | undefined)[],
+//   contractInterface: Abi[],
+//   methodName: string | undefined,
+//   args?: Args | undefined,
+//   options?: ListenerOptions
+// ): (Args | undefined)[] {
+//   const { library } = useActiveStarknetReact()
+//   const blockNumber = useBlockNumber()
+//   const [calls, setCalls] = useState<(Args | undefined)[]>([])
 
-  const callResults = useCallback(
-    (addresses: (string | undefined)[], contractInterface: Abi[], methodName: string, args?: Args | undefined) => {
-      return Promise.all(
-        addresses.map(async address => {
-          if (!address || isZero(address)) return undefined
-          const contract = new Contract(contractInterface, address)
+//   const callResults = useCallback(
+//     (addresses: (string | undefined)[], contractInterface: Abi[], methodName: string, args?: Args | undefined) => {
+//       return Promise.all(
+//         addresses.map(async address => {
+//           if (!address || isZero(address)) return undefined
+//           const contract = new Contract(contractInterface, address)
 
-          const result = await contract?.call(methodName, args)
-          return result
-        })
-      )
-    },
-    []
-  )
+//           const result = await contract?.call(methodName, args)
+//           return result
+//         })
+//       )
+//     },
+//     []
+//   )
 
-  useDeepCompareEffect(() => {
-    let isCancelled = false
+//   useDeepCompareEffect(() => {
+//     let isCancelled = false
 
-    if (!contractInterface || !methodName || !addresses) return
+//     if (!contractInterface || !methodName || !addresses) return
 
-    if (!isCancelled) {
-      const { promise, cancel } = retry(() => callResults(addresses, contractInterface, methodName, args), {
-        n: Infinity,
-        minWait: 2500,
-        maxWait: 3500
-      })
+//     if (!isCancelled) {
+//       const { promise, cancel } = retry(() => callResults(addresses, contractInterface, methodName, args), {
+//         n: Infinity,
+//         minWait: 2500,
+//         maxWait: 3500
+//       })
 
-      promise.then(call => setCalls(call)).catch(error => console.error('Error in: ', error))
-    }
+//       promise.then(call => setCalls(call)).catch(error => console.error('Error in: ', error))
+//     }
 
-    return () => {
-      isCancelled = true
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [contractInterface, callResults, addresses, blockNumber])
+//     return () => {
+//       isCancelled = true
+//     }
+//     // eslint-disable-next-line react-hooks/exhaustive-deps
+//   }, [contractInterface, callResults, addresses, blockNumber])
 
-  return calls
-}
+//   return calls
+// }
 
-type InvokeFunc = (args?: any) => void
+// type InvokeFunc = (args?: any) => void
 
-interface StarknetInvoke {
-  invoke?: InvokeFunc
-  hash?: string
-  submitting: boolean
-}
+// interface StarknetInvoke {
+//   invoke?: InvokeFunc
+//   hash?: string
+//   submitting: boolean
+// }
 
-export function useStarknetInvoke(contract: Contract | undefined, method: string | undefined): StarknetInvoke {
-  const addTransaction = useTransactionAdder()
+// export function useStarknetInvoke(contract: Contract | undefined, method: string | undefined): StarknetInvoke {
+//   const addTransaction = useTransactionAdder()
 
-  const { account } = useActiveStarknetReact()
+//   const { account } = useActiveStarknetReact()
 
-  const [invoke, setInvoke] = useState<InvokeFunc | undefined>(undefined)
+//   const [invoke, setInvoke] = useState<InvokeFunc | undefined>(undefined)
 
-  const [hash, setHash] = useState<string | undefined>(undefined)
+//   const [hash, setHash] = useState<string | undefined>(undefined)
 
-  const [submitting, setSubmitting] = useState<boolean>(false)
+//   const [submitting, setSubmitting] = useState<boolean>(false)
 
-  useEffect(() => {
-    if (account && contract && method) {
-      const invokeFunc = async (args?: any) => {
-        setSubmitting(true)
+//   useEffect(() => {
+//     if (account && contract && method) {
+//       const invokeFunc = async (args?: any) => {
+//         setSubmitting(true)
 
-        try {
-          const transaction = await contract.invoke(method, args)
-          const { transaction_hash } = transaction
+//         try {
+//           const transaction = await contract.invoke(method, args)
+//           const { transaction_hash } = transaction
 
-          setHash(transaction_hash)
-          setSubmitting(false)
-          addTransaction(transaction)
-        } catch (error) {
-          setSubmitting(false)
-          setHash(undefined)
-        }
-      }
+//           setHash(transaction_hash)
+//           setSubmitting(false)
+//           addTransaction(transaction)
+//         } catch (error) {
+//           setSubmitting(false)
+//           setHash(undefined)
+//         }
+//       }
 
-      setInvoke(() => invokeFunc)
-    } else {
-      setInvoke(undefined)
-    }
-  }, [account, contract, method, addTransaction])
+//       setInvoke(() => invokeFunc)
+//     } else {
+//       setInvoke(undefined)
+//     }
+//   }, [account, contract, method, addTransaction])
 
-  return { invoke, hash, submitting }
-}
+//   return { invoke, hash, submitting }
+// }
+
+export {}

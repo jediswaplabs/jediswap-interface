@@ -1,5 +1,5 @@
 import { BigNumber } from '@ethersproject/bignumber'
-import { Contract, Args, uint256, compileCalldata } from '@jediswap/starknet'
+import { Contract, uint256, stark, RawArgs, Call } from 'starknet'
 import { JSBI, Percent, Router, SwapParameters, Trade, TradeType } from '@jediswap/sdk'
 import { useMemo } from 'react'
 import { BIPS_BASE, INITIAL_ALLOWED_SLIPPAGE } from '../constants'
@@ -10,6 +10,7 @@ import isZero from '../utils/isZero'
 import { useActiveStarknetReact } from './index'
 import useTransactionDeadline from './useTransactionDeadline'
 // import useENS from './useENS'
+import { useApprovalCallFromTrade } from './useApproveCall'
 
 export enum SwapCallbackState {
   INVALID,
@@ -45,17 +46,17 @@ function useSwapCallArguments(
   allowedSlippage: number = INITIAL_ALLOWED_SLIPPAGE, // in bips
   recipientAddressOrName: string | null // the ENS name or address of the recipient of the trade, or null if swap should be returned to sender
 ): SwapCall[] {
-  const { account, chainId, library } = useActiveStarknetReact()
+  const { connectedAddress, account, chainId, library } = useActiveStarknetReact()
 
   // const { address: recipientAddress } = useENS(recipientAddressOrName)
-  const recipient = recipientAddressOrName === null ? account : recipientAddressOrName
+  const recipient = recipientAddressOrName === null ? connectedAddress : recipientAddressOrName
 
   const deadline = useTransactionDeadline()
 
   const contract: Contract | null = useRouterContract()
 
   return useMemo(() => {
-    if (!trade || !recipient || !library || !account || !chainId || !deadline) {
+    if (!trade || !recipient || !library || !account || !chainId || !deadline || !connectedAddress) {
       return []
     }
 
@@ -86,7 +87,7 @@ function useSwapCallArguments(
       )
     }
     return swapMethods.map(parameters => ({ parameters, contract }))
-  }, [account, allowedSlippage, chainId, contract, deadline, library, recipient, trade])
+  }, [account, allowedSlippage, chainId, connectedAddress, contract, deadline, library, recipient, trade])
 }
 
 // returns a function that will execute a swap, if the parameters are all valid
@@ -98,6 +99,7 @@ export function useSwapCallback(
 ): { state: SwapCallbackState; callback: null | (() => Promise<string>); error: string | null } {
   const { account, chainId, library } = useActiveStarknetReact()
 
+  const approvalCallback = useApprovalCallFromTrade(trade, allowedSlippage)
   const swapCalls = useSwapCallArguments(trade, allowedSlippage, recipientAddressOrName)
 
   const addTransaction = useTransactionAdder()
@@ -117,16 +119,18 @@ export function useSwapCallback(
       }
     }
 
+    // if (!approvalCall) {
+    //   return { state: SwapCallbackState.INVALID, callback: null, error: 'Missing approval call' }
+    // }
+
     return {
       state: SwapCallbackState.VALID,
       callback: async function onSwap(): Promise<string> {
         const estimatedCalls: EstimatedSwapCall[] = await Promise.all(
           swapCalls.map(call => {
             const {
-              parameters: { methodName, args, value },
-              contract
+              parameters: { methodName, args, value }
             } = call
-            const options = !value || isZero(value) ? {} : { value }
 
             return { call }
 
@@ -175,6 +179,12 @@ export function useSwapCallback(
         //   throw new Error('Unexpected error. Please contact support: none of the calls threw an error')
         // }
 
+        const approval = approvalCallback()
+
+        if (!approval) {
+          throw new Error('Unexpected Approval Call error')
+        }
+
         const {
           call: {
             contract,
@@ -187,7 +197,7 @@ export function useSwapCallback(
         const uint256AmountIn = uint256.bnToUint256(amountIn as string)
         const uint256AmountOut = uint256.bnToUint256(amountOut as string)
 
-        const swapArgs: Args = {
+        const swapArgs: RawArgs = {
           amountIn: { type: 'struct', ...uint256AmountIn },
           amountOutMin: { type: 'struct', ...uint256AmountOut },
           path,
@@ -195,8 +205,18 @@ export function useSwapCallback(
           deadline
         }
 
-        return contract
-          .invoke(methodName, swapArgs)
+        // const swapCalldata = [...Object.values(uint256AmountIn), ...Object.values(uint256AmountOut), path, to, deadline]
+
+        const swapCalldata = stark.compileCalldata(swapArgs)
+
+        const swapCall: Call = {
+          contractAddress: contract.address,
+          entrypoint: methodName,
+          calldata: swapCalldata
+        }
+
+        return account
+          .execute([approval, swapCall])
           .then(response => {
             const inputSymbol = trade.inputAmount.currency.symbol
             const outputSymbol = trade.outputAmount.currency.symbol
@@ -232,5 +252,5 @@ export function useSwapCallback(
       },
       error: null
     }
-  }, [trade, library, account, chainId, recipient, recipientAddressOrName, swapCalls, addTransaction])
+  }, [trade, library, account, chainId, recipient, recipientAddressOrName, swapCalls, approvalCallback, addTransaction])
 }

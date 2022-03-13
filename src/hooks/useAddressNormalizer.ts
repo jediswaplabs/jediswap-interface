@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { validateAndParseAddress } from '@jediswap/starknet'
+import { validateAndParseAddress } from 'starknet'
 
 export function useAddressNormalizer(addr: string | null | undefined): string | null {
   return useMemo(() => {
