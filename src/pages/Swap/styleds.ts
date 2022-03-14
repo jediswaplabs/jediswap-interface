@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { Text } from 'rebass'
+import { AutoRow } from '../../components/Row'
 
 export const ClickableText = styled(Text)`
   :hover {
@@ -64,4 +65,23 @@ export const Backdrop = styled.div<{
   border-radius: ${({ curveRight }) => (curveRight ? '30px 30px 0 0' : '0 0 30px 30px')};
 
   transform: matrix(0, 1, 1, 0, 0, 0);
+`
+export const AddTokenText = styled.div`
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  margin-right: 21px;
+  color: ${({ theme }) => theme.jediBlue};
+`
+
+export const AddTokenRow = styled(AutoRow)`
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  margin-top: 28px;
+  color: ${({ theme }) => theme.jediBlue};
+
+  &:hover {
+    cursor: pointer;
+  }
 `
