@@ -39,11 +39,13 @@ export function useTransactionAdder(): (
 
 // returns all the transactions for the current chain
 export function useAllTransactions(): { [txHash: string]: TransactionDetails } {
-  const { chainId } = useActiveStarknetReact()
+  const { chainId, connectedAddress } = useActiveStarknetReact()
 
   const state = useSelector<AppState, AppState['transactions']>(state => state.transactions)
 
-  return chainId ? state[chainId] ?? {} : {}
+  const allTxns = chainId ? state[chainId] ?? {} : {}
+
+  return Object.fromEntries(Object.entries(allTxns).filter(([_, tx]) => tx.from === connectedAddress))
 }
 
 export function useIsTransactionPending(transactionHash?: string): boolean {
