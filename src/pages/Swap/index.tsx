@@ -45,7 +45,16 @@ import { DMSansText, LinkStyledButton, TYPE } from '../../theme'
 import { maxAmountSpend } from '../../utils/maxAmountSpend'
 import { computeTradePriceBreakdown, warningSeverity } from '../../utils/prices'
 import AppBody from '../AppBody'
-import { ClickableText, Backdrop, BalanceText, HeaderRow, IconWrapper, Icon } from './styleds'
+import {
+  ClickableText,
+  Backdrop,
+  BalanceText,
+  HeaderRow,
+  IconWrapper,
+  Icon,
+  AddTokenRow,
+  AddTokenText
+} from './styleds'
 import Loader from '../../components/Loader'
 import { useAddressNormalizer } from '../../hooks/useAddressNormalizer'
 
@@ -71,26 +80,6 @@ const MintButton = styled(ButtonOutlined)`
   font-weight: 500;
   border-color: ${({ theme }) => theme.jediBlue};
   color: ${({ theme }) => theme.jediWhite};
-`
-
-const AddTokenText = styled.div`
-  font-family: 'DM Sans', sans-serif;
-  font-size: 16px;
-  font-weight: 700;
-  margin-right: 21px;
-  color: ${({ theme }) => theme.jediBlue};
-`
-
-const AddTokenRow = styled(AutoRow)`
-  font-family: 'DM Sans', sans-serif;
-  font-size: 16px;
-  font-weight: 700;
-  margin-top: 28px;
-  color: ${({ theme }) => theme.jediBlue};
-
-  &:hover {
-    cursor: pointer;
-  }
 `
 
 export default function Swap() {
@@ -469,15 +458,15 @@ export default function Swap() {
             )}
             {isExpertMode && swapErrorMessage ? <SwapCallbackError error={swapErrorMessage} /> : null}
           </BottomGrouping>
+
+          {account && outputToken && (
+            <AddTokenRow justify={'center'} onClick={() => addTokenToWallet(outputToken.address)}>
+              <AddTokenText>Add {outputToken.symbol} to Wallet</AddTokenText>
+              <ArrowRight />
+            </AddTokenRow>
+          )}
         </Wrapper>
       </AppBody>
-
-      {account && outputToken && (
-        <AddTokenRow justify={'center'} onClick={() => addTokenToWallet(outputToken.address)}>
-          <AddTokenText>Add {outputToken.symbol} to Wallet</AddTokenText>
-          <ArrowRight />
-        </AddTokenRow>
-      )}
 
       {account && (
         <MintSection>

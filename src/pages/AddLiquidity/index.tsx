@@ -1,5 +1,15 @@
 import { BigNumber } from '@ethersproject/bignumber'
-import { Currency, CurrencyAmount, currencyEquals, JSBI, TOKEN0, TokenAmount, WTOKEN0 } from '@jediswap/sdk'
+import {
+  Currency,
+  CurrencyAmount,
+  currencyEquals,
+  JSBI,
+  LPToken,
+  Token,
+  TOKEN0,
+  TokenAmount,
+  WTOKEN0
+} from '@jediswap/sdk'
 import React, { useCallback, useContext, useState } from 'react'
 import { Plus } from 'react-feather'
 // import ReactGA from 'react-ga'
@@ -43,6 +53,9 @@ import { parsedAmountToUint256Args } from '../../utils'
 
 import styled from 'styled-components'
 import { useApprovalCall } from '../../hooks/useApproveCall'
+import { AddTokenRow, AddTokenText } from '../Swap/styleds'
+import { useAddTokenToWallet } from '../../hooks/useAddTokenToWallet'
+import { ReactComponent as ArrowRight } from '../../assets/images/arrow-right-blue.svg'
 
 const BalanceText = styled.div`
   font-family: 'DM Sans', sans-serif;
@@ -118,6 +131,8 @@ export default function AddLiquidity({
     error
   } = useDerivedMintInfo(currencyA ?? undefined, currencyB ?? undefined)
   const { onFieldAInput, onFieldBInput } = useMintActionHandlers(noLiquidity)
+
+  const addTokenToWallet = useAddTokenToWallet()
 
   const isValid = !error
 
@@ -470,6 +485,12 @@ export default function AddLiquidity({
               </AutoColumn>
             )}
           </AutoColumn>
+          {account && pair && (
+            <AddTokenRow justify={'center'} onClick={() => addTokenToWallet(pair.liquidityToken.address)}>
+              <AddTokenText>Add {pair.liquidityToken.symbol} to Wallet</AddTokenText>
+              <ArrowRight />
+            </AddTokenRow>
+          )}
         </Wrapper>
       </AppBody>
 

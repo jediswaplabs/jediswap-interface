@@ -8,7 +8,7 @@ import Column, { AutoColumn } from '../../components/Column'
 import CurrencyInputPanel from '../../components/CurrencyInputPanel'
 import { AutoRow, RowBetween, RowCentered } from '../../components/Row'
 import { ArrowWrapper, BottomGrouping } from '../../components/swap/styleds'
-import { Icon, IconWrapper } from '../Swap/styleds'
+import { AddTokenRow, AddTokenText, Icon, IconWrapper } from '../Swap/styleds'
 import SwapWidget from '../../assets/jedi/SwapWidget.svg'
 import { useActiveStarknetReact } from '../../hooks'
 import { ButtonConfirmed, ButtonError, ButtonPrimary, RedGradientButton } from '../../components/Button'
@@ -35,6 +35,8 @@ import { useZapCallback } from '../../hooks/useZapCallback'
 import { computeTradePriceBreakdown } from '../../utils/prices'
 import confirmPriceImpactWithoutFee from '../../components/swap/confirmPriceImpactWithoutFee'
 import ConfirmZapModal from '../../components/Zap/ConfirmZapModal'
+import { ReactComponent as ArrowRight } from '../../assets/images/arrow-right-blue.svg'
+import { useAddTokenToWallet } from '../../hooks/useAddTokenToWallet'
 
 export default function Zap() {
   const loadedUrlParams = useZapDefaultsFromURLSearch()
@@ -58,7 +60,6 @@ export default function Zap() {
     tradeLoading,
     zapTrade
   } = useDerivedZapInfo()
-  console.log('🚀 ~ file: index.tsx ~ line 58 ~ Zap ~ lpAmountOut', lpAmountOut)
 
   const parsedAmounts = {
     [Field.INPUT]: parsedAmount,
@@ -66,6 +67,8 @@ export default function Zap() {
     // TODO: Get correct OUTPUT amount
     [Field.OUTPUT]: lpAmountOut
   }
+
+  const addTokenToWallet = useAddTokenToWallet()
 
   // const dependentField: Field = Field.OUTPUT
 
@@ -364,6 +367,13 @@ export default function Zap() {
               </Column>
             )} */}
           </BottomGrouping>
+
+          {account && lpAmountOut && lpAmountOut.token && (
+            <AddTokenRow justify={'center'} onClick={() => addTokenToWallet(lpAmountOut.token.address)}>
+              <AddTokenText>Add MGP to Wallet</AddTokenText>
+              <ArrowRight />
+            </AddTokenRow>
+          )}
         </Wrapper>
       </AppBody>
     </>
