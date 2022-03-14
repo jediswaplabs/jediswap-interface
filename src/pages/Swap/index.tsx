@@ -57,6 +57,7 @@ import { MintState, useMintCallback } from '../../hooks/useMintCallback'
 import { useUserTransactionTTL } from '../../state/user/hooks'
 import { ReactComponent as ArrowRight } from '../../assets/images/arrow-right-blue.svg'
 import { useAddTokenToWallet } from '../../hooks/useAddTokenToWallet'
+import { wrappedCurrency } from '../../utils/wrappedCurrency'
 
 const MintSection = styled.section`
   margin-top: 3rem;
@@ -113,7 +114,7 @@ export default function Swap() {
 
   const [mintAddress, setMintAddress] = useState<string | undefined>(undefined)
 
-  const { account } = useActiveStarknetReact()
+  const { account, chainId } = useActiveStarknetReact()
   const theme = useContext(ThemeContext)
 
   // toggle wallet when disconnected
@@ -144,7 +145,10 @@ export default function Swap() {
   // const showWrap: boolean = wrapType !== WrapType.NOT_APPLICABLE
   // const { address: recipientAddress } = useENSAddress(recipient)
 
+  const outputToken = wrappedCurrency(currencies[Field.OUTPUT], chainId)
+
   const addTokenToWallet = useAddTokenToWallet()
+
   const parsedAmounts = {
     [Field.INPUT]: independentField === Field.INPUT ? parsedAmount : trade?.inputAmount,
     [Field.OUTPUT]: independentField === Field.OUTPUT ? parsedAmount : trade?.outputAmount
@@ -468,14 +472,9 @@ export default function Swap() {
         </Wrapper>
       </AppBody>
 
-      {trade && (
-        <AddTokenRow
-          justify={'center'}
-          onClick={() =>
-            trade?.outputAmount?.currency instanceof Token && addTokenToWallet(trade?.outputAmount?.currency?.address)
-          }
-        >
-          <AddTokenText>ADD {trade?.outputAmount?.currency?.name} to wallet</AddTokenText>
+      {account && outputToken && (
+        <AddTokenRow justify={'center'} onClick={() => addTokenToWallet(outputToken.address)}>
+          <AddTokenText>Add {outputToken.symbol} to Wallet</AddTokenText>
           <ArrowRight />
         </AddTokenRow>
       )}
