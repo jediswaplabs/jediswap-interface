@@ -55,7 +55,9 @@ import SwapWidget from '../../assets/jedi/SwapWidget.svg'
 import { jediTokensList, TOKEN0 } from '../../constants/jediTokens'
 import { MintState, useMintCallback } from '../../hooks/useMintCallback'
 import { useUserTransactionTTL } from '../../state/user/hooks'
-// import BackdropImage from '../../assets/jedi/Backdrop.svg'
+import { ReactComponent as ArrowRight } from '../../assets/images/arrow-right-blue.svg'
+import { useAddTokenToWallet } from '../../hooks/useAddTokenToWallet'
+import { wrappedCurrency } from '../../utils/wrappedCurrency'
 
 const MintSection = styled.section`
   margin-top: 3rem;
@@ -69,6 +71,26 @@ const MintButton = styled(ButtonOutlined)`
   font-weight: 500;
   border-color: ${({ theme }) => theme.jediBlue};
   color: ${({ theme }) => theme.jediWhite};
+`
+
+const AddTokenText = styled.div`
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  margin-right: 21px;
+  color: ${({ theme }) => theme.jediBlue};
+`
+
+const AddTokenRow = styled(AutoRow)`
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  margin-top: 28px;
+  color: ${({ theme }) => theme.jediBlue};
+
+  &:hover {
+    cursor: pointer;
+  }
 `
 
 export default function Swap() {
@@ -92,7 +114,7 @@ export default function Swap() {
 
   const [mintAddress, setMintAddress] = useState<string | undefined>(undefined)
 
-  const { account } = useActiveStarknetReact()
+  const { account, chainId } = useActiveStarknetReact()
   const theme = useContext(ThemeContext)
 
   // toggle wallet when disconnected
@@ -122,6 +144,10 @@ export default function Swap() {
   // )
   // const showWrap: boolean = wrapType !== WrapType.NOT_APPLICABLE
   // const { address: recipientAddress } = useENSAddress(recipient)
+
+  const outputToken = wrappedCurrency(currencies[Field.OUTPUT], chainId)
+
+  const addTokenToWallet = useAddTokenToWallet()
 
   const parsedAmounts = {
     [Field.INPUT]: independentField === Field.INPUT ? parsedAmount : trade?.inputAmount,
@@ -445,6 +471,13 @@ export default function Swap() {
           </BottomGrouping>
         </Wrapper>
       </AppBody>
+
+      {account && outputToken && (
+        <AddTokenRow justify={'center'} onClick={() => addTokenToWallet(outputToken.address)}>
+          <AddTokenText>Add {outputToken.symbol} to Wallet</AddTokenText>
+          <ArrowRight />
+        </AddTokenRow>
+      )}
 
       {account && (
         <MintSection>
