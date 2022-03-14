@@ -458,15 +458,15 @@ export default function Swap() {
             )}
             {isExpertMode && swapErrorMessage ? <SwapCallbackError error={swapErrorMessage} /> : null}
           </BottomGrouping>
+
+          {account && outputToken && (
+            <AddTokenRow justify={'center'} onClick={() => addTokenToWallet(outputToken.address)}>
+              <AddTokenText>Add {outputToken.symbol} to Wallet</AddTokenText>
+              <ArrowRight />
+            </AddTokenRow>
+          )}
         </Wrapper>
       </AppBody>
-
-      {account && outputToken && (
-        <AddTokenRow justify={'center'} onClick={() => addTokenToWallet(outputToken.address)}>
-          <AddTokenText>Add {outputToken.symbol} to Wallet</AddTokenText>
-          <ArrowRight />
-        </AddTokenRow>
-      )}
 
       {account && (
         <MintSection>
