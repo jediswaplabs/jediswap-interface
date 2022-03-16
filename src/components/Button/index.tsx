@@ -243,8 +243,8 @@ const ButtonConfirmedStyle = styled(Base)`
 `
 
 const ButtonErrorStyle = styled(Base)`
-  background-color: ${({ theme }) => theme.jediNavyBlue};
-  /* border: 1px solid ${({ theme }) => theme.red1}; */
+  background-color: ${({ theme }) => theme.red1};
+  border: 1px solid ${({ theme }) => theme.red1};
   box-shadow: inset 0px 75.4377px 76.9772px -36.9491px rgba(202, 172, 255, 0.3),
     inset 0px 3.07909px 13.8559px rgba(154, 146, 210, 0.3), inset 0px 0.769772px 30.7909px rgba(227, 222, 255, 0.2);
 
@@ -269,15 +269,23 @@ const ButtonErrorStyle = styled(Base)`
 `
 
 export const RedGradientButton = styled(Base)`
-  background: ${({ theme }) => theme.signalRed};
+  background-color: ${({ theme }) => theme.signalRed};
   mix-blend-mode: normal;
-  box-shadow: inset 0px 75.4377px 76.9772px -36.9491px rgba(202, 172, 255, 0.3),
-    inset 0px 3.07909px 13.8559px rgba(154, 146, 210, 0.3), inset 0px 0.769772px 30.7909px rgba(227, 222, 255, 0.2);
   border-radius: 8px;
   padding: 22px 17px;
   border: none;
   color: ${({ theme }) => theme.jediWhite};
   text-align: center;
+
+  &:disabled {
+    opacity: 50%;
+    cursor: auto;
+    box-shadow: none;
+    background-color: ${({ theme }) => theme.jediNavyBlue};
+    color: ${({ theme }) => theme.red1};
+    box-shadow: inset 0px 75.4377px 76.9772px -36.9491px rgba(202, 172, 255, 0.3),
+      inset 0px 3.07909px 13.8559px rgba(154, 146, 210, 0.3), inset 0px 0.769772px 30.7909px rgba(227, 222, 255, 0.2);
+  }
 `
 
 export function ButtonConfirmed({
