@@ -43,6 +43,7 @@ import { useUserSlippageTolerance } from '../../state/user/hooks'
 
 import { parsedAmountToUint256Args } from '../../utils'
 import { useApprovalCall } from '../../hooks/useApproveCall'
+import ModeSwitcher from './ModeSwitcher'
 
 export default function RemoveLiquidity({
   history,
@@ -358,17 +359,16 @@ export default function RemoveLiquidity({
             <BlurCard>
               <AutoColumn gap="20px">
                 <RowBetween>
-                  <Text fontWeight={500}>Amount</Text>
+                  <DMSansText.largeHeader fontSize={18} fontWeight={700}>
+                    AMOUNT
+                  </DMSansText.largeHeader>
 
-                  <TYPE.mediumHeader fontSize={16} fontWeight={600}>
-                    <ClickableText
-                      onClick={() => {
-                        setShowDetailed(!showDetailed)
-                      }}
-                    >
-                      {showDetailed ? 'Simple' : 'Detailed'}
-                    </ClickableText>
-                  </TYPE.mediumHeader>
+                  <ModeSwitcher
+                    showDetailed={showDetailed}
+                    onChange={() => {
+                      setShowDetailed(!showDetailed)
+                    }}
+                  />
                 </RowBetween>
                 <Row style={{ alignItems: 'flex-end' }}>
                   <Text fontSize={72} fontWeight={500}>
