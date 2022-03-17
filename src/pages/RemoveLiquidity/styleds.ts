@@ -5,6 +5,7 @@ import styled from 'styled-components'
 export const StyledNumericalInput = styled(NumericalInput)`
   border: 1px solid #ffffff;
   border-radius: 4px;
+  font-weight: 700;
 `
 
 export const InputWrapper = styled.div`

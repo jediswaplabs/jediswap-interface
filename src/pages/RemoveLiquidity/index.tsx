@@ -394,7 +394,7 @@ export default function RemoveLiquidity({
                         onUserInput={liquidityPercentChangeCallback}
                       />
                       <StyledPercentSign>
-                        <DMSansText.body fontSize={24}>%</DMSansText.body>
+                        <DMSansText.largeHeader fontWeight={700}>%</DMSansText.largeHeader>
                       </StyledPercentSign>
                     </InputWrapper>
                     <RowBetween>
