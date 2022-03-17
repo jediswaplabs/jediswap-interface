@@ -44,6 +44,7 @@ import { useUserSlippageTolerance } from '../../state/user/hooks'
 import { parsedAmountToUint256Args } from '../../utils'
 import { useApprovalCall } from '../../hooks/useApproveCall'
 import ModeSwitcher from './ModeSwitcher'
+import { InputWrapper, StyledMaxButton, StyledNumericalInput, StyledPercentSign } from './styleds'
 
 export default function RemoveLiquidity({
   history,
@@ -287,8 +288,10 @@ export default function RemoveLiquidity({
   } and ${parsedAmounts[Field.CURRENCY_B]?.toSignificant(6)} ${currencyB?.symbol}`
 
   const liquidityPercentChangeCallback = useCallback(
-    (value: number) => {
-      onUserInput(Field.LIQUIDITY_PERCENT, value.toString())
+    (value: string) => {
+      if (parseInt(value) <= 100 || value === '') {
+        onUserInput(Field.LIQUIDITY_PERCENT, value)
+      }
     },
     [onUserInput]
   )
@@ -330,10 +333,15 @@ export default function RemoveLiquidity({
     setTxHash('')
   }, [onUserInput, txHash])
 
-  const [innerLiquidityPercentage, setInnerLiquidityPercentage] = useDebouncedChangeHandler(
-    Number.parseInt(parsedAmounts[Field.LIQUIDITY_PERCENT].toFixed(0)),
-    liquidityPercentChangeCallback
-  )
+  // const [innerLiquidityPercentage, setInnerLiquidityPercentage] = useDebouncedChangeHandler(
+  //   Number.parseInt(parsedAmounts[Field.LIQUIDITY_PERCENT].toFixed(0)),
+  //   liquidityPercentChangeCallback
+  // )
+
+  const inputAmount =
+    Number.parseInt(parsedAmounts[Field.LIQUIDITY_PERCENT].toFixed(0)) !== 0
+      ? Number.parseInt(parsedAmounts[Field.LIQUIDITY_PERCENT].toFixed(0))
+      : ''
 
   return (
     <>
@@ -370,27 +378,38 @@ export default function RemoveLiquidity({
                     }}
                   />
                 </RowBetween>
-                <Row style={{ alignItems: 'flex-end' }}>
+                {/* <Row style={{ alignItems: 'flex-end' }}>
                   <Text fontSize={72} fontWeight={500}>
                     {formattedAmounts[Field.LIQUIDITY_PERCENT]}%
                   </Text>
-                </Row>
+                </Row> */}
                 {!showDetailed && (
                   <>
-                    <Slider value={innerLiquidityPercentage} onChange={setInnerLiquidityPercentage} />
+                    {/* <Slider value={innerLiquidityPercentage} onChange={setInnerLiquidityPercentage} /> */}
+                    <InputWrapper>
+                      <StyledNumericalInput
+                        className="token-amount-input"
+                        placeholder="0"
+                        value={inputAmount}
+                        onUserInput={liquidityPercentChangeCallback}
+                      />
+                      <StyledPercentSign>
+                        <DMSansText.body fontSize={24}>%</DMSansText.body>
+                      </StyledPercentSign>
+                    </InputWrapper>
                     <RowBetween>
-                      <MaxButton onClick={() => onUserInput(Field.LIQUIDITY_PERCENT, '25')} width="20%">
-                        25%
-                      </MaxButton>
-                      <MaxButton onClick={() => onUserInput(Field.LIQUIDITY_PERCENT, '50')} width="20%">
-                        50%
-                      </MaxButton>
-                      <MaxButton onClick={() => onUserInput(Field.LIQUIDITY_PERCENT, '75')} width="20%">
-                        75%
-                      </MaxButton>
-                      <MaxButton onClick={() => onUserInput(Field.LIQUIDITY_PERCENT, '100')} width="20%">
-                        Max
-                      </MaxButton>
+                      <StyledMaxButton onClick={() => onUserInput(Field.LIQUIDITY_PERCENT, '25')} width="20%">
+                        25 %
+                      </StyledMaxButton>
+                      <StyledMaxButton onClick={() => onUserInput(Field.LIQUIDITY_PERCENT, '50')} width="20%">
+                        50 %
+                      </StyledMaxButton>
+                      <StyledMaxButton onClick={() => onUserInput(Field.LIQUIDITY_PERCENT, '75')} width="20%">
+                        75 %
+                      </StyledMaxButton>
+                      <StyledMaxButton onClick={() => onUserInput(Field.LIQUIDITY_PERCENT, '100')} width="20%">
+                        MAX
+                      </StyledMaxButton>
                     </RowBetween>
                   </>
                 )}

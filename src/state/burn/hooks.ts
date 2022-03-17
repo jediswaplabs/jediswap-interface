@@ -34,8 +34,8 @@ export function useDerivedBurnInfo(
 
   // pair + totalsupply
   const [pairState, pair] = usePair(currencyA, currencyB)
-  console.log('🚀 ~ file: hooks.ts ~ line 37 ~ currencyA', currencyA)
-  console.log('🚀 ~ file: hooks.ts ~ line 37 ~ pairState', PairState[pairState])
+  // console.log('🚀 ~ file: hooks.ts ~ line 37 ~ currencyA', currencyA)
+  // console.log('🚀 ~ file: hooks.ts ~ line 37 ~ pairState', PairState[pairState])
 
   // balances
   const relevantTokenBalances = useTokenBalances(connectedAddress ?? undefined, [pair?.liquidityToken])
