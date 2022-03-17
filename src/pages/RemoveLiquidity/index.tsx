@@ -215,7 +215,7 @@ export default function RemoveLiquidity({
             {parsedAmounts[Field.CURRENCY_A]?.toSignificant(6)}
           </Text>
           <RowFixed gap="4px">
-            <CurrencyLogo currency={currencyA} size={'24px'} />
+            <CurrencyLogo currency={currencyA} size={25} />
             <Text fontSize={24} fontWeight={500} style={{ marginLeft: '10px' }}>
               {currencyA?.symbol}
             </Text>
@@ -229,7 +229,7 @@ export default function RemoveLiquidity({
             {parsedAmounts[Field.CURRENCY_B]?.toSignificant(6)}
           </Text>
           <RowFixed gap="4px">
-            <CurrencyLogo currency={currencyB} size={'24px'} />
+            <CurrencyLogo currency={currencyB} size={25} />
             <Text fontSize={24} fontWeight={500} style={{ marginLeft: '10px' }}>
               {currencyB?.symbol}
             </Text>
@@ -425,7 +425,7 @@ export default function RemoveLiquidity({
                     <RowBetween>
                       <DMSansText.largeHeader>{formattedAmounts[Field.CURRENCY_A] || '-'}</DMSansText.largeHeader>
                       <RowFixed>
-                        <CurrencyLogo currency={currencyA} style={{ marginRight: '12px' }} />
+                        <CurrencyLogo currency={currencyA} style={{ marginRight: '10px' }} />
                         <DMSansText.largeHeader id="remove-liquidity-tokena-symbol">
                           {currencyA?.symbol}
                         </DMSansText.largeHeader>
@@ -434,7 +434,7 @@ export default function RemoveLiquidity({
                     <RowBetween>
                       <DMSansText.largeHeader>{formattedAmounts[Field.CURRENCY_B] || '-'}</DMSansText.largeHeader>
                       <RowFixed>
-                        <CurrencyLogo currency={currencyB} style={{ marginRight: '12px' }} />
+                        <CurrencyLogo currency={currencyB} style={{ marginRight: '10px' }} />
                         <DMSansText.largeHeader id="remove-liquidity-tokenb-symbol">
                           {currencyB?.symbol}
                         </DMSansText.largeHeader>

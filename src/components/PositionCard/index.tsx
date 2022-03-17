@@ -230,7 +230,7 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
           <FixedHeightRow>
             <RowFixed>
               <div style={{ color: 'white' }}>
-                <DoubleCurrencyLogo currency0={currency0} currency1={currency1} margin={true} size={20} />
+                <DoubleCurrencyLogo currency0={currency0} currency1={currency1} margin={true} size={25} />
               </div>
               <DMSansText.mediumHeader>
                 {!currency0 || !currency1 ? <Dots>Loading</Dots> : `${currency0.symbol} / ${currency1.symbol}`}
@@ -268,7 +268,7 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
               {token0Deposited ? (
                 <RowFixed>
                   <DMSansText.mediumBody marginLeft={'6px'}>{token0Deposited?.toSignificant(6)}</DMSansText.mediumBody>
-                  <CurrencyLogo size="20px" style={{ marginLeft: '8px' }} currency={currency0} />
+                  <CurrencyLogo size={20} style={{ marginLeft: '8px' }} currency={currency0} />
                 </RowFixed>
               ) : (
                 '-'
@@ -282,7 +282,7 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
               {token1Deposited ? (
                 <RowFixed>
                   <DMSansText.mediumBody marginLeft={'6px'}>{token1Deposited?.toSignificant(6)}</DMSansText.mediumBody>
-                  <CurrencyLogo size="20px" style={{ marginLeft: '8px' }} currency={currency1} />
+                  <CurrencyLogo size={20} style={{ marginLeft: '8px' }} currency={currency1} />
                 </RowFixed>
               ) : (
                 '-'

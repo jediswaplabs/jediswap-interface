@@ -136,7 +136,7 @@ function CurrencyRow({
       {currency instanceof LPToken ? (
         <DoubleCurrencyLogo currency0={currency.token0} currency1={currency.token1} size={16} />
       ) : (
-        <CurrencyLogo currency={currency} size={'16px'} />
+        <CurrencyLogo currency={currency} size={16} />
       )}
       <Column>
         <Row gap="15px">

@@ -95,7 +95,7 @@ export default function ZapModalHeader({
           </RowFixed> */}
           <RowBetween>
             <RowFixed gap={'0px'}>
-              <CurrencyLogo currency={trade.inputAmount.currency} size={'24px'} style={{ marginRight: '8px' }} />
+              <CurrencyLogo currency={trade.inputAmount.currency} size={24} style={{ marginRight: '8px' }} />
               <DMSansText.body fontWeight={700} style={{ marginLeft: '0px' }}>
                 {trade.inputAmount.currency.symbol}
               </DMSansText.body>
@@ -131,7 +131,7 @@ export default function ZapModalHeader({
                   size={18}
                 />
               ) : (
-                <CurrencyLogo currency={trade.outputAmount.currency} size={'18px'} />
+                <CurrencyLogo currency={trade.outputAmount.currency} size={18} />
               )}
               <DMSansText.body fontSize={16} fontWeight={700} style={{ marginLeft: '8px' }}>
                 {lpAmountOut?.currency.symbol?.split('-').join(' / ')}
