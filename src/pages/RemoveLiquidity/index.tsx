@@ -1,6 +1,6 @@
 import { Contract, AddTransactionResponse, Args, stark, Call, RawArgs } from 'starknet'
 // import { TransactionResponse } from '@ethersproject/providers'
-import { Currency, currencyEquals, TOKEN0, Percent, WTOKEN0 } from '@jediswap/sdk'
+import { Currency, currencyEquals, TOKEN0, Percent, WTOKEN0, Fraction } from '@jediswap/sdk'
 import React, { useCallback, useContext, useMemo, useState } from 'react'
 import { ArrowDown, Plus } from 'react-feather'
 import { RouteComponentProps } from 'react-router'
@@ -45,6 +45,7 @@ import { parsedAmountToUint256Args } from '../../utils'
 import { useApprovalCall } from '../../hooks/useApproveCall'
 import ModeSwitcher from './ModeSwitcher'
 import { InputWrapper, StyledMaxButton, StyledNumericalInput, StyledPercentSign } from './styleds'
+import { ZERO } from '@jediswap/sdk/dist/constants'
 
 export default function RemoveLiquidity({
   history,
@@ -383,7 +384,11 @@ export default function RemoveLiquidity({
                     {formattedAmounts[Field.LIQUIDITY_PERCENT]}%
                   </Text>
                 </Row> */}
-                {!showDetailed && (
+                {showDetailed ? (
+                  <DMSansText.largeHeader fontSize={30} fontWeight={700}>
+                    {inputAmount === '' ? 0 : inputAmount}%
+                  </DMSansText.largeHeader>
+                ) : (
                   <>
                     {/* <Slider value={innerLiquidityPercentage} onChange={setInnerLiquidityPercentage} /> */}
                     <InputWrapper>
@@ -394,7 +399,9 @@ export default function RemoveLiquidity({
                         onUserInput={liquidityPercentChangeCallback}
                       />
                       <StyledPercentSign>
-                        <DMSansText.largeHeader fontWeight={700}>%</DMSansText.largeHeader>
+                        <DMSansText.largeHeader fontSize={30} fontWeight={700}>
+                          %
+                        </DMSansText.largeHeader>
                       </StyledPercentSign>
                     </InputWrapper>
                     <RowBetween>
@@ -539,7 +546,7 @@ export default function RemoveLiquidity({
                     error={!isValid && !!parsedAmounts[Field.CURRENCY_A] && !!parsedAmounts[Field.CURRENCY_B]}
                     style={{ padding: '22px 10px' }}
                   >
-                    <Text fontSize={18}>{error || 'Remove'}</Text>
+                    <Text>{error || 'Remove'}</Text>
                   </ButtonError>
                 </RowBetween>
               )}

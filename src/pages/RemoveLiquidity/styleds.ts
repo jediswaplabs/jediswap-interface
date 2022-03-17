@@ -6,6 +6,8 @@ export const StyledNumericalInput = styled(NumericalInput)`
   border: 1px solid #ffffff;
   border-radius: 4px;
   font-weight: 700;
+  font-size: 30px;
+  height: 50px;
 `
 
 export const InputWrapper = styled.div`
@@ -16,7 +18,7 @@ export const StyledPercentSign = styled.div`
   position: absolute;
   z-index: 10;
   top: 12px;
-  left: 60px;
+  left: 69px;
   /* right: 12px; */
 `
 export const StyledMaxButton = styled(MaxButton)`
