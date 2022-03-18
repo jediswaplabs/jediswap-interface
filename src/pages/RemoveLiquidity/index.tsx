@@ -45,7 +45,7 @@ import { parsedAmountToUint256Args } from '../../utils'
 import { useApprovalCall } from '../../hooks/useApproveCall'
 import ModeSwitcher from './ModeSwitcher'
 import { InputWrapper, StyledMaxButton, StyledNumericalInput, StyledPercentSign } from './styleds'
-import { ZERO } from '@jediswap/sdk/dist/constants'
+import PairPrice from '../../components/PairPrice'
 
 export default function RemoveLiquidity({
   history,
@@ -63,6 +63,8 @@ export default function RemoveLiquidity({
 
   const theme = useContext(ThemeContext)
   const router = useRouterContract()
+
+  const [showInverted, setShowInverted] = useState<boolean>(false)
 
   // toggle wallet when disconnected
   const toggleWalletModal = useWalletModalToggle()
@@ -516,22 +518,14 @@ export default function RemoveLiquidity({
               </>
             )}
             {pair && (
-              <DMSansText.mediumBody>
-                <AutoColumn gap="7.5px" style={{ padding: '10px 20px' }}>
+              <DMSansText.body>
+                <AutoColumn gap="7.5px" style={{ padding: '10px 0' }}>
                   <RowBetween>
-                    Price:
-                    <PriceText>
-                      1 {currencyA?.symbol} = {tokenA ? pair.priceOf(tokenA).toSignificant(6) : '-'} {currencyB?.symbol}
-                    </PriceText>
-                  </RowBetween>
-                  <RowBetween>
-                    <div />
-                    <PriceText>
-                      1 {currencyB?.symbol} = {tokenB ? pair.priceOf(tokenB).toSignificant(6) : '-'} {currencyA?.symbol}
-                    </PriceText>
+                    Price
+                    <PairPrice pair={pair} showInverted={showInverted} setShowInverted={setShowInverted} />
                   </RowBetween>
                 </AutoColumn>
-              </DMSansText.mediumBody>
+              </DMSansText.body>
             )}
             <div style={{ position: 'relative' }}>
               {!account ? (

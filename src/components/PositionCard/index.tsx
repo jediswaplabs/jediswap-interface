@@ -124,9 +124,8 @@ export function MinimalPositionCard({ pair, showUnwrapped = false, border }: Pos
             </FixedHeightRow>
             <FixedHeightRow onClick={() => setShowMore(!showMore)}>
               <RowFixed>
-                <div style={{ marginRight: '8px' }}>
-                  <DoubleCurrencyLogo currency0={currency0} currency1={currency1} size={20} />
-                </div>
+                <DoubleCurrencyLogo currency0={currency0} currency1={currency1} size={20} margin={true} />
+
                 <CardText fontWeight={700} fontSize={18} lineHeight={'100%'}>
                   {currency0.symbol}/{currency1.symbol}
                 </CardText>
