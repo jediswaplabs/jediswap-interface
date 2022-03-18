@@ -487,7 +487,7 @@ export default function AddLiquidity({
           </AutoColumn>
           {account && pair && (
             <AddTokenRow justify={'center'} onClick={() => addTokenToWallet(pair.liquidityToken.address)}>
-              <AddTokenText>Add {pair.liquidityToken.symbol} to Wallet</AddTokenText>
+              <AddTokenText>Add LP Tokens to Wallet</AddTokenText>
               <ArrowRight />
             </AddTokenRow>
           )}
