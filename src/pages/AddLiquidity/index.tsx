@@ -450,22 +450,25 @@ export default function AddLiquidity({
             </AutoColumn>
             {currencies[Field.CURRENCY_A] && currencies[Field.CURRENCY_B] && pairState === PairState.EXISTS && (
               <>
-                <LightCard padding="0px" borderRadius={'8px'}>
-                  <RowBetween padding="1rem">
+                {pair && (
+                  <LightCard padding="0px" borderRadius={'8px'}>
+                    {/* <RowBetween padding="1rem">
                     <TYPE.subHeader fontWeight={500} fontSize={14} fontFamily={'DM Sans'} letterSpacing={'0ch'}>
                       {noLiquidity ? 'Initial prices' : 'Prices'} and Pool share
                     </TYPE.subHeader>
-                  </RowBetween>
-                  <Separator />
-                  <LightCard padding="1rem">
-                    <PoolPriceBar
-                      currencies={currencies}
-                      poolTokenPercentage={poolTokenPercentage}
-                      noLiquidity={noLiquidity}
-                      price={price}
-                    />
+                  </RowBetween> */}
+                    {/* <Separator /> */}
+                    <LightCard padding={'10px 12px'}>
+                      <PoolPriceBar
+                        currencies={currencies}
+                        poolTokenPercentage={poolTokenPercentage}
+                        noLiquidity={noLiquidity}
+                        price={price}
+                        pair={pair}
+                      />
+                    </LightCard>
                   </LightCard>
-                </LightCard>
+                )}
               </>
             )}
 
