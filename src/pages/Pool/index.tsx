@@ -32,16 +32,10 @@ const VoteCard = styled(DataCard)`
 `
 
 const LiquidityWrapperCard = styled(DataCard)`
-  background: transparent;
+  background: ${({ theme }) => theme.jediNavyBlue};
   overflow: hidden;
-  border: 1px solid ${({ theme }) => theme.jediBlue};
-  font-family: 'DM Sans', sans-serif;
-  box-shadow: inset 0px 30.0211px 0.1072px -27.7118px rgba(255, 255, 255, 0.5),
-    inset 0px 5.38841px 8.46749px -3.07909px #ffffff, inset 0px -63.1213px 52.3445px -49.2654px rgba(96, 68, 145, 0.3),
-    inset 0px 75.4377px 76.9772px -36.9491px rgba(202, 172, 255, 0.3),
-    inset 0px 3.07909px 13.8559px rgba(154, 146, 210, 0.3), inset 0px 0.769772px 30.7909px rgba(227, 222, 255, 0.2);
-  backdrop-filter: blur(76.9772px);
-  border-radius: 16px;
+  border: none;
+  border-radius: 8px;
 `
 
 const TitleRow = styled(RowBetween)`
@@ -178,10 +172,10 @@ export default function Pool() {
           <CardSection>
             <AutoColumn gap="md">
               <RowBetween>
-                <DMSansText.mediumHeader fontWeight={700}>Liquidity provider rewards</DMSansText.mediumHeader>
+                <TYPE.largeHeader>Liquidity provider rewards</TYPE.largeHeader>
               </RowBetween>
               <RowBetween>
-                <DMSansText.body fontSize={15}>
+                <DMSansText.body fontSize={16} lineHeight={'125%'} color={'#F2F2F2'}>
                   {`Liquidity providers earn a 0.3% fee on all trades proportional to their share of the pool. Fees are added to the pool, accrue in real time and can be claimed by withdrawing your liquidity.`}
                 </DMSansText.body>
               </RowBetween>
@@ -210,9 +204,9 @@ export default function Pool() {
                 {/* <ResponsiveButtonSecondary as={Link} padding="6px 8px" to="/create/ETH">
                   Create a pair
                 </ResponsiveButtonSecondary> */}
-                <CreatePoolButton id="join-pool-button" as={Link} padding="6px 8px" to="/add/TOKEN0">
-                  <Text fontWeight={500} fontSize={16}>
-                    Add Liquidity
+                <CreatePoolButton id="join-pool-button" as={Link} to="/add/TOKEN0">
+                  <Text fontWeight={800} fontSize={16} lineHeight={'125%'} letterSpacing={'0.5px'}>
+                    ADD LIQUIDITY
                   </Text>
                 </CreatePoolButton>
               </ButtonRow>

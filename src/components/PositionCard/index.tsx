@@ -73,8 +73,20 @@ const CardText = styled.div<{
 `
 
 const ManageText = styled.div`
-  font-weight: 600;
+  font-weight: 800;
   font-size: 16px;
+  line-height: 20px;
+  font-feature-settings: 'salt' on, 'liga' off;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+`
+
+const AddRemoveButton = styled(ButtonPrimary)`
+  font-size: 24px;
+  line-height: 20px;
+  font-weight: 800;
+  border-radius: 8px;
+  padding: 22px;
 `
 
 interface PositionCardProps {
@@ -228,7 +240,7 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
   return (
     <JediPositionCard /*style={{ cursor: 'pointer' }}*/ border={border}>
       <CardNoise />
-      <AutoColumn gap="16px">
+      <AutoColumn gap="48px">
         <ButtonEmpty padding="0" width="100%" onClick={() => setShowMore(!showMore)}>
           <FixedHeightRow>
             <RowFixed>
@@ -240,7 +252,7 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
               </DMSansText.mediumHeader>
             </RowFixed>
 
-            <RowFixed gap="8px">
+            <RowFixed gap="4px">
               {/* <ButtonEmpty
               padding="6px 8px"
               borderRadius="12px"
@@ -250,7 +262,7 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
 
               <>
                 <ManageText>Manage</ManageText>
-                {showMore ? <ChevronUp size="20" /> : <ChevronDown size="20" />}
+                {showMore ? <ChevronUp size="25" /> : <ChevronDown size="25" />}
               </>
 
               {/* </ButtonEmpty> */}
@@ -259,66 +271,60 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
         </ButtonEmpty>
 
         {showMore && (
-          <AutoColumn gap="10px">
-            <FixedHeightRow>
-              <DMSansText.mediumBody>Your pool tokens:</DMSansText.mediumBody>
-              <DMSansText.mediumBody>{userPoolBalance ? userPoolBalance.toSignificant(4) : '-'}</DMSansText.mediumBody>
-            </FixedHeightRow>
-            <FixedHeightRow>
+          <AutoColumn gap="14px">
+            <RowBetween>
+              <DMSansText.body fontSize={18}>Your pool tokens:</DMSansText.body>
+              <DMSansText.body fontSize={18}>
+                {userPoolBalance ? userPoolBalance.toSignificant(4) : '-'}
+              </DMSansText.body>
+            </RowBetween>
+            <RowBetween>
               <RowFixed>
-                <DMSansText.mediumBody>Pooled {currency0.symbol}:</DMSansText.mediumBody>
+                <DMSansText.body fontSize={18}>Pooled {currency0.symbol}:</DMSansText.body>
               </RowFixed>
               {token0Deposited ? (
                 <RowFixed>
-                  <DMSansText.mediumBody marginLeft={'6px'}>{token0Deposited?.toSignificant(6)}</DMSansText.mediumBody>
-                  <CurrencyLogo size={20} style={{ marginLeft: '8px' }} currency={currency0} />
+                  <DMSansText.body fontSize={18} marginLeft={'6px'}>
+                    {token0Deposited?.toSignificant(6)}
+                  </DMSansText.body>
+
+                  <CurrencyLogo size={25} style={{ marginLeft: '8px' }} currency={currency0} />
                 </RowFixed>
               ) : (
                 '-'
               )}
-            </FixedHeightRow>
+            </RowBetween>
 
-            <FixedHeightRow>
+            <RowBetween>
               <RowFixed>
-                <DMSansText.mediumBody>Pooled {currency1.symbol}:</DMSansText.mediumBody>
+                <DMSansText.body fontSize={18}>Pooled {currency1.symbol}:</DMSansText.body>
               </RowFixed>
               {token1Deposited ? (
                 <RowFixed>
-                  <DMSansText.mediumBody marginLeft={'6px'}>{token1Deposited?.toSignificant(6)}</DMSansText.mediumBody>
-                  <CurrencyLogo size={20} style={{ marginLeft: '8px' }} currency={currency1} />
+                  <DMSansText.body fontSize={18} marginLeft={'6px'}>
+                    {token1Deposited?.toSignificant(6)}
+                  </DMSansText.body>
+
+                  <CurrencyLogo size={25} style={{ marginLeft: '8px' }} currency={currency1} />
                 </RowFixed>
               ) : (
                 '-'
               )}
-            </FixedHeightRow>
+            </RowBetween>
 
-            <FixedHeightRow>
-              <DMSansText.mediumBody>Your pool share:</DMSansText.mediumBody>
-              <DMSansText.mediumBody>
+            <RowBetween>
+              <DMSansText.body fontSize={18}>Your pool share:</DMSansText.body>
+              <DMSansText.body fontSize={18}>
                 {poolTokenPercentage ? poolTokenPercentage.toSignificant(6) + '%' : '-'}
-              </DMSansText.mediumBody>
-            </FixedHeightRow>
+              </DMSansText.body>
+            </RowBetween>
             <RowBetween marginTop="15px">
-              <ButtonPrimary
-                borderRadius="8px"
-                as={Link}
-                to={`/add/${currencyId(currency0)}/${currencyId(currency1)}`}
-                width="48%"
-                style={{ padding: '12px 8px' }}
-                fontSize={18}
-              >
-                Add
-              </ButtonPrimary>
-              <ButtonPrimary
-                borderRadius="8px"
-                as={Link}
-                width="48%"
-                to={`/remove/${currencyId(currency0)}/${currencyId(currency1)}`}
-                style={{ padding: '12px 8px' }}
-                fontSize={18}
-              >
-                Remove
-              </ButtonPrimary>
+              <AddRemoveButton as={Link} to={`/add/${currencyId(currency0)}/${currencyId(currency1)}`} width="48%">
+                Add Liquidity
+              </AddRemoveButton>
+              <AddRemoveButton as={Link} width="48%" to={`/remove/${currencyId(currency0)}/${currencyId(currency1)}`}>
+                Remove Liquidity
+              </AddRemoveButton>
             </RowBetween>
           </AutoColumn>
         )}
