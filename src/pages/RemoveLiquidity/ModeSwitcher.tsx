@@ -19,7 +19,7 @@ export default function ModeSwitcher({ showDetailed, onChange }: ModeSwitcherPro
 
   return (
     <StyledLabel>
-      <DMSansText.mediumBody fontSize={15}> {!showDetailed ? 'Simple' : 'Detailed'}</DMSansText.mediumBody>
+      <DMSansText.mediumBody fontSize={15}>Detailed</DMSansText.mediumBody>
       <Switch
         onChange={onChange}
         checked={showDetailed}
