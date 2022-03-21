@@ -67,19 +67,20 @@ export const Backdrop = styled.div<{
   transform: matrix(0, 1, 1, 0, 0, 0);
 `
 export const AddTokenText = styled.div`
-  font-family: 'DM Sans', sans-serif;
   font-size: 16px;
   font-weight: 700;
-  margin-right: 21px;
+  margin-right: 8px;
   color: ${({ theme }) => theme.jediBlue};
 `
 
 export const AddTokenRow = styled(AutoRow)`
-  font-family: 'DM Sans', sans-serif;
   font-size: 16px;
   font-weight: 700;
   margin-top: 28px;
   color: ${({ theme }) => theme.jediBlue};
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   &:hover {
     cursor: pointer;

@@ -371,7 +371,7 @@ export default function Zap() {
           {account && lpAmountOut && lpAmountOut.token && (
             <AddTokenRow justify={'center'} onClick={() => addTokenToWallet(lpAmountOut.token.address)}>
               <AddTokenText>Add LP Tokens to Wallet</AddTokenText>
-              <ArrowRight />
+              <ArrowRight width={16} height={15} style={{ marginBottom: '3.5px' }} />
             </AddTokenRow>
           )}
         </Wrapper>

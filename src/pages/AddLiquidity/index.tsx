@@ -491,7 +491,8 @@ export default function AddLiquidity({
           {account && pair && (
             <AddTokenRow justify={'center'} onClick={() => addTokenToWallet(pair.liquidityToken.address)}>
               <AddTokenText>Add LP Tokens to Wallet</AddTokenText>
-              <ArrowRight />
+
+              <ArrowRight width={16} height={15} style={{ marginBottom: '3.5px' }} />
             </AddTokenRow>
           )}
         </Wrapper>
