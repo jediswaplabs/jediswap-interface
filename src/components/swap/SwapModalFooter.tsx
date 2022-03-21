@@ -20,6 +20,8 @@ import { StyledBalanceMaxMini, SwapCallbackError } from './styleds'
 
 import styled from 'styled-components'
 import { basisPointsToPercent } from '../../utils'
+import { Icon } from '../../pages/Swap/styleds'
+import PriceInverter from '../../assets/jedi/PriceInverter.svg'
 
 const Wrapper = styled.div`
   background: rgba(196, 196, 196, 0.01);
@@ -94,10 +96,10 @@ export default function SwapModalFooter({
           }}
           onClick={() => setShowInverted(!showInverted)}
         >
-          {formatExecutionPrice(trade, showInverted)}
-          {/* <StyledBalanceMaxMini onClick={() => setShowInverted(!showInverted)}>
-            <Repeat size={14} />
-          </StyledBalanceMaxMini> */}
+          {formatExecutionPrice(trade, showInverted, '=')}
+          <StyledBalanceMaxMini onClick={() => setShowInverted(!showInverted)}>
+            <Icon src={PriceInverter} noMargin height={18} width={18} />
+          </StyledBalanceMaxMini>
         </Text>
       </RowBetween>
 
