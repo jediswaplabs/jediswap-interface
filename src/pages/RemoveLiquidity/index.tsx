@@ -261,24 +261,19 @@ export default function RemoveLiquidity({
             </Text>
           </RowFixed>
         </RowBetween>
-        {pair && (
-          <>
-            <RowBetween>
-              <Text color={theme.jediWhite} fontWeight={500} fontSize={16}>
-                Price
-              </Text>
-              <Text fontWeight={500} fontSize={16} color={theme.text1}>
-                1 {currencyA?.symbol} = {tokenA ? pair.priceOf(tokenA).toSignificant(6) : '-'} {currencyB?.symbol}
-              </Text>
-            </RowBetween>
-            <RowBetween>
-              <div />
-              <Text fontWeight={500} fontSize={16} color={theme.text1}>
-                1 {currencyB?.symbol} = {tokenB ? pair.priceOf(tokenB).toSignificant(6) : '-'} {currencyA?.symbol}
-              </Text>
-            </RowBetween>
-          </>
-        )}
+        <RowBetween>
+          <TYPE.body fontWeight={500}>Price</TYPE.body>
+          {pair ? (
+            <PairPrice
+              pair={pair}
+              showInverted={showInverted}
+              setShowInverted={setShowInverted}
+              style={{ fontWeight: '500', justifyContent: 'center', alignItems: 'center', display: 'flex' }}
+            ></PairPrice>
+          ) : (
+            '-'
+          )}
+        </RowBetween>
         <ButtonPrimary onClick={onRemove} style={{ marginTop: '20px', marginBottom: '10px' }}>
           <Text>Confirm</Text>
         </ButtonPrimary>

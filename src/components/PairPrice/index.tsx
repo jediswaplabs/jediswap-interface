@@ -2,12 +2,13 @@ import React from 'react'
 import { Price, Trade, Pair } from '@jediswap/sdk'
 import { useContext } from 'react'
 import { Repeat } from 'react-feather'
-import { Text } from 'rebass'
+import { BoxProps, Text, TextProps } from 'rebass'
 import { StyledBalanceMaxMini } from '../swap/styleds'
 import { formatExecutionPrice, formatPairExecutionPrice } from '../../utils/prices'
 import { DMSansText } from '../../theme'
 import { Icon } from '../../pages/Swap/styleds'
 import PriceInverter from '../../assets/jedi/PriceInverter.svg'
+import { RowCentered } from '../Row'
 
 interface PairPriceProps {
   pair?: Pair
@@ -15,7 +16,7 @@ interface PairPriceProps {
   setShowInverted: (showInverted: boolean) => void
 }
 
-export default function PairPrice({ pair, showInverted, setShowInverted }: PairPriceProps) {
+export default function PairPrice({ pair, showInverted, setShowInverted, ...rest }: PairPriceProps & TextProps) {
   // const formattedPrice = showInverted ? price?.toSignificant(5) : price?.invert()?.toSignificant(5)
 
   const show = Boolean(pair?.token0 && pair?.token1)
@@ -26,7 +27,11 @@ export default function PairPrice({ pair, showInverted, setShowInverted }: PairP
   const formattedPrice = formatPairExecutionPrice(pair, showInverted, '=')
 
   return (
-    <DMSansText.body fontSize={16} style={{ justifyContent: 'center', alignItems: 'center', display: 'flex' }}>
+    <DMSansText.body
+      fontSize={16}
+      style={{ justifyContent: 'center', alignItems: 'center', display: 'flex' }}
+      {...rest}
+    >
       {show ? (
         <>
           {formattedPrice ?? '-'}
