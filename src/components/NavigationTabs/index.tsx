@@ -51,7 +51,7 @@ const ActiveText = styled.div`
 `
 
 const StyledArrowLeft = styled(ArrowLeft)`
-  color: ${({ theme }) => theme.text1};
+  color: ${({ theme }) => theme.jediWhite};
 `
 
 export function SwapPoolTabs({ active }: { active: 'swap' | 'pool' | 'zap' }) {
@@ -89,10 +89,10 @@ export function AddRemoveTabs({ adding, creating }: { adding: boolean; creating:
   return (
     <Tabs>
       <RowBetween style={{ padding: '0 0 1.125rem' }}>
-        <Row>
-          {/* <HistoryLink to="/pool">
+        <Row gap="8px">
+          <HistoryLink to="/pool">
             <StyledArrowLeft />
-          </HistoryLink> */}
+          </HistoryLink>
           <ActiveText>{creating ? 'Create a pair' : adding ? 'Add Liquidity' : 'Remove Liquidity'}</ActiveText>
         </Row>
         {/* <QuestionHelper
