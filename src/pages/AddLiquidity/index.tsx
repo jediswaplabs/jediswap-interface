@@ -313,6 +313,7 @@ export default function AddLiquidity({
   const modalBottom = () => {
     return (
       <ConfirmAddModalBottom
+        pair={pair}
         price={price}
         currencies={currencies}
         parsedAmounts={parsedAmounts}
