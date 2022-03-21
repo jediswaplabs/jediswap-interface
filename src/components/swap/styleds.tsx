@@ -76,6 +76,7 @@ export const TruncatedText = styled(Text)`
   width: 220px;
   overflow: hidden;
   width: max-content;
+  white-space: nowrap;
 `
 
 // styles

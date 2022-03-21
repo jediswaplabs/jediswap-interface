@@ -14,12 +14,14 @@ import {
 import { ButtonError } from '../Button'
 import { AutoColumn } from '../Column'
 // import QuestionHelper from '../QuestionHelper'
-import { AutoRow, RowBetween, RowFixed } from '../Row'
+import { AutoRow, RowBetween, RowCentered, RowFixed } from '../Row'
 import FormattedPriceImpact from '../swap/FormattedPriceImpact'
 import { StyledBalanceMaxMini, SwapCallbackError, TruncatedText } from '../swap/styleds'
 
 import styled from 'styled-components'
 import { basisPointsToPercent } from '../../utils'
+import { Icon } from '../../pages/Swap/styleds'
+import PriceInverter from '../../assets/jedi/PriceInverter.svg'
 
 const Wrapper = styled.div`
   background: rgba(196, 196, 196, 0.01);
@@ -82,24 +84,26 @@ export default function ZapModalFooter({
         <Text fontWeight={400} fontSize={16} /*color={theme.text2}*/>
           Price
         </Text>
-        <TruncatedText
-          fontWeight={400}
-          fontSize={16}
+
+        <Text
           // color={theme.text1}
           style={{
+            justifyContent: 'flex-end',
+            alignItems: 'center',
+            display: 'flex',
             textAlign: 'right',
             paddingLeft: '10px',
-            cursor: 'pointer',
-            maxWidth: '70%',
-            whiteSpace: 'nowrap'
+            minWidth: 0
           }}
           onClick={() => setShowInverted(!showInverted)}
         >
-          {formatZapExecutionPrice(trade, lpAmountOut, showInverted)}
-          {/* <StyledBalanceMaxMini onClick={() => setShowInverted(!showInverted)}>
-            <Repeat size={14} />
-          </StyledBalanceMaxMini> */}
-        </TruncatedText>
+          <TruncatedText style={{ maxWidth: '75%' }}>
+            {formatZapExecutionPrice(trade, lpAmountOut, showInverted, '=')}
+          </TruncatedText>
+          <StyledBalanceMaxMini onClick={() => setShowInverted(!showInverted)}>
+            <Icon src={PriceInverter} noMargin height={18} width={18} />
+          </StyledBalanceMaxMini>
+        </Text>
       </RowBetween>
 
       <Wrapper>
