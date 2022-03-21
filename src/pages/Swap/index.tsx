@@ -317,7 +317,7 @@ export default function Swap() {
           />
           <div style={{ marginBottom: '30px' }}>
             <HeaderRow>
-              Swap
+              SWAP
               {/* <Icon src={HeaderIcon} /> */}
               <Settings />
             </HeaderRow>

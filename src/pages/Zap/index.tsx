@@ -235,7 +235,7 @@ export default function Zap() {
           <AutoColumn gap="14px" style={{ marginBottom: '18px' }}>
             <HeaderRow>
               <ZapHeader>
-                Zap <img src={ZapIcon} />
+                ZAP <img src={ZapIcon} />
               </ZapHeader>
               <Settings />
             </HeaderRow>

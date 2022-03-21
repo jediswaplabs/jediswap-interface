@@ -234,12 +234,12 @@ CurrencyInputPanelProps) {
           >
             <Aligner vertical={!!pair}>
               {pair ? (
-                <DoubleCurrencyLogo currency0={pair.token0} currency1={pair.token1} size={24} />
+                <DoubleCurrencyLogo currency0={pair.token0} currency1={pair.token1} size={25} />
               ) : currency ? (
                 currency instanceof LPToken ? (
-                  <DoubleCurrencyLogo currency0={currency.token0} currency1={currency.token1} size={24} />
+                  <DoubleCurrencyLogo currency0={currency.token0} currency1={currency.token1} size={25} />
                 ) : (
-                  <CurrencyLogo currency={currency} size={'24px'} />
+                  <CurrencyLogo currency={currency} size={24} />
                 )
               ) : null}
               {pair ? (

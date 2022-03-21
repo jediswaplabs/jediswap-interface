@@ -1,6 +1,6 @@
 import { INITIAL_ALLOWED_SLIPPAGE } from './../constants/index'
 import { BLOCKED_PRICE_IMPACT_NON_EXPERT } from '../constants'
-import { CurrencyAmount, Fraction, JSBI, Percent, Price, TokenAmount, Trade } from '@jediswap/sdk'
+import { CurrencyAmount, Fraction, JSBI, Pair, Percent, Price, TokenAmount, Trade } from '@jediswap/sdk'
 import { ALLOWED_PRICE_IMPACT_HIGH, ALLOWED_PRICE_IMPACT_LOW, ALLOWED_PRICE_IMPACT_MEDIUM } from '../constants'
 import { Field } from '../state/swap/actions'
 import { basisPointsToPercent } from './index'
@@ -75,6 +75,16 @@ export function formatExecutionPrice(trade?: Trade, inverted?: boolean, separato
     : `1 ${trade.inputAmount.currency.symbol} ${separator} ${trade.executionPrice.toSignificant(5)} ${
         trade.outputAmount.currency.symbol
       } `
+}
+
+export function formatPairExecutionPrice(pair?: Pair, inverted?: boolean, separator = '~'): string {
+  if (!pair) {
+    return ''
+  }
+
+  return inverted
+    ? `1 ${pair.token0.symbol} ${separator} ${pair.priceOf(pair.token0).toSignificant(6)} ${pair.token1.symbol}`
+    : `1 ${pair.token1.symbol} ${separator} ${pair.priceOf(pair.token1).toSignificant(6)} ${pair.token0.symbol} `
 }
 
 export function formatZapExecutionPrice(

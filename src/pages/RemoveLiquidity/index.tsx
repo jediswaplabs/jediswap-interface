@@ -1,6 +1,6 @@
 import { Contract, AddTransactionResponse, Args, stark, Call, RawArgs } from 'starknet'
 // import { TransactionResponse } from '@ethersproject/providers'
-import { Currency, currencyEquals, TOKEN0, Percent, WTOKEN0 } from '@jediswap/sdk'
+import { Currency, currencyEquals, TOKEN0, Percent, WTOKEN0, Fraction } from '@jediswap/sdk'
 import React, { useCallback, useContext, useMemo, useState } from 'react'
 import { ArrowDown, Plus } from 'react-feather'
 import { RouteComponentProps } from 'react-router'
@@ -43,6 +43,9 @@ import { useUserSlippageTolerance } from '../../state/user/hooks'
 
 import { parsedAmountToUint256Args } from '../../utils'
 import { useApprovalCall } from '../../hooks/useApproveCall'
+import ModeSwitcher from './ModeSwitcher'
+import { InputWrapper, StyledMaxButton, StyledNumericalInput, StyledPercentSign } from './styleds'
+import PairPrice from '../../components/PairPrice'
 
 export default function RemoveLiquidity({
   history,
@@ -60,6 +63,8 @@ export default function RemoveLiquidity({
 
   const theme = useContext(ThemeContext)
   const router = useRouterContract()
+
+  const [showInverted, setShowInverted] = useState<boolean>(false)
 
   // toggle wallet when disconnected
   const toggleWalletModal = useWalletModalToggle()
@@ -213,7 +218,7 @@ export default function RemoveLiquidity({
             {parsedAmounts[Field.CURRENCY_A]?.toSignificant(6)}
           </Text>
           <RowFixed gap="4px">
-            <CurrencyLogo currency={currencyA} size={'24px'} />
+            <CurrencyLogo currency={currencyA} size={25} />
             <Text fontSize={24} fontWeight={500} style={{ marginLeft: '10px' }}>
               {currencyA?.symbol}
             </Text>
@@ -227,7 +232,7 @@ export default function RemoveLiquidity({
             {parsedAmounts[Field.CURRENCY_B]?.toSignificant(6)}
           </Text>
           <RowFixed gap="4px">
-            <CurrencyLogo currency={currencyB} size={'24px'} />
+            <CurrencyLogo currency={currencyB} size={25} />
             <Text fontSize={24} fontWeight={500} style={{ marginLeft: '10px' }}>
               {currencyB?.symbol}
             </Text>
@@ -286,8 +291,10 @@ export default function RemoveLiquidity({
   } and ${parsedAmounts[Field.CURRENCY_B]?.toSignificant(6)} ${currencyB?.symbol}`
 
   const liquidityPercentChangeCallback = useCallback(
-    (value: number) => {
-      onUserInput(Field.LIQUIDITY_PERCENT, value.toString())
+    (value: string) => {
+      if (parseInt(value) <= 100 || value === '') {
+        onUserInput(Field.LIQUIDITY_PERCENT, value)
+      }
     },
     [onUserInput]
   )
@@ -329,10 +336,15 @@ export default function RemoveLiquidity({
     setTxHash('')
   }, [onUserInput, txHash])
 
-  const [innerLiquidityPercentage, setInnerLiquidityPercentage] = useDebouncedChangeHandler(
-    Number.parseInt(parsedAmounts[Field.LIQUIDITY_PERCENT].toFixed(0)),
-    liquidityPercentChangeCallback
-  )
+  // const [innerLiquidityPercentage, setInnerLiquidityPercentage] = useDebouncedChangeHandler(
+  //   Number.parseInt(parsedAmounts[Field.LIQUIDITY_PERCENT].toFixed(0)),
+  //   liquidityPercentChangeCallback
+  // )
+
+  const inputAmount =
+    Number.parseInt(parsedAmounts[Field.LIQUIDITY_PERCENT].toFixed(0)) !== 0
+      ? Number.parseInt(parsedAmounts[Field.LIQUIDITY_PERCENT].toFixed(0))
+      : ''
 
   return (
     <>
@@ -358,39 +370,55 @@ export default function RemoveLiquidity({
             <BlurCard>
               <AutoColumn gap="20px">
                 <RowBetween>
-                  <Text fontWeight={500}>Amount</Text>
+                  <DMSansText.largeHeader fontSize={18} fontWeight={700}>
+                    AMOUNT
+                  </DMSansText.largeHeader>
 
-                  <TYPE.mediumHeader fontSize={16} fontWeight={600}>
-                    <ClickableText
-                      onClick={() => {
-                        setShowDetailed(!showDetailed)
-                      }}
-                    >
-                      {showDetailed ? 'Simple' : 'Detailed'}
-                    </ClickableText>
-                  </TYPE.mediumHeader>
+                  <ModeSwitcher
+                    showDetailed={showDetailed}
+                    onChange={() => {
+                      setShowDetailed(!showDetailed)
+                    }}
+                  />
                 </RowBetween>
-                <Row style={{ alignItems: 'flex-end' }}>
+                {/* <Row style={{ alignItems: 'flex-end' }}>
                   <Text fontSize={72} fontWeight={500}>
                     {formattedAmounts[Field.LIQUIDITY_PERCENT]}%
                   </Text>
-                </Row>
-                {!showDetailed && (
+                </Row> */}
+                {showDetailed ? (
+                  <DMSansText.largeHeader fontSize={30} fontWeight={700}>
+                    {inputAmount === '' ? 0 : inputAmount}%
+                  </DMSansText.largeHeader>
+                ) : (
                   <>
-                    <Slider value={innerLiquidityPercentage} onChange={setInnerLiquidityPercentage} />
+                    {/* <Slider value={innerLiquidityPercentage} onChange={setInnerLiquidityPercentage} /> */}
+                    <InputWrapper>
+                      <StyledNumericalInput
+                        className="token-amount-input"
+                        placeholder="0"
+                        value={inputAmount}
+                        onUserInput={liquidityPercentChangeCallback}
+                      />
+                      <StyledPercentSign>
+                        <DMSansText.largeHeader fontSize={30} fontWeight={700}>
+                          %
+                        </DMSansText.largeHeader>
+                      </StyledPercentSign>
+                    </InputWrapper>
                     <RowBetween>
-                      <MaxButton onClick={() => onUserInput(Field.LIQUIDITY_PERCENT, '25')} width="20%">
-                        25%
-                      </MaxButton>
-                      <MaxButton onClick={() => onUserInput(Field.LIQUIDITY_PERCENT, '50')} width="20%">
-                        50%
-                      </MaxButton>
-                      <MaxButton onClick={() => onUserInput(Field.LIQUIDITY_PERCENT, '75')} width="20%">
-                        75%
-                      </MaxButton>
-                      <MaxButton onClick={() => onUserInput(Field.LIQUIDITY_PERCENT, '100')} width="20%">
-                        Max
-                      </MaxButton>
+                      <StyledMaxButton onClick={() => onUserInput(Field.LIQUIDITY_PERCENT, '25')} width="20%">
+                        25 %
+                      </StyledMaxButton>
+                      <StyledMaxButton onClick={() => onUserInput(Field.LIQUIDITY_PERCENT, '50')} width="20%">
+                        50 %
+                      </StyledMaxButton>
+                      <StyledMaxButton onClick={() => onUserInput(Field.LIQUIDITY_PERCENT, '75')} width="20%">
+                        75 %
+                      </StyledMaxButton>
+                      <StyledMaxButton onClick={() => onUserInput(Field.LIQUIDITY_PERCENT, '100')} width="20%">
+                        MAX
+                      </StyledMaxButton>
                     </RowBetween>
                   </>
                 )}
@@ -406,7 +434,7 @@ export default function RemoveLiquidity({
                     <RowBetween>
                       <DMSansText.largeHeader>{formattedAmounts[Field.CURRENCY_A] || '-'}</DMSansText.largeHeader>
                       <RowFixed>
-                        <CurrencyLogo currency={currencyA} style={{ marginRight: '12px' }} />
+                        <CurrencyLogo currency={currencyA} style={{ marginRight: '10px' }} />
                         <DMSansText.largeHeader id="remove-liquidity-tokena-symbol">
                           {currencyA?.symbol}
                         </DMSansText.largeHeader>
@@ -415,7 +443,7 @@ export default function RemoveLiquidity({
                     <RowBetween>
                       <DMSansText.largeHeader>{formattedAmounts[Field.CURRENCY_B] || '-'}</DMSansText.largeHeader>
                       <RowFixed>
-                        <CurrencyLogo currency={currencyB} style={{ marginRight: '12px' }} />
+                        <CurrencyLogo currency={currencyB} style={{ marginRight: '10px' }} />
                         <DMSansText.largeHeader id="remove-liquidity-tokenb-symbol">
                           {currencyB?.symbol}
                         </DMSansText.largeHeader>
@@ -490,22 +518,14 @@ export default function RemoveLiquidity({
               </>
             )}
             {pair && (
-              <DMSansText.mediumBody>
-                <AutoColumn gap="7.5px" style={{ padding: '10px 20px' }}>
+              <DMSansText.body>
+                <AutoColumn gap="7.5px" style={{ padding: '10px 0' }}>
                   <RowBetween>
-                    Price:
-                    <PriceText>
-                      1 {currencyA?.symbol} = {tokenA ? pair.priceOf(tokenA).toSignificant(6) : '-'} {currencyB?.symbol}
-                    </PriceText>
-                  </RowBetween>
-                  <RowBetween>
-                    <div />
-                    <PriceText>
-                      1 {currencyB?.symbol} = {tokenB ? pair.priceOf(tokenB).toSignificant(6) : '-'} {currencyA?.symbol}
-                    </PriceText>
+                    Price
+                    <PairPrice pair={pair} showInverted={showInverted} setShowInverted={setShowInverted} />
                   </RowBetween>
                 </AutoColumn>
-              </DMSansText.mediumBody>
+              </DMSansText.body>
             )}
             <div style={{ position: 'relative' }}>
               {!account ? (
@@ -520,7 +540,7 @@ export default function RemoveLiquidity({
                     error={!isValid && !!parsedAmounts[Field.CURRENCY_A] && !!parsedAmounts[Field.CURRENCY_B]}
                     style={{ padding: '22px 10px' }}
                   >
-                    <Text fontSize={18}>{error || 'Remove'}</Text>
+                    <Text>{error || 'Remove'}</Text>
                   </ButtonError>
                 </RowBetween>
               )}
