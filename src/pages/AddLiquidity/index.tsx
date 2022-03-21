@@ -499,7 +499,7 @@ export default function AddLiquidity({
       </AppBody>
 
       {pair && !noLiquidity && pairState !== PairState.INVALID ? (
-        <AutoColumn style={{ minWidth: '20rem', width: '100%', maxWidth: '400px', marginTop: '20px' }}>
+        <AutoColumn style={{ minWidth: '20rem', width: '100%', maxWidth: '468px', marginTop: '24px' }}>
           <MinimalPositionCard showUnwrapped={oneCurrencyIsWTOKEN0} pair={pair} />
         </AutoColumn>
       ) : null}

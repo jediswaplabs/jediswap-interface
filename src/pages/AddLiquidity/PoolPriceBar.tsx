@@ -9,11 +9,7 @@ import { AutoRow, RowBetween } from '../../components/Row'
 import { ONE_BIPS } from '../../constants'
 import { Field } from '../../state/mint/actions'
 import { DMSansText, TYPE } from '../../theme'
-
-const Separator = styled.div`
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
-  margin: 0 -12px;
-`
+import { Separator } from '../Pool/styleds'
 
 export function PoolPriceBar({
   currencies,

@@ -109,3 +109,8 @@ export const PriceText = styled.div`
   text-overflow: ellipsis;
   max-width: 65%;
 `
+
+export const Separator = styled.div`
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  margin: 0 -12px;
+`

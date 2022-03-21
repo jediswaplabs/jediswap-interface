@@ -23,6 +23,7 @@ import CurrencyLogo from '../CurrencyLogo'
 import DoubleCurrencyLogo from '../DoubleLogo'
 import { RowBetween, RowFixed } from '../Row'
 import { Dots } from '../swap/styleds'
+import { Separator } from '../../pages/Pool/styleds'
 
 export const FixedHeightRow = styled(RowBetween)`
   height: 24px;
@@ -113,16 +114,19 @@ export function MinimalPositionCard({ pair, showUnwrapped = false, border }: Pos
   return (
     <>
       {userPoolBalance && JSBI.greaterThan(userPoolBalance.raw, JSBI.BigInt(0)) ? (
-        <WhiteOutlineCard border={border} borderRadius={'8px'} padding={'16px'}>
+        <WhiteOutlineCard border={border} borderRadius={'8px'} padding={'12px 32px'}>
           <AutoColumn gap="12px">
             <FixedHeightRow>
               <RowFixed>
-                <CardText fontWeight={500} fontSize={18} lineHeight={'120%'}>
+                <CardText fontWeight={700} fontSize={18} lineHeight={'100%'}>
                   Your position
                 </CardText>
               </RowFixed>
             </FixedHeightRow>
-            <FixedHeightRow onClick={() => setShowMore(!showMore)}>
+
+            <Separator style={{ margin: '0px -32px' }} />
+
+            <FixedHeightRow>
               <RowFixed>
                 <DoubleCurrencyLogo currency0={currency0} currency1={currency1} size={20} margin={true} />
 
@@ -138,20 +142,20 @@ export function MinimalPositionCard({ pair, showUnwrapped = false, border }: Pos
             </FixedHeightRow>
             <AutoColumn gap="4px" style={{ marginTop: '-4px' }}>
               <FixedHeightRow>
-                <CardText fontSize={16} fontWeight={500} lineHeight={'120%'}>
+                <CardText fontSize={16} fontWeight={500} lineHeight={'100%'}>
                   Your pool share:
                 </CardText>
-                <CardText fontSize={16} fontWeight={500} lineHeight={'120%'}>
+                <CardText fontSize={16} fontWeight={500} lineHeight={'100%'}>
                   {poolTokenPercentage ? poolTokenPercentage.toFixed(6) + '%' : '-'}
                 </CardText>
               </FixedHeightRow>
               <FixedHeightRow>
-                <CardText fontSize={16} fontWeight={500} lineHeight={'120%'}>
+                <CardText fontSize={16} fontWeight={500} lineHeight={'100%'}>
                   {currency0.symbol}:
                 </CardText>
                 {token0Deposited ? (
                   <RowFixed>
-                    <CardText fontSize={16} fontWeight={500} lineHeight={'120%'} style={{ marginLeft: '6px' }}>
+                    <CardText fontSize={16} fontWeight={500} lineHeight={'100%'} style={{ marginLeft: '6px' }}>
                       {token0Deposited?.toSignificant(6)}
                     </CardText>
                   </RowFixed>
@@ -178,7 +182,7 @@ export function MinimalPositionCard({ pair, showUnwrapped = false, border }: Pos
         </WhiteOutlineCard>
       ) : (
         <WhiteOutlineCard padding={'12px'} borderRadius={'8px'}>
-          <CardText textAlign="left">
+          <CardText fontSize={15} textAlign="left">
             <span role="img" aria-label="wizard-icon">
               ⭐️
             </span>{' '}
