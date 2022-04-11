@@ -1,28 +1,28 @@
-import { TOKEN0, TOKEN1, TOKEN2, TOKEN3 } from './jediTokens'
+import { WBTC, DAI, USDC } from './jediTokens'
 import { ChainId, LPToken } from '@jediswap/sdk'
 
 export const jediPairAddresses = {
-  TOKEN0_TOKEN1: '0x4b05cce270364e2e4bf65bde3e9429b50c97ea3443b133442f838045f41e733',
-  TOKEN0_TOKEN2: '0x682bde101e0fa17bb61d867a14db62ddd192d35cc4ad2109e91429e2e4fca17',
-  TOKEN0_TOKEN3: '0x13386f165f065115c1da38d755be261023c32f0134a03a8e66b6bb1e0016014',
-  TOKEN1_TOKEN3: '0x20d17664962dc4b49ab65b4b89555f383f040da5f62c18a0834acea246bc7b7',
-  TOKEN2_TOKEN3: '0x12e39cd6c851d970fd74662cac9ae459934bbfb8334f1c78195cf63e9b1ea5c'
+  ETH_WBTC: '0x1ee200135992a79412a76ae7b6fd3c6e1dfda027149423de188db8218ec06ca',
+  ETH_DAI: '0x353b5bf1976a113aff6840d5f159310e197105a6a934a1df044e126d052e51f',
+  ETH_USDC: '0x4323e912f2774814f4f3c17c2359963291c9e56a20b60569cdf91e34dcf0da0',
+  WBTC_USDC: '0x6adfff3140f4d687c4d1226bc2f6bdfd4705ab69c424240dd6a1a113f43a604',
+  DAI_USDC: '0x661c12c1a5f0997b11cbc868d44b78d3ad7eb41a232f7bb39b574b5631387a0'
 }
 
-export const LP_T0_T1 = new LPToken(ChainId.GÖRLI, TOKEN0, TOKEN1, jediPairAddresses.TOKEN0_TOKEN1)
+export const LP_ETH_WBTC = new LPToken(ChainId.GÖRLI, WBTC, DAI, jediPairAddresses.ETH_WBTC)
 
-export const LP_T0_T2 = new LPToken(ChainId.GÖRLI, TOKEN0, TOKEN2, jediPairAddresses.TOKEN0_TOKEN2)
+export const LP_ETH_DAI = new LPToken(ChainId.GÖRLI, WBTC, DAI, jediPairAddresses.ETH_DAI)
 
-export const LP_T0_T3 = new LPToken(ChainId.GÖRLI, TOKEN0, TOKEN3, jediPairAddresses.TOKEN0_TOKEN3)
+export const LP_ETH_USDC = new LPToken(ChainId.GÖRLI, WBTC, USDC, jediPairAddresses.ETH_USDC)
 
-export const LP_T1_T3 = new LPToken(ChainId.GÖRLI, TOKEN1, TOKEN3, jediPairAddresses.TOKEN1_TOKEN3)
+export const LP_WBTC_USDC = new LPToken(ChainId.GÖRLI, WBTC, USDC, jediPairAddresses.WBTC_USDC)
 
-export const LP_T2_T3 = new LPToken(ChainId.GÖRLI, TOKEN2, TOKEN3, jediPairAddresses.TOKEN2_TOKEN3)
+export const LP_DAI_USDC = new LPToken(ChainId.GÖRLI, DAI, USDC, jediPairAddresses.DAI_USDC)
 
 export const jediLPTokenList = {
-  [LP_T0_T1.address]: LP_T0_T1,
-  [LP_T0_T2.address]: LP_T0_T2,
-  [LP_T0_T3.address]: LP_T0_T3,
-  [LP_T1_T3.address]: LP_T1_T3,
-  [LP_T2_T3.address]: LP_T2_T3
+  [LP_ETH_WBTC.address]: LP_ETH_WBTC,
+  [LP_ETH_DAI.address]: LP_ETH_DAI,
+  [LP_ETH_USDC.address]: LP_ETH_USDC,
+  [LP_WBTC_USDC.address]: LP_WBTC_USDC,
+  [LP_DAI_USDC.address]: LP_DAI_USDC
 }

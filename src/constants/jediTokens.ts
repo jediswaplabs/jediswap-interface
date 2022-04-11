@@ -2,27 +2,18 @@ import { ChainId, Token } from '@jediswap/sdk'
 import { validateAndParseAddress } from 'starknet'
 
 // JEDI TOKENS
-export const TOKEN0_ADDRESS = validateAndParseAddress(
-  '0x4bc8ac16658025bff4a3bd0760e84fcf075417a4c55c6fae716efdd8f1ed26c'
-)
-export const TOKEN1_ADDRESS = validateAndParseAddress(
-  '0x5f405f9650c7ef663c87352d280f8d359ad07d200c0e5450cb9d222092dc756'
-)
-export const TOKEN2_ADDRESS = validateAndParseAddress(
-  '0x24da028e8176afd3219fbeafb17c49624af9b86dcbe81007ae40d93f741617d'
+export const WBTC_ADDRESS = validateAndParseAddress('0x12d537dc323c439dc65c976fad242d5610d27cfb5f31689a0a319b8be7f3d56')
+export const DAI_ADDRESS = validateAndParseAddress('0x015605ab0d2a2883dd72fe014bb997578fe8ce73caa91d1c0973a68efc6a43c5')
+
+export const USDC_ADDRESS = validateAndParseAddress(
+  '0x001d5b64feabc8ac7c839753994f469704c6fabdd45c8fe6d26ed57b5eb79057'
 )
 
-export const TOKEN3_ADDRESS = validateAndParseAddress(
-  '0x1ca5dedf1612b1ffb035e838ac09d70e500d22cf9cd0de4bebcef8553506fdb'
-)
+export const WBTC = new Token(ChainId.GÖRLI, WBTC_ADDRESS, 8, 'WBTC', 'Wrapped BTC')
 
-export const TOKEN0 = new Token(ChainId.GÖRLI, TOKEN0_ADDRESS, 18, 'J23FEB0', 'Jedi23Feb 0 ')
+export const DAI = new Token(ChainId.GÖRLI, DAI_ADDRESS, 18, 'DAI', 'Dai')
 
-export const TOKEN1 = new Token(ChainId.GÖRLI, TOKEN1_ADDRESS, 6, 'J23FEB1', 'Jedi23Feb 1')
-
-export const TOKEN2 = new Token(ChainId.GÖRLI, TOKEN2_ADDRESS, 18, 'J23FEB2', 'Jedi23Feb 2')
-
-export const TOKEN3 = new Token(ChainId.GÖRLI, TOKEN3_ADDRESS, 18, 'J23FEB3', 'Jedi23Feb 3')
+export const USDC = new Token(ChainId.GÖRLI, USDC_ADDRESS, 6, 'USDC', 'USDC')
 
 // STABLE JEDI TOKENS
 // export const STABLE_TOKEN0_ADDRESS = validateAndParseAddress(
@@ -41,10 +32,9 @@ export const TOKEN3 = new Token(ChainId.GÖRLI, TOKEN3_ADDRESS, 18, 'J23FEB3', '
 // export const STABLE_TOKEN2 = new Token(ChainId.GÖRLI, STABLE_TOKEN2_ADDRESS, 18, 'SJ4FEB2', 'SJedi4Feb 2')
 
 export const jediTokensList = {
-  //   [TOKEN0_ADDRESS]: TOKEN0,
-  [TOKEN1_ADDRESS]: TOKEN1,
-  [TOKEN2_ADDRESS]: TOKEN2,
-  [TOKEN3_ADDRESS]: TOKEN3
+  [WBTC_ADDRESS]: WBTC,
+  [DAI_ADDRESS]: DAI,
+  [USDC_ADDRESS]: USDC
 
   // Stables
   // [STABLE_TOKEN0_ADDRESS]: STABLE_TOKEN0,

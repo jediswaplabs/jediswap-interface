@@ -1,15 +1,5 @@
 import { BigNumber } from '@ethersproject/bignumber'
-import {
-  Currency,
-  CurrencyAmount,
-  currencyEquals,
-  JSBI,
-  LPToken,
-  Token,
-  TOKEN0,
-  TokenAmount,
-  WTOKEN0
-} from '@jediswap/sdk'
+import { Currency, CurrencyAmount, currencyEquals, JSBI, LPToken, Token, ETHER, TokenAmount, WETH } from '@jediswap/sdk'
 import React, { useCallback, useContext, useState } from 'react'
 import { Plus } from 'react-feather'
 // import ReactGA from 'react-ga'
@@ -107,8 +97,8 @@ export default function AddLiquidity({
 
   const oneCurrencyIsWTOKEN0 = Boolean(
     chainId &&
-      ((currencyA && currencyEquals(currencyA, WTOKEN0[chainId])) ||
-        (currencyB && currencyEquals(currencyB, WTOKEN0[chainId])))
+      ((currencyA && currencyEquals(currencyA, WETH[chainId])) ||
+        (currencyB && currencyEquals(currencyB, WETH[chainId])))
   )
 
   const toggleWalletModal = useWalletModalToggle() // toggle wallet when disconnected

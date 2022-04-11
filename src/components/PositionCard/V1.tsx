@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom'
-import { Token, TokenAmount, WTOKEN0 } from '@jediswap/sdk'
+import { Token, TokenAmount, WETH } from '@jediswap/sdk'
 
 import { Text } from 'rebass'
 import { AutoColumn } from '../Column'
@@ -11,6 +11,7 @@ import DoubleCurrencyLogo from '../DoubleLogo'
 import { useActiveStarknetReact } from '../../hooks'
 import { ThemeContext } from 'styled-components'
 
+// eslint-disable-next-line @typescript-eslint/ban-types
 interface PositionCardProps extends RouteComponentProps<{}> {
   token: Token
   V1LiquidityBalance: TokenAmount
@@ -28,7 +29,7 @@ function V1PositionCard({ token, V1LiquidityBalance }: PositionCardProps) {
           <RowFixed>
             <DoubleCurrencyLogo currency0={token} margin={true} size={20} />
             <Text fontWeight={500} fontSize={20} style={{ marginLeft: '' }}>
-              {`${chainId && token.equals(WTOKEN0[chainId]) ? 'WTOKEN0' : token.symbol}/ETH`}
+              {`${chainId && token.equals(WETH[chainId]) ? 'WETH' : token.symbol}/ETH`}
             </Text>
             <Text
               fontSize={12}
