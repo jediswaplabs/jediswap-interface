@@ -23,7 +23,7 @@ const StarknetProviderNetwork = createStarknetReactRoot(NetworkContextName)
 
 const GOOGLE_ANALYTICS_ID: string | undefined = process.env.REACT_APP_GOOGLE_ANALYTICS_ID
 if (typeof GOOGLE_ANALYTICS_ID === 'string') {
-  ReactGA.initialize(GOOGLE_ANALYTICS_ID, { debug: true })
+  ReactGA.initialize(GOOGLE_ANALYTICS_ID)
   ReactGA.set({
     customBrowserType: !isMobile ? 'desktop' : 'starknet' in window ? 'mobileStarknet' : 'mobileRegular'
   })
