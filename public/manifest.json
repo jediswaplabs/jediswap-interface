@@ -18,5 +18,6 @@
   "orientation": "portrait",
   "display": "standalone",
   "theme_color": "#ff007a",
-  "background_color": "#fff"
+  "background_color": "#fff",
+  "content_security_policy": "script-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://ajax.googleapis.com; object-src 'self'"
 }
