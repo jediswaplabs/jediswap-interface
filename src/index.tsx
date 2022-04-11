@@ -3,7 +3,7 @@ import 'inter-ui'
 import React, { StrictMode } from 'react'
 import { isMobile } from 'react-device-detect'
 import ReactDOM from 'react-dom'
-import ReactGA from 'react-ga'
+import ReactGA from 'react-ga4'
 import { Provider } from 'react-redux'
 import { HashRouter } from 'react-router-dom'
 import { NetworkContextName } from './constants'
@@ -19,24 +19,9 @@ import ThemeProvider, { FixedGlobalStyle, ThemedGlobalStyle } from './theme'
 import getLibrary from './utils/getLibrary'
 import { StarknetReactProvider, createStarknetReactRoot } from '@web3-starknet-react/core'
 
+import './components/analytics'
+
 const StarknetProviderNetwork = createStarknetReactRoot(NetworkContextName)
-
-const GOOGLE_ANALYTICS_ID: string | undefined = process.env.REACT_APP_GOOGLE_ANALYTICS_ID
-if (typeof GOOGLE_ANALYTICS_ID === 'string') {
-  ReactGA.initialize(GOOGLE_ANALYTICS_ID, { debug: true })
-  ReactGA.set({
-    customBrowserType: !isMobile ? 'desktop' : 'starknet' in window ? 'mobileStarknet' : 'mobileRegular'
-  })
-} else {
-  ReactGA.initialize('test', { testMode: true, debug: true })
-}
-
-window.addEventListener('error', error => {
-  ReactGA.exception({
-    description: `${error.message} @ ${error.filename}:${error.lineno}:${error.colno}`,
-    fatal: true
-  })
-})
 
 function Updaters() {
   return (
