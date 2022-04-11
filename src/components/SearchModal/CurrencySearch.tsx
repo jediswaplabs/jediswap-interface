@@ -1,10 +1,9 @@
 import { Currency, TOKEN0, Token } from '@jediswap/sdk'
 import React, { KeyboardEvent, RefObject, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
-// import ReactGA from 'react-ga'
+import ReactGA from 'react-ga'
 import { useTranslation } from 'react-i18next'
 import { FixedSizeList } from 'react-window'
 import { Text } from 'rebass'
-import { ThemeContext } from 'styled-components'
 import { useActiveStarknetReact } from '../../hooks'
 import { useAllTokens, useJediLPTokens, useToken } from '../../hooks/Tokens'
 import { useSelectedListInfo } from '../../state/lists/hooks'
@@ -48,7 +47,6 @@ export function CurrencySearch({
 }: CurrencySearchProps) {
   const { t } = useTranslation()
   const { chainId } = useActiveStarknetReact()
-  const theme = useContext(ThemeContext)
 
   const fixedList = useRef<FixedSizeList>()
   const [searchQuery, setSearchQuery] = useState<string>('')
@@ -62,11 +60,11 @@ export function CurrencySearch({
 
   useEffect(() => {
     if (isAddressSearch) {
-      // ReactGA.event({
-      //   category: 'Currency Select',
-      //   action: 'Search by address',
-      //   label: isAddressSearch
-      // })
+      ReactGA.event({
+        category: 'Currency Select',
+        action: 'Search by address',
+        label: isAddressSearch
+      })
     }
   }, [isAddressSearch])
 
