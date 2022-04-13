@@ -12,7 +12,8 @@ if (typeof GOOGLE_ANALYTICS_ID === 'string') {
       storage: 'none',
       storeGac: false,
       clientId: storedClientId ?? undefined
-    }
+    },
+    gtagOptions: { debug_mode: true }
   })
   ReactGA.set({
     anonymizeIp: true,
