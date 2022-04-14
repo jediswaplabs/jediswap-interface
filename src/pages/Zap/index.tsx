@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { SwapPoolTabs } from '../../components/NavigationTabs'
+import ReactGA from 'react-ga4'
 import AppBody from '../AppBody'
 import { Wrapper, HeaderRow, ZapHeader, HeaderNote, ZapHeaderInfo } from './styleds'
 import Settings from '../../components/Settings'
@@ -188,6 +189,13 @@ export default function Zap() {
     zapCallback()
       .then(hash => {
         setZapState({ attemptingTxn: false, tradeToConfirm, showConfirm, zapErrorMessage: undefined, txHash: hash })
+
+        ReactGA.event({
+          category: 'Zap',
+          action: 'Zap In',
+
+          label: [zapTrade?.inputAmount?.currency?.symbol, lpAmountOut?.currency?.symbol].join('/')
+        })
       })
       .catch(error => {
         console.error(error)
@@ -199,7 +207,14 @@ export default function Zap() {
           txHash: undefined
         })
       })
-  }, [priceImpactWithoutFee, showConfirm, tradeToConfirm, zapCallback])
+  }, [
+    priceImpactWithoutFee,
+    showConfirm,
+    tradeToConfirm,
+    zapCallback,
+    zapTrade?.inputAmount?.currency?.symbol,
+    lpAmountOut?.currency?.symbol
+  ])
 
   const handleConfirmDismiss = useCallback(() => {
     setZapState({ showConfirm: false, tradeToConfirm, attemptingTxn, zapErrorMessage, txHash })
