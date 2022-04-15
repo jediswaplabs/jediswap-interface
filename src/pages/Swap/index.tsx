@@ -3,7 +3,7 @@ import React, { useCallback, useContext, useEffect, useMemo, useState } from 're
 import Settings from '../../components/Settings'
 
 import { ArrowDown } from 'react-feather'
-// import ReactGA from 'react-ga'
+import ReactGA from 'react-ga4'
 import { Text } from 'rebass'
 import { ThemeContext } from 'styled-components'
 import AddressInputPanel from '../../components/AddressInputPanel'
@@ -103,7 +103,7 @@ export default function Swap() {
 
   const [mintAddress, setMintAddress] = useState<string | undefined>(undefined)
 
-  const { account, chainId } = useActiveStarknetReact()
+  const { account, chainId, connectedAddress } = useActiveStarknetReact()
   const theme = useContext(ThemeContext)
 
   // toggle wallet when disconnected
@@ -212,16 +212,16 @@ export default function Swap() {
       .then(hash => {
         setSwapState({ attemptingTxn: false, tradeToConfirm, showConfirm, swapErrorMessage: undefined, txHash: hash })
 
-        // ReactGA.event({
-        //   category: 'Swap',
-        //   action:
-        //     recipient === null
-        //       ? 'Swap w/o Send'
-        //       : (recipientAddress ?? recipient) === account
-        //       ? 'Swap w/o Send + recipient'
-        //       : 'Swap w/ Send',
-        //   label: [trade?.inputAmount?.currency?.symbol, trade?.outputAmount?.currency?.symbol, Version.v2].join('/')
-        // })
+        ReactGA.event({
+          category: 'Swap',
+          action:
+            recipient === null
+              ? 'Swap w/o Send'
+              : recipient === connectedAddress
+              ? 'Swap w/o Send + recipient'
+              : 'Swap w/ Send',
+          label: [trade?.inputAmount?.currency?.symbol, trade?.outputAmount?.currency?.symbol, Version.v2].join('/')
+        })
       })
       .catch(error => {
         console.error(error)
@@ -233,7 +233,16 @@ export default function Swap() {
           txHash: undefined
         })
       })
-  }, [tradeToConfirm, priceImpactWithoutFee, showConfirm, swapCallback])
+  }, [
+    priceImpactWithoutFee,
+    swapCallback,
+    tradeToConfirm,
+    showConfirm,
+    recipient,
+    connectedAddress,
+    trade?.inputAmount?.currency?.symbol,
+    trade?.outputAmount?.currency?.symbol
+  ])
 
   // errors
   const [showInverted, setShowInverted] = useState<boolean>(false)
