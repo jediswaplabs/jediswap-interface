@@ -97,7 +97,7 @@
   "scripts": {
     "start": "react-scripts start",
     "serve": "serve -s build",
-    "build": "REACT_APP_ENVIRONMENT=production react-scripts build",
+    "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "production-build": "PUBLIC_URL=https://app.jediswap.xyz REACT_APP_ENVIRONMENT=production react-scripts build",
