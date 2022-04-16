@@ -1,7 +1,7 @@
 import { jediTokensList } from '../constants/jediTokens'
 import { Args, shortString, number as starkNumber } from 'starknet'
 import { parseBytes32String } from '@ethersproject/strings'
-import { Currency, TOKEN0, Token, currencyEquals } from '@jediswap/sdk'
+import { Currency, Token, currencyEquals, ETHER } from '@jediswap/sdk'
 import { useMemo } from 'react'
 import { useSelectedTokenList } from '../state/lists/hooks'
 import { useUserAddedTokens } from '../state/user/hooks'
@@ -116,8 +116,8 @@ export function useToken(tokenAddress?: string): Token | undefined | null {
 }
 
 export function useCurrency(currencyId: string | undefined): Currency | null | undefined {
-  const isTOKEN0 = currencyId?.toUpperCase() === 'TOKEN0'
+  const isETH = currencyId?.toUpperCase() === 'ETH'
   // const isTOKEN1 = currencyId === TOKEN1.address
-  const token = useToken(isTOKEN0 ? undefined : currencyId)
-  return isTOKEN0 ? TOKEN0 : token
+  const token = useToken(isETH ? undefined : currencyId)
+  return isETH ? ETHER : token
 }

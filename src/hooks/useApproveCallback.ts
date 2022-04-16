@@ -1,6 +1,6 @@
 import { MaxUint256 } from '@ethersproject/constants'
 import { TransactionResponse } from '@ethersproject/providers'
-import { Trade, TokenAmount, CurrencyAmount, TOKEN0, WTOKEN0, Token } from '@jediswap/sdk'
+import { Trade, TokenAmount, CurrencyAmount, ETHER, WETH, Token } from '@jediswap/sdk'
 import { useCallback, useMemo } from 'react'
 import { ROUTER_ADDRESS, ZAP_IN_ADDRESS } from '../constants'
 import { useTokenAllowance } from '../data/Allowances'
@@ -29,8 +29,8 @@ export function useApproveCallback(
   const token: Token | undefined =
     amountToApprove instanceof TokenAmount
       ? amountToApprove.token
-      : amountToApprove?.currency === TOKEN0
-      ? WTOKEN0[chainId ?? 5]
+      : amountToApprove?.currency === ETHER
+      ? WETH[chainId ?? 5]
       : undefined
 
   const currentAllowance = useTokenAllowance(token, connectedAddress ?? undefined, spender)
@@ -39,7 +39,7 @@ export function useApproveCallback(
   // check the current approval status
   const approvalState: ApprovalState = useMemo(() => {
     if (!amountToApprove || !spender) return ApprovalState.UNKNOWN
-    // if (amountToApprove.currency === TOKEN0) return ApprovalState.APPROVED
+    if (amountToApprove.currency === ETHER) return ApprovalState.APPROVED
     // we might not have enough data to know whether or not we need to approve
     if (!currentAllowance) return ApprovalState.UNKNOWN
 

@@ -1,22 +1,22 @@
 import { validateAndParseAddress } from 'starknet'
-import { ChainId, JSBI, Percent, Token, WTOKEN0 } from '@jediswap/sdk'
+import { ChainId, JSBI, Percent, Token, WETH } from '@jediswap/sdk'
 import { AbstractConnector } from '@web3-starknet-react/abstract-connector'
-import { TOKEN0, TOKEN1, TOKEN2, TOKEN3 } from './jediTokens'
+import { WBTC, DAI, USDC } from './jediTokens'
 
 // import { fortmatic, injected, portis, walletconnect, walletlink, argentX } from '../connectors'
 import { argentX } from '../connectors'
 import ARGENTX_ICON from '../assets/images/argentx.png'
 
 export const REGISTRY_ADDRESS = validateAndParseAddress(
-  '0x413ba8d51ec05be863eb82314f0cf0ffceff949e76c87cae0a4bd7f89cfc2b1'
+  '0x1a8c2876e13ebf0e2f23cc1109ad6dfd722c0bd2dbf50721ce8ad91f98c1bef'
 )
 
 export const ROUTER_ADDRESS = validateAndParseAddress(
-  '0x1ea2f12a70ad6a052f99a49dace349996a8e968a0d6d4e9ec34e0991e6d5e5e'
+  '0x16adfcc056a7d1f654feb7493b59853bef1442f109645dd97d433f71a1f6ee7'
 )
 
 export const ZAP_IN_ADDRESS = validateAndParseAddress(
-  '0x263acca23357479031157e30053fe10598077f24f427ac1b1de85487f5cd124'
+  '0x03bb1993de7d3b52941ec3672166e81267c20c2b66efb3dba6c7f28d48ca2dec'
 )
 
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000000000000000000000000000'
@@ -37,28 +37,19 @@ type ChainTokenList = {
 // TODO this is only approximate, it's actually based on blocks
 export const PROPOSAL_LENGTH_IN_DAYS = 7
 
-const WTOKEN0_ONLY: ChainTokenList = {
-  [ChainId.MAINNET]: [WTOKEN0[ChainId.MAINNET]],
-  [ChainId.ROPSTEN]: [WTOKEN0[ChainId.ROPSTEN]],
-  [ChainId.RINKEBY]: [WTOKEN0[ChainId.RINKEBY]],
-  [ChainId.GÖRLI]: [WTOKEN0[ChainId.GÖRLI]],
-  [ChainId.KOVAN]: [WTOKEN0[ChainId.KOVAN]]
+const WETH_ONLY: ChainTokenList = {
+  [ChainId.MAINNET]: [WETH[ChainId.MAINNET]],
+  [ChainId.ROPSTEN]: [WETH[ChainId.ROPSTEN]],
+  [ChainId.RINKEBY]: [WETH[ChainId.RINKEBY]],
+  [ChainId.GÖRLI]: [WETH[ChainId.GÖRLI]],
+  [ChainId.KOVAN]: [WETH[ChainId.KOVAN]]
 }
-
-// const TOKEN0_ONLY: ChainTokenList = {
-//   [ChainId.GÖRLI]: [TOKEN0],
-//   [ChainId.MAINNET]: [TOKEN0],
-//   [ChainId.KOVAN]: [TOKEN0],
-//   [ChainId.ROPSTEN]: [TOKEN0],
-//   [ChainId.RINKEBY]: [TOKEN0]
-// }
 
 // used to construct intermediary pairs for trading
 export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
-  ...WTOKEN0_ONLY,
+  ...WETH_ONLY,
   // [ChainId.MAINNET]: [...WETH_ONLY[ChainId.MAINNET], DAI, USDC, USDT, COMP, MKR]
-  [ChainId.GÖRLI]: [TOKEN0]
-  // [ChainId.MAINNET]: [TOKEN0, TOKEN1],
+  [ChainId.GÖRLI]: [...WETH_ONLY[ChainId.GÖRLI], DAI, USDC]
 }
 
 /**
@@ -73,14 +64,13 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
 
 // used for display in the default list when adding liquidity
 export const SUGGESTED_BASES: ChainTokenList = {
-  ...WTOKEN0_ONLY,
-  [ChainId.GÖRLI]: [TOKEN0]
+  ...WETH_ONLY
 }
 
 // used to construct the list of all pairs we consider by default in the frontend
 export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
-  ...WTOKEN0_ONLY,
-  [ChainId.GÖRLI]: [TOKEN0, TOKEN3]
+  ...WETH_ONLY,
+  [ChainId.GÖRLI]: [WETH[ChainId.GÖRLI], USDC, DAI, WBTC]
 }
 
 export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } = {
@@ -89,9 +79,9 @@ export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } 
     //   new Token(ChainId.GÖRLI, '0x5d3a536E4D6DbD6114cc1Ead35777bAB948E3643', 8, 'cDAI', 'Compound Dai'),
     //   new Token(ChainId.GÖRLI, '0x39AA39c021dfbaE8faC545936693aC917d5E7563', 8, 'cUSDC', 'Compound USD Coin')
     // ],
-    [TOKEN0, TOKEN1],
-    [TOKEN0, TOKEN2],
-    [TOKEN0, TOKEN3]
+    [WETH[ChainId.GÖRLI], WBTC],
+    [WETH[ChainId.GÖRLI], DAI],
+    [WETH[ChainId.GÖRLI], USDC]
     // [DAI, USDT]
   ]
 }

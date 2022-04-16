@@ -1,8 +1,7 @@
-import { Currency, TOKEN0, Token, WTOKEN0 } from '@jediswap/sdk'
-// import { TOKEN0 } from '../constants'
+import { Currency, ETHER, Token } from '@jediswap/sdk'
 
 export function currencyId(currency: Currency): string {
-  if (currency === TOKEN0) return 'TOKEN0'
+  if (currency === ETHER) return 'ETH'
   if (currency instanceof Token) return currency.address
   throw new Error('invalid currency')
 }
