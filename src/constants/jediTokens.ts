@@ -3,10 +3,10 @@ import { validateAndParseAddress } from 'starknet'
 
 // JEDI TOKENS
 export const WBTC_ADDRESS = validateAndParseAddress('0x12d537dc323c439dc65c976fad242d5610d27cfb5f31689a0a319b8be7f3d56')
-export const DAI_ADDRESS = validateAndParseAddress('0x015605ab0d2a2883dd72fe014bb997578fe8ce73caa91d1c0973a68efc6a43c5')
+export const DAI_ADDRESS = validateAndParseAddress('0x03e85bfbb8e2a42b7bead9e88e9a1b19dbccf661471061807292120462396ec9')
 
 export const USDC_ADDRESS = validateAndParseAddress(
-  '0x001d5b64feabc8ac7c839753994f469704c6fabdd45c8fe6d26ed57b5eb79057'
+  '0x005a643907b9a4bc6a55e9069c4fd5fd1f5c79a22470690f75556c4736e34426'
 )
 
 export const WBTC = new Token(ChainId.GÖRLI, WBTC_ADDRESS, 8, 'WBTC', 'Wrapped BTC')
