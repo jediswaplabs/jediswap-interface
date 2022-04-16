@@ -1702,10 +1702,10 @@
   resolved "https://registry.yarnpkg.com/@istanbuljs/schema/-/schema-0.1.3.tgz#e45e384e4b8ec16bce2fd903af78450f6bf7ec98"
   integrity sha512-ZXRY4jNvVgSVQ8DL3LTcakaAtXwTVUxE81hslsyD2AtoXW/wVob10HkOJ1X/pAlcI7D+2YoZKg5do8G/w6RYgA==
 
-"@jediswap/sdk@^1.6.0":
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/@jediswap/sdk/-/sdk-1.6.0.tgz#2983081d5e3355012489d47bcbcbb4e0d8aa1459"
-  integrity sha512-K38RSq8FhTS7D3HmcAZqZyqnkXUr4IAP8UR+CDQMCOYLZh2uGaHlRyJ5/nNDanPNsLa8k/M3KLmNNkuryZ4VhA==
+"@jediswap/sdk@^1.6.1":
+  version "1.6.1"
+  resolved "https://registry.yarnpkg.com/@jediswap/sdk/-/sdk-1.6.1.tgz#6b0eaa23693f8b4f8fa5ae077c10367952532be5"
+  integrity sha512-Bqna1AeYl2SsdcDchqoTGn/QX0Qe1/dZ/HcnIvqgGJJklbUpJlPOLoYaih9sKv3YgP6XV7Lxy3EI6TKI0BCNtw==
   dependencies:
     "@types/bn.js" "^5.1.0"
     "@uniswap/v2-core" "^1.0.0"
