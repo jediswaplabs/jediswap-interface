@@ -1,6 +1,6 @@
 import { Currency } from '@jediswap/sdk'
 import React, { useCallback, useEffect, useState } from 'react'
-// import ReactGA from 'react-ga'
+import ReactGA from 'react-ga4'
 import useLast from '../../hooks/useLast'
 import Modal from '../Modal'
 import { CurrencySearch } from './CurrencySearch'
@@ -43,17 +43,17 @@ export default function CurrencySearchModal({
   )
 
   const handleClickChangeList = useCallback(() => {
-    // ReactGA.event({
-    //   category: 'Lists',
-    //   action: 'Change Lists'
-    // })
+    ReactGA.event({
+      category: 'Lists',
+      action: 'Change Lists'
+    })
     setListView(true)
   }, [])
   const handleClickBack = useCallback(() => {
-    // ReactGA.event({
-    //   category: 'Lists',
-    //   action: 'Back'
-    // })
+    ReactGA.event({
+      category: 'Lists',
+      action: 'Back'
+    })
     setListView(false)
   }, [])
 
