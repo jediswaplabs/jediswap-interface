@@ -1,5 +1,5 @@
 import { ChainId, Token } from '@jediswap/sdk'
-import { Tags, TokenInfo, TokenList } from '@uniswap/token-lists'
+import { Tags, TokenInfo, TokenList } from '@jediswap/token-lists'
 import { useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { AppState } from '../index'

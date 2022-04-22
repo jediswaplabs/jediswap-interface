@@ -151,7 +151,7 @@ function CurrencyRow({
           >
             {currency.symbol}
           </Text>
-
+          {/* 
           <StyledPlusCircle
             onClick={() => {
               console.log('Add token')
@@ -161,7 +161,7 @@ function CurrencyRow({
                 addTokenToWallet(WTOKEN0[chainId ?? 5].address)
               }
             }}
-          />
+          /> */}
         </Row>
         <FadedSpan>
           {!isOnSelectedList && customAdded ? (
