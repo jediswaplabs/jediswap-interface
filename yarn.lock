@@ -1702,10 +1702,10 @@
   resolved "https://registry.yarnpkg.com/@istanbuljs/schema/-/schema-0.1.3.tgz#e45e384e4b8ec16bce2fd903af78450f6bf7ec98"
   integrity sha512-ZXRY4jNvVgSVQ8DL3LTcakaAtXwTVUxE81hslsyD2AtoXW/wVob10HkOJ1X/pAlcI7D+2YoZKg5do8G/w6RYgA==
 
-"@jediswap/sdk@^1.6.1":
-  version "1.6.1"
-  resolved "https://registry.yarnpkg.com/@jediswap/sdk/-/sdk-1.6.1.tgz#6b0eaa23693f8b4f8fa5ae077c10367952532be5"
-  integrity sha512-Bqna1AeYl2SsdcDchqoTGn/QX0Qe1/dZ/HcnIvqgGJJklbUpJlPOLoYaih9sKv3YgP6XV7Lxy3EI6TKI0BCNtw==
+"@jediswap/sdk@^1.7.0":
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/@jediswap/sdk/-/sdk-1.7.0.tgz#8bc9e995952375b96b2858906991ee6e7a617144"
+  integrity sha512-uMhHmfzyPY83H26hRrUR4eM0ugrrZfrQmJXsJJkiXUfq7/77V78QZb4vV2+/2SQJM5AYFxF6XgDnINmsldjiIQ==
   dependencies:
     "@types/bn.js" "^5.1.0"
     "@uniswap/v2-core" "^1.0.0"
@@ -1717,6 +1717,11 @@
     tiny-invariant "^1.1.0"
     tiny-warning "^1.0.3"
     toformat "^2.0.0"
+
+"@jediswap/token-lists@^1.0.0-beta.1":
+  version "1.0.0-beta.1"
+  resolved "https://registry.yarnpkg.com/@jediswap/token-lists/-/token-lists-1.0.0-beta.1.tgz#ccc0f7881ad3476d11e978f8da425307dc129bd8"
+  integrity sha512-Il+Q4TMb3v5Tnkgy25JfhLLHWcH0GHsPdotR4tfQYhHZxWDIHvLrEJhVARdNv30Xb+YLlUQE6KHp+tmmgvzYMw==
 
 "@jest/console@^26.6.2":
   version "26.6.2"
@@ -3031,11 +3036,6 @@
   dependencies:
     "@typescript-eslint/types" "5.14.0"
     eslint-visitor-keys "^3.0.0"
-
-"@uniswap/token-lists@^1.0.0-beta.16":
-  version "1.0.0-beta.27"
-  resolved "https://registry.yarnpkg.com/@uniswap/token-lists/-/token-lists-1.0.0-beta.27.tgz#8b02a979b0b0024cc96f60e694a3f6db6b2ccab2"
-  integrity sha512-x5hmIniQ9TGqOBCRqfWcmZi/U5kB0qrHMDQ9igs3nMbK0wwmYLraL4owbIwXFGR/co6/lJYJC4K/Gjn4wZY5mQ==
 
 "@uniswap/v2-core@^1.0.0":
   version "1.0.1"
