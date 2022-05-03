@@ -1,6 +1,6 @@
 import { Contract, AddTransactionResponse, Args, stark, Call, RawArgs } from 'starknet'
 // import { TransactionResponse } from '@ethersproject/providers'
-import { Currency, currencyEquals, ETHER, Percent, WETH, Fraction } from '@jediswap/sdk'
+import { Currency, currencyEquals, TOKEN0, Percent, WTOKEN0, Fraction } from '@jediswap/sdk'
 import React, { useCallback, useContext, useMemo, useState } from 'react'
 import { ArrowDown, Plus } from 'react-feather'
 import { RouteComponentProps } from 'react-router'
@@ -159,8 +159,8 @@ export default function RemoveLiquidity({
     const liquidityAmount = parsedAmounts[Field.LIQUIDITY]
     if (!liquidityAmount) throw new Error('missing liquidity amount')
 
-    const currencyBIsETH = currencyB === ETHER
-    const oneCurrencyIsETH = currencyA === ETHER || currencyBIsETH
+    const currencyBIsETH = currencyB === TOKEN0
+    const oneCurrencyIsETH = currencyA === TOKEN0 || currencyBIsETH
 
     if (!tokenA || !tokenB) throw new Error('could not wrap')
 
@@ -294,11 +294,11 @@ export default function RemoveLiquidity({
     [onUserInput]
   )
 
-  const oneCurrencyIsETH = currencyA === ETHER || currencyB === ETHER
+  const oneCurrencyIsETH = currencyA === TOKEN0 || currencyB === TOKEN0
   const oneCurrencyIsWETH = Boolean(
     chainId &&
-      ((currencyA && currencyEquals(WETH[chainId], currencyA)) ||
-        (currencyB && currencyEquals(WETH[chainId], currencyB)))
+      ((currencyA && currencyEquals(WTOKEN0[chainId], currencyA)) ||
+        (currencyB && currencyEquals(WTOKEN0[chainId], currencyB)))
   )
 
   const handleSelectCurrencyA = useCallback(
@@ -448,19 +448,19 @@ export default function RemoveLiquidity({
                       <RowBetween style={{ justifyContent: 'flex-end' }}>
                         {oneCurrencyIsETH ? (
                           <StyledInternalLink
-                            to={`/remove/${currencyA === ETHER ? WETH[chainId].address : currencyIdA}/${
-                              currencyB === ETHER ? WETH[chainId].address : currencyIdB
+                            to={`/remove/${currencyA === TOKEN0 ? WTOKEN0[chainId].address : currencyIdA}/${
+                              currencyB === TOKEN0 ? WTOKEN0[chainId].address : currencyIdB
                             }`}
                           >
-                            Receive WETH
+                            Receive WTOKEN0
                           </StyledInternalLink>
                         ) : oneCurrencyIsWETH ? (
                           <StyledInternalLink
                             to={`/remove/${
-                              currencyA && currencyEquals(currencyA, WETH[chainId]) ? 'ETHER' : currencyIdA
-                            }/${currencyB && currencyEquals(currencyB, WETH[chainId]) ? 'ETHER' : currencyIdB}`}
+                              currencyA && currencyEquals(currencyA, WTOKEN0[chainId]) ? 'TOKEN0' : currencyIdA
+                            }/${currencyB && currencyEquals(currencyB, WTOKEN0[chainId]) ? 'TOKEN0' : currencyIdB}`}
                           >
-                            Receive ETHER
+                            Receive TOKEN0
                           </StyledInternalLink>
                         ) : null}
                       </RowBetween>

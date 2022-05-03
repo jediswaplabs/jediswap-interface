@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, Token, ETHER, LPToken, TokenAmount, Trade } from '@jediswap/sdk'
+import { Currency, CurrencyAmount, Token, TOKEN0, LPToken, TokenAmount, Trade } from '@jediswap/sdk'
 import { ParsedQs } from 'qs'
 import { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -38,7 +38,7 @@ export function useZapActionHandlers(): {
       dispatch(
         selectCurrency({
           field,
-          currencyId: currency instanceof Token ? currency.address : currency === ETHER ? 'ETH' : ''
+          currencyId: currency instanceof Token ? currency.address : currency === TOKEN0 ? 'TOKEN0' : ''
         })
       )
     },

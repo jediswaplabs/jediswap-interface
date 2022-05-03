@@ -7,7 +7,7 @@ import { useToken } from './Tokens'
 import { useTokenContract } from './useContract'
 import { isAddress } from '../utils'
 import { tryParseAmount } from '../state/swap/hooks'
-import { TokenAmount, WETH } from '@jediswap/sdk'
+import { TokenAmount, WTOKEN0 } from '@jediswap/sdk'
 
 export enum MintState {
   VALID,
@@ -20,7 +20,7 @@ export function useMintCallback(): [MintState, () => Promise<void>] {
 
   const { connectedAddress, account, chainId } = useActiveStarknetReact()
 
-  const token0 = WETH[chainId ?? 5]
+  const token0 = WTOKEN0[chainId ?? 5]
 
   const jediTokens = Object.values({ [token0.address]: token0, ...jediTokensList })
 

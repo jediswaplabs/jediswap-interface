@@ -2,18 +2,27 @@ import { ChainId, Token } from '@jediswap/sdk'
 import { validateAndParseAddress } from 'starknet'
 
 // JEDI TOKENS
-export const WBTC_ADDRESS = validateAndParseAddress('0x12d537dc323c439dc65c976fad242d5610d27cfb5f31689a0a319b8be7f3d56')
-export const DAI_ADDRESS = validateAndParseAddress('0x03e85bfbb8e2a42b7bead9e88e9a1b19dbccf661471061807292120462396ec9')
-
-export const USDC_ADDRESS = validateAndParseAddress(
-  '0x005a643907b9a4bc6a55e9069c4fd5fd1f5c79a22470690f75556c4736e34426'
+export const TOKEN0_ADDRESS = validateAndParseAddress(
+  '0x4bc8ac16658025bff4a3bd0760e84fcf075417a4c55c6fae716efdd8f1ed26c'
+)
+export const TOKEN1_ADDRESS = validateAndParseAddress(
+  '0x5f405f9650c7ef663c87352d280f8d359ad07d200c0e5450cb9d222092dc756'
+)
+export const TOKEN2_ADDRESS = validateAndParseAddress(
+  '0x24da028e8176afd3219fbeafb17c49624af9b86dcbe81007ae40d93f741617d'
 )
 
-export const WBTC = new Token(ChainId.GÖRLI, WBTC_ADDRESS, 8, 'WBTC', 'Wrapped BTC')
+export const TOKEN3_ADDRESS = validateAndParseAddress(
+  '0x1ca5dedf1612b1ffb035e838ac09d70e500d22cf9cd0de4bebcef8553506fdb'
+)
 
-export const DAI = new Token(ChainId.GÖRLI, DAI_ADDRESS, 18, 'DAI', 'Dai')
+export const TOKEN0 = new Token(ChainId.GÖRLI, TOKEN0_ADDRESS, 18, 'J23FEB0', 'Jedi23Feb 0 ')
 
-export const USDC = new Token(ChainId.GÖRLI, USDC_ADDRESS, 6, 'USDC', 'USDC')
+export const TOKEN1 = new Token(ChainId.GÖRLI, TOKEN1_ADDRESS, 6, 'J23FEB1', 'Jedi23Feb 1')
+
+export const TOKEN2 = new Token(ChainId.GÖRLI, TOKEN2_ADDRESS, 18, 'J23FEB2', 'Jedi23Feb 2')
+
+export const TOKEN3 = new Token(ChainId.GÖRLI, TOKEN3_ADDRESS, 18, 'J23FEB3', 'Jedi23Feb 3')
 
 // STABLE JEDI TOKENS
 // export const STABLE_TOKEN0_ADDRESS = validateAndParseAddress(
@@ -32,9 +41,10 @@ export const USDC = new Token(ChainId.GÖRLI, USDC_ADDRESS, 6, 'USDC', 'USDC')
 // export const STABLE_TOKEN2 = new Token(ChainId.GÖRLI, STABLE_TOKEN2_ADDRESS, 18, 'SJ4FEB2', 'SJedi4Feb 2')
 
 export const jediTokensList = {
-  [WBTC_ADDRESS]: WBTC,
-  [DAI_ADDRESS]: DAI,
-  [USDC_ADDRESS]: USDC
+  //   [TOKEN0_ADDRESS]: TOKEN0,
+  [TOKEN1_ADDRESS]: TOKEN1,
+  [TOKEN2_ADDRESS]: TOKEN2,
+  [TOKEN3_ADDRESS]: TOKEN3
 
   // Stables
   // [STABLE_TOKEN0_ADDRESS]: STABLE_TOKEN0,

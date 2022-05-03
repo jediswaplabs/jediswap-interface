@@ -1,4 +1,4 @@
-import { CurrencyAmount, Token, ETHER, TokenAmount, Trade, WETH } from '@jediswap/sdk'
+import { CurrencyAmount, Token, TOKEN0, TokenAmount, Trade, WTOKEN0 } from '@jediswap/sdk'
 import { useCallback, useMemo } from 'react'
 import { Call, RawArgs, stark, uint256 } from 'starknet'
 import { useActiveStarknetReact } from '.'
@@ -13,8 +13,8 @@ export function useApprovalCall(amountToApprove?: CurrencyAmount, spender?: stri
   const token: Token | undefined =
     amountToApprove instanceof TokenAmount
       ? amountToApprove.token
-      : amountToApprove?.currency === ETHER
-      ? WETH[chainId ?? 5]
+      : amountToApprove?.currency === TOKEN0
+      ? WTOKEN0[chainId ?? 5]
       : undefined
 
   return useCallback(() => {
