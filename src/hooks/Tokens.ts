@@ -13,6 +13,7 @@ import { useSingleCallResult } from '../state/multicall/hooks'
 import { jediLPTokenList } from '../constants/jediLPTokenList'
 import { NEVER_RELOAD } from '../state/multicall/hooks'
 // import { BigNumberish } from 'starknet/dist/utils/number'
+
 export function useAllTokens(): { [address: string]: Token } {
   const { chainId } = useActiveStarknetReact()
   const userAddedTokens = useUserAddedTokens()
@@ -31,7 +32,7 @@ export function useAllTokens(): { [address: string]: Token } {
           },
           // must make a copy because reduce modifies the map, and we do not
           // want to make a copy in every iteration
-          { ...allTokens[chainId] }
+          { ...allTokens[chainId], ...jediTokensList }
         )
     )
   }, [chainId, userAddedTokens, allTokens])

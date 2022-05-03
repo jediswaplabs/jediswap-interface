@@ -1,7 +1,7 @@
 import { createReducer } from '@reduxjs/toolkit'
-import { getVersionUpgrade, VersionUpgrade } from '@jediswap/token-lists'
-import { TokenList } from '@jediswap/token-lists/dist/types'
-import { DEFAULT_LIST_OF_LISTS, DEFAULT_TOKEN_LIST_URL } from '../../constants/lists'
+import { getVersionUpgrade, VersionUpgrade } from '@uniswap/token-lists'
+import { TokenList } from '@uniswap/token-lists/dist/types'
+import { DEFAULT_LIST_OF_LISTS } from '../../constants/lists'
 import { updateVersion } from '../global/actions'
 import { acceptListUpdate, addList, fetchTokenList, removeList, selectList } from './actions'
 
@@ -38,15 +38,15 @@ const initialState: ListsState = {
       return memo
     }, {})
   },
-  selectedListUrl: DEFAULT_TOKEN_LIST_URL
+  selectedListUrl: undefined
 }
 
 export default createReducer(initialState, builder =>
   builder
     .addCase(fetchTokenList.pending, (state, { payload: { requestId, url } }) => {
       state.byUrl[url] = {
-        current: null,
-        pendingUpdate: null,
+        // current: null,
+        // pendingUpdate: null,
         ...state.byUrl[url],
         loadingRequestId: requestId,
         error: null
@@ -109,9 +109,9 @@ export default createReducer(initialState, builder =>
       if (state.byUrl[url]) {
         delete state.byUrl[url]
       }
-      if (state.selectedListUrl === url) {
-        state.selectedListUrl = url === DEFAULT_TOKEN_LIST_URL ? Object.keys(state.byUrl)[0] : DEFAULT_TOKEN_LIST_URL
-      }
+      // if (state.selectedListUrl === url) {
+      //   state.selectedListUrl = url === DEFAULT_TOKEN_LIST_URL ? Object.keys(state.byUrl)[0] : DEFAULT_TOKEN_LIST_URL
+      // }
     })
     .addCase(acceptListUpdate, (state, { payload: url }) => {
       if (!state.byUrl[url]?.pendingUpdate) {
@@ -127,7 +127,7 @@ export default createReducer(initialState, builder =>
       // state loaded from localStorage, but new lists have never been initialized
       if (!state.lastInitializedDefaultListOfLists) {
         state.byUrl = initialState.byUrl
-        state.selectedListUrl = DEFAULT_TOKEN_LIST_URL
+        state.selectedListUrl = undefined
       } else if (state.lastInitializedDefaultListOfLists) {
         const lastInitializedSet = state.lastInitializedDefaultListOfLists.reduce<Set<string>>(
           (s, l) => s.add(l),
@@ -151,10 +151,10 @@ export default createReducer(initialState, builder =>
       state.lastInitializedDefaultListOfLists = DEFAULT_LIST_OF_LISTS
 
       if (!state.selectedListUrl) {
-        state.selectedListUrl = DEFAULT_TOKEN_LIST_URL
-        if (!state.byUrl[DEFAULT_TOKEN_LIST_URL]) {
-          state.byUrl[DEFAULT_TOKEN_LIST_URL] = NEW_LIST_STATE
-        }
+        state.selectedListUrl = undefined
+        // if (!state.byUrl[DEFAULT_TOKEN_LIST_URL]) {
+        //   state.byUrl[DEFAULT_TOKEN_LIST_URL] = NEW_LIST_STATE
+        // }
       }
     })
 )
