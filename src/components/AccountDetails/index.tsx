@@ -13,13 +13,9 @@ import { SUPPORTED_WALLETS } from '../../constants'
 import { ReactComponent as Close } from '../../assets/images/x.svg'
 import { getVoyagerLink } from '../../utils'
 import argentXIcon from '../../assets/images/argentx.png'
+import braavosIcon from '../../assets/svg/Braavos.svg'
 // import { fortmatic, injected, portis, walletconnect, walletlink } from '../../connectors'
-import { argentX } from '../../connectors'
-import CoinbaseWalletIcon from '../../assets/images/coinbaseWalletIcon.svg'
-import WalletConnectIcon from '../../assets/images/walletConnectIcon.svg'
-import FortmaticIcon from '../../assets/images/fortmaticIcon.png'
-import PortisIcon from '../../assets/images/portisIcon.png'
-import Identicon from '../Identicon'
+import { argentX, braavosWallet } from '../../connectors'
 import { ButtonSecondary } from '../Button'
 import { ExternalLink as LinkIcon } from 'react-feather'
 import { ExternalLink, LinkStyledButton, TYPE } from '../../theme'
@@ -195,7 +191,7 @@ const IconWrapper = styled.div<{ size?: number }>`
   ${({ theme }) => theme.flexColumnNoWrap};
   align-items: center;
   justify-content: center;
-  margin-right: 1.5rem;
+  margin-right: 0.75rem;
   & > img,
   span {
     height: ${({ size }) => (size ? size + 'px' : '32px')};
@@ -287,50 +283,18 @@ export default function AccountDetails({
   }
 
   function getStatusIcon() {
-    // if (connector === injected) {
-    //   return (
-    //     <IconWrapper size={16}>
-    //       <Identicon />
-    //     </IconWrapper>
-    //   )
-    // } else if (connector === walletconnect) {
-    //   return (
-    //     <IconWrapper size={16}>
-    //       <img src={WalletConnectIcon} alt={'wallet connect logo'} />
-    //     </IconWrapper>
-    //   )
-    // } else if (connector === walletlink) {
-    //   return (
-    //     <IconWrapper size={16}>
-    //       <img src={CoinbaseWalletIcon} alt={'coinbase wallet logo'} />
-    //     </IconWrapper>
-    //   )
-    // } else if (connector === fortmatic) {
-    //   return (
-    //     <IconWrapper size={16}>
-    //       <img src={FortmaticIcon} alt={'fortmatic logo'} />
-    //     </IconWrapper>
-    //   )
-    // } else if (connector === portis) {
-    //   return (
-    //     <>
-    //       <IconWrapper size={16}>
-    //         <img src={PortisIcon} alt={'portis logo'} />
-    //         <MainWalletAction
-    //           onClick={() => {
-    //             portis.portis.showPortis()
-    //           }}
-    //         >
-    //           Show Portis
-    //         </MainWalletAction>
-    //       </IconWrapper>
-    //     </>
-    //   )
-    // }
     if (connector === argentX) {
       return (
         <IconWrapper size={32}>
           <img src={argentXIcon} alt="argentX" />
+        </IconWrapper>
+      )
+    }
+
+    if (connector === braavosWallet) {
+      return (
+        <IconWrapper size={42}>
+          <img src={braavosIcon} alt="myBraavos" />
         </IconWrapper>
       )
     }
@@ -353,12 +317,12 @@ export default function AccountDetails({
           </AccountGroupingRow>
           <AccountGroupingRow>
             {formatConnectorName()}
-            {connector === argentX && (
+            {(connector === argentX || connector === braavosWallet) && (
               <ButtonBorderWrapper>
                 <WalletAction
                   style={{ fontSize: '.875rem', color: '#9B9B9B' }}
                   onClick={() => {
-                    connector.deactivate()
+                    connector?.deactivate()
                   }}
                 >
                   Disconnect
@@ -391,7 +355,7 @@ export default function AccountDetails({
                       </AccountControl>
                     </AccountGroupingRow>
                     <AccountGroupingRow>
-                      <div>
+                      {/* <div>
                         <WalletAction
                           style={{
                             fontSize: '.825rem',
@@ -403,13 +367,11 @@ export default function AccountDetails({
                             boxShadow: 'none',
                             padding: '0'
                           }}
-                          onClick={() => {
-                            openOptions()
-                          }}
+                          onClick={openOptions}
                         >
                           Switch
                         </WalletAction>
-                      </div>
+                      </div> */}
                     </AccountGroupingRow>
                   </AccountGroupingRow>
                 </InfoCard>

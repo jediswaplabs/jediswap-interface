@@ -1,3 +1,5 @@
+import { braavosWallet } from './../connectors/index'
+import { ArgentXConnector } from '@web3-starknet-react/argentx-connector'
 import { Provider as Web3Provider } from 'starknet'
 import { ChainId } from '@jediswap/sdk'
 import { useStarknetReact as useStarknetReactCore } from '@web3-starknet-react/core'
@@ -54,15 +56,19 @@ export function useEagerConnect() {
  * and out after checking what network theyre on
  */
 export function useInactiveListener(suppress = false) {
-  const { active, error, activate } = useStarknetReactCore() // specifically using useStarknetReact because of what this hook does
+  const { active, error, activate, connector } = useStarknetReactCore() // specifically using useStarknetReact because of what this hook does
+  console.log('🚀 ~ file: index.ts ~ line 58 ~ useInactiveListener ~ connector', connector)
+  // console.log('🚀 ~ file: index.ts ~ line 58 ~ useInactiveListener ~ active', active)
 
   useEffect(() => {
-    const { starknet } = window
+    const { starknet, starknet_braavos } = window
 
-    if (starknet && !active && !error && !suppress) {
+    if (starknet && !active && !error && !suppress && connector) {
+      const activeConnector = connector instanceof ArgentXConnector ? argentX : braavosWallet
+
       const handleChainChanged = () => {
         // eat errors
-        activate(argentX, undefined, true).catch(error => {
+        activate(activeConnector, undefined, true).catch(error => {
           console.error('Failed to activate after chain changed', error)
         })
       }
@@ -70,22 +76,26 @@ export function useInactiveListener(suppress = false) {
       const handleAccountsChanged = (accounts: string[]) => {
         if (accounts.length > 0) {
           // eat errors
-          activate(argentX, undefined, true).catch(error => {
+          activate(activeConnector, undefined, true).catch(error => {
             console.error('Failed to activate after accounts changed', error)
           })
         }
       }
 
       // starknet.on('chainChanged', handleChainChanged)
-      starknet.on('accountsChanged', handleAccountsChanged)
+      // starknet.on('accountsChanged', handleAccountsChanged)
 
       return () => {
         if (starknet) {
           // ethereum.removeListener('chainChanged', handleChainChanged)
           starknet.off('accountsChanged', handleAccountsChanged)
         }
+
+        if (starknet_braavos) {
+          starknet_braavos.off('accountsChanged', handleAccountsChanged)
+        }
       }
     }
     return undefined
-  }, [active, error, suppress, activate])
+  }, [active, error, suppress, activate, connector])
 }

@@ -4,8 +4,9 @@ import { AbstractConnector } from '@web3-starknet-react/abstract-connector'
 import { TOKEN0, TOKEN1, TOKEN2, TOKEN3 } from './jediTokens'
 
 // import { fortmatic, injected, portis, walletconnect, walletlink, argentX } from '../connectors'
-import { argentX } from '../connectors'
+import { argentX, braavosWallet } from '../connectors'
 import ARGENTX_ICON from '../assets/images/argentx.png'
+import BRAAVOS_ICON from '../assets/svg/Braavos.svg'
 
 export const REGISTRY_ADDRESS = validateAndParseAddress(
   '0x413ba8d51ec05be863eb82314f0cf0ffceff949e76c87cae0a4bd7f89cfc2b1'
@@ -106,6 +107,7 @@ export interface WalletInfo {
   primary?: true
   mobile?: true
   mobileOnly?: true
+  size?: number
 }
 
 export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
@@ -116,6 +118,15 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
     description: 'Starknet Browser Wallet',
     href: null,
     color: '#FF875B'
+  },
+  Braavos: {
+    connector: braavosWallet,
+    name: 'Braavos',
+    icon: BRAAVOS_ICON,
+    description: 'Braavos Wallet for Starknet',
+    href: null,
+    color: '#E0B137',
+    size: 30
   }
 
   // INJECTED: {

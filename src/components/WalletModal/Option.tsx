@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { ExternalLink } from '../../theme'
+import { BorderWrapper } from '../AccountDetails'
 
 const InfoCard = styled.button<{ active?: boolean }>`
   background-color: ${({ theme, active }) => (active ? theme.bg3 : theme.bg2)};
@@ -114,26 +115,28 @@ export default function Option({
   id: string
 }) {
   const content = (
-    <OptionCardClickable id={id} onClick={onClick} clickable={clickable && !active} active={active}>
-      <OptionCardLeft>
-        <HeaderText color={color}>
-          {active ? (
-            <CircleWrapper>
-              <GreenCircle>
-                <div />
-              </GreenCircle>
-            </CircleWrapper>
-          ) : (
-            ''
-          )}
-          {header}
-        </HeaderText>
-        {subheader && <SubHeader>{subheader}</SubHeader>}
-      </OptionCardLeft>
-      <IconWrapper size={size}>
-        <img src={icon} alt={'Icon'} />
-      </IconWrapper>
-    </OptionCardClickable>
+    <BorderWrapper>
+      <OptionCardClickable id={id} onClick={onClick} clickable={clickable && !active} active={active}>
+        <OptionCardLeft>
+          <HeaderText color={color}>
+            {active ? (
+              <CircleWrapper>
+                <GreenCircle>
+                  <div />
+                </GreenCircle>
+              </CircleWrapper>
+            ) : (
+              ''
+            )}
+            {header}
+          </HeaderText>
+          {subheader && <SubHeader>{subheader}</SubHeader>}
+        </OptionCardLeft>
+        <IconWrapper size={size}>
+          <img src={icon} alt={'Icon'} />
+        </IconWrapper>
+      </OptionCardClickable>
+    </BorderWrapper>
   )
   if (link) {
     return <ExternalLink href={link}>{content}</ExternalLink>
