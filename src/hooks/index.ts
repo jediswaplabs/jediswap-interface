@@ -1,4 +1,3 @@
-import { braavosWallet } from './../connectors/index'
 import { ArgentXConnector } from '@web3-starknet-react/argentx-connector'
 import { Provider as Web3Provider } from 'starknet'
 import { ChainId } from '@jediswap/sdk'
@@ -6,8 +5,9 @@ import { useStarknetReact as useStarknetReactCore } from '@web3-starknet-react/c
 import { StarknetReactContextInterface } from '@web3-starknet-react/core/dist/types'
 import { useEffect, useState } from 'react'
 import { isMobile } from 'react-device-detect'
-import { argentX } from '../connectors'
+import { argentX, braavosWallet, injectedConnector } from '../connectors'
 import { NetworkContextName } from '../constants'
+import { BraavosConnector } from '@web3-starknet-react/braavos-connector'
 
 export function useActiveStarknetReact(): StarknetReactContextInterface<Web3Provider> & { chainId?: ChainId } {
   const context = useStarknetReactCore<Web3Provider>()
@@ -19,18 +19,30 @@ export function useEagerConnect() {
   const { activate, active } = useStarknetReactCore() // specifically using useStarknetReactCore because of what this hook does
   const [tried, setTried] = useState(false)
 
+  const injected = localStorage.getItem('auto-injected-wallet') as injectedConnector | undefined
+
+  let connector: ArgentXConnector | BraavosConnector | undefined
+
+  if (injected === 'argentx') {
+    connector = argentX
+  } else if (injected === 'braavos') {
+    connector = braavosWallet
+  }
+
   useEffect(() => {
     setTimeout(() => {
-      argentX.isAuthorized().then(isAuthorized => {
+      if (!connector) return
+
+      connector.isAuthorized().then(isAuthorized => {
         // console.log('Authorized immedietly: ', isAuthorized)
 
-        if (isAuthorized) {
-          activate(argentX, undefined, true).catch(() => {
+        if (isAuthorized && connector) {
+          activate(connector, undefined, true).catch(() => {
             setTried(true)
           })
         } else {
-          if (isMobile && window.starknet) {
-            activate(argentX, undefined, true).catch(() => {
+          if (isMobile && window.starknet && connector) {
+            activate(connector, undefined, true).catch(() => {
               setTried(true)
             })
           } else {
@@ -39,7 +51,7 @@ export function useEagerConnect() {
         }
       })
     }, 100)
-  }, [activate]) // intentionally only running on mount (make sure it's only mounted once :))
+  }, [activate, connector]) // intentionally only running on mount (make sure it's only mounted once :))
 
   // if the connection worked, wait until we get confirmation of that to flip the flag
   useEffect(() => {
@@ -57,8 +69,6 @@ export function useEagerConnect() {
  */
 export function useInactiveListener(suppress = false) {
   const { active, error, activate, connector } = useStarknetReactCore() // specifically using useStarknetReact because of what this hook does
-  console.log('🚀 ~ file: index.ts ~ line 58 ~ useInactiveListener ~ connector', connector)
-  // console.log('🚀 ~ file: index.ts ~ line 58 ~ useInactiveListener ~ active', active)
 
   useEffect(() => {
     const { starknet, starknet_braavos } = window

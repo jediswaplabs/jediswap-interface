@@ -6,6 +6,7 @@ import ReactGA from 'react-ga4'
 import styled from 'styled-components'
 import MetamaskIcon from '../../assets/images/metamask.png'
 import { ReactComponent as Close } from '../../assets/images/x.svg'
+import { argentX, braavosWallet } from '../../connectors'
 // import { fortmatic, injected, portis } from '../../connectors'
 
 import { SUPPORTED_WALLETS } from '../../constants'
@@ -195,7 +196,13 @@ export default function WalletModal({
         true
       )
         .then(() => {
-          console.log('🚀 ~ file: index.tsx ~ line 191 ~ activate ~ connector', connector)
+          if (connector === argentX) {
+            localStorage.setItem('auto-injected-wallet', 'argentx')
+          } else if (connector === braavosWallet) {
+            localStorage.setItem('auto-injected-wallet', 'braavos')
+          } else {
+            localStorage.removeItem('auto-injected-wallet')
+          }
         })
         .catch(error => {
           if (error instanceof UnsupportedChainIdError) {

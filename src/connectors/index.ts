@@ -12,3 +12,5 @@ export const NETWORK_CHAIN_ID: number = parseInt(process.env.REACT_APP_CHAIN_ID 
 export const argentX = new ArgentXConnector({ supportedChainIds: [ChainId.GÖRLI] })
 
 export const braavosWallet = new BraavosConnector({ supportedChainIds: [ChainId.GÖRLI] })
+
+export type injectedConnector = 'argentx' | 'braavos'
