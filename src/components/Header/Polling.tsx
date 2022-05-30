@@ -8,11 +8,7 @@ import { useActiveStarknetReact } from '../../hooks'
 import { useBlockHash } from '../../hooks/useBlockHashCallback'
 
 const StyledPolling = styled.div`
-  position: fixed;
   display: flex;
-  right: 0;
-  bottom: 0;
-  padding: 1rem;
   color: white;
   transition: opacity 0.25s ease;
   color: ${({ theme }) => theme.green1};
