@@ -1,5 +1,5 @@
 import { AbstractConnector } from '@web3-starknet-react/abstract-connector'
-import React from 'react'
+import React, { FC } from 'react'
 import styled from 'styled-components'
 import Option from './Option'
 import { SUPPORTED_WALLETS } from '../../constants'
@@ -7,7 +7,8 @@ import { SUPPORTED_WALLETS } from '../../constants'
 import { darken } from 'polished'
 import Loader from '../Loader'
 import { BorderWrapper } from '../AccountDetails'
-import { NoStarknetProviderError } from '@web3-starknet-react/argentx-connector'
+import { NoStarknetProviderError as NoArgentXProviderError } from '@web3-starknet-react/argentx-connector'
+import { NoStarknetProviderError as NoBraavosProviderError } from '@web3-starknet-react/braavos-connector'
 import { WALLET_VIEWS } from '.'
 import { AutoColumn } from '../Column'
 import { ButtonOutlined } from '../Button'
@@ -114,35 +115,26 @@ export default function PendingView({
   setWalletView: (walletView: string) => void
   tryActivation: (connector: AbstractConnector) => void
 }) {
-  const isStarknetProviderError = error instanceof NoStarknetProviderError
+  const isArgentXProviderError = error instanceof NoArgentXProviderError
 
-  const argentXUrl =
-    'https://chrome.google.com/webstore/detail/argent-x-starknet-wallet/dlcobpjiigpikoobohmabehhmhfoodbb'
+  const isBraavosProviderError = error instanceof NoBraavosProviderError
 
-  const downloadArgentX = () => window.open(argentXUrl, '_blank')
+  const isStarknetProviderError = isArgentXProviderError || isBraavosProviderError
 
   return (
     <PendingSection>
       <BorderWrapper>
-        <LoadingMessage error={error && isStarknetProviderError}>
+        <LoadingMessage error={error}>
           <LoadingWrapper>
             {error ? (
               isStarknetProviderError ? (
-                <StarknetErrorGroup>
-                  <AutoColumn gap="4px">
-                    <div>ArgentX wallet not found</div>
-                    <StarknetWalletNote>( Setup wallet and refresh )</StarknetWalletNote>
-                  </AutoColumn>
-                  <StarknetDownloadButton
-                    onClick={() => {
-                      setPendingError(false)
-                      downloadArgentX()
-                      setWalletView(WALLET_VIEWS.OPTIONS)
-                    }}
-                  >
-                    Download now
-                  </StarknetDownloadButton>
-                </StarknetErrorGroup>
+                <ProviderError
+                  error={error}
+                  onClick={() => {
+                    setPendingError(false)
+                    setWalletView(WALLET_VIEWS.OPTIONS)
+                  }}
+                />
               ) : (
                 <ErrorGroup>
                   <div>Error connecting.</div>
@@ -192,5 +184,40 @@ export default function PendingView({
         return null
       })}
     </PendingSection>
+  )
+}
+
+interface ProviderErrorProps {
+  error: NoArgentXProviderError | NoBraavosProviderError
+  onClick: () => void
+}
+
+const ProviderError: FC<ProviderErrorProps> = ({ error, onClick }) => {
+  const argentXUrl =
+    'https://chrome.google.com/webstore/detail/argent-x-starknet-wallet/dlcobpjiigpikoobohmabehhmhfoodbb'
+
+  const braavosUrl = 'https://chrome.google.com/webstore/detail/braavos-wallet/jnlgamecbpmbajjfhmmmlhejkemejdma'
+
+  const downloadArgentX = () => window.open(argentXUrl, '_blank')
+
+  const downloadBraavos = () => window.open(braavosUrl, '_blank')
+
+  const isArgentXError = error instanceof NoArgentXProviderError
+
+  return (
+    <StarknetErrorGroup>
+      <AutoColumn gap="4px">
+        <div>{`${isArgentXError ? 'ArgentX' : 'Braavos'} wallet not found`}</div>
+        <StarknetWalletNote>( Setup wallet and refresh )</StarknetWalletNote>
+      </AutoColumn>
+      <StarknetDownloadButton
+        onClick={() => {
+          isArgentXError ? downloadArgentX() : downloadBraavos()
+          onClick()
+        }}
+      >
+        Download now
+      </StarknetDownloadButton>
+    </StarknetErrorGroup>
   )
 }
