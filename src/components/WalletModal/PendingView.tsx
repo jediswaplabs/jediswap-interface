@@ -12,6 +12,7 @@ import { NoStarknetProviderError as NoBraavosProviderError } from '@web3-starkne
 import { WALLET_VIEWS } from '.'
 import { AutoColumn } from '../Column'
 import { ButtonOutlined } from '../Button'
+import { RowStart } from '../Row'
 
 const PendingSection = styled.div`
   ${({ theme }) => theme.flexColumnNoWrap};
@@ -149,10 +150,10 @@ export default function PendingView({
                 </ErrorGroup>
               )
             ) : (
-              <>
+              <RowStart style={{ paddingLeft: '16px' }}>
                 <StyledLoader />
                 Initializing...
-              </>
+              </RowStart>
             )}
           </LoadingWrapper>
         </LoadingMessage>
