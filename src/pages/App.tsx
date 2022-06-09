@@ -22,6 +22,7 @@ import { RedirectOldRemoveLiquidityPathStructure } from './RemoveLiquidity/redir
 
 import Zap from './Zap'
 import ComingSoon from './ComingSoon'
+import Footer from '../components/Footer'
 
 const AppWrapper = styled.div`
   display: flex;
@@ -77,7 +78,7 @@ export default function App() {
         </HeaderWrapper>
         <BodyWrapper>
           <Popups />
-          <Polling />
+
           {/* <TopLevelModals /> */}
           <Web3ReactManager>
             <Switch>
@@ -113,6 +114,7 @@ export default function App() {
           </Web3ReactManager>
           <Marginer />
         </BodyWrapper>
+        <Footer />
       </AppWrapper>
     </Suspense>
   )

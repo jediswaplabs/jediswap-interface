@@ -1355,6 +1355,13 @@
   dependencies:
     "@ethersproject/logger" "^5.6.0"
 
+"@ethersproject/bytes@^5.6.1":
+  version "5.6.1"
+  resolved "https://registry.yarnpkg.com/@ethersproject/bytes/-/bytes-5.6.1.tgz#24f916e411f82a8a60412344bf4a813b917eefe7"
+  integrity sha512-NwQt7cKn5+ZE4uDn+X5RAXLp46E1chXoaMmrxAyA0rblpxz8t58lVkrHXoRIn0lz1joQElQ8410GqhTqMOwc6g==
+  dependencies:
+    "@ethersproject/logger" "^5.6.0"
+
 "@ethersproject/constants@5.6.0", "@ethersproject/constants@^5.6.0":
   version "5.6.0"
   resolved "https://registry.yarnpkg.com/@ethersproject/constants/-/constants-5.6.0.tgz#55e3eb0918584d3acc0688e9958b0cedef297088"
@@ -1702,10 +1709,10 @@
   resolved "https://registry.yarnpkg.com/@istanbuljs/schema/-/schema-0.1.3.tgz#e45e384e4b8ec16bce2fd903af78450f6bf7ec98"
   integrity sha512-ZXRY4jNvVgSVQ8DL3LTcakaAtXwTVUxE81hslsyD2AtoXW/wVob10HkOJ1X/pAlcI7D+2YoZKg5do8G/w6RYgA==
 
-"@jediswap/sdk@^1.7.0":
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/@jediswap/sdk/-/sdk-1.7.0.tgz#8bc9e995952375b96b2858906991ee6e7a617144"
-  integrity sha512-uMhHmfzyPY83H26hRrUR4eM0ugrrZfrQmJXsJJkiXUfq7/77V78QZb4vV2+/2SQJM5AYFxF6XgDnINmsldjiIQ==
+"@jediswap/sdk@^1.5.1":
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/@jediswap/sdk/-/sdk-1.5.1.tgz#2a0ea9d4711b3aab960d315ded60ab47fcd92332"
+  integrity sha512-sS04PwIraPGW+f1Og0UB9MLD8w7/kpnWJ+p3edDI1z1ms1F3XYsFzabz3Jg3/JLGRBeVFs4g20cSrS6a3jFUGg==
   dependencies:
     "@types/bn.js" "^5.1.0"
     "@uniswap/v2-core" "^1.0.0"
@@ -1717,11 +1724,6 @@
     tiny-invariant "^1.1.0"
     tiny-warning "^1.0.3"
     toformat "^2.0.0"
-
-"@jediswap/token-lists@^1.0.0-beta.1":
-  version "1.0.0-beta.1"
-  resolved "https://registry.yarnpkg.com/@jediswap/token-lists/-/token-lists-1.0.0-beta.1.tgz#ccc0f7881ad3476d11e978f8da425307dc129bd8"
-  integrity sha512-Il+Q4TMb3v5Tnkgy25JfhLLHWcH0GHsPdotR4tfQYhHZxWDIHvLrEJhVARdNv30Xb+YLlUQE6KHp+tmmgvzYMw==
 
 "@jest/console@^26.6.2":
   version "26.6.2"
@@ -3037,38 +3039,51 @@
     "@typescript-eslint/types" "5.14.0"
     eslint-visitor-keys "^3.0.0"
 
+"@uniswap/token-lists@^1.0.0-beta.16":
+  version "1.0.0-beta.27"
+  resolved "https://registry.yarnpkg.com/@uniswap/token-lists/-/token-lists-1.0.0-beta.27.tgz#8b02a979b0b0024cc96f60e694a3f6db6b2ccab2"
+  integrity sha512-x5hmIniQ9TGqOBCRqfWcmZi/U5kB0qrHMDQ9igs3nMbK0wwmYLraL4owbIwXFGR/co6/lJYJC4K/Gjn4wZY5mQ==
+
 "@uniswap/v2-core@^1.0.0":
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@uniswap/v2-core/-/v2-core-1.0.1.tgz#af8f508bf183204779938969e2e54043e147d425"
   integrity sha512-MtybtkUPSyysqLY2U210NBDeCHX+ltHt3oADGdjqoThZaFRDKwM6k1Nb3F0A3hk5hwuQvytFWhrWHOEq6nVJ8Q==
 
-"@web3-starknet-react/abstract-connector@^1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@web3-starknet-react/abstract-connector/-/abstract-connector-1.1.0.tgz#77007e6d9ef6ab6671458af17ae6420664e144fe"
-  integrity sha512-xZIEAdKm15DsQ+6qfGQC+YSd8OBZESUfYxPodEBfj12C3B0NZTcEZ70SO4R0AHKjjMPkikjs2Df9oG/37v7QRA==
+"@web3-starknet-react/abstract-connector@^2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@web3-starknet-react/abstract-connector/-/abstract-connector-2.1.0.tgz#79fb3894007e7a4cc91008424885d4181c8c7fb1"
+  integrity sha512-Tuw5FubDXetvd+37/yT+xylCaiWcNAP9uTdAzoy0boTzP205PgZNVce1xCbZy4Lo67qu+k2cwQn9fiNmJ5FdKQ==
   dependencies:
-    "@web3-starknet-react/types" "^1.1.0"
+    "@web3-starknet-react/types" "^2.1.0"
 
-"@web3-starknet-react/argentx-connector@^1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@web3-starknet-react/argentx-connector/-/argentx-connector-1.1.0.tgz#5ff664ebc9b5ec66c714da4c70282e61bc3215fb"
-  integrity sha512-oj8LrAaUiLf3M5lww3M3mOkimLGWIRiIxqRrM9wZVOOpTuO85iPluOg3Cp8Y5moyk4MnANeLzrGv+ezdphJCyw==
+"@web3-starknet-react/argentx-connector@^2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@web3-starknet-react/argentx-connector/-/argentx-connector-2.1.0.tgz#6f879513a43b559793d11e63e15d6808609534f1"
+  integrity sha512-uSETCpIYP7A0zvlLWSj1JpxNKStRpiW0v4odOG9cO1NlODPocuwZ/zKnqOtC7TNaWrctA6GzaxuSy6qDb2jZPg==
   dependencies:
-    "@web3-starknet-react/abstract-connector" "^1.1.0"
-    "@web3-starknet-react/types" "^1.1.0"
+    "@web3-starknet-react/abstract-connector" "^2.1.0"
+    "@web3-starknet-react/types" "^2.1.0"
 
-"@web3-starknet-react/core@^1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@web3-starknet-react/core/-/core-1.1.0.tgz#1092025d008a415d4f248e3944a871fc16d47f16"
-  integrity sha512-bfswiVtW4+UaCSTYsUYh1HJ6T1gNeR3zy+vqdp0ReHAhbjz8d46L/zjKm4v7b7d09wDJ0ucKEdCz0zXoRQVf9A==
+"@web3-starknet-react/braavos-connector@^2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@web3-starknet-react/braavos-connector/-/braavos-connector-2.1.0.tgz#670d0652c1a925ea1362874504dabcf7937aa2e2"
+  integrity sha512-QsAIMoLFsHdbfTLFmhkkXj1D/Pd4AZDQl2LR5phesM0SlyIBPIKiTnHvFVITQ7vNr0SBGF7wx7/8qRGAHP1I4g==
   dependencies:
-    "@web3-starknet-react/abstract-connector" "^1.1.0"
-    "@web3-starknet-react/types" "^1.1.0"
+    "@web3-starknet-react/abstract-connector" "^2.1.0"
+    "@web3-starknet-react/types" "^2.1.0"
 
-"@web3-starknet-react/types@^1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@web3-starknet-react/types/-/types-1.1.0.tgz#129b995b3ee1600e8dddb4f702ba29ac07b88b2d"
-  integrity sha512-TPrT3NerLaKTnB3Ms+EH0Onl8rjGF7G5kbn5oaj3dWQQ4IHrfo3qG9oktVrBHaSDQZF0Tzl/NG+je/XFp6PMWA==
+"@web3-starknet-react/core@^2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@web3-starknet-react/core/-/core-2.1.0.tgz#a1c57bbc19bcc2ab71e4d2a9e70fc6edf94a02e4"
+  integrity sha512-0douwyAKhha3rwE8KCUoZvO7QRKBdW0TC8PNy9NiJsC6n206+rcfPHONoltoLGw0/MbqWva5xhp7FopLGfL2sQ==
+  dependencies:
+    "@web3-starknet-react/abstract-connector" "^2.1.0"
+    "@web3-starknet-react/types" "^2.1.0"
+
+"@web3-starknet-react/types@^2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@web3-starknet-react/types/-/types-2.1.0.tgz#f254941efe7057487f4d27b22b1d50926a8de1b6"
+  integrity sha512-onvXToOOuSXIgclsvWJ2Z2r+UHrnTyWLcCnmO2tKL3o6QkHlYpMyhHlymu0YqV5jVy0vZ2WAI+qmgWT8ZohNGA==
 
 "@webassemblyjs/ast@1.9.0":
   version "1.9.0"
@@ -5101,6 +5116,13 @@ cross-env@^7.0.2:
   dependencies:
     cross-spawn "^7.0.1"
 
+cross-fetch@^3.1.5:
+  version "3.1.5"
+  resolved "https://registry.yarnpkg.com/cross-fetch/-/cross-fetch-3.1.5.tgz#e1389f44d9e7ba767907f7af8454787952ab534f"
+  integrity sha512-lvb1SBsI0Z7GDwmuid+mU3kWVBwTVUbe7S0H52yaaAdQOXq2YktTCZdlAcNKFzE6QtRz0snpw9bNiPeOIkkQvw==
+  dependencies:
+    node-fetch "2.6.7"
+
 cross-spawn@7.0.3, cross-spawn@^7.0.0, cross-spawn@^7.0.1, cross-spawn@^7.0.2, cross-spawn@^7.0.3:
   version "7.0.3"
   resolved "https://registry.yarnpkg.com/cross-spawn/-/cross-spawn-7.0.3.tgz#f73a85b9d5d41d045551c177e2882d4ac85728a6"
@@ -6759,6 +6781,11 @@ fd-slicer@~1.1.0:
   integrity sha1-JcfInLH5B3+IkbvmHY85Dq4lbx4=
   dependencies:
     pend "~1.2.0"
+
+fetch-intercept@^2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/fetch-intercept/-/fetch-intercept-2.4.0.tgz#be8b0f17abaadeea6de52ecdb6e9ed081f03480a"
+  integrity sha512-BPZ2LM9Dh1ua2ovQf03N6rhWg1qxdVD5qK/G4llvcemt6M+jjxCuIDxJ+6IiG+uz//3UQmgfKEv0gOGvYIxZ7g==
 
 figgy-pudding@^3.5.1:
   version "3.5.2"
@@ -9980,6 +10007,13 @@ no-case@^3.0.4:
     lower-case "^2.0.2"
     tslib "^2.0.3"
 
+node-fetch@2.6.7:
+  version "2.6.7"
+  resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.7.tgz#24de9fba827e3b4ae44dc8b20256a379160052ad"
+  integrity sha512-ZjMPFEfVx5j+y2yF35Kzx5sF7kDzxuDj6ziH4FFbOp87zKDZNx8yExJIb05OGF4Nlt9IHFIMBkRl41VdvcNdbQ==
+  dependencies:
+    whatwg-url "^5.0.0"
+
 node-forge@^0.10.0:
   version "0.10.0"
   resolved "https://registry.yarnpkg.com/node-forge/-/node-forge-0.10.0.tgz#32dea2afb3e9926f02ee5ce8794902691a676bf3"
@@ -13189,6 +13223,23 @@ stackframe@^1.1.1:
   resolved "https://registry.yarnpkg.com/stackframe/-/stackframe-1.2.1.tgz#1033a3473ee67f08e2f2fc8eba6aef4f845124e1"
   integrity sha512-h88QkzREN/hy8eRdyNhhsO7RSJ5oyTqxxmmn0dzBIMUclZsjpfmrsg81vp8mjjAs2vAZ72nyWxRUwSwmh0e4xg==
 
+starknet@^3.12.3:
+  version "3.12.3"
+  resolved "https://registry.yarnpkg.com/starknet/-/starknet-3.12.3.tgz#16c22f6c4597aa91fd2c887019d3fc56f6f73474"
+  integrity sha512-FmWC+AgeqgPkOnp0FXcg9q/T00vg02JGgqTyWvWJgB/9L9vYdkFfIbnkLwKbAdzzGrYr4iL9EE94ZXoosOYnAg==
+  dependencies:
+    "@ethersproject/bytes" "^5.6.1"
+    bn.js "^5.2.0"
+    cross-fetch "^3.1.5"
+    elliptic "^6.5.4"
+    ethereum-cryptography "^0.2.0"
+    fetch-intercept "^2.4.0"
+    hash.js "^1.1.7"
+    json-bigint "^1.0.0"
+    minimalistic-assert "^1.0.1"
+    pako "^2.0.4"
+    url-join "^4.0.1"
+
 starknet@^3.5.1:
   version "3.5.1"
   resolved "https://registry.yarnpkg.com/starknet/-/starknet-3.5.1.tgz#b51fc89105235e14a71a576c60db5034e51d9734"
@@ -13877,6 +13928,11 @@ tr46@^2.1.0:
   dependencies:
     punycode "^2.1.1"
 
+tr46@~0.0.3:
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/tr46/-/tr46-0.0.3.tgz#8184fd347dac9cdc185992f3a6622e14b9d9ab6a"
+  integrity sha1-gYT9NH2snNwYWZLzpmIuFLnZq2o=
+
 trim-trailing-lines@^1.0.0:
   version "1.1.4"
   resolved "https://registry.yarnpkg.com/trim-trailing-lines/-/trim-trailing-lines-1.1.4.tgz#bd4abbec7cc880462f10b2c8b5ce1d8d1ec7c2c0"
@@ -14557,6 +14613,11 @@ web-encoding@^1.0.2, web-encoding@^1.0.6:
   optionalDependencies:
     "@zxing/text-encoding" "0.9.0"
 
+webidl-conversions@^3.0.0:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/webidl-conversions/-/webidl-conversions-3.0.1.tgz#24534275e2a7bc6be7bc86611cc16ae0a5654871"
+  integrity sha1-JFNCdeKnvGvnvIZhHMFq4KVlSHE=
+
 webidl-conversions@^5.0.0:
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/webidl-conversions/-/webidl-conversions-5.0.0.tgz#ae59c8a00b121543a2acc65c0434f57b0fc11aff"
@@ -14702,6 +14763,14 @@ whatwg-mimetype@^2.3.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/whatwg-mimetype/-/whatwg-mimetype-2.3.0.tgz#3d4b1e0312d2079879f826aff18dbeeca5960fbf"
   integrity sha512-M4yMwr6mAnQz76TbJm914+gPpB/nCwvZbJU28cUD6dR004SAxDLOOSUaB1JDRqLtaOV/vi0IC5lEAGFgrjGv/g==
+
+whatwg-url@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/whatwg-url/-/whatwg-url-5.0.0.tgz#966454e8765462e37644d3626f6742ce8b70965d"
+  integrity sha1-lmRU6HZUYuN2RNNib2dCzotwll0=
+  dependencies:
+    tr46 "~0.0.3"
+    webidl-conversions "^3.0.0"
 
 whatwg-url@^8.0.0, whatwg-url@^8.5.0:
   version "8.7.0"

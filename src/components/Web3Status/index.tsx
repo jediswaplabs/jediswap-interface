@@ -10,7 +10,8 @@ import FortmaticIcon from '../../assets/images/fortmaticIcon.png'
 import PortisIcon from '../../assets/images/portisIcon.png'
 import WalletConnectIcon from '../../assets/images/walletConnectIcon.svg'
 import ArgentXIcon from '../../assets/images/argentx.png'
-import { argentX } from '../../connectors'
+import braavosIcon from '../../assets/svg/Braavos.svg'
+import { argentX, braavosWallet } from '../../connectors'
 import { NetworkContextName } from '../../constants'
 import { useWalletModalToggle } from '../../state/application/hooks'
 import { isTransactionRecent, useAllTransactions } from '../../state/transactions/hooks'
@@ -31,6 +32,7 @@ const IconWrapper = styled.div<{ size?: number }>`
   align-items: center;
   justify-content: center;
   margin-left: 10px;
+  padding-bottom: 4px;
   & > * {
     height: ${({ size }) => (size ? size + 'px' : '32px')};
     width: ${({ size }) => (size ? size + 'px' : '32px')};
@@ -93,7 +95,7 @@ const Web3StatusConnect = styled(Web3StatusGeneric)<{ faded?: boolean }>`
 
 const Web3StatusConnected = styled(Web3StatusGeneric)<{ pending?: boolean }>`
   background-color: ${({ pending, theme }) => (pending ? theme.primary1 : ' rgba(255, 255, 255, 0.15)')};
- border: 2px solid transparent;
+  border: 2px solid transparent;
   padding: 0.6rem 1rem 0.6rem 0.9rem;
   color: ${({ pending, theme }) => (pending ? theme.white : theme.jediWhite)};
   /* padding: 0.4rem 1rem 0.4rem 0.9rem; */
@@ -175,8 +177,16 @@ function StatusIcon({ connector }: { connector: AbstractConnector }) {
   // }
   if (connector === argentX) {
     return (
-      <IconWrapper size={16}>
+      <IconWrapper size={20}>
         <img src={ArgentXIcon} alt="ArgentX" />
+      </IconWrapper>
+    )
+  }
+
+  if (connector === braavosWallet) {
+    return (
+      <IconWrapper size={20}>
+        <img src={braavosIcon} alt="myBraavos" />
       </IconWrapper>
     )
   }

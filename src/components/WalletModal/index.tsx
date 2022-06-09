@@ -6,8 +6,7 @@ import ReactGA from 'react-ga4'
 import styled from 'styled-components'
 import MetamaskIcon from '../../assets/images/metamask.png'
 import { ReactComponent as Close } from '../../assets/images/x.svg'
-// import { fortmatic, injected, portis } from '../../connectors'
-
+import { argentX, braavosWallet } from '../../connectors'
 import { SUPPORTED_WALLETS } from '../../constants'
 import usePrevious from '../../hooks/usePrevious'
 import { ApplicationModal } from '../../state/application/actions'
@@ -18,8 +17,6 @@ import AccountDetails from '../AccountDetails'
 import Modal from '../Modal'
 import Option from './Option'
 import PendingView from './PendingView'
-
-import { BorderWrapper } from '../AccountDetails'
 
 const CloseIcon = styled.div`
   position: absolute;
@@ -131,7 +128,7 @@ export default function WalletModal({
   ENSName?: string
 }) {
   // important that these are destructed from the account-specific web3-react context
-  const { active, connectedAddress, account, connector, activate, error } = useStarknetReact()
+  const { active, connectedAddress, account, connector, activate, error, deactivate } = useStarknetReact()
 
   // const connectStarknet = useStarknetConnector({ showModal: true })
 
@@ -174,6 +171,7 @@ export default function WalletModal({
     let name = ''
     Object.keys(SUPPORTED_WALLETS).map(key => {
       if (connector === SUPPORTED_WALLETS[key].connector) {
+        console.log(SUPPORTED_WALLETS[key].name)
         return (name = SUPPORTED_WALLETS[key].name)
       }
       return true
@@ -188,14 +186,30 @@ export default function WalletModal({
     setWalletView(WALLET_VIEWS.PENDING)
 
     connector &&
-      activate(connector, undefined, true).catch(error => {
-        if (error instanceof UnsupportedChainIdError) {
-          activate(connector) // a little janky...can't use setError because the connector isn't set
-        } else {
-          console.error(error)
-          setPendingError(error)
-        }
-      })
+      activate(
+        connector,
+        error => {
+          console.debug('Error activating connector', name, error)
+        },
+        true
+      )
+        .then(() => {
+          if (connector === argentX) {
+            localStorage.setItem('auto-injected-wallet', 'argentx')
+          } else if (connector === braavosWallet) {
+            localStorage.setItem('auto-injected-wallet', 'braavos')
+          } else {
+            localStorage.removeItem('auto-injected-wallet')
+          }
+        })
+        .catch(error => {
+          if (error instanceof UnsupportedChainIdError) {
+            activate(connector) // a little janky...can't use setError because the connector isn't set
+          } else {
+            console.error(error)
+            setPendingError(error)
+          }
+        })
   }
 
   // get wallets user can switch too, depending on device/browser
@@ -247,6 +261,7 @@ export default function WalletModal({
             header={option.name}
             subheader={null} //use option.descriptio to bring back multi-line
             icon={option.icon}
+            size={option.size ?? null}
           />
         )
       )
@@ -313,9 +328,7 @@ export default function WalletModal({
               setWalletView={setWalletView}
             />
           ) : (
-            <BorderWrapper>
-              <OptionGrid>{getOptions()}</OptionGrid>
-            </BorderWrapper>
+            <OptionGrid>{getOptions()}</OptionGrid>
           )}
           {walletView !== WALLET_VIEWS.PENDING && (
             <Blurb>

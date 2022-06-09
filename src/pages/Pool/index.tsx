@@ -204,7 +204,7 @@ export default function Pool() {
                 {/* <ResponsiveButtonSecondary as={Link} padding="6px 8px" to="/create/ETH">
                   Create a pair
                 </ResponsiveButtonSecondary> */}
-                <CreatePoolButton id="join-pool-button" as={Link} to="/add/ETH">
+                <CreatePoolButton id="join-pool-button" as={Link} to="/add/TOKEN0">
                   <Text fontWeight={800} fontSize={16} lineHeight={'125%'} letterSpacing={'0.5px'}>
                     ADD LIQUIDITY
                   </Text>
@@ -264,7 +264,7 @@ export default function Pool() {
   // return (
   //   <Wrapper>
   //     <ButtonRow>
-  //       <CreatePoolButtonAlt as={Link} to="/add/ETHER">
+  //       <CreatePoolButtonAlt as={Link} to="/add/TOKEN0">
   //         Add Liquidity
   //       </CreatePoolButtonAlt>
   //     </ButtonRow>

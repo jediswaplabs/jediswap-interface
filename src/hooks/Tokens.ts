@@ -1,7 +1,7 @@
 import { jediTokensList } from '../constants/jediTokens'
 import { Args, shortString, number as starkNumber } from 'starknet'
 import { parseBytes32String } from '@ethersproject/strings'
-import { Currency, Token, currencyEquals, ETHER } from '@jediswap/sdk'
+import { Currency, TOKEN0, Token, currencyEquals } from '@jediswap/sdk'
 import { useMemo } from 'react'
 import { useSelectedTokenList } from '../state/lists/hooks'
 import { useUserAddedTokens } from '../state/user/hooks'
@@ -13,6 +13,7 @@ import { useSingleCallResult } from '../state/multicall/hooks'
 import { jediLPTokenList } from '../constants/jediLPTokenList'
 import { NEVER_RELOAD } from '../state/multicall/hooks'
 // import { BigNumberish } from 'starknet/dist/utils/number'
+
 export function useAllTokens(): { [address: string]: Token } {
   const { chainId } = useActiveStarknetReact()
   const userAddedTokens = useUserAddedTokens()
@@ -31,7 +32,7 @@ export function useAllTokens(): { [address: string]: Token } {
           },
           // must make a copy because reduce modifies the map, and we do not
           // want to make a copy in every iteration
-          { ...allTokens[chainId] }
+          { ...allTokens[chainId], ...jediTokensList }
         )
     )
   }, [chainId, userAddedTokens, allTokens])
@@ -115,8 +116,8 @@ export function useToken(tokenAddress?: string): Token | undefined | null {
 }
 
 export function useCurrency(currencyId: string | undefined): Currency | null | undefined {
-  const isETH = currencyId?.toUpperCase() === 'ETH'
+  const isTOKEN0 = currencyId?.toUpperCase() === 'TOKEN0'
   // const isTOKEN1 = currencyId === TOKEN1.address
-  const token = useToken(isETH ? undefined : currencyId)
-  return isETH ? ETHER : token
+  const token = useToken(isTOKEN0 ? undefined : currencyId)
+  return isTOKEN0 ? TOKEN0 : token
 }

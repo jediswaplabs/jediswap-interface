@@ -172,7 +172,7 @@ const NetworkCard = styled(YellowCard)`
   font-weight: 600;
   background-color: ${({ theme }) => theme.jediNavyBlue};
   color: ${({ theme }) => theme.jediWhite};
-  padding: 0.65rem 2rem;
+  padding: 0.82rem 2rem;
   border: 2px solid transparent;
 
   ${({ theme }) => theme.mediaWidth.upToSmall`

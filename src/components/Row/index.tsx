@@ -20,6 +20,10 @@ export const RowCentered = styled(Row)`
   justify-content: center;
 `
 
+export const RowStart = styled(Row)`
+  justify-content: flex-start;
+`
+
 export const RowFlat = styled.div`
   display: flex;
   align-items: flex-end;
