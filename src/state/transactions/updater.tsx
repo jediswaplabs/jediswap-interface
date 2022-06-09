@@ -57,7 +57,7 @@ export default function Updater(): null {
                     hash,
                     receipt: {
                       blockHash: receipt.block_hash,
-                      blockNumber: receipt.block_number,
+                      blockNumber: Number(receipt.block_number),
                       status: receipt.status,
                       transactionHash: receipt.transaction_hash,
                       transactionIndex: receipt.transaction_index
