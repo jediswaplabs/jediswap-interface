@@ -1355,6 +1355,13 @@
   dependencies:
     "@ethersproject/logger" "^5.6.0"
 
+"@ethersproject/bytes@^5.6.1":
+  version "5.6.1"
+  resolved "https://registry.yarnpkg.com/@ethersproject/bytes/-/bytes-5.6.1.tgz#24f916e411f82a8a60412344bf4a813b917eefe7"
+  integrity sha512-NwQt7cKn5+ZE4uDn+X5RAXLp46E1chXoaMmrxAyA0rblpxz8t58lVkrHXoRIn0lz1joQElQ8410GqhTqMOwc6g==
+  dependencies:
+    "@ethersproject/logger" "^5.6.0"
+
 "@ethersproject/constants@5.6.0", "@ethersproject/constants@^5.6.0":
   version "5.6.0"
   resolved "https://registry.yarnpkg.com/@ethersproject/constants/-/constants-5.6.0.tgz#55e3eb0918584d3acc0688e9958b0cedef297088"
@@ -3042,41 +3049,41 @@
   resolved "https://registry.yarnpkg.com/@uniswap/v2-core/-/v2-core-1.0.1.tgz#af8f508bf183204779938969e2e54043e147d425"
   integrity sha512-MtybtkUPSyysqLY2U210NBDeCHX+ltHt3oADGdjqoThZaFRDKwM6k1Nb3F0A3hk5hwuQvytFWhrWHOEq6nVJ8Q==
 
-"@web3-starknet-react/abstract-connector@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@web3-starknet-react/abstract-connector/-/abstract-connector-2.0.0.tgz#d00a15bba84e4be54f5f3be2eed6a025fbe1a221"
-  integrity sha512-rxazlRZsYN8GT9D9dN9n5jLUhpMlFLErZqABtIJfzcdmcjeje2LRG++0mXT8NzxuFA49TBwfF+VbTb7w/xEaIw==
+"@web3-starknet-react/abstract-connector@^2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@web3-starknet-react/abstract-connector/-/abstract-connector-2.1.0.tgz#79fb3894007e7a4cc91008424885d4181c8c7fb1"
+  integrity sha512-Tuw5FubDXetvd+37/yT+xylCaiWcNAP9uTdAzoy0boTzP205PgZNVce1xCbZy4Lo67qu+k2cwQn9fiNmJ5FdKQ==
   dependencies:
-    "@web3-starknet-react/types" "^2.0.0"
+    "@web3-starknet-react/types" "^2.1.0"
 
-"@web3-starknet-react/argentx-connector@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@web3-starknet-react/argentx-connector/-/argentx-connector-2.0.0.tgz#4310ff98c3b85b0383293c8d648cd3981b1457ab"
-  integrity sha512-MIeb5puYlk8qJVtvXZx5qYF9nHkmZa/GNtEWIxtg+aGLjWpveFViLQsxWN6K9kCMHu1s1/nUpen+jw+WkAan1w==
+"@web3-starknet-react/argentx-connector@^2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@web3-starknet-react/argentx-connector/-/argentx-connector-2.1.0.tgz#6f879513a43b559793d11e63e15d6808609534f1"
+  integrity sha512-uSETCpIYP7A0zvlLWSj1JpxNKStRpiW0v4odOG9cO1NlODPocuwZ/zKnqOtC7TNaWrctA6GzaxuSy6qDb2jZPg==
   dependencies:
-    "@web3-starknet-react/abstract-connector" "^2.0.0"
-    "@web3-starknet-react/types" "^2.0.0"
+    "@web3-starknet-react/abstract-connector" "^2.1.0"
+    "@web3-starknet-react/types" "^2.1.0"
 
-"@web3-starknet-react/braavos-connector@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@web3-starknet-react/braavos-connector/-/braavos-connector-2.0.0.tgz#af0b1d1e8dccd9f7278a7ad89678aa0f9300b1dc"
-  integrity sha512-xUD2YrRPSlolqiBNgHUZ8ihCsZcIIu/bdALecvIr9ks4j+5GZVUl7wCA2izTiIiQ9Ox+adE9BNskkYQzTJfADw==
+"@web3-starknet-react/braavos-connector@^2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@web3-starknet-react/braavos-connector/-/braavos-connector-2.1.0.tgz#670d0652c1a925ea1362874504dabcf7937aa2e2"
+  integrity sha512-QsAIMoLFsHdbfTLFmhkkXj1D/Pd4AZDQl2LR5phesM0SlyIBPIKiTnHvFVITQ7vNr0SBGF7wx7/8qRGAHP1I4g==
   dependencies:
-    "@web3-starknet-react/abstract-connector" "^2.0.0"
-    "@web3-starknet-react/types" "^2.0.0"
+    "@web3-starknet-react/abstract-connector" "^2.1.0"
+    "@web3-starknet-react/types" "^2.1.0"
 
-"@web3-starknet-react/core@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@web3-starknet-react/core/-/core-2.0.0.tgz#a561b8578776c0b2515aa5f212346fa8895f7ea5"
-  integrity sha512-Hr4rNjtzQHbNOVRFUNsRQl9i37Ntuh3HKjOGkk8q4ca6+KqwKjDE82zM3zgNTpt8xQ06mq+wHSR1FqN88yUlkA==
+"@web3-starknet-react/core@^2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@web3-starknet-react/core/-/core-2.1.0.tgz#a1c57bbc19bcc2ab71e4d2a9e70fc6edf94a02e4"
+  integrity sha512-0douwyAKhha3rwE8KCUoZvO7QRKBdW0TC8PNy9NiJsC6n206+rcfPHONoltoLGw0/MbqWva5xhp7FopLGfL2sQ==
   dependencies:
-    "@web3-starknet-react/abstract-connector" "^2.0.0"
-    "@web3-starknet-react/types" "^2.0.0"
+    "@web3-starknet-react/abstract-connector" "^2.1.0"
+    "@web3-starknet-react/types" "^2.1.0"
 
-"@web3-starknet-react/types@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@web3-starknet-react/types/-/types-2.0.0.tgz#68125e67365b192958f210cf2fca06b59d11e8f9"
-  integrity sha512-ACrcAsHn+jKlF+fwpg8SRz3Dvwl2p2PvD/ajL7caB88I/ZTSCRDMrkg3y9+lQMyAlQ93YO9uBk6UwXjZg+rMgA==
+"@web3-starknet-react/types@^2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@web3-starknet-react/types/-/types-2.1.0.tgz#f254941efe7057487f4d27b22b1d50926a8de1b6"
+  integrity sha512-onvXToOOuSXIgclsvWJ2Z2r+UHrnTyWLcCnmO2tKL3o6QkHlYpMyhHlymu0YqV5jVy0vZ2WAI+qmgWT8ZohNGA==
 
 "@webassemblyjs/ast@1.9.0":
   version "1.9.0"
@@ -5109,6 +5116,13 @@ cross-env@^7.0.2:
   dependencies:
     cross-spawn "^7.0.1"
 
+cross-fetch@^3.1.5:
+  version "3.1.5"
+  resolved "https://registry.yarnpkg.com/cross-fetch/-/cross-fetch-3.1.5.tgz#e1389f44d9e7ba767907f7af8454787952ab534f"
+  integrity sha512-lvb1SBsI0Z7GDwmuid+mU3kWVBwTVUbe7S0H52yaaAdQOXq2YktTCZdlAcNKFzE6QtRz0snpw9bNiPeOIkkQvw==
+  dependencies:
+    node-fetch "2.6.7"
+
 cross-spawn@7.0.3, cross-spawn@^7.0.0, cross-spawn@^7.0.1, cross-spawn@^7.0.2, cross-spawn@^7.0.3:
   version "7.0.3"
   resolved "https://registry.yarnpkg.com/cross-spawn/-/cross-spawn-7.0.3.tgz#f73a85b9d5d41d045551c177e2882d4ac85728a6"
@@ -6767,6 +6781,11 @@ fd-slicer@~1.1.0:
   integrity sha1-JcfInLH5B3+IkbvmHY85Dq4lbx4=
   dependencies:
     pend "~1.2.0"
+
+fetch-intercept@^2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/fetch-intercept/-/fetch-intercept-2.4.0.tgz#be8b0f17abaadeea6de52ecdb6e9ed081f03480a"
+  integrity sha512-BPZ2LM9Dh1ua2ovQf03N6rhWg1qxdVD5qK/G4llvcemt6M+jjxCuIDxJ+6IiG+uz//3UQmgfKEv0gOGvYIxZ7g==
 
 figgy-pudding@^3.5.1:
   version "3.5.2"
@@ -9988,6 +10007,13 @@ no-case@^3.0.4:
     lower-case "^2.0.2"
     tslib "^2.0.3"
 
+node-fetch@2.6.7:
+  version "2.6.7"
+  resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.7.tgz#24de9fba827e3b4ae44dc8b20256a379160052ad"
+  integrity sha512-ZjMPFEfVx5j+y2yF35Kzx5sF7kDzxuDj6ziH4FFbOp87zKDZNx8yExJIb05OGF4Nlt9IHFIMBkRl41VdvcNdbQ==
+  dependencies:
+    whatwg-url "^5.0.0"
+
 node-forge@^0.10.0:
   version "0.10.0"
   resolved "https://registry.yarnpkg.com/node-forge/-/node-forge-0.10.0.tgz#32dea2afb3e9926f02ee5ce8794902691a676bf3"
@@ -13197,6 +13223,23 @@ stackframe@^1.1.1:
   resolved "https://registry.yarnpkg.com/stackframe/-/stackframe-1.2.1.tgz#1033a3473ee67f08e2f2fc8eba6aef4f845124e1"
   integrity sha512-h88QkzREN/hy8eRdyNhhsO7RSJ5oyTqxxmmn0dzBIMUclZsjpfmrsg81vp8mjjAs2vAZ72nyWxRUwSwmh0e4xg==
 
+starknet@^3.12.3:
+  version "3.12.3"
+  resolved "https://registry.yarnpkg.com/starknet/-/starknet-3.12.3.tgz#16c22f6c4597aa91fd2c887019d3fc56f6f73474"
+  integrity sha512-FmWC+AgeqgPkOnp0FXcg9q/T00vg02JGgqTyWvWJgB/9L9vYdkFfIbnkLwKbAdzzGrYr4iL9EE94ZXoosOYnAg==
+  dependencies:
+    "@ethersproject/bytes" "^5.6.1"
+    bn.js "^5.2.0"
+    cross-fetch "^3.1.5"
+    elliptic "^6.5.4"
+    ethereum-cryptography "^0.2.0"
+    fetch-intercept "^2.4.0"
+    hash.js "^1.1.7"
+    json-bigint "^1.0.0"
+    minimalistic-assert "^1.0.1"
+    pako "^2.0.4"
+    url-join "^4.0.1"
+
 starknet@^3.5.1:
   version "3.5.1"
   resolved "https://registry.yarnpkg.com/starknet/-/starknet-3.5.1.tgz#b51fc89105235e14a71a576c60db5034e51d9734"
@@ -13885,6 +13928,11 @@ tr46@^2.1.0:
   dependencies:
     punycode "^2.1.1"
 
+tr46@~0.0.3:
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/tr46/-/tr46-0.0.3.tgz#8184fd347dac9cdc185992f3a6622e14b9d9ab6a"
+  integrity sha1-gYT9NH2snNwYWZLzpmIuFLnZq2o=
+
 trim-trailing-lines@^1.0.0:
   version "1.1.4"
   resolved "https://registry.yarnpkg.com/trim-trailing-lines/-/trim-trailing-lines-1.1.4.tgz#bd4abbec7cc880462f10b2c8b5ce1d8d1ec7c2c0"
@@ -14565,6 +14613,11 @@ web-encoding@^1.0.2, web-encoding@^1.0.6:
   optionalDependencies:
     "@zxing/text-encoding" "0.9.0"
 
+webidl-conversions@^3.0.0:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/webidl-conversions/-/webidl-conversions-3.0.1.tgz#24534275e2a7bc6be7bc86611cc16ae0a5654871"
+  integrity sha1-JFNCdeKnvGvnvIZhHMFq4KVlSHE=
+
 webidl-conversions@^5.0.0:
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/webidl-conversions/-/webidl-conversions-5.0.0.tgz#ae59c8a00b121543a2acc65c0434f57b0fc11aff"
@@ -14710,6 +14763,14 @@ whatwg-mimetype@^2.3.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/whatwg-mimetype/-/whatwg-mimetype-2.3.0.tgz#3d4b1e0312d2079879f826aff18dbeeca5960fbf"
   integrity sha512-M4yMwr6mAnQz76TbJm914+gPpB/nCwvZbJU28cUD6dR004SAxDLOOSUaB1JDRqLtaOV/vi0IC5lEAGFgrjGv/g==
+
+whatwg-url@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/whatwg-url/-/whatwg-url-5.0.0.tgz#966454e8765462e37644d3626f6742ce8b70965d"
+  integrity sha1-lmRU6HZUYuN2RNNib2dCzotwll0=
+  dependencies:
+    tr46 "~0.0.3"
+    webidl-conversions "^3.0.0"
 
 whatwg-url@^8.0.0, whatwg-url@^8.5.0:
   version "8.7.0"

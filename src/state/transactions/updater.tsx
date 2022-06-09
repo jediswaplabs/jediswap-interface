@@ -47,7 +47,7 @@ export default function Updater(): null {
       .filter(hash => shouldCheck(lastBlockNumber, transactions[hash]))
       .forEach(hash => {
         library
-          .getTransactionReceipt({ txHash: hash })
+          .getTransactionReceipt(hash)
           .then(receipt => {
             if (receipt) {
               if (!transactions[hash].receipt || transactions[hash].receipt?.status !== receipt.status) {
