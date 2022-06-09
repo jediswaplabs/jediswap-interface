@@ -1709,7 +1709,7 @@
   resolved "https://registry.yarnpkg.com/@istanbuljs/schema/-/schema-0.1.3.tgz#e45e384e4b8ec16bce2fd903af78450f6bf7ec98"
   integrity sha512-ZXRY4jNvVgSVQ8DL3LTcakaAtXwTVUxE81hslsyD2AtoXW/wVob10HkOJ1X/pAlcI7D+2YoZKg5do8G/w6RYgA==
 
-"@jediswap/sdk@^1.5.1":
+"@jediswap/sdk@1.5.1":
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/@jediswap/sdk/-/sdk-1.5.1.tgz#2a0ea9d4711b3aab960d315ded60ab47fcd92332"
   integrity sha512-sS04PwIraPGW+f1Og0UB9MLD8w7/kpnWJ+p3edDI1z1ms1F3XYsFzabz3Jg3/JLGRBeVFs4g20cSrS6a3jFUGg==
@@ -3056,18 +3056,18 @@
   dependencies:
     "@web3-starknet-react/types" "^2.1.0"
 
-"@web3-starknet-react/argentx-connector@^2.1.0":
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/@web3-starknet-react/argentx-connector/-/argentx-connector-2.1.0.tgz#6f879513a43b559793d11e63e15d6808609534f1"
-  integrity sha512-uSETCpIYP7A0zvlLWSj1JpxNKStRpiW0v4odOG9cO1NlODPocuwZ/zKnqOtC7TNaWrctA6GzaxuSy6qDb2jZPg==
+"@web3-starknet-react/argentx-connector@^2.1.2":
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/@web3-starknet-react/argentx-connector/-/argentx-connector-2.1.2.tgz#5a165fabfc4ddd6cc8380ed72ff962a50ae99605"
+  integrity sha512-GZsfbctG81JFVFirBkV/Efm9o9Rzm20aPdaXWH2D4lmfcXYGRy3HoEeTLaLGYhp8ubhw30lEcVCdccnAZpeFBw==
   dependencies:
     "@web3-starknet-react/abstract-connector" "^2.1.0"
     "@web3-starknet-react/types" "^2.1.0"
 
-"@web3-starknet-react/braavos-connector@^2.1.0":
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/@web3-starknet-react/braavos-connector/-/braavos-connector-2.1.0.tgz#670d0652c1a925ea1362874504dabcf7937aa2e2"
-  integrity sha512-QsAIMoLFsHdbfTLFmhkkXj1D/Pd4AZDQl2LR5phesM0SlyIBPIKiTnHvFVITQ7vNr0SBGF7wx7/8qRGAHP1I4g==
+"@web3-starknet-react/braavos-connector@^2.1.1":
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/@web3-starknet-react/braavos-connector/-/braavos-connector-2.1.1.tgz#5d958c364c28afeb84cd3cd42f4689bef6741eeb"
+  integrity sha512-Ni0gNb+g4AoxGpsBIQvQn20w6SGTc/BVAJ6NqZW2DkPYLTYeM6OcIOs++ZsQlMr9fRq6pesPkKP8IEAarNushg==
   dependencies:
     "@web3-starknet-react/abstract-connector" "^2.1.0"
     "@web3-starknet-react/types" "^2.1.0"
