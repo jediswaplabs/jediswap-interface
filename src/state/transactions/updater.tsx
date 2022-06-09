@@ -60,7 +60,7 @@ export default function Updater(): null {
                       blockNumber: Number(receipt.block_number),
                       status: receipt.status,
                       transactionHash: receipt.transaction_hash,
-                      transactionIndex: receipt.transaction_index
+                      transactionIndex: Number(receipt.transaction_index)
                     }
                   })
                 )
