@@ -66,7 +66,7 @@ export function useToken0Balance(uncheckedAddress?: string): CurrencyAmount | un
 
   return useMemo(() => {
     const value = balance ? uint256.uint256ToBN(uint256Balance) : undefined
-    if (value && address) return CurrencyAmount.token0(JSBI.BigInt(value.toString()))
+    if (value && address) return CurrencyAmount.ether(JSBI.BigInt(value.toString()))
     return undefined
   }, [address, balance, uint256Balance])
 }
