@@ -99,8 +99,6 @@ export default function Swap() {
   //   setDismissTokenWarning(true)
   // }, [])
 
-  const [mintAddress, setMintAddress] = useState<string | undefined>(undefined)
-
   const { account, chainId, connectedAddress } = useActiveStarknetReact()
   const theme = useContext(ThemeContext)
 

@@ -114,8 +114,8 @@ export function useToken(tokenAddress?: string): Token | undefined | null {
 }
 
 export function useCurrency(currencyId: string | undefined): Currency | null | undefined {
-  const isTOKEN0 = currencyId?.toUpperCase() === 'ETHER'
+  const isETH = currencyId?.toUpperCase() === 'ETH'
   // const isTOKEN1 = currencyId === TOKEN1.address
-  const token = useToken(isTOKEN0 ? undefined : currencyId)
-  return isTOKEN0 ? ETHER : token
+  const token = useToken(isETH ? undefined : currencyId)
+  return isETH ? ETHER : token
 }
