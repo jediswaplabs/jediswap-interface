@@ -14,8 +14,8 @@ import { ButtonPrimary, ButtonSecondary } from '../../components/Button'
 import Column, { AutoColumn } from '../../components/Column'
 
 import { useActiveStarknetReact } from '../../hooks'
-import { PairState, usePairs, useTokenPairsWithLiquidityTokens } from '../../data/Reserves'
-import { toV2LiquidityToken, useTrackedTokenPairs } from '../../state/user/hooks'
+import { PairState, usePairs } from '../../data/Reserves'
+import { getLiquidityToken, useTrackedTokenPairs } from '../../state/user/hooks'
 import { Dots } from '../../components/swap/styleds'
 import { CardSection, DataCard, CardNoise, CardBGImage } from './styleds'
 import { Wrapper } from '../ComingSoon'
@@ -115,12 +115,11 @@ export default function Pool() {
   // console.log('🚀 ~ file: index.tsx ~ line 108 ~ Pool ~ trackedTokenPairs', trackedTokenPairs)
   // const [p]
 
-  const [tokenPairsWithLiquidityTokens, liquidityTokenLoading] = useTokenPairsWithLiquidityTokens(trackedTokenPairs)
+  const tokenPairsWithLiquidityTokens = useMemo(
+    () => trackedTokenPairs.map(tokens => ({ liquidityToken: getLiquidityToken(tokens), tokens })),
+    [trackedTokenPairs]
+  )
 
-  // const tokenPairsWithLiquidityTokens = useMemo(
-  //   () => trackedTokenPairs.map(tokens => ({ liquidityToken: toV2LiquidityToken(tokens), tokens })),
-  //   [trackedTokenPairs]
-  // )
   const liquidityTokens = useMemo(() => tokenPairsWithLiquidityTokens.map(tpwlt => tpwlt.liquidityToken), [
     tokenPairsWithLiquidityTokens
   ])
@@ -146,7 +145,6 @@ export default function Pool() {
   const pairs = usePairs(liquidityTokensWithBalances.map(({ tokens }) => tokens))
   console.log('🚀 ~ file: index.tsx ~ line 140 ~ Pool ~ pairs', pairs)
   const pairIsLoading =
-    liquidityTokenLoading ||
     fetchingPairBalances ||
     pairs?.length < liquidityTokensWithBalances.length ||
     pairs?.some(([pairState]) => pairState === PairState.LOADING) ||

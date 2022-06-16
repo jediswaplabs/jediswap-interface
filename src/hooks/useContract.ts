@@ -36,10 +36,6 @@ export function usePairContract(pairAddress?: string, withSignerIfPossible?: boo
   return useContract(pairAddress, JediswapPairABI, withSignerIfPossible)
 }
 
-export function useRegistryContract(withSignerIfPossible?: boolean): Contract | null {
-  return useContract(REGISTRY_ADDRESS, REGISTRY_ABI, withSignerIfPossible)
-}
-
 export function useRouterContract(): Contract | null {
   return useContract(ROUTER_ADDRESS, JediSwapRouterABI, true)
 }

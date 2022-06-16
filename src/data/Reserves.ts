@@ -5,11 +5,8 @@ import { Interface } from '@ethersproject/abi'
 import { useActiveStarknetReact } from '../hooks'
 
 import { wrappedCurrency } from '../utils/wrappedCurrency'
-import { Abi, Args, RawArgs, uint256 } from 'starknet'
-import { usePairAddresses } from '../hooks/usePairAddress'
-import { NEVER_RELOAD, useMultipleContractSingleData, useSingleContractMultipleData } from '../state/multicall/hooks'
-import { useRegistryContract } from '../hooks/useContract'
-import { isAddress } from '../utils'
+import { Abi } from 'starknet'
+import { useMultipleContractSingleData } from '../state/multicall/hooks'
 
 export enum PairState {
   LOADING,
@@ -35,37 +32,15 @@ export function usePairs(currencies: [Currency | undefined, Currency | undefined
     [chainId, currencies]
   )
 
-  // const pairAddresses = usePairAddresses(tokens)
-
-  const callInputs: (RawArgs | undefined)[] = tokens.map(([tokenA, tokenB]) =>
-    tokenA && tokenB && !tokenA.equals(tokenB) ? { token0: tokenA?.address, token1: tokenB?.address } : undefined
-  )
-  //
-
-  const registryContract = useRegistryContract(true)
-
-  const pairAddressesCallState = useSingleContractMultipleData(
-    registryContract,
-    'get_pair_for',
-    callInputs,
-    NEVER_RELOAD
+  const pairAddresses = useMemo(
+    () =>
+      tokens.map(([tokenA, tokenB]) => {
+        return tokenA && tokenB && !tokenA.equals(tokenB) ? Pair.getAddress(tokenA, tokenB) : undefined
+      }),
+    [tokens]
   )
 
-  const pairAddresses = pairAddressesCallState.map(pairAddress => pairAddress.result?.[0])
-  // console.log('🚀 ~ file: Reserves.ts ~ line 50 ~ usePairs ~ pairAddresses', pairAddresses)
-
-  const validatedPairAddresses = pairAddresses.map(address => (isAddress(address) ? address : undefined))
-
-  // const pairAddresses = useMemo(
-  //   () =>
-  //     tokens.map(([tokenA, tokenB]) => {
-  //       return tokenA && tokenB && !tokenA.equals(tokenB) ? Pair.getAddress(tokenA, tokenB) : undefined
-  //     }),
-  //   [tokens]
-  // )
-
-  const results = useMultipleContractSingleData(validatedPairAddresses, JediswapPairABI as Abi, 'get_reserves')
-  // console.log('🚀 ~ file: Reserves.ts ~ line 60 ~ usePairs ~ results', results)
+  const results = useMultipleContractSingleData(pairAddresses, JediswapPairABI as Abi, 'get_reserves')
 
   return useMemo(() => {
     return results.map((result, i) => {
@@ -99,41 +74,4 @@ export function usePair(tokenA?: Currency, tokenB?: Currency): [PairState, Pair 
   const pairs = usePairs([[tokenA, tokenB]])?.[0]
   // console.log('🚀 ~ file: Reserves.ts ~ line 93 ~ usePair ~ pairs', pairs)
   return pairs ?? [PairState.LOADING, null]
-}
-
-export function useTokenPairsWithLiquidityTokens(pairTokens: [Token, Token][]): [LiquidityPairToken[], boolean] {
-  const registryContract = useRegistryContract(true)
-
-  const callInputs: (RawArgs | undefined)[] = pairTokens.map(([tokenA, tokenB]) =>
-    tokenA && tokenB && !tokenA.equals(tokenB) ? { token0: tokenA?.address, token1: tokenB?.address } : undefined
-  )
-
-  const pairAddressesCallState = useSingleContractMultipleData(
-    registryContract,
-    'get_pair_for',
-    callInputs,
-    NEVER_RELOAD
-  )
-
-  const pairAddresses = pairAddressesCallState.map(pairAddress => pairAddress.result?.[0])
-
-  const anyLoading = pairAddressesCallState.some(pairAddresses => pairAddresses.loading)
-
-  return [
-    useMemo(
-      () =>
-        pairTokens.map(([tokenA, tokenB], i) => {
-          const pairAddress = pairAddresses?.[i]
-
-          if (!pairAddress) return { liquidityToken: undefined, tokens: [tokenA, tokenB] }
-
-          return {
-            liquidityToken: new Token(tokenA.chainId, pairAddress, 18, 'MGP', 'Mesh Generic Pair'),
-            tokens: [tokenA, tokenB]
-          }
-        }),
-      [pairAddresses, pairTokens]
-    ),
-    anyLoading
-  ]
 }
