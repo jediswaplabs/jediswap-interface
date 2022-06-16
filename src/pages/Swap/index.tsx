@@ -61,8 +61,6 @@ import { useAddressNormalizer } from '../../hooks/useAddressNormalizer'
 import styled from 'styled-components'
 import HeaderIcon from '../../assets/jedi/SwapPanel_headerItem.svg'
 import SwapWidget from '../../assets/jedi/SwapWidget.svg'
-import { jediTokensList, TOKEN0 } from '../../constants/jediTokens'
-import { MintState, useMintCallback } from '../../hooks/useMintCallback'
 import { useUserTransactionTTL } from '../../state/user/hooks'
 import { ReactComponent as ArrowRight } from '../../assets/images/arrow-right-blue.svg'
 import { useAddTokenToWallet } from '../../hooks/useAddTokenToWallet'
@@ -187,8 +185,6 @@ export default function Swap() {
   )
   const noRoute = !route
 
-  const [mintState, mintCallback] = useMintCallback()
-
   // check if user has gone through approval process, used to show two step buttons, reset on token change
   const [approvalSubmitted, setApprovalSubmitted] = useState<boolean>(false)
 
@@ -280,13 +276,6 @@ export default function Swap() {
   const handleOutputSelect = useCallback(outputCurrency => onCurrencySelection(Field.OUTPUT, outputCurrency), [
     onCurrencySelection
   ])
-
-  const handleMint = useCallback(() => {
-    // setMintAddress(tokenAddress)
-    mintCallback().then(() => {
-      console.log(`Minting ${mintAddress}`)
-    })
-  }, [mintAddress, mintCallback])
 
   // useEffect(() => {
   //   if (mintAddress && mintState === MintState.VALID) {
@@ -476,16 +465,6 @@ export default function Swap() {
           )}
         </Wrapper>
       </AppBody>
-
-      {account && (
-        <MintSection>
-          <AutoRow justify={'center'}>
-            <AutoColumn style={{ margin: '6px' }}>
-              <MintButton onClick={handleMint}> Mint Jedi Test Tokens </MintButton>
-            </AutoColumn>
-          </AutoRow>
-        </MintSection>
-      )}
       {/* TODO: FIX ADVANCED SWAP */}
       {/* <AdvancedSwapDetailsDropdown trade={trade} /> */}
     </>

@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, TOKEN0, JSBI, Token, TokenAmount, WTOKEN0 } from '@jediswap/sdk'
+import { Currency, CurrencyAmount, ETHER, JSBI, Token, TokenAmount, WETH } from '@jediswap/sdk'
 import { useMemo } from 'react'
 import ERC20_ABI from '../../constants/abis/erc20.json'
 import { useAllTokens } from '../../hooks/Tokens'
@@ -54,7 +54,7 @@ import { useMultipleContractSingleData, useSingleCallResult } from '../multicall
 export function useToken0Balance(uncheckedAddress?: string): CurrencyAmount | undefined {
   const { chainId } = useActiveStarknetReact()
 
-  const tokenContract = useTokenContract(WTOKEN0[chainId ?? 5].address)
+  const tokenContract = useTokenContract(WETH[chainId ?? 5].address)
 
   const address = useAddressNormalizer(uncheckedAddress)
 
@@ -142,9 +142,7 @@ export function useCurrencyBalances(
   const token0Balance = useToken0Balance(account)
   const tokenBalances = useTokenBalances(account, tokens)
 
-  const containsTOKEN0: boolean = useMemo(() => currencies?.some(currency => currency === TOKEN0) ?? false, [
-    currencies
-  ])
+  const containsTOKEN0: boolean = useMemo(() => currencies?.some(currency => currency === ETHER) ?? false, [currencies])
 
   return useMemo(
     () =>
