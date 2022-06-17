@@ -3,6 +3,9 @@
   "description": "Jediswap Interface",
   "homepage": ".",
   "private": true,
+  "engines": {
+    "node": ">=16"
+  },
   "devDependencies": {
     "@argent/get-starknet": "^0.1.4",
     "@ethersproject/experimental": "^5.0.1",

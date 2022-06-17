@@ -21,7 +21,7 @@ cache:
 
 build:
   stage: build
-  image: node:14
+  image: node:16
   before_script:
     - yarn config set cache-folder .yarn
     - rm -rf node_modules && yarn install --frozen-lockfile
