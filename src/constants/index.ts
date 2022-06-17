@@ -7,12 +7,8 @@ import { argentX, braavosWallet } from '../connectors'
 import ARGENTX_ICON from '../assets/images/argentx.png'
 import BRAAVOS_ICON from '../assets/svg/Braavos.svg'
 
-export const REGISTRY_ADDRESS = validateAndParseAddress(
-  '0x413ba8d51ec05be863eb82314f0cf0ffceff949e76c87cae0a4bd7f89cfc2b1'
-)
-
 export const ROUTER_ADDRESS = validateAndParseAddress(
-  '0x1ea2f12a70ad6a052f99a49dace349996a8e968a0d6d4e9ec34e0991e6d5e5e'
+  '0x4b5e000e17ae83633e82820730a9bad7d4d4642104e1c25d562e73ec3cd1a9e'
 )
 
 export const ZAP_IN_ADDRESS = validateAndParseAddress(
@@ -67,8 +63,7 @@ const WETH_ONLY: ChainTokenList = {
 
 // used to construct intermediary pairs for trading
 export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
-  ...WETH_ONLY,
-  [ChainId.GÖRLI]: [...WETH_ONLY[ChainId.GÖRLI], DAI_GOERLI, USDC_GOERLI]
+  ...WETH_ONLY
   // [ChainId.GÖRLI]: [TOKEN0]
   // [ChainId.MAINNET]: [TOKEN0, TOKEN1],
 }
@@ -91,8 +86,7 @@ export const SUGGESTED_BASES: ChainTokenList = {
 
 // used to construct the list of all pairs we consider by default in the frontend
 export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
-  ...WETH_ONLY,
-  [ChainId.GÖRLI]: [...WETH_ONLY[ChainId.GÖRLI], DAI_GOERLI, USDC_GOERLI]
+  ...WETH_ONLY
 }
 
 export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } = {

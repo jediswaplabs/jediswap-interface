@@ -418,7 +418,7 @@ export default function Swap() {
               <ButtonPrimary onClick={toggleWalletModal}>Connect Wallet</ButtonPrimary>
             ) : noRoute && userHasSpecifiedInputOutput ? (
               <RedGradientButton style={{ textAlign: 'center' }} disabled>
-                {tradeLoading ? 'Fetching route...' : 'Insufficient liquidity for this trade'}
+                Insufficient liquidity for this trade
               </RedGradientButton>
             ) : insufficientBalanceError ? (
               <RedGradientButton id="swap-button" disabled>

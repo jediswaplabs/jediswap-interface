@@ -10,7 +10,7 @@ export const jediPairAddresses = {
   TOKEN2_TOKEN3: '0x12e39cd6c851d970fd74662cac9ae459934bbfb8334f1c78195cf63e9b1ea5c'
 }
 
-const WETH_GORLI = WETH[ChainId.GÖRLI]
+export const WETH_GORLI = WETH[ChainId.GÖRLI]
 
 export const LP_T0_T1 = new LPToken(ChainId.GÖRLI, WETH_GORLI, DAI_GOERLI, jediPairAddresses.TOKEN0_TOKEN1)
 
