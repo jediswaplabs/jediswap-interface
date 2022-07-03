@@ -13248,6 +13248,23 @@ starknet@^3.15.0:
     pako "^2.0.4"
     url-join "^4.0.1"
 
+starknet@^3.16.1:
+  version "3.16.1"
+  resolved "https://registry.yarnpkg.com/starknet/-/starknet-3.16.1.tgz#a413b5c59b423886c4d58f0a9cf6c6b0b82aaffb"
+  integrity sha512-GyvZh2QcVAjwLP881i4PaGZQ3N7BFF5AEWsDbpvn3coMl0Kki6bbBxyiXaIbl7nkODrwohuZR9rZ7/1PwJtmjw==
+  dependencies:
+    "@ethersproject/bytes" "^5.6.1"
+    bn.js "^5.2.1"
+    cross-fetch "^3.1.5"
+    elliptic "^6.5.4"
+    ethereum-cryptography "^1.0.3"
+    hash.js "^1.1.7"
+    json-bigint "^1.0.0"
+    minimalistic-assert "^1.0.1"
+    pako "^2.0.4"
+    ts-custom-error "^3.2.0"
+    url-join "^4.0.1"
+
 start-server-and-test@^1.11.0:
   version "1.14.0"
   resolved "https://registry.yarnpkg.com/start-server-and-test/-/start-server-and-test-1.14.0.tgz#c57f04f73eac15dd51733b551d775b40837fdde3"
@@ -13939,6 +13956,11 @@ tryer@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/tryer/-/tryer-1.0.1.tgz#f2c85406800b9b0f74c9f7465b81eaad241252f8"
   integrity sha512-c3zayb8/kWWpycWYg87P71E1S1ZL6b6IJxfb5fvsUgsf0S2MVGaDhDXXjDMpdCpfWXqptc+4mXwmiy1ypXqRAA==
+
+ts-custom-error@^3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/ts-custom-error/-/ts-custom-error-3.2.0.tgz#ff8f80a3812bab9dc448536312da52dce1b720fb"
+  integrity sha512-cBvC2QjtvJ9JfWLvstVnI45Y46Y5dMxIaG1TDMGAD/R87hpvqFL+7LhvUDhnRCfOnx/xitollFWWvUKKKhbN0A==
 
 ts-pnp@1.2.0, ts-pnp@^1.1.6:
   version "1.2.0"

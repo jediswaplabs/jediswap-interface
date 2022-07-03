@@ -1,8 +1,6 @@
 import { TokenList } from '@jediswap/token-lists'
 import schema from '@jediswap/token-lists/src/tokenlist.schema.json'
 import Ajv from 'ajv'
-import contenthashToUri from './contenthashToUri'
-import { parseENSAddress } from './parseENSAddress'
 import uriToHttp from './uriToHttp'
 
 const tokenListValidator = new Ajv({ allErrors: true }).compile(schema)
