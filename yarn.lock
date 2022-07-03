@@ -1709,10 +1709,10 @@
   resolved "https://registry.yarnpkg.com/@istanbuljs/schema/-/schema-0.1.3.tgz#e45e384e4b8ec16bce2fd903af78450f6bf7ec98"
   integrity sha512-ZXRY4jNvVgSVQ8DL3LTcakaAtXwTVUxE81hslsyD2AtoXW/wVob10HkOJ1X/pAlcI7D+2YoZKg5do8G/w6RYgA==
 
-"@jediswap/sdk@^2.0.1":
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/@jediswap/sdk/-/sdk-2.0.1.tgz#cbc9681983ae7da5450acaa133657c3379cffb3e"
-  integrity sha512-Qu2m9LPgBzLDvqfyH+DZ/G7Fw+a9E42cpPi9aNB20GDtb2Ex8xqMIEI+ndfPkmsOxeVCjzMwnG+o4ffwoH++NA==
+"@jediswap/sdk@^2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@jediswap/sdk/-/sdk-2.0.2.tgz#3dfe523028b7cf0932e64fa39eaa46aa883b427b"
+  integrity sha512-pXnSD5ll3yX56X89ELFXb18zXkT1snPD1S8ihg+i9vfIPi1KNvR2wir/lZNFI6rIVY6hylheYBFyyjj1p/lBrQ==
   dependencies:
     big.js "^5.2.2"
     decimal.js-light "^2.5.0"

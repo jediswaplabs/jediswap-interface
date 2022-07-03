@@ -65,7 +65,7 @@ const HeaderNote = styled.div`
   font-family: 'DM Sans', sans-serif;
   font-weight: normal;
   font-size: 14px;
-  line-height: 120%;
+  line-height: 140%;
   color: ${({ theme }) => theme.jediWhite};
   background-color: ${({ theme }) => theme.jediNavyBlue};
   border-radius: 8px;
@@ -378,29 +378,17 @@ export default function AddLiquidity({
             pendingText={pendingText}
           />
           <AutoColumn gap="16px">
-            {noLiquidity ||
-              (isCreate && (
-                <ColumnCenter>
-                  <BlueCard>
-                    <AutoColumn gap="10px">
-                      <TYPE.link fontWeight={600} color={'primaryText1'}>
-                        You are the first liquidity provider.
-                      </TYPE.link>
-                      <TYPE.link fontWeight={400} color={'primaryText1'}>
-                        The ratio of tokens you add will set the price of this pool.
-                      </TYPE.link>
-                      <TYPE.link fontWeight={400} color={'primaryText1'}>
-                        Once you are happy with the rate click supply to review.
-                      </TYPE.link>
-                    </AutoColumn>
-                  </BlueCard>
-                </ColumnCenter>
-              ))}
-
-            <HeaderNote>
-              Note: When you add liquidity, you will receive pool tokens representing your position. These tokens
-              automatically earn fees proportional to your share of the pool, and can be redeemed at any time.
-            </HeaderNote>
+            {noLiquidity || isCreate ? (
+              <HeaderNote>
+                Note: You are the first liquidity provider. The ratio of tokens you add will set the price of this pool.
+                Once you are happy with the rate click supply to review.
+              </HeaderNote>
+            ) : (
+              <HeaderNote>
+                Note: When you add liquidity, you will receive pool tokens representing your position. These tokens
+                automatically earn fees proportional to your share of the pool, and can be redeemed at any time.
+              </HeaderNote>
+            )}
 
             <AutoColumn gap="16px">
               <AutoRow justify="flex-end">

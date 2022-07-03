@@ -75,8 +75,9 @@ const CreatePoolButton = styled(ResponsiveButtonSecondary)`
   border: 2px solid ${({ theme }) => theme.jediWhite};
   font-size: 16px;
   line-height: 20px;
-   color: ${({ theme }) => theme.jediWhite};
+  color: ${({ theme }) => theme.jediWhite};
   border-radius: 8px;
+  text-transform: uppercase;
 
   :hover {
     border: 2px solid ${({ theme }) => theme.jediBlue};
@@ -199,12 +200,12 @@ export default function Pool() {
                 </TYPE.mediumHeader>
               </HideSmall>
               <ButtonRow>
-                {/* <ResponsiveButtonSecondary as={Link} padding="6px 8px" to="/create/ETH">
-                  Create a pair
-                </ResponsiveButtonSecondary> */}
+                <CreatePoolButton id="create-pool-button" as={Link} to="/create/ETH">
+                  Create pair
+                </CreatePoolButton>
                 <CreatePoolButton id="join-pool-button" as={Link} to="/add/ETH">
                   <Text fontWeight={800} fontSize={16} lineHeight={'125%'} letterSpacing={'0.5px'}>
-                    ADD LIQUIDITY
+                    Add Liquidity
                   </Text>
                 </CreatePoolButton>
               </ButtonRow>

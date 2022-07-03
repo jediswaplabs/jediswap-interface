@@ -8,7 +8,7 @@ import ARGENTX_ICON from '../assets/images/argentx.png'
 import BRAAVOS_ICON from '../assets/svg/Braavos.svg'
 
 export const ROUTER_ADDRESS = validateAndParseAddress(
-  '0x4b5e000e17ae83633e82820730a9bad7d4d4642104e1c25d562e73ec3cd1a9e'
+  '0x12b063b60553c91ed237d8905dff412fba830c5716b17821063176c6c073341'
 )
 
 export const ZAP_IN_ADDRESS = validateAndParseAddress(
