@@ -36,8 +36,8 @@ jobs:
       - name: Configure AWS
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}_${{ inputs.releaseType }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}_${{ inputs.releaseType }}
+          aws-access-key-id: ${{ secrets[format('AWS_ACCESS_KEY_ID_{0}', inputs.releaseType)] }}
+          aws-secret-access-key: ${{ secrets[format('AWS_SECRET_ACCESS_KEY_{0}', inputs.releaseType)] }}
           aws-region: us-east-1
       - name: Deploy app build to S3 bucket
         run: aws s3 sync ./build/ s3://$BUCKET_NAME --delete
