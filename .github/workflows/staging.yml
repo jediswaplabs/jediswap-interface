@@ -2,7 +2,16 @@ name: Staging Release
 
 on:
   workflow_dispatch:
-
+    inputs:
+      releaseType:
+        description: 'Release type'
+        required: true
+        default: 'STAGING'
+        type: choice
+        options:
+          - 'STAGING'
+          - 'TESTNET'
+          - 'PRODUCTION'
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -25,12 +34,16 @@ jobs:
       - name: Configure AWS
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}_${{ inputs.releaseType }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}_${{ inputs.releaseType }}
+          aws-region: ${{ secrets.AWS_REGION }}_${{ inputs.releaseType }}
 
       - name: Deploy app build to S3 bucket
-        run: aws s3 sync ./build/ s3://${{ secrets.AWS_S3_BUCKET_NAME }} --delete
+        run: aws s3 sync ./build/ s3://$BUCKET_NAME --delete
+        env:
+          BUCKET_NAME: ${{ secrets.AWS_S3_BUCKET_NAME }}_${{ inputs.releaseType }}
 
       - name: Run Cache Invalidation
-        run: aws cloudfront create-invalidation --distribution-id ${{ secrets.AWS_CDN_DISTRIBUTION_ID }} --paths /\*
+        run: aws cloudfront create-invalidation --distribution-id $CDN_DISTRIBUTION_ID --paths /\*
+        env:
+          CDN_DISTRIBUTION_ID: ${{ secrets.AWS_CDN_DISTRIBUTION_ID }}_${{ inputs.releaseType }}
