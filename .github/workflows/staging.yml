@@ -29,15 +29,16 @@ jobs:
         run: yarn install --immutable
 
       - name: Build Project
-        run: CI=false yarn build
+        run: CI=false yarn ${RELEASE_TYPE,,}-build
+        env:
+          RELEASE_TYPE: ${{ inputs.releaseType }}
 
       - name: Configure AWS
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}_${{ inputs.releaseType }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}_${{ inputs.releaseType }}
-          aws-region: ${{ secrets.AWS_REGION }}_${{ inputs.releaseType }}
-
+          aws-region: us-east-1
       - name: Deploy app build to S3 bucket
         run: aws s3 sync ./build/ s3://$BUCKET_NAME --delete
         env:
