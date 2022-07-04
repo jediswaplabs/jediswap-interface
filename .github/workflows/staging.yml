@@ -42,9 +42,9 @@ jobs:
       - name: Deploy app build to S3 bucket
         run: aws s3 sync ./build/ s3://$BUCKET_NAME --delete
         env:
-          BUCKET_NAME: ${{ secrets.AWS_S3_BUCKET_NAME }}_${{ inputs.releaseType }}
+          BUCKET_NAME: ${{ secrets[format('AWS_S3_BUCKET_NAME_{0}', inputs.releaseType)] }}
 
       - name: Run Cache Invalidation
         run: aws cloudfront create-invalidation --distribution-id $CDN_DISTRIBUTION_ID --paths /\*
         env:
-          CDN_DISTRIBUTION_ID: ${{ secrets.AWS_CDN_DISTRIBUTION_ID }}_${{ inputs.releaseType }}
+          CDN_DISTRIBUTION_ID: ${{ secrets[format('AWS_CDN_DISTRIBUTION_ID_{0}', inputs.releaseType)] }}
