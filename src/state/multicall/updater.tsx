@@ -46,12 +46,16 @@ async function fetchChunk(
     ])
 
     // Keep it here for multicall debugging
-    // const dateTime = new Date().getTime()
+    const dateTime = new Date().getTime()
 
-    // console.log(`at timestamp ${dateTime.toString()}`, '🚀 ~ file: updater.tsx ~ line 46 ~ calls', calls)
+    // console.log(`at timestamp ${dateTime.toString()}`, '🚀 ~ file: updater.tsx ~ line 46 ~ calls', chunk)
 
     const response = await multicallContract.aggregate(calls)
-    // console.log(`at timestamp ${dateTime.toString()}`, '🚀 ~ file: updater.tsx ~ line 48 ~ response', response)
+    // console.log(
+    //   `at timestamp ${dateTime.toString()}`,
+    //   '🚀 ~ file: updater.tsx ~ line 48 ~ response',
+    //   response.result.map(data => number.toHex(data))
+    // )
 
     resultsBlockNumber = response.block_number
     returnData_len = response.result_len
@@ -142,13 +146,32 @@ export function parseReturnData(
     const numberOfOutputs = contractInterface.outputs.length
     const hasMultipleOutputs = numberOfOutputs > 1
     const hasUint256Output = contractInterface.outputs.some(o => o.type === 'Uint256')
+    const hasArrayOutput = contractInterface.outputs.some(o => /_len$/.test(o.name))
 
     if (hasMultipleOutputs) {
       const outputAbiEntries = contractInterface.outputs
 
       if (!hasUint256Output) {
         // If output is not of type uint256, no. of results = no. of calls * no. of outputs
+
         const parsedReturnData = outputAbiEntries.reduce<{ [outputName: string]: string }>((memo, entry, i) => {
+          if (hasArrayOutput && memo[`${entry.name}_len`]) {
+            const len = parseInt(memo[`${entry.name}_len`], 16)
+            const arr: string[] = []
+
+            while (arr.length < len) {
+              const data = returnDataIterator.next().value
+              arr.push(data)
+            }
+
+            delete memo[`${entry.name}_len`]
+
+            return {
+              ...memo,
+              [entry.name]: arr
+            }
+          }
+
           return {
             ...memo,
             [entry.name]: returnDataIterator.next().value

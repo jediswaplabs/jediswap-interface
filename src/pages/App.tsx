@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react'
+import React, { Suspense, useEffect } from 'react'
 import { Route, Switch } from 'react-router-dom'
 import styled from 'styled-components'
 import Header from '../components/Header'
@@ -27,6 +27,7 @@ import { RedirectOldRemoveLiquidityPathStructure } from './RemoveLiquidity/redir
 import Zap from './Zap'
 import ComingSoon from './ComingSoon'
 import Footer from '../components/Footer'
+import useFetchAllPairsCallback from '../hooks/useFetchAllPairs'
 
 const AppWrapper = styled.div`
   display: flex;
@@ -71,6 +72,12 @@ const Marginer = styled.div`
 // }
 
 export default function App() {
+  const fetchAllPairs = useFetchAllPairsCallback()
+
+  useEffect(() => {
+    fetchAllPairs()
+  }, [fetchAllPairs])
+
   return (
     <Suspense fallback={null}>
       {/* <Route component={GoogleAnalyticsReporter} /> */}

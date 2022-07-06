@@ -5,8 +5,9 @@ import { Interface } from '@ethersproject/abi'
 import { useActiveStarknetReact } from '../hooks'
 
 import { wrappedCurrency } from '../utils/wrappedCurrency'
-import { Abi } from 'starknet'
+import { Abi, validateAndParseAddress } from 'starknet'
 import { useMultipleContractSingleData } from '../state/multicall/hooks'
+import { useAllPairs } from '../state/pairs/hooks'
 
 export enum PairState {
   LOADING,
@@ -22,6 +23,8 @@ export interface LiquidityPairToken {
 
 export function usePairs(currencies: [Currency | undefined, Currency | undefined][]): [PairState, Pair | null][] {
   const { chainId } = useActiveStarknetReact()
+  const allPairs = useAllPairs()
+  // console.log('🚀 ~ file: Reserves.ts ~ line 27 ~ usePairs ~ allPairs', allPairs)
 
   const tokens = useMemo(
     () =>
@@ -35,12 +38,22 @@ export function usePairs(currencies: [Currency | undefined, Currency | undefined
   const pairAddresses = useMemo(
     () =>
       tokens.map(([tokenA, tokenB]) => {
-        return tokenA && tokenB && !tokenA.equals(tokenB) ? Pair.getAddress(tokenA, tokenB) : undefined
+        return tokenA && tokenB && !tokenA.equals(tokenB)
+          ? validateAndParseAddress(Pair.getAddress(tokenA, tokenB))
+          : undefined
       }),
     [tokens]
   )
+  console.log('🚀 ~ file: Reserves.ts ~ line 44 ~ usePairs ~ pairAddresses', pairAddresses)
 
-  const results = useMultipleContractSingleData(pairAddresses, JediswapPairABI as Abi, 'get_reserves')
+  const validatedPairAddress = useMemo(
+    () => pairAddresses.map(addr => (addr && allPairs.includes(addr) ? addr : undefined)),
+    [allPairs, pairAddresses]
+  )
+  // console.log('🚀 ~ file: Reserves.ts ~ line 52 ~ usePairs ~ validatedPairAddress', validatedPairAddress)
+
+  const results = useMultipleContractSingleData(validatedPairAddress, JediswapPairABI as Abi, 'get_reserves')
+  // console.log('🚀 ~ file: Reserves.ts ~ line 56 ~ usePairs ~ results', results)
 
   return useMemo(() => {
     return results.map((result, i) => {
@@ -60,14 +73,10 @@ export function usePairs(currencies: [Currency | undefined, Currency | undefined
 
       return [
         PairState.EXISTS,
-        new Pair(
-          new TokenAmount(token0, reserve0.toString()),
-          new TokenAmount(token1, reserve1.toString()),
-          pairAddresses[i]
-        )
+        new Pair(new TokenAmount(token0, reserve0.toString()), new TokenAmount(token1, reserve1.toString()))
       ]
     })
-  }, [pairAddresses, results, tokens])
+  }, [results, tokens])
 }
 
 export function usePair(tokenA?: Currency, tokenB?: Currency): [PairState, Pair | null] {
