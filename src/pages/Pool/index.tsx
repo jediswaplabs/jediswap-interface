@@ -18,6 +18,7 @@ import { PairState, usePairs } from '../../data/Reserves'
 import { getLiquidityToken, useTrackedTokenPairs } from '../../state/user/hooks'
 import { Dots } from '../../components/swap/styleds'
 import { CardSection, DataCard, CardNoise, CardBGImage } from './styleds'
+import { useAllPairs } from '../../state/pairs/hooks'
 
 const PageWrapper = styled(AutoColumn)`
   max-width: 900px;
@@ -122,16 +123,24 @@ export default function Pool() {
   const liquidityTokens = useMemo(() => tokenPairsWithLiquidityTokens.map(tpwlt => tpwlt.liquidityToken), [
     tokenPairsWithLiquidityTokens
   ])
-  const [pairsBalances, fetchingPairBalances] = useTokenBalancesWithLoadingIndicator(
-    connectedAddress ?? undefined,
-    liquidityTokens
+
+  const allPairs = useAllPairs()
+
+  const validatedLiquidityTokens = useMemo(
+    () => liquidityTokens.map(token => (allPairs.includes(token.address) ? token : undefined)),
+    [allPairs, liquidityTokens]
   )
 
-  console.log(
-    '🚀 ~ file: index.tsx ~ line 88 ~ Pool ~ pairsBalances, fetchingPairBalances',
-    pairsBalances,
-    fetchingPairBalances
+  const [pairsBalances, fetchingPairBalances] = useTokenBalancesWithLoadingIndicator(
+    connectedAddress ?? undefined,
+    validatedLiquidityTokens
   )
+
+  // console.log(
+  //   '🚀 ~ file: index.tsx ~ line 88 ~ Pool ~ pairsBalances, fetchingPairBalances',
+  //   pairsBalances,
+  //   fetchingPairBalances
+  // )
   // fetch the reserves for all V2 pools in which the user has a balance
   const liquidityTokensWithBalances = useMemo(
     () =>

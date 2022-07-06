@@ -8,7 +8,6 @@ import { Abi, uint256 } from 'starknet'
 import { useAddressNormalizer } from '../../hooks/useAddressNormalizer'
 import { useTokenContract } from '../../hooks/useContract'
 import { useMultipleContractSingleData, useSingleCallResult } from '../multicall/hooks'
-import { useAllPairs } from '../pairs/hooks'
 
 /**
  * Returns a map of the given addresses to their eventually consistent ETH balances.
@@ -84,12 +83,7 @@ export function useTokenBalancesWithLoadingIndicator(
     [tokens]
   )
 
-  const allPairs = useAllPairs()
-
-  const validatedTokenAddresses = useMemo(
-    () => validatedTokens.map(vt => (allPairs.includes(vt.address) ? vt.address : undefined)),
-    [allPairs, validatedTokens]
-  )
+  const validatedTokenAddresses = useMemo(() => validatedTokens.map(vt => vt.address), [validatedTokens])
 
   const balances = useMultipleContractSingleData(validatedTokenAddresses, ERC20_ABI as Abi, 'balanceOf', {
     account: address ?? ''
