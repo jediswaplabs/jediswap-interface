@@ -6,20 +6,18 @@ import { SwapPoolTabs } from '../../components/NavigationTabs'
 
 import FullPositionCard from '../../components/PositionCard'
 import { useTokenBalancesWithLoadingIndicator } from '../../state/wallet/hooks'
-import { StyledInternalLink, ExternalLink, TYPE, HideSmall, DMSansText } from '../../theme'
+import { TYPE, HideSmall, DMSansText } from '../../theme'
 import { Text } from 'rebass'
 import Card from '../../components/Card'
 import Row, { RowBetween, RowFixed } from '../../components/Row'
 import { ButtonPrimary, ButtonSecondary } from '../../components/Button'
-import Column, { AutoColumn } from '../../components/Column'
+import { AutoColumn } from '../../components/Column'
 
 import { useActiveStarknetReact } from '../../hooks'
 import { PairState, usePairs } from '../../data/Reserves'
 import { getLiquidityToken, useTrackedTokenPairs } from '../../state/user/hooks'
 import { Dots } from '../../components/swap/styleds'
 import { CardSection, DataCard, CardNoise, CardBGImage } from './styleds'
-import { Wrapper } from '../ComingSoon'
-import { validateAndParseAddress } from 'starknet'
 
 const PageWrapper = styled(AutoColumn)`
   max-width: 900px;
@@ -144,7 +142,7 @@ export default function Pool() {
   )
 
   const pairs = usePairs(liquidityTokensWithBalances.map(({ tokens }) => tokens))
-  console.log('🚀 ~ file: index.tsx ~ line 140 ~ Pool ~ pairs', pairs)
+  // console.log('🚀 ~ file: index.tsx ~ line 140 ~ Pool ~ pairs', pairs)
   const pairIsLoading =
     fetchingPairBalances ||
     pairs?.length < liquidityTokensWithBalances.length ||
@@ -153,12 +151,12 @@ export default function Pool() {
 
   // console.log('🚀 ~ file: index.tsx ~ line 141 ~ Pool ~ pairIsLoading', pairIsLoading)
 
-  console.log('Pairs: ', pairs, 'isPairLoading: ', pairIsLoading)
+  // console.log('Pairs: ', pairs, 'isPairLoading: ', pairIsLoading)
 
   const allPairsWithLiquidity = pairs
     .map(([, pair]) => pair)
     .filter((tokenPair): tokenPair is Pair => Boolean(tokenPair))
-  console.log('🚀 ~ file: index.tsx ~ line 152 ~ Pool ~ allPairsWithLiquidity', allPairsWithLiquidity)
+  // console.log('🚀 ~ file: index.tsx ~ line 152 ~ Pool ~ allPairsWithLiquidity', allPairsWithLiquidity)
 
   return (
     <>
