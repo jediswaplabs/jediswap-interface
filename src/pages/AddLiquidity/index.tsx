@@ -380,8 +380,16 @@ export default function AddLiquidity({
           <AutoColumn gap="16px">
             {noLiquidity || isCreate ? (
               <HeaderNote>
-                Note: You are the first liquidity provider. The ratio of tokens you add will set the price of this pool.
-                It might take a few minutes for pool to reflect and enable swap.
+                Note: <span style={{ fontWeight: 700 }}>You are the first liquidity provider.</span>
+                <div style={{ fontWeight: 500, marginTop: '10px' }}>
+                  {' '}
+                  &bull; The ratio of tokens you add will set the price of this pool.{' '}
+                </div>
+                <div style={{ fontWeight: 500, marginTop: '5px' }}>
+                  {' '}
+                  &bull; It might take a <span style={{ fontWeight: 700 }}>few minutes</span> for pool to reflect and
+                  enable swap.{' '}
+                </div>
               </HeaderNote>
             ) : (
               <HeaderNote>
