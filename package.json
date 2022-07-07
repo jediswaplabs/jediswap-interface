@@ -105,16 +105,8 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "production-build": "PUBLIC_URL=https://app.jediswap.xyz REACT_APP_ENVIRONMENT=production react-scripts build",
-    "postproduction-build": "npm run create-new-dir",
     "staging-build": "PUBLIC_URL=https://app.staging.jediswap.xyz REACT_APP_ENVIRONMENT=production react-scripts build",
-    "testnet-build": "PUBLIC_URL=https://app.testnet.jediswap.xyz REACT_APP_ENVIRONMENT=production react-scripts build",
-    "posttestnet-build": "npm run create-new-dir",
-    "create-new-dir": "rm -rf ~/src_maps/$(git rev-parse HEAD) && mkdir ~/src_maps/$(git rev-parse HEAD)",
-    "postcreate-new-dir": "npm run move-js-src-maps",
-    "move-js-src-maps": "mv -f build/static/js/*.map ~/src_maps/$(git rev-parse HEAD) 2>/dev/null; true",
-    "postmove-js-src-maps": "npm run move-css-src-maps",
-    "move-css-src-maps": "mv -f build/static/css/*.map ~/src_maps/$(git rev-parse HEAD) 2>/dev/null; true",
-    "list-used-css": "for i in src/ui/{containers,screens,components}/*.js; do node src/usedCss.js $i; done"
+    "testnet-build": "PUBLIC_URL=https://app.testnet.jediswap.xyz REACT_APP_ENVIRONMENT=production react-scripts build"
   },
   "eslintConfig": {
     "extends": "react-app",
