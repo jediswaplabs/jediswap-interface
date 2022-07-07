@@ -118,20 +118,14 @@ export default function RemoveLiquidity({
   // wrapped onUserInput to clear signatures
   const onUserInput = useCallback(
     (field: Field, typedValue: string) => {
-      return _onUserInput(field, typedValue)
+      return !typedValue.includes('.') && _onUserInput(field, typedValue)
     },
     [_onUserInput]
   )
 
-  const onLiquidityInput = useCallback((typedValue: string): void => onUserInput(Field.LIQUIDITY, typedValue), [
-    onUserInput
-  ])
-  const onCurrencyAInput = useCallback((typedValue: string): void => onUserInput(Field.CURRENCY_A, typedValue), [
-    onUserInput
-  ])
-  const onCurrencyBInput = useCallback((typedValue: string): void => onUserInput(Field.CURRENCY_B, typedValue), [
-    onUserInput
-  ])
+  const onLiquidityInput = useCallback((typedValue: string) => onUserInput(Field.LIQUIDITY, typedValue), [onUserInput])
+  const onCurrencyAInput = useCallback((typedValue: string) => onUserInput(Field.CURRENCY_A, typedValue), [onUserInput])
+  const onCurrencyBInput = useCallback((typedValue: string) => onUserInput(Field.CURRENCY_B, typedValue), [onUserInput])
 
   // tx sending
   const addTransaction = useTransactionAdder()
