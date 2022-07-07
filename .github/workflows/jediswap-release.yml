@@ -1,4 +1,4 @@
-name: Staging Release
+name: Jediswap Release
 
 on:
   workflow_dispatch:
