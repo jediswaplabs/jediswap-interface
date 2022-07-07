@@ -381,7 +381,7 @@ export default function AddLiquidity({
             {noLiquidity || isCreate ? (
               <HeaderNote>
                 Note: You are the first liquidity provider. The ratio of tokens you add will set the price of this pool.
-                Once you are happy with the rate click supply to review.
+                It might take a few minutes for pool to reflect and enable swap.
               </HeaderNote>
             ) : (
               <HeaderNote>
