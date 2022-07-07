@@ -1,6 +1,6 @@
 import { Status } from 'starknet'
 import { createAction } from '@reduxjs/toolkit'
-import { TokenList } from '@uniswap/token-lists'
+import { TokenList } from '@jediswap/token-lists'
 
 export type PopupContent =
   | {

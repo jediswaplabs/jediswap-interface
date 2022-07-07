@@ -1,4 +1,4 @@
-import { Currency, TOKEN0, Token } from '@jediswap/sdk'
+import { Currency, ETHER, Token, WETH } from '@jediswap/sdk'
 import React, { KeyboardEvent, RefObject, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import ReactGA from 'react-ga4'
 import { useTranslation } from 'react-i18next'
@@ -21,7 +21,6 @@ import SortButton from './SortButton'
 import { useTokenComparator } from './sorting'
 import { PaddedColumn, SearchInput, Separator } from './styleds'
 import AutoSizer from 'react-virtualized-auto-sizer'
-import { TOKEN0_ADDRESS } from '../../constants/jediTokens'
 import { wrappedCurrency } from '../../utils/wrappedCurrency'
 
 interface CurrencySearchProps {
@@ -76,7 +75,7 @@ export function CurrencySearch({
   const showTOKEN0: boolean = useMemo(() => {
     const s = searchQuery.toLowerCase().trim()
 
-    return s === '' || s === 't' || s === 'to' || s === 'tok' || s === 'toke' || s === 'token' || s === 'token0'
+    return s === '' || s === 'e' || s === 'et' || s === 'eth'
   }, [searchQuery])
 
   const tokenComparator = useTokenComparator(invertSearchOrder)
@@ -84,10 +83,10 @@ export function CurrencySearch({
   const filteredTokens: Token[] = useMemo(() => {
     if (isAddressSearch) {
       if (searchToken) return [searchToken]
-      else if (isAddressSearch === TOKEN0_ADDRESS) {
-        const WTOKEN0 = wrappedCurrency(TOKEN0, chainId)
-        if (WTOKEN0) {
-          return [WTOKEN0]
+      else if (isAddressSearch === WETH[chainId ?? 5].address) {
+        const WETH = wrappedCurrency(ETHER, chainId)
+        if (WETH) {
+          return [WETH]
         }
         return []
       }
@@ -140,7 +139,7 @@ export function CurrencySearch({
       if (e.key === 'Enter') {
         const s = searchQuery.toLowerCase().trim()
         if (s === 'token0') {
-          handleCurrencySelect(TOKEN0)
+          handleCurrencySelect(ETHER)
         } else if (filteredSortedTokens.length > 0) {
           if (
             filteredSortedTokens[0].symbol?.toLowerCase() === searchQuery.trim().toLowerCase() ||

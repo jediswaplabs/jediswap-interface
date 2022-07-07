@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, TOKEN0, JSBI, Pair, Percent, Price, TokenAmount } from '@jediswap/sdk'
+import { Currency, CurrencyAmount, ETHER, JSBI, Pair, Percent, Price, TokenAmount } from '@jediswap/sdk'
 import { useCallback, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { PairState, usePair } from '../../data/Reserves'
@@ -54,7 +54,6 @@ export function useDerivedMintInfo(
   // console.log('🚀 ~ file: hooks.ts ~ line 53 ~ pairState', PairState[pairState])
   // console.log('🚀 ~ file: hooks.ts ~ line 53 ~ pair', pair)
   const totalSupply = useTotalSupply(pair?.liquidityToken)
-  const debouncedPairState = useDebounce(pairState, pairState === PairState.EXISTS ? 0 : 5000)
   // console.log('🚀 ~ file: hooks.ts ~ line 58 ~ debouncedPairState', PairState[debouncedPairState])
 
   const noLiquidity: boolean =
@@ -88,7 +87,7 @@ export function useDerivedMintInfo(
           dependentField === Field.CURRENCY_B
             ? pair.priceOf(tokenA).quote(wrappedIndependentAmount)
             : pair.priceOf(tokenB).quote(wrappedIndependentAmount)
-        return dependentCurrency === TOKEN0 ? CurrencyAmount.token0(dependentTokenAmount.raw) : dependentTokenAmount
+        return dependentCurrency === ETHER ? CurrencyAmount.ether(dependentTokenAmount.raw) : dependentTokenAmount
       }
       return undefined
     } else {
@@ -148,14 +147,6 @@ export function useDerivedMintInfo(
 
   if (pairState === PairState.INVALID) {
     error = error ?? 'Invalid pair'
-  }
-
-  if (debouncedPairState === PairState.LOADING || pairState === PairState.NOT_EXISTS) {
-    error = error ?? 'Loading...'
-  }
-
-  if (debouncedPairState === PairState.NOT_EXISTS && pairState === PairState.NOT_EXISTS) {
-    error = 'No Pool found'
   }
 
   if (!parsedAmounts[Field.CURRENCY_A] || !parsedAmounts[Field.CURRENCY_B]) {

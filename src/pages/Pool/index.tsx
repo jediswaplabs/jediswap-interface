@@ -6,20 +6,19 @@ import { SwapPoolTabs } from '../../components/NavigationTabs'
 
 import FullPositionCard from '../../components/PositionCard'
 import { useTokenBalancesWithLoadingIndicator } from '../../state/wallet/hooks'
-import { StyledInternalLink, ExternalLink, TYPE, HideSmall, DMSansText } from '../../theme'
+import { TYPE, HideSmall, DMSansText } from '../../theme'
 import { Text } from 'rebass'
 import Card from '../../components/Card'
 import Row, { RowBetween, RowFixed } from '../../components/Row'
 import { ButtonPrimary, ButtonSecondary } from '../../components/Button'
-import Column, { AutoColumn } from '../../components/Column'
+import { AutoColumn } from '../../components/Column'
 
 import { useActiveStarknetReact } from '../../hooks'
-import { PairState, usePairs, useTokenPairsWithLiquidityTokens } from '../../data/Reserves'
-import { toV2LiquidityToken, useTrackedTokenPairs } from '../../state/user/hooks'
+import { PairState, usePairs } from '../../data/Reserves'
+import { getLiquidityToken, useTrackedTokenPairs } from '../../state/user/hooks'
 import { Dots } from '../../components/swap/styleds'
 import { CardSection, DataCard, CardNoise, CardBGImage } from './styleds'
-import { Wrapper } from '../ComingSoon'
-import { validateAndParseAddress } from 'starknet'
+import { useAllPairs } from '../../state/pairs/hooks'
 
 const PageWrapper = styled(AutoColumn)`
   max-width: 900px;
@@ -75,8 +74,9 @@ const CreatePoolButton = styled(ResponsiveButtonSecondary)`
   border: 2px solid ${({ theme }) => theme.jediWhite};
   font-size: 16px;
   line-height: 20px;
-   color: ${({ theme }) => theme.jediWhite};
+  color: ${({ theme }) => theme.jediWhite};
   border-radius: 8px;
+  text-transform: uppercase;
 
   :hover {
     border: 2px solid ${({ theme }) => theme.jediBlue};
@@ -115,25 +115,32 @@ export default function Pool() {
   // console.log('🚀 ~ file: index.tsx ~ line 108 ~ Pool ~ trackedTokenPairs', trackedTokenPairs)
   // const [p]
 
-  const [tokenPairsWithLiquidityTokens, liquidityTokenLoading] = useTokenPairsWithLiquidityTokens(trackedTokenPairs)
+  const tokenPairsWithLiquidityTokens = useMemo(
+    () => trackedTokenPairs.map(tokens => ({ liquidityToken: getLiquidityToken(tokens), tokens })),
+    [trackedTokenPairs]
+  )
 
-  // const tokenPairsWithLiquidityTokens = useMemo(
-  //   () => trackedTokenPairs.map(tokens => ({ liquidityToken: toV2LiquidityToken(tokens), tokens })),
-  //   [trackedTokenPairs]
-  // )
   const liquidityTokens = useMemo(() => tokenPairsWithLiquidityTokens.map(tpwlt => tpwlt.liquidityToken), [
     tokenPairsWithLiquidityTokens
   ])
-  const [pairsBalances, fetchingPairBalances] = useTokenBalancesWithLoadingIndicator(
-    connectedAddress ?? undefined,
-    liquidityTokens
+
+  const allPairs = useAllPairs()
+
+  const validatedLiquidityTokens = useMemo(
+    () => liquidityTokens.map(token => (allPairs.includes(token.address) ? token : undefined)),
+    [allPairs, liquidityTokens]
   )
 
-  console.log(
-    '🚀 ~ file: index.tsx ~ line 88 ~ Pool ~ pairsBalances, fetchingPairBalances',
-    pairsBalances,
-    fetchingPairBalances
+  const [pairsBalances, fetchingPairBalances] = useTokenBalancesWithLoadingIndicator(
+    connectedAddress ?? undefined,
+    validatedLiquidityTokens
   )
+
+  // console.log(
+  //   '🚀 ~ file: index.tsx ~ line 88 ~ Pool ~ pairsBalances, fetchingPairBalances',
+  //   pairsBalances,
+  //   fetchingPairBalances
+  // )
   // fetch the reserves for all V2 pools in which the user has a balance
   const liquidityTokensWithBalances = useMemo(
     () =>
@@ -144,9 +151,8 @@ export default function Pool() {
   )
 
   const pairs = usePairs(liquidityTokensWithBalances.map(({ tokens }) => tokens))
-  console.log('🚀 ~ file: index.tsx ~ line 140 ~ Pool ~ pairs', pairs)
+  // console.log('🚀 ~ file: index.tsx ~ line 140 ~ Pool ~ pairs', pairs)
   const pairIsLoading =
-    liquidityTokenLoading ||
     fetchingPairBalances ||
     pairs?.length < liquidityTokensWithBalances.length ||
     pairs?.some(([pairState]) => pairState === PairState.LOADING) ||
@@ -154,12 +160,12 @@ export default function Pool() {
 
   // console.log('🚀 ~ file: index.tsx ~ line 141 ~ Pool ~ pairIsLoading', pairIsLoading)
 
-  console.log('Pairs: ', pairs, 'isPairLoading: ', pairIsLoading)
+  // console.log('Pairs: ', pairs, 'isPairLoading: ', pairIsLoading)
 
   const allPairsWithLiquidity = pairs
     .map(([, pair]) => pair)
     .filter((tokenPair): tokenPair is Pair => Boolean(tokenPair))
-  console.log('🚀 ~ file: index.tsx ~ line 152 ~ Pool ~ allPairsWithLiquidity', allPairsWithLiquidity)
+  // console.log('🚀 ~ file: index.tsx ~ line 152 ~ Pool ~ allPairsWithLiquidity', allPairsWithLiquidity)
 
   return (
     <>
@@ -201,12 +207,12 @@ export default function Pool() {
                 </TYPE.mediumHeader>
               </HideSmall>
               <ButtonRow>
-                {/* <ResponsiveButtonSecondary as={Link} padding="6px 8px" to="/create/ETH">
-                  Create a pair
-                </ResponsiveButtonSecondary> */}
-                <CreatePoolButton id="join-pool-button" as={Link} to="/add/TOKEN0">
+                <CreatePoolButton id="create-pool-button" as={Link} to="/create/ETH">
+                  Create pair
+                </CreatePoolButton>
+                <CreatePoolButton id="join-pool-button" as={Link} to="/add/ETH">
                   <Text fontWeight={800} fontSize={16} lineHeight={'125%'} letterSpacing={'0.5px'}>
-                    ADD LIQUIDITY
+                    Add Liquidity
                   </Text>
                 </CreatePoolButton>
               </ButtonRow>
@@ -264,7 +270,7 @@ export default function Pool() {
   // return (
   //   <Wrapper>
   //     <ButtonRow>
-  //       <CreatePoolButtonAlt as={Link} to="/add/TOKEN0">
+  //       <CreatePoolButtonAlt as={Link} to="/add/ETH">
   //         Add Liquidity
   //       </CreatePoolButtonAlt>
   //     </ButtonRow>

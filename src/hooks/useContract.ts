@@ -4,11 +4,12 @@ import { useMemo } from 'react'
 import ERC20_ABI from '../constants/abis/erc20.json'
 import { getContract } from '../utils'
 import { useActiveStarknetReact } from './index'
-import REGISTRY_ABI from '../constants/abis/Registry.json'
-import { REGISTRY_ADDRESS, ROUTER_ADDRESS, ZAP_IN_ADDRESS } from '../constants'
+import { ROUTER_ADDRESS, ZAP_IN_ADDRESS } from '../constants'
 import JediSwapRouterABI from '../constants/abis/Router.json'
 import { MULTICALL_NETWORKS, MULTICALL_ABI } from '../constants/multicall'
 import JediSwapZapInABI from '../constants/abis/ZapIn.json'
+import { FACTORY_ADDRESS } from '@jediswap/sdk'
+import FACTORY_ABI from '../constants/abis/Factory.json'
 
 // returns null on errors
 function useContract(address: string | undefined, ABI: any, withSignerIfPossible = true): Contract | null {
@@ -36,8 +37,8 @@ export function usePairContract(pairAddress?: string, withSignerIfPossible?: boo
   return useContract(pairAddress, JediswapPairABI, withSignerIfPossible)
 }
 
-export function useRegistryContract(withSignerIfPossible?: boolean): Contract | null {
-  return useContract(REGISTRY_ADDRESS, REGISTRY_ABI, withSignerIfPossible)
+export function useFactoryContract(): Contract | null {
+  return useContract(FACTORY_ADDRESS, FACTORY_ABI, true)
 }
 
 export function useRouterContract(): Contract | null {

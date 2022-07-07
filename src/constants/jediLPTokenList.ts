@@ -1,4 +1,5 @@
-import { TOKEN0, TOKEN1, TOKEN2, TOKEN3 } from './jediTokens'
+import { WETH } from '@jediswap/sdk'
+import { DAI_GOERLI, USDC_GOERLI } from '.'
 import { ChainId, LPToken } from '@jediswap/sdk'
 
 export const jediPairAddresses = {
@@ -9,20 +10,22 @@ export const jediPairAddresses = {
   TOKEN2_TOKEN3: '0x12e39cd6c851d970fd74662cac9ae459934bbfb8334f1c78195cf63e9b1ea5c'
 }
 
-export const LP_T0_T1 = new LPToken(ChainId.GÖRLI, TOKEN0, TOKEN1, jediPairAddresses.TOKEN0_TOKEN1)
+export const WETH_GORLI = WETH[ChainId.GÖRLI]
 
-export const LP_T0_T2 = new LPToken(ChainId.GÖRLI, TOKEN0, TOKEN2, jediPairAddresses.TOKEN0_TOKEN2)
+export const LP_T0_T1 = new LPToken(ChainId.GÖRLI, WETH_GORLI, DAI_GOERLI, jediPairAddresses.TOKEN0_TOKEN1)
 
-export const LP_T0_T3 = new LPToken(ChainId.GÖRLI, TOKEN0, TOKEN3, jediPairAddresses.TOKEN0_TOKEN3)
+export const LP_T0_T2 = new LPToken(ChainId.GÖRLI, WETH_GORLI, USDC_GOERLI, jediPairAddresses.TOKEN0_TOKEN2)
 
-export const LP_T1_T3 = new LPToken(ChainId.GÖRLI, TOKEN1, TOKEN3, jediPairAddresses.TOKEN1_TOKEN3)
+// export const LP_T0_T3 = new LPToken(ChainId.GÖRLI, WETH_GORLI, TOKEN3, jediPairAddresses.TOKEN0_TOKEN3)
 
-export const LP_T2_T3 = new LPToken(ChainId.GÖRLI, TOKEN2, TOKEN3, jediPairAddresses.TOKEN2_TOKEN3)
+// export const LP_T1_T3 = new LPToken(ChainId.GÖRLI, TOKEN1, TOKEN3, jediPairAddresses.TOKEN1_TOKEN3)
+
+// export const LP_T2_T3 = new LPToken(ChainId.GÖRLI, TOKEN2, TOKEN3, jediPairAddresses.TOKEN2_TOKEN3)
 
 export const jediLPTokenList = {
   [LP_T0_T1.address]: LP_T0_T1,
-  [LP_T0_T2.address]: LP_T0_T2,
-  [LP_T0_T3.address]: LP_T0_T3,
-  [LP_T1_T3.address]: LP_T1_T3,
-  [LP_T2_T3.address]: LP_T2_T3
+  [LP_T0_T2.address]: LP_T0_T2
+  // [LP_T0_T3.address]: LP_T0_T3,
+  // [LP_T1_T3.address]: LP_T1_T3,
+  // [LP_T2_T3.address]: LP_T2_T3
 }

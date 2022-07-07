@@ -5,8 +5,7 @@ import { useMemo } from 'react'
 import { Abi, Contract, Provider, Signer, SignerInterface, uint256 } from 'starknet'
 import { BigNumber } from '@ethersproject/bignumber'
 import { ZERO_ADDRESS } from '../constants'
-import { jediTokensList, TOKEN0 } from '../constants/jediTokens'
-import { ChainId, JSBI, Percent, Token, CurrencyAmount, Currency, TOKEN0 as Currency0 } from '@jediswap/sdk'
+import { ChainId, JSBI, Percent, Token, CurrencyAmount, Currency, ETHER } from '@jediswap/sdk'
 import { TokenAddressMap } from '../state/lists/hooks'
 import { validateAndParseAddress } from 'starknet'
 import isZero from './isZero'
@@ -117,12 +116,8 @@ export function escapeRegExp(string: string): string {
 }
 
 export function isTokenOnList(defaultTokens: TokenAddressMap, currency?: Currency, chainId?: ChainId): boolean {
-  if (currency === Currency0) return true
-  if (currency === wrappedCurrency(currency, chainId)) return true
-
-  const isJediToken = Object.values(jediTokensList).some(token => token === currency)
-
-  return isJediToken || Boolean(currency instanceof Token && defaultTokens[currency.chainId]?.[currency.address])
+  if (currency === ETHER) return true
+  return Boolean(currency instanceof Token && defaultTokens[currency.chainId]?.[currency.address])
 }
 
 export const parsedAmountToUint256Args = (amount: JSBI): { [k: string]: BigNumberish; type: 'struct' } => {

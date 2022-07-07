@@ -1,15 +1,5 @@
 import { BigNumber } from '@ethersproject/bignumber'
-import {
-  Currency,
-  CurrencyAmount,
-  currencyEquals,
-  JSBI,
-  LPToken,
-  Token,
-  TOKEN0,
-  TokenAmount,
-  WTOKEN0
-} from '@jediswap/sdk'
+import { Currency, CurrencyAmount, currencyEquals, JSBI, LPToken, Token, ETHER, TokenAmount, WETH } from '@jediswap/sdk'
 import React, { useCallback, useContext, useState } from 'react'
 import { Plus } from 'react-feather'
 import ReactGA from 'react-ga4'
@@ -75,7 +65,7 @@ const HeaderNote = styled.div`
   font-family: 'DM Sans', sans-serif;
   font-weight: normal;
   font-size: 14px;
-  line-height: 120%;
+  line-height: 140%;
   color: ${({ theme }) => theme.jediWhite};
   background-color: ${({ theme }) => theme.jediNavyBlue};
   border-radius: 8px;
@@ -105,10 +95,10 @@ export default function AddLiquidity({
 
   const routerContract = useRouterContract()
 
-  const oneCurrencyIsWTOKEN0 = Boolean(
+  const oneCurrencyIsWETH = Boolean(
     chainId &&
-      ((currencyA && currencyEquals(currencyA, WTOKEN0[chainId])) ||
-        (currencyB && currencyEquals(currencyB, WTOKEN0[chainId])))
+      ((currencyA && currencyEquals(currencyA, WETH[chainId])) ||
+        (currencyB && currencyEquals(currencyB, WETH[chainId])))
   )
 
   const toggleWalletModal = useWalletModalToggle() // toggle wallet when disconnected
@@ -388,29 +378,25 @@ export default function AddLiquidity({
             pendingText={pendingText}
           />
           <AutoColumn gap="16px">
-            {noLiquidity ||
-              (isCreate && (
-                <ColumnCenter>
-                  <BlueCard>
-                    <AutoColumn gap="10px">
-                      <TYPE.link fontWeight={600} color={'primaryText1'}>
-                        You are the first liquidity provider.
-                      </TYPE.link>
-                      <TYPE.link fontWeight={400} color={'primaryText1'}>
-                        The ratio of tokens you add will set the price of this pool.
-                      </TYPE.link>
-                      <TYPE.link fontWeight={400} color={'primaryText1'}>
-                        Once you are happy with the rate click supply to review.
-                      </TYPE.link>
-                    </AutoColumn>
-                  </BlueCard>
-                </ColumnCenter>
-              ))}
-
-            <HeaderNote>
-              Note: When you add liquidity, you will receive pool tokens representing your position. These tokens
-              automatically earn fees proportional to your share of the pool, and can be redeemed at any time.
-            </HeaderNote>
+            {noLiquidity || isCreate ? (
+              <HeaderNote>
+                Note: <span style={{ fontWeight: 700 }}>You are the first liquidity provider.</span>
+                <div style={{ fontWeight: 500, marginTop: '10px' }}>
+                  {' '}
+                  &bull; The ratio of tokens you add will set the price of this pool.{' '}
+                </div>
+                <div style={{ fontWeight: 500, marginTop: '5px' }}>
+                  {' '}
+                  &bull; It might take a <span style={{ fontWeight: 700 }}>few minutes</span> for pool to reflect and
+                  enable swap.{' '}
+                </div>
+              </HeaderNote>
+            ) : (
+              <HeaderNote>
+                Note: When you add liquidity, you will receive pool tokens representing your position. These tokens
+                automatically earn fees proportional to your share of the pool, and can be redeemed at any time.
+              </HeaderNote>
+            )}
 
             <AutoColumn gap="16px">
               <AutoRow justify="flex-end">
@@ -501,7 +487,7 @@ export default function AddLiquidity({
 
       {pair && !noLiquidity && pairState !== PairState.INVALID ? (
         <AutoColumn style={{ minWidth: '20rem', width: '100%', maxWidth: '468px', marginTop: '24px' }}>
-          <MinimalPositionCard showUnwrapped={oneCurrencyIsWTOKEN0} pair={pair} />
+          <MinimalPositionCard showUnwrapped={oneCurrencyIsWETH} pair={pair} />
         </AutoColumn>
       ) : null}
     </>

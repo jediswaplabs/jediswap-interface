@@ -11,8 +11,9 @@ import multicall from './multicall/reducer'
 import mint from './mint/reducer'
 import burn from './burn/reducer'
 import zap from './zap/reducer'
+import pairs from './pairs/reducer'
 
-const PERSISTED_KEYS: string[] = ['user', 'transactions', 'lists']
+const PERSISTED_KEYS: string[] = ['user', 'transactions', 'lists', 'pairs']
 
 const store = configureStore({
   reducer: {
@@ -24,7 +25,8 @@ const store = configureStore({
     burn,
     multicall,
     lists,
-    zap
+    zap,
+    pairs
   },
   middleware: getDefaultMiddleware => getDefaultMiddleware({ thunk: false }).concat(save({ states: PERSISTED_KEYS })),
   preloadedState: load({ states: PERSISTED_KEYS })

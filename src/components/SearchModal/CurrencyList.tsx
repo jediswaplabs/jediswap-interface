@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, currencyEquals, TOKEN0, Token, WTOKEN0, LPToken } from '@jediswap/sdk'
+import { Currency, CurrencyAmount, currencyEquals, Token, WETH, LPToken, ETHER } from '@jediswap/sdk'
 import React, { CSSProperties, MutableRefObject, useCallback, useEffect, useMemo } from 'react'
 import { FixedSizeList } from 'react-window'
 import { Text } from 'rebass'
@@ -23,7 +23,7 @@ import { useAddTokenToWallet } from '../../hooks/useAddTokenToWallet'
 import DoubleCurrencyLogo from '../DoubleLogo'
 
 function currencyKey(currency: Currency): string {
-  return currency instanceof Token ? currency.address : currency === TOKEN0 ? 'TOKEN0' : ''
+  return currency instanceof Token ? currency.address : currency === ETHER ? 'ETHER' : ''
 }
 
 const StyledBalanceText = styled(Text)`
@@ -151,17 +151,17 @@ function CurrencyRow({
           >
             {currency.symbol}
           </Text>
-
+          {/* 
           <StyledPlusCircle
             onClick={() => {
               console.log('Add token')
               if (currency instanceof Token) {
                 addTokenToWallet(currency.address)
-              } else if (currency === TOKEN0) {
-                addTokenToWallet(WTOKEN0[chainId ?? 5].address)
+              } else if (currency === ETHER) {
+                addTokenToWallet(WETH[chainId ?? 5].address)
               }
             }}
-          />
+          /> */}
         </Row>
         <FadedSpan>
           {!isOnSelectedList && customAdded ? (
@@ -217,7 +217,7 @@ export default function CurrencyList({
   fixedListRef?: MutableRefObject<FixedSizeList | undefined>
   showETH: boolean
 }) {
-  const itemData = useMemo(() => (showETH ? [Currency.TOKEN0, ...currencies] : currencies), [currencies, showETH])
+  const itemData = useMemo(() => (showETH ? [Currency.ETHER, ...currencies] : currencies), [currencies, showETH])
 
   const Row = useCallback(
     ({ data, index, style }) => {
