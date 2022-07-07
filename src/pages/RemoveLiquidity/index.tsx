@@ -118,11 +118,7 @@ export default function RemoveLiquidity({
   // wrapped onUserInput to clear signatures
   const onUserInput = useCallback(
     (field: Field, typedValue: string) => {
-      if (typedValue.includes('.')) {
-        return
-      } else {
-        return _onUserInput(field, typedValue)
-      }
+      return !typedValue.includes('.') && _onUserInput(field, typedValue)
     },
     [_onUserInput]
   )
