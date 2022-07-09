@@ -14,22 +14,22 @@ import {
 describe('utils', () => {
   describe('#getVoyagerLink', () => {
     it('correct for tx', () => {
-      expect(getVoyagerLink(1, 'abc', 'transaction')).toEqual('https://voyager.io/tx/abc')
+      expect(getVoyagerLink(1, 'abc', 'transaction')).toEqual('https://voyager.online/tx/abc')
     })
-    it('correct for token', () => {
-      expect(getVoyagerLink(1, 'abc', 'token')).toEqual('https://voyager.io/token/abc')
+    it('correct for contract', () => {
+      expect(getVoyagerLink(1, 'abc', 'contract')).toEqual('https://voyager.online/contract/abc')
     })
-    it('correct for address', () => {
-      expect(getVoyagerLink(1, 'abc', 'address')).toEqual('https://voyager.io/address/abc')
+    it('correct for block', () => {
+      expect(getVoyagerLink(1, 'abc', 'block')).toEqual('https://voyager.online/block/abc')
     })
     it('unrecognized chain id defaults to mainnet', () => {
-      expect(getVoyagerLink(2, 'abc', 'address')).toEqual('https://voyager.io/address/abc')
+      expect(getVoyagerLink(2, 'abc', 'contract')).toEqual('https://voyager.online/contract/abc')
     })
     it('ropsten', () => {
-      expect(getVoyagerLink(3, 'abc', 'address')).toEqual('https://ropsten.voyager.io/address/abc')
+      expect(getVoyagerLink(3, 'abc', 'contract')).toEqual('https://ropsten.voyager.online/contract/abc')
     })
     it('enum', () => {
-      expect(getVoyagerLink(ChainId.RINKEBY, 'abc', 'address')).toEqual('https://rinkeby.voyager.io/address/abc')
+      expect(getVoyagerLink(ChainId.RINKEBY, 'abc', 'contract')).toEqual('https://rinkeby.voyager.online/contract/abc')
     })
   })
 
@@ -49,19 +49,15 @@ describe('utils', () => {
     it('returns false if not', () => {
       expect(isAddress('')).toBe(false)
       expect(isAddress('0x0000')).toBe(false)
-      expect(isAddress(1)).toBe(false)
-      expect(isAddress({})).toBe(false)
       expect(isAddress(undefined)).toBe(false)
     })
 
     it('returns the checksummed address', () => {
-      expect(isAddress('0xf164fc0ec4e93095b804a4795bbe1e041497b92a')).toBe('0xf164fC0Ec4E93095b804a4795bBe1e041497b92a')
-      expect(isAddress('0xf164fC0Ec4E93095b804a4795bBe1e041497b92a')).toBe('0xf164fC0Ec4E93095b804a4795bBe1e041497b92a')
+      expect(isAddress('0x03e85bfbb8e2a42b7bead9e88e9a1b19dbccf661471061807292120462396ec9')).toBe(
+        '0x03e85bfBB8E2a42b7beaD9e88E9A1B19DbCCf661471061807292120462396ec9'
+      )
     })
 
-    it('succeeds even without prefix', () => {
-      expect(isAddress('f164fc0ec4e93095b804a4795bbe1e041497b92a')).toBe('0xf164fC0Ec4E93095b804a4795bBe1e041497b92a')
-    })
     it('fails if too long', () => {
       expect(isAddress('f164fc0ec4e93095b804a4795bbe1e041497b92a0')).toBe(false)
     })
@@ -73,15 +69,15 @@ describe('utils', () => {
     })
 
     it('truncates middle characters', () => {
-      expect(shortenAddress('0xf164fc0ec4e93095b804a4795bbe1e041497b92a')).toBe('0xf164...b92a')
-    })
-
-    it('truncates middle characters even without prefix', () => {
-      expect(shortenAddress('f164fc0ec4e93095b804a4795bbe1e041497b92a')).toBe('0xf164...b92a')
+      expect(shortenAddress('0x03e85bfbb8e2a42b7bead9e88e9a1b19dbccf661471061807292120462396ec9')).toBe(
+        '0x03e8...2396ec9'
+      )
     })
 
     it('renders checksummed address', () => {
-      expect(shortenAddress('0x2E1b342132A67Ea578e4E3B814bae2107dc254CC'.toLowerCase())).toBe('0x2E1b...54CC')
+      expect(shortenAddress('0x4b05cce270364e2e4bf65bde3e9429b50c97ea3443b133442f838045f41e733'.toLowerCase())).toBe(
+        '0x04B0...F41E733'
+      )
     })
   })
 

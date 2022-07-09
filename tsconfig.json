@@ -22,7 +22,7 @@
     "jsx": "react-jsx",
     "downlevelIteration": true,
     "allowSyntheticDefaultImports": true,
-    "types": ["vite/client", "vite-plugin-svgr/client", "react-spring", "jest"],
+    "types": ["vite/client", "vite-plugin-svgr/client", "react-spring", "vitest/globals"],
     "isolatedModules": true
   },
   "exclude": ["node_modules", "cypress"],
