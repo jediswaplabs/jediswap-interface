@@ -105,6 +105,7 @@
     "dev": "vite",
     "serve": "serve -s build",
     "build": "vite build",
+    "production-build": "vite build",
     "staging-build": "vite build --mode staging",
     "testnet-build": "vite build --mode staging"
   },
