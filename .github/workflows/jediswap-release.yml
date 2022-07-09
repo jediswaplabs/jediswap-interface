@@ -29,8 +29,9 @@ jobs:
         run: yarn install --immutable
 
       - name: Build Project
-        run: CI=false yarn ${RELEASE_TYPE,,}-build
+        run: yarn ${RELEASE_TYPE,,}-build
         env:
+          CI: false
           RELEASE_TYPE: ${{ inputs.releaseType }}
 
       - name: Configure AWS
