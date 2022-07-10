@@ -6,6 +6,7 @@ import styled from 'styled-components'
 import EthereumLogo from '../../assets/images/ethereum-logo.png'
 import useHttpLocations from '../../hooks/useHttpLocations'
 import { WrappedTokenInfo } from '../../state/lists/hooks'
+import { unwrappedToken } from '../../utils/wrappedCurrency'
 import Logo from '../Logo'
 
 // const getTokenLogoURL = (address: string) =>
@@ -51,6 +52,10 @@ export default function CurrencyLogo({
   }, [currency, uriLocations])
 
   if (currency === ETHER) {
+    return <StyledEthereumLogo src={EthereumLogo} size={size} style={style} />
+  }
+
+  if (currency instanceof WrappedTokenInfo && unwrappedToken(currency) === ETHER) {
     return <StyledEthereumLogo src={EthereumLogo} size={size} style={style} />
   }
 

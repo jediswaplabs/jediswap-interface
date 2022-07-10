@@ -3,7 +3,7 @@ name: Lint
 on:
   push:
     branches: [jedi-master, jedi-staging, jedi-testnet]
-  pull_request_target:
+  pull_request:
     branches: [jedi-master, jedi-staging, jedi-testnet]
 
 jobs:

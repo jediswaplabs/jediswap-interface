@@ -12,7 +12,7 @@ export const ROUTER_ADDRESS = validateAndParseAddress(
 )
 
 export const ZAP_IN_ADDRESS = validateAndParseAddress(
-  '0x263acca23357479031157e30053fe10598077f24f427ac1b1de85487f5cd124'
+  '0x07e4a2e2ad496c7572228d922a50e656b5791a6f09818fb709e697f460f55735'
 )
 
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000000000000000000000000000'
@@ -86,6 +86,10 @@ export const SUGGESTED_BASES: ChainTokenList = {
 
 // used to construct the list of all pairs we consider by default in the frontend
 export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
+  ...WETH_ONLY
+}
+
+export const BASES_TO_BUILD_ZAPPER_LIST_AGAINST: ChainTokenList = {
   ...WETH_ONLY
 }
 
