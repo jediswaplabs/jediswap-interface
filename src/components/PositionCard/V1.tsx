@@ -11,7 +11,7 @@ import DoubleCurrencyLogo from '../DoubleLogo'
 import { useActiveStarknetReact } from '../../hooks'
 import { ThemeContext } from 'styled-components'
 
-interface PositionCardProps extends RouteComponentProps<{}> {
+interface PositionCardProps extends RouteComponentProps<Record<string, string | undefined>> {
   token: Token
   V1LiquidityBalance: TokenAmount
 }
