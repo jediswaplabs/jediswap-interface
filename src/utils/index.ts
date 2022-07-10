@@ -6,7 +6,7 @@ import { Abi, Contract, Provider, Signer, SignerInterface, uint256 } from 'stark
 import { BigNumber } from '@ethersproject/bignumber'
 import { ZERO_ADDRESS } from '../constants'
 import { ChainId, JSBI, Percent, Token, CurrencyAmount, Currency, ETHER } from '@jediswap/sdk'
-import { TokenAddressMap } from '../state/lists/hooks'
+import { LPTokenAddressMap, TokenAddressMap } from '../state/lists/hooks'
 import { getChecksumAddress } from 'starknet'
 import isZero from './isZero'
 import { wrappedCurrency } from './wrappedCurrency'
@@ -115,7 +115,11 @@ export function escapeRegExp(string: string): string {
   return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') // $& means the whole matched string
 }
 
-export function isTokenOnList(defaultTokens: TokenAddressMap, currency?: Currency, chainId?: ChainId): boolean {
+export function isTokenOnList(
+  defaultTokens: TokenAddressMap | LPTokenAddressMap,
+  currency?: Currency,
+  chainId?: ChainId
+): boolean {
   if (currency === ETHER) return true
   return Boolean(currency instanceof Token && defaultTokens[currency.chainId]?.[currency.address])
 }

@@ -89,6 +89,10 @@ export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
   ...WETH_ONLY
 }
 
+export const BASES_TO_BUILD_ZAPPER_LIST_AGAINST: ChainTokenList = {
+  ...WETH_ONLY
+}
+
 export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } = {
   [ChainId.GÖRLI]: [
     // [

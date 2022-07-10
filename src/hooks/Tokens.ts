@@ -2,7 +2,7 @@ import { Args, shortString, number as starkNumber } from 'starknet'
 import { parseBytes32String } from '@ethersproject/strings'
 import { Currency, ETHER, Token, currencyEquals } from '@jediswap/sdk'
 import { useMemo } from 'react'
-import { useSelectedTokenList } from '../state/lists/hooks'
+import { useSelectedLPTokenList, useSelectedTokenList } from '../state/lists/hooks'
 import { useUserAddedTokens } from '../state/user/hooks'
 import { isAddress } from '../utils'
 
@@ -37,12 +37,14 @@ export function useAllTokens(): { [address: string]: Token } {
 }
 
 export function useJediLPTokens(): { [address: string]: Token } {
-  return useMemo(
-    () => ({
-      ...jediLPTokenList
-    }),
-    []
-  )
+  const allLPTokens = useSelectedLPTokenList()
+  const { chainId } = useActiveStarknetReact()
+
+  return useMemo(() => {
+    if (!chainId) return {}
+
+    return allLPTokens[chainId]
+  }, [chainId, allLPTokens])
 }
 
 // Check if currency is included in custom list from user storage

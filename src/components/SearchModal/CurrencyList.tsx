@@ -4,7 +4,12 @@ import { FixedSizeList } from 'react-window'
 import { Text } from 'rebass'
 import styled from 'styled-components'
 import { useActiveStarknetReact } from '../../hooks'
-import { useSelectedTokenList, WrappedTokenInfo } from '../../state/lists/hooks'
+import {
+  useSelectedLPTokenList,
+  useSelectedTokenList,
+  WrappedLPTokenInfo,
+  WrappedTokenInfo
+} from '../../state/lists/hooks'
 import { useAddUserToken, useRemoveUserAddedToken } from '../../state/user/hooks'
 import { useCurrencyBalance } from '../../state/wallet/hooks'
 import { LinkStyledButton, TYPE } from '../../theme'
@@ -114,8 +119,13 @@ function CurrencyRow({
   const { connectedAddress, chainId, connector } = useActiveStarknetReact()
   const key = currencyKey(currency)
   const selectedTokenList = useSelectedTokenList()
+  const selectedLPTokenList = useSelectedLPTokenList()
 
-  const isOnSelectedList = isTokenOnList(selectedTokenList, currency, chainId)
+  const isTokenOnSelectedList = isTokenOnList(selectedTokenList, currency, chainId)
+  const isLPTokenOnSelectedList = isTokenOnList(selectedLPTokenList, currency, chainId)
+
+  const isOnSelectedList = isTokenOnSelectedList || isLPTokenOnSelectedList
+
   const customAdded = useIsUserAddedToken(currency)
   const balance = useCurrencyBalance(connectedAddress ?? undefined, currency)
 
@@ -123,6 +133,8 @@ function CurrencyRow({
   const addToken = useAddUserToken()
 
   const addTokenToWallet = useAddTokenToWallet()
+
+  console.log('Currency Instance: ', currency instanceof WrappedLPTokenInfo)
 
   // only show add or remove buttons if not on selected list
   return (
@@ -133,8 +145,8 @@ function CurrencyRow({
       disabled={isSelected}
       selected={otherSelected}
     >
-      {currency instanceof LPToken ? (
-        <DoubleCurrencyLogo currency0={currency.token0} currency1={currency.token1} size={20} />
+      {currency instanceof WrappedLPTokenInfo ? (
+        <DoubleCurrencyLogo currency0={currency.token0Info} currency1={currency.token1Info} size={20} />
       ) : (
         <CurrencyLogo currency={currency} size={24} />
       )}
