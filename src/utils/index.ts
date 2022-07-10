@@ -7,7 +7,7 @@ import { BigNumber } from '@ethersproject/bignumber'
 import { ZERO_ADDRESS } from '../constants'
 import { ChainId, JSBI, Percent, Token, CurrencyAmount, Currency, ETHER } from '@jediswap/sdk'
 import { TokenAddressMap } from '../state/lists/hooks'
-import { validateAndParseAddress } from 'starknet'
+import { getChecksumAddress } from 'starknet'
 import isZero from './isZero'
 import { wrappedCurrency } from './wrappedCurrency'
 
@@ -15,7 +15,7 @@ import { wrappedCurrency } from './wrappedCurrency'
 export function isAddress(addr: string | null | undefined): string | false {
   try {
     if (addr && !isZero(addr)) {
-      const starknetAddress = validateAndParseAddress(addr)
+      const starknetAddress = getChecksumAddress(addr)
       return starknetAddress
     }
     return false

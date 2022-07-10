@@ -29,8 +29,9 @@ jobs:
         run: yarn install --immutable
 
       - name: Build Project
-        run: CI=false yarn ${RELEASE_TYPE,,}-build
+        run: yarn ${RELEASE_TYPE,,}-build
         env:
+          CI: false
           RELEASE_TYPE: ${{ inputs.releaseType }}
 
       - name: Configure AWS
@@ -40,7 +41,7 @@ jobs:
           aws-secret-access-key: ${{ secrets[format('AWS_SECRET_ACCESS_KEY_{0}', inputs.releaseType)] }}
           aws-region: us-east-1
       - name: Deploy app build to S3 bucket
-        run: aws s3 sync ./build/ s3://$BUCKET_NAME
+        run: aws s3 sync ./dist/ s3://$BUCKET_NAME
         env:
           BUCKET_NAME: ${{ secrets[format('AWS_S3_BUCKET_NAME_{0}', inputs.releaseType)] }}
 
