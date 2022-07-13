@@ -1,9 +1,9 @@
 import { useMemo } from 'react'
-import { getChecksumAddress } from 'starknet'
+import { validateAndParseAddress } from 'starknet'
 
 export function useAddressNormalizer(addr: string | null | undefined): string | null {
   return useMemo(() => {
-    if (addr && typeof addr === 'string') return getChecksumAddress(addr)
+    if (addr && typeof addr === 'string') return validateAndParseAddress(addr)
     return null
   }, [addr])
 }

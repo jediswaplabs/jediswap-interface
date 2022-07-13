@@ -1,4 +1,4 @@
-import { FunctionAbi, getChecksumAddress, hash, RawArgs } from 'starknet'
+import { FunctionAbi, validateAndParseAddress, hash, RawArgs } from 'starknet'
 import { Abi, number } from 'starknet'
 // import { Interface, FunctionFragment } from '@ethersproject/abi'
 import { BigNumber } from '@ethersproject/bignumber'
@@ -188,7 +188,7 @@ export function useSingleContractMultipleData(
             const { calldata_len, calldata } = computeCallDataProps(inputs)
 
             return {
-              address: getChecksumAddress(contract.address),
+              address: validateAndParseAddress(contract.address),
               methodName,
               calldata_len: calldata_len.toString(),
               calldata
@@ -227,7 +227,7 @@ export function useMultipleContractSingleData(
         ? addresses.map<Call | undefined>(address => {
             return address
               ? {
-                  address: getChecksumAddress(address),
+                  address: validateAndParseAddress(address),
                   methodName,
                   calldata_len: callDataLength,
                   calldata: callData
@@ -264,7 +264,7 @@ export function useSingleCallResult(
     return contract && selector && isValidMethodArgs(inputs)
       ? [
           {
-            address: getChecksumAddress(contract.address),
+            address: validateAndParseAddress(contract.address),
             methodName,
             calldata_len: calldata_len.toString(),
             calldata

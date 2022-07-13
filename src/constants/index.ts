@@ -1,4 +1,4 @@
-import { getChecksumAddress } from 'starknet'
+import { validateAndParseAddress } from 'starknet'
 import { ChainId, JSBI, Percent, Token, WETH } from '@jediswap/sdk'
 import { AbstractConnector } from '@web3-starknet-react/abstract-connector'
 
@@ -7,9 +7,13 @@ import { argentX, braavosWallet } from '../connectors'
 import ARGENTX_ICON from '../assets/images/argentx.png'
 import BRAAVOS_ICON from '../assets/svg/Braavos.svg'
 
-export const ROUTER_ADDRESS = getChecksumAddress('0x12b063b60553c91ed237d8905dff412fba830c5716b17821063176c6c073341')
+export const ROUTER_ADDRESS = validateAndParseAddress(
+  '0x12b063b60553c91ed237d8905dff412fba830c5716b17821063176c6c073341'
+)
 
-export const ZAP_IN_ADDRESS = getChecksumAddress('0x07e4a2e2ad496c7572228d922a50e656b5791a6f09818fb709e697f460f55735')
+export const ZAP_IN_ADDRESS = validateAndParseAddress(
+  '0x07e4a2e2ad496c7572228d922a50e656b5791a6f09818fb709e697f460f55735'
+)
 
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000000000000000000000000000'
 
