@@ -942,10 +942,10 @@
   resolved "https://registry.yarnpkg.com/@humanwhocodes/object-schema/-/object-schema-1.2.1.tgz#b520529ec21d8e5945a1851dfd1c32e94e39ff45"
   integrity sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==
 
-"@jediswap/sdk@^2.0.2":
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/@jediswap/sdk/-/sdk-2.0.2.tgz#3dfe523028b7cf0932e64fa39eaa46aa883b427b"
-  integrity sha512-pXnSD5ll3yX56X89ELFXb18zXkT1snPD1S8ihg+i9vfIPi1KNvR2wir/lZNFI6rIVY6hylheYBFyyjj1p/lBrQ==
+"@jediswap/sdk@^2.1.2":
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/@jediswap/sdk/-/sdk-2.1.2.tgz#76c010b1d09fe030c47022ca8ebfdf2aa6b1fda2"
+  integrity sha512-FQv9TfYVKBHoLiNBqKyQSgTWImWWxyBz6dP7Q4svBD4uCBV2c6sum/Iq3+bjoM1PjpL0iw4rdPx9zeuGjOwJbQ==
   dependencies:
     big.js "^5.2.2"
     decimal.js-light "^2.5.0"
@@ -1853,10 +1853,10 @@
     "@web3-starknet-react/abstract-connector" "^2.1.3"
     "@web3-starknet-react/types" "^2.1.3"
 
-"@web3-starknet-react/core@^2.1.3":
-  version "2.1.3"
-  resolved "https://registry.yarnpkg.com/@web3-starknet-react/core/-/core-2.1.3.tgz#37c43786974e11bbfec738412f62ca74868395a8"
-  integrity sha512-HdzLMNC+rlqvLqlXwJ0fSHCNQTdk3Qd2Zh3+dgh85gPwDl54qFDYmpDsIIraUnXCAH4TMpk7p65YTwNdqkLwEw==
+"@web3-starknet-react/core@^2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@web3-starknet-react/core/-/core-2.2.0.tgz#b61accc1d649436d2fd241760763ada77f893b23"
+  integrity sha512-dqkLLKZUqfuc0v5QkyMGI2HzJsjwdtrUnhPT3nGENRGCLcWEb0SdWsKPU8pb8EeKFD7CUBo/X1zuHhgs1snMzg==
   dependencies:
     "@web3-starknet-react/abstract-connector" "^2.1.3"
     "@web3-starknet-react/types" "^2.1.3"

@@ -1,4 +1,4 @@
-import { validateAndParseAddress } from 'starknet'
+import { getChecksumAddress } from 'starknet'
 import React from 'react'
 import { Redirect, RouteComponentProps } from 'react-router-dom'
 import AddLiquidity from './index'
@@ -15,7 +15,7 @@ export function RedirectOldAddLiquidityPathStructure(props: RouteComponentProps<
     }
   } = props
 
-  const validatedCurrencyIdA = currencyIdA.startsWith('0x') ? validateAndParseAddress(currencyIdA) : currencyIdA
+  const validatedCurrencyIdA = currencyIdA.startsWith('0x') ? getChecksumAddress(currencyIdA) : currencyIdA
   const match = validatedCurrencyIdA.match(OLD_PATH_STRUCTURE)
   console.log('🚀 ~ file: redirects.tsx ~ line 17 ~ RedirectOldAddLiquidityPathStructure ~ match', match)
   if (match?.length) {

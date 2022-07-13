@@ -51,7 +51,9 @@ export function CurrencySearch({
   const [searchQuery, setSearchQuery] = useState<string>('')
   const [invertSearchOrder, setInvertSearchOrder] = useState<boolean>(false)
   const allTokens = useAllTokens()
-  const jediLPTokens = useJediLPTokens()
+  // const jediLPTokens = useJediLPTokens()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const jediLPTokens = {}
 
   // if they input an address, use it
   const isAddressSearch = isAddress(searchQuery)
