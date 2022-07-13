@@ -4,7 +4,12 @@ import { FixedSizeList } from 'react-window'
 import { Text } from 'rebass'
 import styled from 'styled-components'
 import { useActiveStarknetReact } from '../../hooks'
-import { useSelectedTokenList, WrappedLPTokenInfo, WrappedTokenInfo } from '../../state/lists/hooks'
+import {
+  useSelectedLPTokenList,
+  useSelectedTokenList,
+  WrappedLPTokenInfo,
+  WrappedTokenInfo
+} from '../../state/lists/hooks'
 import { useAddUserToken, useRemoveUserAddedToken } from '../../state/user/hooks'
 import { useCurrencyBalance } from '../../state/wallet/hooks'
 import { LinkStyledButton, TYPE } from '../../theme'
@@ -114,12 +119,12 @@ function CurrencyRow({
   const { connectedAddress, chainId, connector } = useActiveStarknetReact()
   const key = currencyKey(currency)
   const selectedTokenList = useSelectedTokenList()
-  // const selectedLPTokenList = useSelectedLPTokenList()
+  const selectedLPTokenList = useSelectedLPTokenList()
 
   const isTokenOnSelectedList = isTokenOnList(selectedTokenList, currency, chainId)
-  // const isLPTokenOnSelectedList = isTokenOnList(selectedLPTokenList, currency, chainId)
+  const isLPTokenOnSelectedList = isTokenOnList(selectedLPTokenList, currency, chainId)
 
-  const isOnSelectedList = isTokenOnSelectedList
+  const isOnSelectedList = isTokenOnSelectedList || isLPTokenOnSelectedList
 
   const customAdded = useIsUserAddedToken(currency)
   const balance = useCurrencyBalance(connectedAddress ?? undefined, currency)
