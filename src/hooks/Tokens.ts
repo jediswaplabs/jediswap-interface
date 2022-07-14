@@ -1,8 +1,9 @@
+import { useSelectedLPTokenList } from './../state/lists/hooks'
 import { Args, shortString, number as starkNumber } from 'starknet'
 import { parseBytes32String } from '@ethersproject/strings'
-import { Currency, ETHER, Token, currencyEquals } from '@jediswap/sdk'
+import { Currency, ETHER, Token, currencyEquals, LPToken } from '@jediswap/sdk'
 import { useMemo } from 'react'
-import { useSelectedLPTokenList, useSelectedTokenList } from '../state/lists/hooks'
+import { useSelectedTokenList } from '../state/lists/hooks'
 import { useUserAddedTokens } from '../state/user/hooks'
 import { isAddress } from '../utils'
 
@@ -36,7 +37,7 @@ export function useAllTokens(): { [address: string]: Token } {
   }, [chainId, userAddedTokens, allTokens])
 }
 
-export function useJediLPTokens(): { [address: string]: Token } {
+export function useJediLPTokens(): { [address: string]: LPToken } {
   const allLPTokens = useSelectedLPTokenList()
   const { chainId } = useActiveStarknetReact()
 
@@ -45,6 +46,10 @@ export function useJediLPTokens(): { [address: string]: Token } {
 
     return allLPTokens[chainId]
   }, [chainId, allLPTokens])
+
+  // return {
+  //   ...jediLPTokenList
+  // }
 }
 
 // Check if currency is included in custom list from user storage
@@ -86,7 +91,7 @@ export function useToken(tokenAddress?: string): Token | undefined | null {
   const tokens = { ...currencyTokens, ...lpTokens }
 
   const address = isAddress(tokenAddress)
-  const token: Token | undefined = address ? tokens[address] : undefined
+  const token: Token | LPToken | undefined = address ? tokens[address] : undefined
 
   const tokenContract = useTokenContract(address ? address : undefined)
 
@@ -108,7 +113,6 @@ export function useToken(tokenAddress?: string): Token | undefined | null {
         parseStringFromArgs(symbol.result?.[0]),
         parseStringFromArgs(symbol.result?.[0])
       )
-      //
       return token
     }
     return undefined

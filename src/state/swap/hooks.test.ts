@@ -78,7 +78,7 @@ describe('hooks', () => {
         [Field.INPUT]: { currencyId: '' },
         typedValue: '20.5',
         independentField: Field.INPUT,
-        recipient: '0x05a6475063f5f27c34088529588749A3De02df3548F3901CFf7654E32d97FFDd'
+        recipient: isAddress('0x05a6475063f5f27c34088529588749A3De02df3548F3901CFf7654E32d97FFDd')
       })
     })
     test('accepts any recipient', () => {

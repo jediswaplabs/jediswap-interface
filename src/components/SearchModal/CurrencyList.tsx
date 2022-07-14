@@ -134,7 +134,7 @@ function CurrencyRow({
 
   const addTokenToWallet = useAddTokenToWallet()
 
-  console.log('Currency Instance: ', currency instanceof WrappedLPTokenInfo)
+  // console.log('Currency Instance: ', currency instanceof WrappedLPTokenInfo)
 
   // only show add or remove buttons if not on selected list
   return (
