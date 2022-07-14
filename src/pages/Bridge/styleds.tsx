@@ -5,7 +5,7 @@ export const Wrapper = styled.div`
   position: relative;
 `
 export const BridgeHeaderInfo = styled(DMSansText.mediumBody)`
-  color: rgba(255, 255, 255, 1);
+  color: ${({ theme }) => theme.text1};
   line-height: 31.2px;
 `
 export const WalletDiv = styled.div`
@@ -16,10 +16,6 @@ export const WalletDiv = styled.div`
   
   margin: 30px;
   padding: 10px
-  height: 62px;
-  width: 367px;
-  left: 536px;
-  top: 382px;
   border-radius: 8px;
   border: 1px solid ${({ theme }) => theme.jediBlue};
 `

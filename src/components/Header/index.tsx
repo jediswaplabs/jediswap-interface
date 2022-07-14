@@ -359,7 +359,7 @@ function Header({ history }: { history: any }) {
           {t('Stake')}
         </StyledNavLink>
         <StyledNavLink
-          id={`swap-nav-link`}
+          id={`bridge-nav-link`}
           to={'/bridge'}
           isActive={() => history.location.pathname.includes('/bridge')}
         >
