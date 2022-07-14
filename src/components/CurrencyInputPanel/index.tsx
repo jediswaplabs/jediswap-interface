@@ -13,7 +13,8 @@ import { ReactComponent as DropDown } from '../../assets/images/dropdown.svg'
 
 import { useActiveStarknetReact } from '../../hooks'
 import { useTranslation } from 'react-i18next'
-import { AutoColumn, ColumnCenter } from '../Column'
+import { ColumnCenter } from '../Column'
+import { WrappedLPTokenInfo } from '../../state/lists/hooks'
 
 const InputRow = styled.div<{ selected: boolean }>`
   ${({ theme }) => theme.flexRowNoWrap}
@@ -190,7 +191,6 @@ CurrencyInputPanelProps) {
 
   const [modalOpen, setModalOpen] = useState(false)
   const { connectedAddress } = useActiveStarknetReact()
-  const selectedCurrencyBalance = useCurrencyBalance(connectedAddress ?? undefined, currency ?? undefined)
   const theme = useContext(ThemeContext)
 
   const handleDismissSearch = useCallback(() => {
@@ -236,8 +236,8 @@ CurrencyInputPanelProps) {
               {pair ? (
                 <DoubleCurrencyLogo currency0={pair.token0} currency1={pair.token1} size={25} />
               ) : currency ? (
-                currency instanceof LPToken ? (
-                  <DoubleCurrencyLogo currency0={currency.token0} currency1={currency.token1} size={25} />
+                currency instanceof WrappedLPTokenInfo ? (
+                  <DoubleCurrencyLogo currency0={currency.token0Info} currency1={currency.token1Info} size={25} />
                 ) : (
                   <CurrencyLogo currency={currency} size={24} />
                 )

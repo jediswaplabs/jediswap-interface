@@ -10,7 +10,7 @@
     "@argent/get-starknet": "^0.1.4",
     "@babel/types": "^7.18.8",
     "@ethersproject/experimental": "^5.6.3",
-    "@jediswap/sdk": "^2.0.2",
+    "@jediswap/sdk": "^2.1.3",
     "@jediswap/token-lists": "^1.0.0-beta.1",
     "@popperjs/core": "^2.4.4",
     "@reach/dialog": "^0.10.3",
@@ -40,7 +40,7 @@
     "@web3-starknet-react/abstract-connector": "^2.1.3",
     "@web3-starknet-react/argentx-connector": "^2.1.3",
     "@web3-starknet-react/braavos-connector": "^2.1.3",
-    "@web3-starknet-react/core": "^2.1.3",
+    "@web3-starknet-react/core": "^2.2.0",
     "@web3-starknet-react/types": "^2.1.3",
     "ajv": "^6.12.3",
     "bn.js": "^5.2.0",
@@ -103,7 +103,7 @@
     "react-error-overlay": "6.0.9"
   },
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --open",
     "test": "vitest --ui",
     "build": "vite build",
     "production-build": "vite build",
