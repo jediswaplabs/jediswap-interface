@@ -45,42 +45,6 @@ describe('utils', () => {
     })
   })
 
-  describe('#isAddress', () => {
-    it('returns false if not', () => {
-      expect(isAddress('')).toBe(false)
-      expect(isAddress('0x0000')).toBe(false)
-      expect(isAddress(undefined)).toBe(false)
-    })
-
-    it('returns the checksummed address', () => {
-      expect(isAddress('0x03e85bfbb8e2a42b7bead9e88e9a1b19dbccf661471061807292120462396ec9')).toBe(
-        '0x03e85bfBB8E2a42b7beaD9e88E9A1B19DbCCf661471061807292120462396ec9'
-      )
-    })
-
-    it('fails if too long', () => {
-      expect(isAddress('f164fc0ec4e93095b804a4795bbe1e041497b92a0')).toBe(false)
-    })
-  })
-
-  describe('#shortenAddress', () => {
-    it('throws on invalid address', () => {
-      expect(() => shortenAddress('abc')).toThrow("Invalid 'address'")
-    })
-
-    it('truncates middle characters', () => {
-      expect(shortenAddress('0x03e85bfbb8e2a42b7bead9e88e9a1b19dbccf661471061807292120462396ec9')).toBe(
-        '0x03e8...2396ec9'
-      )
-    })
-
-    it('renders checksummed address', () => {
-      expect(shortenAddress('0x4b05cce270364e2e4bf65bde3e9429b50c97ea3443b133442f838045f41e733'.toLowerCase())).toBe(
-        '0x04B0...F41E733'
-      )
-    })
-  })
-
   describe('#calculateGasMargin', () => {
     it('adds 10%', () => {
       expect(calculateGasMargin(BigNumber.from(1000)).toString()).toEqual('1100')
