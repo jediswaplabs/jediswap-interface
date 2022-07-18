@@ -52,14 +52,16 @@ const Padding = styled.div`
 `
 export default function ZapModalFooter({
   trade,
-  lpAmountOut,
+  tokenAmountIn,
+  tokenAmountOut,
   onConfirm,
   allowedSlippage,
   zapErrorMessage,
   disabledConfirm
 }: {
   trade: Trade
-  lpAmountOut: TokenAmount | undefined
+  tokenAmountIn: TokenAmount | undefined
+  tokenAmountOut: TokenAmount | undefined
   allowedSlippage: number
   onConfirm: () => void
   zapErrorMessage: string | undefined
@@ -70,9 +72,9 @@ export default function ZapModalFooter({
 
   const slippagePct = useMemo(() => basisPointsToPercent(allowedSlippage), [allowedSlippage])
 
-  const slippageAdjustedAmounts = useMemo(() => computeSlippageAdjustedLPAmount(lpAmountOut, allowedSlippage), [
+  const slippageAdjustedAmounts = useMemo(() => computeSlippageAdjustedLPAmount(tokenAmountOut, allowedSlippage), [
     allowedSlippage,
-    lpAmountOut
+    tokenAmountOut
   ])
 
   const { priceImpactWithoutFee, realizedLPFee } = useMemo(() => computeTradePriceBreakdown(trade), [trade])
@@ -98,7 +100,7 @@ export default function ZapModalFooter({
           onClick={() => setShowInverted(!showInverted)}
         >
           <TruncatedText style={{ maxWidth: '75%' }}>
-            {formatZapExecutionPrice(trade, lpAmountOut, showInverted, '=')}
+            {formatZapExecutionPrice(tokenAmountIn, tokenAmountOut, showInverted, '=')}
           </TruncatedText>
           <StyledBalanceMaxMini onClick={() => setShowInverted(!showInverted)}>
             <Icon src={PriceInverter} noMargin height={18} width={18} />
@@ -162,7 +164,7 @@ export default function ZapModalFooter({
                   {slippageAdjustedAmounts?.toSignificant(4) ?? '-'}
                 </TYPE.white>
                 <TYPE.white fontSize={14} marginLeft={'4px'} fontWeight={400}>
-                  {lpAmountOut?.currency.symbol?.split('-').join('/')}
+                  {tokenAmountOut?.currency.symbol?.split('-').join('/')}
                 </TYPE.white>
               </RowFixed>
             </RowBetween>
@@ -173,7 +175,7 @@ export default function ZapModalFooter({
         <TYPE.white textAlign="left" style={{ width: '100%', fontSize: '14px', fontWeight: 400 }}>
           {`Output is estimated. You will receive at least `}
           <b>
-            {slippageAdjustedAmounts?.toSignificant(6)} {lpAmountOut?.currency.symbol?.split('-').join('/')}
+            {slippageAdjustedAmounts?.toSignificant(6)} {tokenAmountOut?.currency.symbol?.split('-').join('/')}
           </b>
           {' or the transaction will revert.'}
         </TYPE.white>

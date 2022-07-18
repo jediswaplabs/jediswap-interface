@@ -25,7 +25,8 @@ function tradeMeaningfullyDiffers(tradeA: Trade, tradeB: Trade): boolean {
 
 export default function ConfirmZapModal({
   trade,
-  lpAmountOut,
+  tokenAmountIn,
+  tokenAmountOut,
   originalTrade,
   onAcceptChanges,
   allowedSlippage,
@@ -39,7 +40,8 @@ export default function ConfirmZapModal({
 }: {
   isOpen: boolean
   trade: Trade | undefined
-  lpAmountOut: TokenAmount | undefined
+  tokenAmountIn: TokenAmount | undefined
+  tokenAmountOut: TokenAmount | undefined
   originalTrade: Trade | undefined
   attemptingTxn: boolean
   txHash: string | undefined
@@ -59,32 +61,34 @@ export default function ConfirmZapModal({
     return trade ? (
       <ZapModalHeader
         trade={trade}
-        lpAmountOut={lpAmountOut}
+        tokenAmountIn={tokenAmountIn}
+        tokenAmountOut={tokenAmountOut}
         allowedSlippage={allowedSlippage}
         recipient={recipient}
         showAcceptChanges={showAcceptChanges}
         onAcceptChanges={onAcceptChanges}
       />
     ) : null
-  }, [allowedSlippage, lpAmountOut, onAcceptChanges, recipient, showAcceptChanges, trade])
+  }, [allowedSlippage, tokenAmountOut, onAcceptChanges, recipient, showAcceptChanges, trade])
 
   const modalBottom = useCallback(() => {
     return trade ? (
       <ZapModalFooter
         onConfirm={onConfirm}
-        lpAmountOut={lpAmountOut}
+        tokenAmountIn={tokenAmountIn}
+        tokenAmountOut={tokenAmountOut}
         trade={trade}
         disabledConfirm={showAcceptChanges}
         zapErrorMessage={zapErrorMessage}
         allowedSlippage={allowedSlippage}
       />
     ) : null
-  }, [trade, onConfirm, lpAmountOut, showAcceptChanges, zapErrorMessage, allowedSlippage])
+  }, [trade, onConfirm, tokenAmountOut, showAcceptChanges, zapErrorMessage, allowedSlippage])
 
   // text to show while loading
   const pendingText = `Zapping ${trade?.inputAmount?.toSignificant(6)} ${
     trade?.inputAmount?.currency?.symbol
-  } for ${lpAmountOut?.toSignificant(6)} ${lpAmountOut?.token.symbol}`
+  } for ${tokenAmountOut?.toSignificant(6)} ${tokenAmountOut?.token.symbol}`
 
   const confirmationContent = useCallback(
     () =>

@@ -3,12 +3,10 @@ import React, { useContext, useMemo } from 'react'
 import { ArrowDown, AlertTriangle } from 'react-feather'
 import { Text } from 'rebass'
 import { ThemeContext } from 'styled-components'
-// import { Field } from '../../state/swap/actions'
 import { DMSansText, TYPE } from '../../theme'
 import { ButtonPrimary } from '../Button'
 import { isAddress, shortenAddress } from '../../utils'
 import { computeTradePriceBreakdown, warningSeverity } from '../../utils/prices'
-// import { computeSlippageAdjustedAmounts } from '../../utils/prices'
 import { AutoColumn, ColumnCenter } from '../Column'
 import CurrencyLogo from '../CurrencyLogo'
 import { RowBetween, RowFixed } from '../Row'
@@ -68,19 +66,17 @@ export default function ZapModalHeader({
   recipient,
   showAcceptChanges,
   onAcceptChanges,
-  lpAmountOut
+  tokenAmountIn,
+  tokenAmountOut
 }: {
   trade: Trade
-  lpAmountOut: TokenAmount | undefined
+  tokenAmountIn: TokenAmount | undefined
+  tokenAmountOut: TokenAmount | undefined
   allowedSlippage: number
   recipient: string | null
   showAcceptChanges: boolean
   onAcceptChanges: () => void
 }) {
-  // const slippageAdjustedAmounts = useMemo(() => computeSlippageAdjustedAmounts(trade, allowedSlippage), [
-  //   trade,
-  //   allowedSlippage
-  // ])
   const { priceImpactWithoutFee } = useMemo(() => computeTradePriceBreakdown(trade), [trade])
   const priceImpactSeverity = warningSeverity(priceImpactWithoutFee)
 
@@ -95,9 +91,17 @@ export default function ZapModalHeader({
           </RowFixed> */}
           <RowBetween>
             <RowFixed gap={'0px'}>
-              <CurrencyLogo currency={trade.inputAmount.currency} size={24} style={{ marginRight: '8px' }} />
-              <DMSansText.body fontWeight={700} style={{ marginLeft: '0px' }}>
-                {trade.inputAmount.currency.symbol}
+              {tokenAmountIn?.token instanceof LPToken ? (
+                <DoubleCurrencyLogo
+                  currency0={tokenAmountIn.token.token0}
+                  currency1={tokenAmountIn.token.token1}
+                  size={18}
+                />
+              ) : (
+                <CurrencyLogo currency={trade.inputAmount.currency} size={24} style={{ marginRight: '8px' }} />
+              )}
+              <DMSansText.body fontWeight={700} style={{ marginLeft: '8px' }}>
+                {tokenAmountIn?.currency.symbol?.split('-').join(' / ')}
               </DMSansText.body>
             </RowFixed>
             <RowFixed gap={'0px'}>
@@ -106,7 +110,7 @@ export default function ZapModalHeader({
                 fontWeight={500}
                 color={showAcceptChanges && trade.tradeType === TradeType.EXACT_OUTPUT ? theme.primary1 : ''}
               >
-                {trade.inputAmount.toSignificant(6)}
+                {tokenAmountIn?.toSignificant(6)}
               </TruncatedText>
             </RowFixed>
           </RowBetween>
@@ -124,17 +128,17 @@ export default function ZapModalHeader({
           {/* <SwapText>Swap To</SwapText> */}
           <RowBetween align="flex-end">
             <RowFixed gap={'0px'}>
-              {lpAmountOut?.token instanceof LPToken ? (
+              {tokenAmountOut?.token instanceof LPToken ? (
                 <DoubleCurrencyLogo
-                  currency0={lpAmountOut.token.token0}
-                  currency1={lpAmountOut.token.token1}
+                  currency0={tokenAmountOut.token.token0}
+                  currency1={tokenAmountOut.token.token1}
                   size={18}
                 />
               ) : (
                 <CurrencyLogo currency={trade.outputAmount.currency} size={18} />
               )}
               <DMSansText.body fontSize={16} fontWeight={700} style={{ marginLeft: '8px' }}>
-                {lpAmountOut?.currency.symbol?.split('-').join(' / ')}
+                {tokenAmountOut?.currency.symbol?.split('-').join(' / ')}
               </DMSansText.body>
             </RowFixed>
             <RowFixed gap={'0px'}>
@@ -149,7 +153,7 @@ export default function ZapModalHeader({
                     : ''
                 }
               >
-                {lpAmountOut?.toSignificant(6)}
+                {tokenAmountOut?.toSignificant(6)}
               </TruncatedText>
             </RowFixed>
           </RowBetween>

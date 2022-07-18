@@ -1,13 +1,12 @@
-import { Currency, Pair, LPToken } from '@jediswap/sdk'
+import { Currency, Pair, LPToken, CurrencyAmount, Percent } from '@jediswap/sdk'
 import React, { useState, useContext, useCallback } from 'react'
 import styled, { ThemeContext } from 'styled-components'
 import { darken } from 'polished'
-import { useCurrencyBalance } from '../../state/wallet/hooks'
 import CurrencySearchModal from '../SearchModal/CurrencySearchModal'
 import CurrencyLogo from '../CurrencyLogo'
 import DoubleCurrencyLogo from '../DoubleLogo'
 import { RowBetween } from '../Row'
-import { TYPE } from '../../theme'
+import { DMSansText, TYPE } from '../../theme'
 import { Input as NumericalInput } from '../NumericalInput'
 import { ReactComponent as DropDown } from '../../assets/images/dropdown.svg'
 
@@ -16,10 +15,39 @@ import { useTranslation } from 'react-i18next'
 import { ColumnCenter } from '../Column'
 import { WrappedLPTokenInfo } from '../../state/lists/hooks'
 
-const InputRow = styled.div<{ selected: boolean }>`
+const InputRow = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
   align-items: center;
+`
+
+const InputRowWrapper = styled.div<{ selected: boolean }>`
   padding: ${({ selected }) => (selected ? '0.75rem 0.5rem 0.75rem 1rem' : '0.75rem 0.75rem 0.75rem 1rem')};
+`
+
+const InputWrapper = styled.div<{ readOnly: boolean; percentagesMode: boolean }>`
+  position: relative;
+
+  .token-amount-input {
+    ${props =>
+      props.readOnly &&
+      `
+      background: transparent;
+      text-align: right;
+    `}
+    ${props =>
+      props.percentagesMode &&
+      `
+      font-weight: 800;
+    `}
+  }
+`
+
+export const StyledPercentSign = styled.div`
+  position: absolute;
+  z-index: 10;
+  top: 50%;
+  left: 70px;
+  transform: translate(-50%, -50%);
 `
 
 const CurrencySelect = styled.button<{ selected: boolean }>`
@@ -114,14 +142,11 @@ const StyledTokenName = styled.span<{ active?: boolean }>`
   white-space: nowrap;
  `
 
-// const LPWrapper = styled.div`
-// display: flex ;
-// flex-direction: co;
-// `
-
 const StyledBalanceMax = styled.button`
   position: absolute;
-  right: 13px;
+  top: 50%;
+  transform: translate(0, -50%);
+  right: 12px;
   height: 28px;
   /* background-color: ${({ theme }) => theme.primary5}; */
   background: transparent;
@@ -133,7 +158,6 @@ const StyledBalanceMax = styled.button`
   line-height: 100%;
    padding: 6px 11px;
   cursor: pointer;
-  margin-right: 0.5rem;
   color: ${({ theme }) => theme.jediWhite};
   :hover {
     border: 1px solid ${({ theme }) => theme.jediBlue};
@@ -148,13 +172,60 @@ const StyledBalanceMax = styled.button`
   `};
 `
 
+const StyledBalanceAmountPickerButton = styled(StyledBalanceMax)`
+  position: static;
+  transform: inherit;
+`
+
+const BalanceAmountPicker = styled.div`
+  display: flex;
+  justify-content: space-between;
+
+  ${StyledBalanceAmountPickerButton} {
+    margin: 0 2.5%;
+    flex-grow: 1;
+
+    &:first-child {
+      margin-left: 0;
+    }
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+`
+
+const BALANCE_AMOUNT_PICKER_DATA = [
+  {
+    title: '25%',
+    value: '25'
+  },
+  {
+    title: '50%',
+    value: '50'
+  },
+  {
+    title: '75%',
+    value: '75'
+  },
+  {
+    title: 'MAX',
+    value: '100'
+  }
+]
+
+const MAX_BALANCE_AMOUNT_PICKER_DATA = 4
+
 interface CurrencyInputPanelProps {
   value: string
   onUserInput: (value: string) => void
   onMax?: () => void
   showMaxButton: boolean
+  showAmountPickerPanel?: boolean
   label?: string
+  placeholder?: string
   onCurrencySelect?: (currency: Currency) => void
+  currencyBalance?: CurrencyAmount
   currency?: Currency | null
   disableCurrencySelect?: boolean
   hideBalance?: boolean
@@ -166,6 +237,8 @@ interface CurrencyInputPanelProps {
   customBalanceText?: string
   showLPTokens?: boolean
   disableInput?: boolean
+  percentagesMode?: boolean
+  readOnlyMode?: boolean
 }
 
 export default function CurrencyInputPanel({
@@ -173,10 +246,13 @@ export default function CurrencyInputPanel({
   onUserInput,
   onMax,
   showMaxButton,
+  showAmountPickerPanel = false,
   label,
+  placeholder,
   onCurrencySelect,
   currency,
   disableCurrencySelect = false,
+  currencyBalance,
   // hideBalance = false,
   pair = null, // used for double token logo
   hideInput = false,
@@ -184,7 +260,9 @@ export default function CurrencyInputPanel({
   id,
   showCommonBases,
   showLPTokens = false,
-  disableInput = false
+  disableInput = false,
+  percentagesMode = false,
+  readOnlyMode = false
 }: // customBalanceText
 CurrencyInputPanelProps) {
   const { t } = useTranslation()
@@ -196,6 +274,25 @@ CurrencyInputPanelProps) {
   const handleDismissSearch = useCallback(() => {
     setModalOpen(false)
   }, [setModalOpen])
+
+  const handleBalanceAmountPickerClick = useCallback(
+    value => {
+      if (!(connectedAddress && currency)) {
+        return
+      }
+      if (percentagesMode) {
+        onUserInput(value)
+        return
+      }
+      if (currencyBalance) {
+        //TODO implement percent amount from value
+        onUserInput(value)
+        return
+      }
+      onUserInput(value);
+    },
+    [connectedAddress, currency]
+  )
 
   return (
     <InputPanel id={id}>
@@ -222,73 +319,95 @@ CurrencyInputPanelProps) {
             </RowBetween>
           </LabelRow>
         )}
-        <InputRow style={hideInput ? { padding: '0', borderRadius: '8px' } : {}} selected={disableCurrencySelect}>
-          <CurrencySelect
-            selected={!!currency}
-            className="open-currency-select-button"
-            onClick={() => {
-              if (!disableCurrencySelect) {
-                setModalOpen(true)
-              }
-            }}
-          >
-            <Aligner vertical={!!pair}>
-              {pair ? (
-                <DoubleCurrencyLogo currency0={pair.token0} currency1={pair.token1} size={25} />
-              ) : currency ? (
-                currency instanceof WrappedLPTokenInfo ? (
-                  <DoubleCurrencyLogo currency0={currency.token0Info} currency1={currency.token1Info} size={25} />
-                ) : (
-                  <CurrencyLogo currency={currency} size={24} />
-                )
-              ) : null}
-              {pair ? (
-                <StyledTokenName className="pair-name-container" style={{ fontSize: '14px' }}>
-                  {pair?.token0.symbol} : {pair?.token1.symbol}
-                </StyledTokenName>
-              ) : currency ? (
-                currency instanceof LPToken ? (
-                  <StyledTokenName active={Boolean(currency && currency.symbol)} style={{ fontSize: '14px' }}>
-                    <ColumnCenter>
-                      <div>{currency.token0.symbol}</div>
-                      <div>/ {currency.token1.symbol}</div>
-                    </ColumnCenter>
-                  </StyledTokenName>
-                ) : (
-                  <StyledTokenName className="token-symbol-container" active={Boolean(currency && currency.symbol)}>
-                    {currency && currency.symbol && currency.symbol.length > 20
-                      ? currency.symbol.slice(0, 4) +
-                        '...' +
-                        currency.symbol.slice(currency.symbol.length - 5, currency.symbol.length)
-                      : currency?.symbol}
-                  </StyledTokenName>
-                )
-              ) : (
-                <StyledTokenName className="token-symbol-container" active={false}>
-                  {t('selectToken')}
-                </StyledTokenName>
-              )}
-              {!disableCurrencySelect && <StyledDropDown selected={!!currency} />}
-            </Aligner>
-          </CurrencySelect>
 
-          {!hideInput && (
-            <>
-              <NumericalInput
-                className="token-amount-input"
-                value={value}
-                onUserInput={val => {
-                  onUserInput(val)
-                }}
-                style={showMaxButton ? { paddingRight: '60px' } : { paddingRight: '12px' }}
-                disabled={disableInput}
-              />
-              {connectedAddress && currency && showMaxButton && label !== 'To' && (
-                <StyledBalanceMax onClick={onMax}>MAX</StyledBalanceMax>
-              )}
-            </>
+        <InputRowWrapper selected={disableCurrencySelect}>
+          <InputRow style={hideInput ? { padding: '0', borderRadius: '8px' } : {}}>
+            <CurrencySelect
+              selected={!!currency}
+              className="open-currency-select-button"
+              onClick={() => {
+                if (!disableCurrencySelect) {
+                  setModalOpen(true)
+                }
+              }}
+            >
+              <Aligner vertical={!!pair}>
+                {pair ? (
+                  <DoubleCurrencyLogo currency0={pair.token0} currency1={pair.token1} size={25} />
+                ) : currency ? (
+                  currency instanceof WrappedLPTokenInfo ? (
+                    <DoubleCurrencyLogo currency0={currency.token0Info} currency1={currency.token1Info} size={25} />
+                  ) : (
+                    <CurrencyLogo currency={currency} size={24} />
+                  )
+                ) : null}
+                {pair ? (
+                  <StyledTokenName className="pair-name-container" style={{ fontSize: '14px' }}>
+                    {pair?.token0.symbol} : {pair?.token1.symbol}
+                  </StyledTokenName>
+                ) : currency ? (
+                  currency instanceof LPToken ? (
+                    <StyledTokenName active={Boolean(currency && currency.symbol)} style={{ fontSize: '14px' }}>
+                      <ColumnCenter>
+                        <div>{currency.token0.symbol}</div>
+                        <div>/ {currency.token1.symbol}</div>
+                      </ColumnCenter>
+                    </StyledTokenName>
+                  ) : (
+                    <StyledTokenName className="token-symbol-container" active={Boolean(currency && currency.symbol)}>
+                      {currency && currency.symbol && currency.symbol.length > 20
+                        ? currency.symbol.slice(0, 4) +
+                          '...' +
+                          currency.symbol.slice(currency.symbol.length - 5, currency.symbol.length)
+                        : currency?.symbol}
+                    </StyledTokenName>
+                  )
+                ) : (
+                  <StyledTokenName className="token-symbol-container" active={false}>
+                    {t('selectToken')}
+                  </StyledTokenName>
+                )}
+                {!disableCurrencySelect && <StyledDropDown selected={!!currency} />}
+              </Aligner>
+            </CurrencySelect>
+
+            {!hideInput && (
+              <InputWrapper readOnly={readOnlyMode} percentagesMode={percentagesMode && !readOnlyMode}>
+                <NumericalInput
+                  className="token-amount-input"
+                  value={value}
+                  placeholder={placeholder}
+                  onUserInput={val => {
+                    onUserInput(val)
+                  }}
+                  style={showMaxButton ? { paddingRight: '60px' } : { paddingRight: '12px' }}
+                  disabled={disableInput}
+                />
+                {percentagesMode && !readOnlyMode && (
+                  <StyledPercentSign>
+                    <DMSansText.largeHeader fontSize={30} fontWeight={700}>
+                      %
+                    </DMSansText.largeHeader>
+                  </StyledPercentSign>
+                )}
+                {connectedAddress && currency && showMaxButton && !showAmountPickerPanel && label !== 'To' && (
+                  <StyledBalanceMax onClick={onMax}>MAX</StyledBalanceMax>
+                )}
+              </InputWrapper>
+            )}
+          </InputRow>
+          {showAmountPickerPanel && (
+            <BalanceAmountPicker style={{ marginTop: '20px' }}>
+              {[...BALANCE_AMOUNT_PICKER_DATA.slice(0, MAX_BALANCE_AMOUNT_PICKER_DATA)].map(({ title, value }) => {
+                return (
+                  <StyledBalanceAmountPickerButton onClick={() => handleBalanceAmountPickerClick(value)}>
+                    {title}
+                  </StyledBalanceAmountPickerButton>
+                )
+              })}
+            </BalanceAmountPicker>
           )}
-        </InputRow>
+        </InputRowWrapper>
       </Container>
       {!disableCurrencySelect && onCurrencySelect && (
         <CurrencySearchModal

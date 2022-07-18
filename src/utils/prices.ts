@@ -88,24 +88,23 @@ export function formatPairExecutionPrice(pair?: Pair, inverted?: boolean, separa
 }
 
 export function formatZapExecutionPrice(
-  trade?: Trade,
-  lpAmountOut?: TokenAmount,
+  tokenAmountIn?: TokenAmount,
+  tokenAmountOut?: TokenAmount,
   inverted?: boolean,
   separator = '~'
 ): string {
-  if (!trade || !lpAmountOut) {
+  if (!tokenAmountIn || !tokenAmountOut) {
     return ''
   }
 
-  const { inputAmount } = trade
+  const zapExecutionPrice = new Price(tokenAmountIn.currency, tokenAmountOut.currency, tokenAmountIn.raw, tokenAmountOut.raw)
 
-  const zapExecutionPrice = new Price(inputAmount.currency, lpAmountOut.currency, inputAmount.raw, lpAmountOut.raw)
-
-  const lpSymbol = lpAmountOut.currency.symbol?.split('-').join('/')
+  const symbolIn = tokenAmountIn.currency.symbol?.split('-').join('/');
+  const symbolOut = tokenAmountOut.currency.symbol?.split('-').join('/');
 
   return inverted
-    ? `1 ${lpSymbol} ${separator} ${zapExecutionPrice.invert().toSignificant(3)} ${trade.inputAmount.currency.symbol}`
-    : `1 ${trade.inputAmount.currency.symbol} ${separator} ${zapExecutionPrice.toSignificant(3)} ${lpSymbol} `
+    ? `1 ${symbolOut} ${separator} ${zapExecutionPrice.invert().toSignificant(3)} ${symbolIn}`
+    : `1 ${symbolIn} ${separator} ${zapExecutionPrice.toSignificant(3)} ${symbolOut} `
 }
 
 export function computeSlippageAdjustedLPAmount(

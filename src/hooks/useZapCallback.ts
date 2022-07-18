@@ -1,6 +1,6 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { Contract, Args, uint256, RawArgs, stark, Call } from 'starknet'
-import { JSBI, Percent, Router, SwapParameters as ZapParameters, TokenAmount, Trade, TradeType } from '@jediswap/sdk'
+import {JSBI, LPToken, Percent, Router, SwapParameters as ZapParameters, TokenAmount, Trade, TradeType} from '@jediswap/sdk'
 import { useMemo } from 'react'
 import { BIPS_BASE, INITIAL_ALLOWED_SLIPPAGE } from '../constants'
 import { useTransactionAdder } from '../state/transactions/hooks'
@@ -12,6 +12,7 @@ import useTransactionDeadline from './useTransactionDeadline'
 import { wrappedCurrency } from '../utils/wrappedCurrency'
 import { computeSlippageAdjustedLPAmount } from '../utils/prices'
 import { useApprovalCallFromTrade } from './useApproveCall'
+import {Modes} from "../state/zap/actions";
 // import useENS from './useENS'
 
 export enum ZapCallbackState {
@@ -62,7 +63,6 @@ function useZapCallArguments(
       return []
     }
 
-    //
     if (!contract) {
       return []
     }
@@ -96,22 +96,21 @@ function useZapCallArguments(
 // and the user has approved the slippage adjusted input amount for the trade
 export function useZapCallback(
   trade: Trade | undefined,
-  lpAmountOut: TokenAmount | undefined, // trade to execute, required
+  tokenAmountOut: TokenAmount | undefined, // trade to execute, required
   allowedSlippage: number = INITIAL_ALLOWED_SLIPPAGE, // in bips
   recipientAddressOrName: string | null // the ENS name or address of the recipient of the trade, or null if zap should be returned to sender
 ): { state: ZapCallbackState; callback: null | (() => Promise<string>); error: string | null } {
   const { account, chainId, library } = useActiveStarknetReact()
-
   const approvalCallback = useApprovalCallFromTrade(trade, allowedSlippage, 'zap')
   const zapCalls = useZapCallArguments(trade, allowedSlippage, recipientAddressOrName)
 
   const addTransaction = useTransactionAdder()
   const recipient = recipientAddressOrName === null ? account : recipientAddressOrName
 
-  // const { address: recipientAddress } = useENS(recipientAddressOrName)
+  const mode = tokenAmountOut?.token instanceof LPToken ? Modes.IN : Modes.OUT;
 
   return useMemo(() => {
-    if (!trade || !lpAmountOut || !library || !account || !chainId) {
+    if (!trade || !tokenAmountOut || !library || !account || !chainId) {
       return { state: ZapCallbackState.INVALID, callback: null, error: 'Missing dependencies' }
     }
     if (!recipient) {
@@ -123,15 +122,15 @@ export function useZapCallback(
     }
 
     const inputToken = wrappedCurrency(trade.inputAmount.currency, chainId)
+    const adjustedTokenAmountOut = computeSlippageAdjustedLPAmount(tokenAmountOut, 5000)
 
-    const minLPAmountOut = computeSlippageAdjustedLPAmount(lpAmountOut, 5000)
     // console.log(
     //   '🚀 ~ file: useZapCallback.ts ~ line 127 ~ returnuseMemo ~ minLPAmountOut',
     //   allowedSlippage,
     //   minLPAmountOut?.toSignificant(6)
     // )
 
-    if (!inputToken || !minLPAmountOut) {
+    if (!inputToken || !adjustedTokenAmountOut) {
       return { state: ZapCallbackState.INVALID, callback: null, error: 'Input Token Missing' }
     }
 
@@ -170,13 +169,13 @@ export function useZapCallback(
         const [amountIn, amountOut, path, to, deadline] = args
 
         const uint256AmountIn = uint256.bnToUint256(amountIn as string)
-        const uint256_LP_AmountOut = uint256.bnToUint256(minLPAmountOut?.raw.toString())
+        const uint256_AdjustedTokenAmountOut = uint256.bnToUint256(adjustedTokenAmountOut?.raw.toString())
 
         const zapArgs: RawArgs = {
           from_token_address: inputToken.address,
-          pair_address: lpAmountOut.token.address,
+          pair_address: adjustedTokenAmountOut.token.address,
           amount: { type: 'struct', ...uint256AmountIn },
-          min_pool_token: { type: 'struct', ...uint256_LP_AmountOut },
+          min_pool_token: { type: 'struct', ...uint256_AdjustedTokenAmountOut },
           path,
           transfer_residual: '0'
         }
@@ -185,7 +184,7 @@ export function useZapCallback(
 
         const zapCall: Call = {
           contractAddress: contract.address,
-          entrypoint: 'zap_in',
+          entrypoint: Modes.IN ? 'zap_in' : 'zap_out',
           calldata: zapCalldata
         }
 
@@ -193,9 +192,9 @@ export function useZapCallback(
           .execute([approval, zapCall])
           .then(response => {
             const inputSymbol = trade.inputAmount.currency.symbol
-            const outputSymbol = lpAmountOut.token.symbol
+            const outputSymbol = adjustedTokenAmountOut.token.symbol
             const inputAmount = trade.inputAmount.toSignificant(3)
-            const outputAmount = lpAmountOut.toSignificant(3)
+            const outputAmount = adjustedTokenAmountOut.toSignificant(3)
 
             const base = `Zap ${inputAmount} ${inputSymbol} for ${outputAmount} ${outputSymbol}`
             const withRecipient =
@@ -230,7 +229,7 @@ export function useZapCallback(
     }
   }, [
     trade,
-    lpAmountOut,
+    tokenAmountOut,
     library,
     account,
     chainId,
