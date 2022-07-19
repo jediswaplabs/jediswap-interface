@@ -39,7 +39,7 @@ const ZAP_MODES = {
   [Modes.OUT]: {
     id: Modes.OUT,
     name: 'Zap Out',
-    description: 'Zap OUT helps you withdraw your LP tokens into any single or multiple tokens with 1-click'
+    description: 'Zap OUT helps you withdraw your LP tokens into any single token with 1-click'
   }
 }
 
