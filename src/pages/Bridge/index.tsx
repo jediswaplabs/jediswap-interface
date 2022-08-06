@@ -12,10 +12,10 @@ export default function Bridge() {
       <Wrapper>
         <BridgeHeaderInfo fontSize={23}>Please connect your Ethereum wallet and Argent wallet</BridgeHeaderInfo>
         <WalletDiv>
-          <img src={ArgentXLogo} width="30px" height="30px" /> TODO: Add argentX functionality
+          <img src={ArgentXLogo} width="24px" height="24px" /> 0x520....8848
         </WalletDiv>
         <WalletDiv>
-          <img src={MetamaskLogo} width="30px" height="30px" /> TODO: Add metamask functionality
+          <img src={MetamaskLogo} width="24px" height="24px" /> MetaMask
         </WalletDiv>
       </Wrapper>
     </AppBody>
