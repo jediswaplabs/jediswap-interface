@@ -6,11 +6,10 @@ import { useActiveStarknetReact } from './index'
 import ERC20_ABI from '../constants/abis/erc20.json'
 import PAIR_ABI from '../constants/abis/Pair.json'
 
-import { MULTICALL_NETWORKS, MULTICALL_ABI } from '../constants/multicall'
-import { FACTORY_ADDRESS, FACTORY_ABI } from '../constants/factoryAddress'
-import { ROUTER_ADDRESS, ROUTER_ABI } from '../constants/routerAddress'
-import { ZAP_IN_ADDRESS, ZAP_IN_ABI } from '../constants/zapInAddress'
-
+import { MULTICALL_NETWORKS, MULTICALL_ABI } from '../constants/contracts/multicall'
+import { FACTORY_ADDRESS, FACTORY_ABI } from '../constants/contracts/factoryAddress'
+import { ROUTER_ADDRESS, ROUTER_ABI } from '../constants/contracts/routerAddress'
+import { ZAP_IN_ADDRESS, ZAP_IN_ABI } from '../constants/contracts/zapInAddress'
 
 // returns null on errors
 function useContract(address: string | undefined, ABI: any, withSignerIfPossible = true): Contract | null {
