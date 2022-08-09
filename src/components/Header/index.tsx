@@ -184,7 +184,7 @@ const NetworkCard = styled(YellowCard)`
     flex-shrink: 0;
   `};
 `
-const NetworkCard2 = styled.select`
+const SelectNetwork = styled.select`
   border-radius: 8px;
   flex: 1;
   font-size: 16px;
@@ -400,11 +400,15 @@ function Header({ history }: { history: any }) {
             {/* {chainId && NETWORK_LABELS[chainId] && (
               <NetworkCard title={NETWORK_LABELS[chainId]}>Starknet-{NETWORK_LABELS[chainId]}-{chainId}</NetworkCard>
             )} */}
-            <NetworkCard2>
-              <option>Starknet-Mainnet</option>
-              <option>Starknet-Goerli</option>
+            <SelectNetwork
+              onChange={e => {
+                console.log(e.target.value)
+              }}
+            >
+              <option value="1">Starknet-Mainnet</option>
+              <option value="5">Starknet-Goerli</option>
 
-            </NetworkCard2>
+            </SelectNetwork>
           </HideSmall>
           <AccountElement active={!!connectedAddress} style={{ pointerEvents: 'auto' }}>
             <Web3Status />
