@@ -5,7 +5,7 @@ import { DMSansText } from '../../theme'
 
 // see https://github.com/vitejs/vite/issues/2139#issuecomment-806416318
 // @ts-ignore
-const SwitchComponent = Switch.default ? Switch.default : Switch;
+const SwitchComponent = Switch.default ? Switch.default : Switch
 
 const StyledLabel = styled.label`
   display: flex;
