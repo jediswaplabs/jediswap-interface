@@ -9,6 +9,7 @@ import styled, {
 import { useIsDarkMode } from '../state/user/hooks'
 import { Text, TextProps } from 'rebass'
 import { Colors } from './styled'
+import bgImg from '../assets/images/Bgd.png'
 
 export * from './components'
 
@@ -282,7 +283,8 @@ html {
 
 body {
   min-height: 100vh;
-  background: linear-gradient(66.46deg, #03001E 24.27%, rgba(3, 0, 30, 0.612102) 57.29%, rgba(3, 0, 30, 0) 100%);
+  // background: linear-gradient(66.46deg, #03001E 24.27%, rgba(3, 0, 30, 0.612102) 57.29%, rgba(3, 0, 30, 0) 100%);
+  background: url(${bgImg});
   backdrop-filter: blur(400px);
   background-repeat: no-repeat;
   background-size: cover;
