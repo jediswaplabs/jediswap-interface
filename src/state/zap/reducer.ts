@@ -1,5 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit'
-import { Field, replaceZapState, selectCurrency, typeInput, setRecipient } from './actions'
+import { Field, replaceZapState, selectCurrency, typeInput, setRecipient, reset } from './actions'
 
 export interface ZapState {
   readonly independentField: Field
@@ -60,4 +60,5 @@ export default createReducer<ZapState>(initialState, builder => {
     .addCase(setRecipient, (state, { payload: { recipient } }) => {
       state.recipient = recipient
     })
+    .addCase(reset, (state, {}) => initialState)
 })

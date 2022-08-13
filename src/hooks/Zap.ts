@@ -1,13 +1,14 @@
 import { BASES_TO_CHECK_TRADES_AGAINST } from './../constants/index'
 import { useMemo } from 'react'
 import { useActiveStarknetReact } from '.'
-import { Currency, CurrencyAmount, JSBI, LPToken, Pair, Token, TokenAmount, Trade } from '@jediswap/sdk'
+import { Currency, CurrencyAmount, JSBI, LPToken, Pair, Percent, Token, TokenAmount, Trade } from '@jediswap/sdk'
 import { wrappedCurrency, wrappedCurrencyAmount } from '../utils/wrappedCurrency'
 import flatMap from 'lodash.flatmap'
 import { PairState, usePair, usePairs } from '../data/Reserves'
 import { useTotalSupply } from '../data/TotalSupply'
+import { Field } from '../state/zap/actions'
 
-export function useZapPairs(inputCurrency?: Currency, outputLpToken?: LPToken): [Pair[], boolean] {
+export function useZapInPairs(inputCurrency?: Currency, outputLpToken?: LPToken): [Pair[], boolean] {
   const { chainId } = useActiveStarknetReact()
 
   const bases: Token[] = useMemo(() => (chainId ? BASES_TO_CHECK_TRADES_AGAINST[chainId] : []), [chainId])
@@ -65,7 +66,91 @@ export function useZapPairs(inputCurrency?: Currency, outputLpToken?: LPToken): 
     return []
   }, [basePairs, bases, inputToken, outputToken0, outputToken1])
 
-  console.log('🚀 ~ file: Zap.ts ~ line 66 ~ useZapPairs ~ allPairCombinations', allPairCombinations)
+  console.log('🚀 ~ file: Zap.ts ~ line 66 ~ useZapInPairs ~ allPairCombinations', allPairCombinations)
+
+  const allPairs = usePairs(allPairCombinations)
+
+  const anyPairLoading = allPairs.some(([pairState]) => pairState === PairState.LOADING)
+
+  return [
+    useMemo(
+      () =>
+        Object.values(
+          allPairs
+            // filter out invalid pairs
+            .filter((result): result is [PairState.EXISTS, Pair] =>
+              Boolean(result[0] === PairState.EXISTS && result[1])
+            )
+            // filter out duplicated pairs
+            .reduce<{ [pairAddress: string]: Pair }>((memo, [, curr]) => {
+              memo[curr.liquidityToken.address] = memo[curr.liquidityToken.address] ?? curr
+              return memo
+            }, {})
+        ),
+      [allPairs]
+    ),
+    anyPairLoading
+  ]
+}
+
+export function useZapOutPairs(inputLpToken?: LPToken, outputCurrency?: Currency): [Pair[], boolean] {
+  const { chainId } = useActiveStarknetReact()
+
+  const bases: Token[] = useMemo(() => (chainId ? BASES_TO_CHECK_TRADES_AGAINST[chainId] : []), [chainId])
+
+  const [inputToken0, inputToken1, outputToken] = chainId
+    ? [
+        wrappedCurrency(inputLpToken?.token0, chainId),
+        wrappedCurrency(inputLpToken?.token1, chainId),
+        wrappedCurrency(outputCurrency, chainId)
+      ]
+    : [undefined, undefined, undefined]
+
+  const basePairs: [Token, Token][] = useMemo(
+    () =>
+      flatMap(bases, (base): [Token, Token][] => bases.map(otherBase => [base, otherBase])).filter(
+        ([t0, t1]) => t0.address !== t1.address
+      ),
+    [bases]
+  )
+
+  const allPairCombinations: [Token, Token][] = useMemo(() => {
+    if (!(inputToken0 && inputToken1 && outputToken)) {
+      return []
+    }
+
+    if (inputToken0.address === outputToken.address) {
+      return [[inputToken1, outputToken]]
+    }
+
+    if (inputToken1.address === outputToken.address) {
+      return [[inputToken0, outputToken]]
+    }
+
+    return [
+      // 1st inputToken0 - outputToken
+      [inputToken0, outputToken],
+
+      // 1st inputToken1 - outputToken
+      [inputToken1, outputToken],
+
+      // outputToken against all bases
+      ...bases.map((base): [Token, Token] => [outputToken, base]),
+
+      // inputToken0 against all bases
+      ...bases.map((base): [Token, Token] => [inputToken0, base]),
+
+      // inputToken1 against all bases
+      ...bases.map((base): [Token, Token] => [inputToken1, base]),
+
+      // each base against all bases
+      ...basePairs
+    ]
+      .filter((tokens): tokens is [Token, Token] => Boolean(tokens[0] && tokens[1]))
+      .filter(([t0, t1]) => t0.address !== t1.address)
+  }, [basePairs, bases, inputToken0, inputToken1, outputToken])
+
+  console.log('🚀 ~ file: Zap.ts ~ line 66 ~ useZapOutPairs ~ allPairCombinations', allPairCombinations)
 
   const allPairs = usePairs(allPairCombinations)
 
@@ -97,8 +182,8 @@ interface ZapTrades {
   tradeToken1Out: Trade | null
 }
 
-export function useZapTrades(currencyAmountIn?: CurrencyAmount, lpTokenOut?: LPToken): [ZapTrades | null, boolean] {
-  const [allowedPairs, pairLoading] = useZapPairs(currencyAmountIn?.currency, lpTokenOut)
+export function useZapInTrades(currencyAmountIn?: CurrencyAmount, lpTokenOut?: LPToken): [ZapTrades | null, boolean] {
+  const [allowedPairs, pairLoading] = useZapInPairs(currencyAmountIn?.currency, lpTokenOut)
 
   return [
     useMemo(() => {
@@ -123,10 +208,44 @@ export function useZapTrades(currencyAmountIn?: CurrencyAmount, lpTokenOut?: LPT
   ]
 }
 
-// | {
-//     token0?: { amount: TokenAmount; trade: Trade }
-//     token1?: { amount: TokenAmount; trade: Trade }
-//   }
+export function useZapOutTrades(
+  lpTokenIn?: LPToken,
+  lpAmountIn?: {
+    [Field.LIQUIDITY_PERCENT]: Percent
+    [Field.LIQUIDITY]?: TokenAmount
+    [Field.LIQUIDITY_CURRENCY_A]?: CurrencyAmount
+    [Field.LIQUIDITY_CURRENCY_B]?: CurrencyAmount
+  },
+  tokenOut?: Currency
+): [ZapTrades | null, boolean] {
+  const [allowedPairs, pairLoading] = useZapOutPairs(lpTokenIn, tokenOut)
+
+  return [
+    useMemo(() => {
+      if (!(lpAmountIn && tokenOut && allowedPairs.length > 0)) {
+        return null
+      }
+      if (!(lpAmountIn[Field.LIQUIDITY_CURRENCY_A] && lpAmountIn[Field.LIQUIDITY_CURRENCY_B])) {
+        return null
+      }
+
+      const bestTradeToken0 =
+        Trade.bestTradeExactIn(allowedPairs, lpAmountIn[Field.LIQUIDITY_CURRENCY_A], tokenOut, {
+          maxHops: 3,
+          maxNumResults: 1
+        })[0] ?? null
+
+      const bestTradeToken1 =
+        Trade.bestTradeExactIn(allowedPairs, lpAmountIn[Field.LIQUIDITY_CURRENCY_B], tokenOut, {
+          maxHops: 3,
+          maxNumResults: 1
+        })[0] ?? null
+
+      return { tradeToken0Out: bestTradeToken0, tradeToken1Out: bestTradeToken1 }
+    }, [lpAmountIn, tokenOut, allowedPairs]),
+    pairLoading || allowedPairs.length === 0
+  ]
+}
 
 export function useLPOutAmount(
   currencyAmountIn?: CurrencyAmount,
@@ -240,6 +359,90 @@ export function useLPOutAmount(
   }
 }
 
+export function useCurrencyOutFromLpAmount(
+  currencyAmountIn?: {
+    [Field.LIQUIDITY_PERCENT]: Percent
+    [Field.LIQUIDITY]?: TokenAmount
+    [Field.LIQUIDITY_CURRENCY_A]?: TokenAmount
+    [Field.LIQUIDITY_CURRENCY_B]?: TokenAmount
+  },
+  outputCurrency?: Currency | undefined,
+  trades?: ZapTrades | null
+): [TokenAmount | undefined, Trade | null | undefined, boolean] {
+  const { chainId } = useActiveStarknetReact()
+
+  const tokenAmountA = currencyAmountIn?.[Field.LIQUIDITY_CURRENCY_A] ?? undefined
+  const tokenA = currencyAmountIn?.[Field.LIQUIDITY_CURRENCY_A]?.token ?? undefined
+  const tokenAmountB = currencyAmountIn?.[Field.LIQUIDITY_CURRENCY_B] ?? undefined
+  const tokenB = currencyAmountIn?.[Field.LIQUIDITY_CURRENCY_B]?.token ?? undefined
+  const outputToken = wrappedCurrency(outputCurrency, chainId)
+
+  const [lpPairState, lpPair] = usePair(tokenA, tokenB);
+
+  if (!(tokenA && tokenAmountA && tokenB && tokenAmountB && outputToken && trades)) {
+    return [undefined, undefined, false]
+  }
+
+  const { tradeToken0Out, tradeToken1Out } = trades
+
+  if (tokenA.equals(outputToken)) {
+    if (!tradeToken1Out) {
+      return [undefined, undefined, lpPairState === PairState.LOADING]
+    }
+
+    const outputTradeCurrencyAmount = wrappedCurrencyAmount(tradeToken1Out.outputAmount, chainId)
+
+    if (!outputTradeCurrencyAmount) {
+      return [undefined, undefined, lpPairState === PairState.LOADING]
+    }
+
+    const summarizedOutputAmount = JSBI.add(tokenAmountA.raw, outputTradeCurrencyAmount.raw)
+    const finalTokenOutputAmount = new TokenAmount(tokenA, summarizedOutputAmount)
+
+    return [finalTokenOutputAmount, tradeToken1Out, lpPairState === PairState.LOADING]
+  }
+
+  if (tokenB.equals(outputToken)) {
+    if (!tradeToken0Out) {
+      return [undefined, undefined, lpPairState === PairState.LOADING]
+    }
+    const outputTradeCurrencyAmount = wrappedCurrencyAmount(tradeToken0Out.outputAmount, chainId)
+    if (!outputTradeCurrencyAmount) {
+      return [undefined, undefined, false]
+    }
+
+    const summarizedOutputAmount = JSBI.add(tokenAmountB.raw, outputTradeCurrencyAmount.raw)
+    const finalTokenOutputAmount = new TokenAmount(tokenB, summarizedOutputAmount)
+
+    return [finalTokenOutputAmount, tradeToken0Out, lpPairState === PairState.LOADING]
+  }
+
+  if (!(tradeToken0Out && tradeToken1Out)) {
+    return [undefined, undefined, lpPairState === PairState.LOADING]
+  }
+
+  let tokenAmountTrade0;
+  let tokenAmountTrade1;
+
+  // Calculate final amount when tradeToken0Out is used
+  if (tradeToken0Out) {
+    const outputAmount = wrappedCurrencyAmount(tradeToken0Out.outputAmount, chainId)
+    if (!outputAmount) return [undefined, undefined, lpPairState === PairState.LOADING]
+    tokenAmountTrade0 = new TokenAmount(outputToken, outputAmount.raw)
+  }
+  // Calculate final amount when tradeToken0Out is used
+  if (tradeToken1Out) {
+    const outputAmount = wrappedCurrencyAmount(tradeToken1Out.outputAmount, chainId)
+    if (!outputAmount) return [undefined, undefined, lpPairState === PairState.LOADING]
+    tokenAmountTrade1 = new TokenAmount(outputToken, outputAmount.raw)
+  }
+
+  const maxTradeAmount = maxTradeAmountOut(tokenAmountTrade0, tokenAmountTrade1);
+  const finalTrade = (maxTradeAmount === tokenAmountTrade0) ? tradeToken0Out: tradeToken1Out;
+
+  return [maxTradeAmount, finalTrade, lpPairState === PairState.LOADING];
+}
+
 export function calculateLPAmount(
   tokenAmount: TokenAmount,
   lpTokenOut: Token,
@@ -257,4 +460,8 @@ export function minLPAmountOut(lpAmount1: TokenAmount, lpAmount2: TokenAmount): 
 
 export function maxLPAmountOut(lpAmount1: TokenAmount, lpAmount2: TokenAmount): TokenAmount {
   return JSBI.GT(lpAmount1.raw, lpAmount2.raw) ? lpAmount1 : lpAmount2
+}
+
+export function maxTradeAmountOut(tradeAmount1: TokenAmount, tradeAmount2: TokenAmount): TokenAmount {
+  return JSBI.GT(tradeAmount1.raw, tradeAmount2.raw) ? tradeAmount1 : tradeAmount2
 }
