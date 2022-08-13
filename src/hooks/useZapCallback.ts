@@ -125,11 +125,6 @@ export function useZapCallback(
     const inputToken = wrappedCurrency(trade.inputAmount.currency, chainId)
 
     const minLPAmountOut = computeSlippageAdjustedLPAmount(lpAmountOut, 5000)
-    // console.log(
-    //   '🚀 ~ file: useZapCallback.ts ~ line 127 ~ returnuseMemo ~ minLPAmountOut',
-    //   allowedSlippage,
-    //   minLPAmountOut?.toSignificant(6)
-    // )
 
     if (!inputToken || !minLPAmountOut) {
       return { state: ZapCallbackState.INVALID, callback: null, error: 'Input Token Missing' }

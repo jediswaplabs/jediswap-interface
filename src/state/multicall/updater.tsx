@@ -47,15 +47,7 @@ async function fetchChunk(
 
     // Keep it here for multicall debugging
     const dateTime = new Date().getTime()
-
-    // console.log(`at timestamp ${dateTime.toString()}`, '🚀 ~ file: updater.tsx ~ line 46 ~ calls', chunk)
-
     const response = await multicallContract.aggregate(calls)
-    // console.log(
-    //   `at timestamp ${dateTime.toString()}`,
-    //   '🚀 ~ file: updater.tsx ~ line 48 ~ response',
-    //   response.result.map(data => number.toHex(data))
-    // )
 
     resultsBlockNumber = response.block_number
     returnData_len = response.result_len
@@ -285,9 +277,6 @@ export default function Updater(): null {
         promise
           .then(({ results: returnData, blockNumber: fetchBlockNumber }) => {
             cancellations.current = { cancellations: [], blockNumber: latestBlockNumber }
-
-            // console.log('🚀 ~ file: updater.tsx ~ line 305 ~ .then ~ returnData', returnData)
-
             // accumulates the length of all previous indices
             const firstCallKeyIndex = chunkedCalls.slice(0, index).reduce<number>((memo, curr) => memo + curr.length, 0)
 
