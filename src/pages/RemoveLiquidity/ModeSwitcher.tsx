@@ -3,6 +3,10 @@ import styled, { ThemeContext } from 'styled-components'
 import Switch from 'react-switch'
 import { DMSansText } from '../../theme'
 
+// see https://github.com/vitejs/vite/issues/2139#issuecomment-806416318
+// @ts-ignore
+const SwitchComponent = Switch.default ? Switch.default : Switch
+
 const StyledLabel = styled.label`
   display: flex;
   align-items: center;
@@ -20,7 +24,7 @@ export default function ModeSwitcher({ showDetailed, onChange }: ModeSwitcherPro
   return (
     <StyledLabel>
       <DMSansText.mediumBody fontSize={15}>Detailed</DMSansText.mediumBody>
-      <Switch
+      <SwitchComponent
         onChange={onChange}
         checked={showDetailed}
         onColor="#305398"
