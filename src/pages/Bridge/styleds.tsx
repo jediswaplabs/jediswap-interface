@@ -22,7 +22,10 @@ export const WalletDiv = styled.div`
   margin: 25px;
   padding:  16px 21px
 
+  border: double 1px transparent;
   border-radius: 8px;
-  border: 1px solid ${({ theme }) => theme.jediBlue};
-
+  border-image-source: linear-gradient(90deg, #E200FF -0.73%, #4BD4FF 100%);
+  background-origin: border-box;
+  border-image-slice: 1;
+  background-clip: content-box, border-box;
 `
