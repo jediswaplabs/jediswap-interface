@@ -34,7 +34,6 @@ export function useZapActionHandlers(): {
 
   const onCurrencySelection = useCallback(
     (field: Field, currency: Currency) => {
-      // console.log('🚀 ~ file: hooks.tsx ~ line 36 ~ useZapActionHandlers ~ currency', currency)
       dispatch(
         selectCurrency({
           field,
@@ -102,10 +101,8 @@ export function useDerivedZapInfo(): {
   const outputLpToken = outputLPCurrency instanceof LPToken ? outputLPCurrency : undefined
 
   const [zapTrade, zapLoading] = useZapTrades(parsedAmount, outputLpToken)
-  console.log('🚀 ~ file: hooks.tsx ~ line 103 ~ useDerivedZapInfo ~ zapTrade', zapTrade)
 
   const [lpAmountOut, lpAmountTrade, lpLoading] = useLPOutAmount(parsedAmount, outputLpToken, zapTrade)
-  console.log('🚀 ~ file: hooks.tsx ~ line 110 ~ useDerivedZapInfo ~ lpAmountTrade', lpAmountTrade)
 
   const currencyBalances = {
     [Field.INPUT]: relevantTokenBalances[0],

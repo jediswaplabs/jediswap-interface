@@ -34,8 +34,6 @@ export function useEagerConnect() {
       if (!connector) return
 
       connector.isAuthorized().then(isAuthorized => {
-        // console.log('Authorized immedietly: ', isAuthorized)
-
         if (isAuthorized && connector) {
           activate(connector, undefined, true).catch(() => {
             setTried(true)
