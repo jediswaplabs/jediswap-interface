@@ -1,15 +1,12 @@
 import { BigNumberish } from 'starknet/dist/utils/number'
 import { AbstractConnector } from '@web3-starknet-react/abstract-connector'
-import { useMemo } from 'react'
-// import { Contract } from '@ethersproject/contracts'
-import { Abi, Contract, Provider, Signer, SignerInterface, uint256 } from 'starknet'
+import { validateAndParseAddress, Abi, Provider, uint256, Contract } from 'starknet'
+
 import { BigNumber } from '@ethersproject/bignumber'
 import { ZERO_ADDRESS } from '../constants'
 import { ChainId, JSBI, Percent, Token, CurrencyAmount, Currency, ETHER } from '@jediswap/sdk'
 import { LPTokenAddressMap, TokenAddressMap } from '../state/lists/hooks'
-import { validateAndParseAddress } from 'starknet'
 import isZero from './isZero'
-import { wrappedCurrency } from './wrappedCurrency'
 
 // returns the checksummed address if the address is valid, otherwise returns false
 export function isAddress(addr: string | null | undefined): string | false {

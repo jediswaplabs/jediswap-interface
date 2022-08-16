@@ -1,17 +1,15 @@
-import { MaxUint256 } from '@ethersproject/constants'
-import { TransactionResponse } from '@ethersproject/providers'
-import { Trade, TokenAmount, CurrencyAmount, ETHER, WETH, Token } from '@jediswap/sdk'
 import { useCallback, useMemo } from 'react'
+import { InvokeFunctionResponse, Args, uint256 } from 'starknet'
+import { MaxUint256 } from '@ethersproject/constants'
+import { Trade, TokenAmount, CurrencyAmount, ETHER, WETH, Token } from '@jediswap/sdk'
+
 import { ROUTER_ADDRESS, ZAP_IN_ADDRESS } from '../constants'
 import { useTokenAllowance } from '../data/Allowances'
-// import { getTradeVersion, useV1TradeExchangeAddress } from '../data/V1'
 import { Field } from '../state/swap/actions'
 import { useTransactionAdder, useHasPendingApproval } from '../state/transactions/hooks'
 import { computeSlippageAdjustedAmounts } from '../utils/prices'
-import { calculateGasMargin } from '../utils'
 import { useTokenContract } from './useContract'
 import { useActiveStarknetReact } from './index'
-import { AddTransactionResponse, Args, uint256 } from 'starknet'
 
 export enum ApprovalState {
   UNKNOWN,
@@ -95,7 +93,7 @@ export function useApproveCallback(
 
     return tokenContract
       .approve(spender, approveArgs.amount)
-      .then((response: AddTransactionResponse) => {
+      .then((response: InvokeFunctionResponse) => {
         addTransaction(response, {
           summary: 'Approve ' + amountToApprove.currency.symbol,
           approval: { tokenAddress: token.address, spender: spender }

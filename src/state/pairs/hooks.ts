@@ -1,5 +1,5 @@
 import { validateAndParseAddress } from 'starknet'
-import { AppState } from './../index'
+import { AppState } from '../index'
 import { useSelector } from 'react-redux'
 import { useMemo } from 'react'
 
