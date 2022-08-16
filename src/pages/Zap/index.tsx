@@ -81,7 +81,6 @@ export default function Zap() {
   }
 
   const route = zapTrade?.route
-  // console.log('🚀 ~ file: index.tsx ~ line 73 ~ Zap ~ route', route)
 
   const userHasSpecifiedInputOutput = Boolean(
     currencies[Field.INPUT] && currencies[Field.OUTPUT] && parsedAmounts[independentField]?.greaterThan(JSBI.BigInt(0))
@@ -157,7 +156,6 @@ export default function Zap() {
 
   const handleInputSelect = useCallback(
     inputCurrency => {
-      console.log('🚀 ~ file: index.tsx ~ line 103 ~ Zap ~ inputCurrency', inputCurrency)
       // setApprovalSubmitted(false)
       onCurrencySelection(Field.INPUT, inputCurrency)
       handleTypeInput('')
@@ -167,8 +165,6 @@ export default function Zap() {
 
   const handleOutputSelect = useCallback(
     outputCurrency => {
-      console.log('🚀 ~ file: index.tsx ~ line 112 ~ Zap ~ outputCurrency', outputCurrency)
-
       onCurrencySelection(Field.OUTPUT, outputCurrency)
     },
     [onCurrencySelection]

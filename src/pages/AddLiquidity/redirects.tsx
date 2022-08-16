@@ -17,7 +17,6 @@ export function RedirectOldAddLiquidityPathStructure(props: RouteComponentProps<
 
   const validatedCurrencyIdA = currencyIdA.startsWith('0x') ? validateAndParseAddress(currencyIdA) : currencyIdA
   const match = validatedCurrencyIdA.match(OLD_PATH_STRUCTURE)
-  console.log('🚀 ~ file: redirects.tsx ~ line 17 ~ RedirectOldAddLiquidityPathStructure ~ match', match)
   if (match?.length) {
     return <Redirect to={`/add/${match[1]}/${match[2]}`} />
   }

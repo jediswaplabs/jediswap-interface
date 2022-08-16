@@ -112,8 +112,6 @@ export default function Pool() {
 
   // fetch the user's balances of all tracked V2 LP tokens
   const trackedTokenPairs = useTrackedTokenPairs()
-  // console.log('🚀 ~ file: index.tsx ~ line 108 ~ Pool ~ trackedTokenPairs', trackedTokenPairs)
-  // const [p]
 
   const tokenPairsWithLiquidityTokens = useMemo(
     () => trackedTokenPairs.map(tokens => ({ liquidityToken: getLiquidityToken(tokens), tokens })),
@@ -136,11 +134,6 @@ export default function Pool() {
     validatedLiquidityTokens
   )
 
-  // console.log(
-  //   '🚀 ~ file: index.tsx ~ line 88 ~ Pool ~ pairsBalances, fetchingPairBalances',
-  //   pairsBalances,
-  //   fetchingPairBalances
-  // )
   // fetch the reserves for all V2 pools in which the user has a balance
   const liquidityTokensWithBalances = useMemo(
     () =>
@@ -151,21 +144,15 @@ export default function Pool() {
   )
 
   const pairs = usePairs(liquidityTokensWithBalances.map(({ tokens }) => tokens))
-  // console.log('🚀 ~ file: index.tsx ~ line 140 ~ Pool ~ pairs', pairs)
   const pairIsLoading =
     fetchingPairBalances ||
     pairs?.length < liquidityTokensWithBalances.length ||
     pairs?.some(([pairState]) => pairState === PairState.LOADING) ||
     pairs?.some(pair => !pair)
 
-  // console.log('🚀 ~ file: index.tsx ~ line 141 ~ Pool ~ pairIsLoading', pairIsLoading)
-
-  // console.log('Pairs: ', pairs, 'isPairLoading: ', pairIsLoading)
-
   const allPairsWithLiquidity = pairs
     .map(([, pair]) => pair)
     .filter((tokenPair): tokenPair is Pair => Boolean(tokenPair))
-  // console.log('🚀 ~ file: index.tsx ~ line 152 ~ Pool ~ allPairsWithLiquidity', allPairsWithLiquidity)
 
   return (
     <>

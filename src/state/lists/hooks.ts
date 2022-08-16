@@ -169,8 +169,6 @@ export function listToLPTokenMap(list: TokenList, allPairs: string[]): LPTokenAd
         },
         { ...EMPTY_PAIR_LIST }
       )
-      console.log('🚀 ~ file: hooks.ts ~ line 156 ~ listToLPTokenMap ~ internalMap', internalMap)
-
       return {
         ...tokenMap,
         // ...internalMap
@@ -182,8 +180,6 @@ export function listToLPTokenMap(list: TokenList, allPairs: string[]): LPTokenAd
     },
     { ...EMPTY_PAIR_LIST }
   )
-  console.log('🚀 ~ file: hooks.ts ~ line 177 ~ listToLPTokenMap ~ map', map)
-
   lpListCache?.set(list, map)
   return map
 }
