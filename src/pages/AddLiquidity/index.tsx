@@ -475,13 +475,13 @@ export default function AddLiquidity({
               </AutoColumn>
             )}
           </AutoColumn>
-          {account && pair && (
-            <AddTokenRow justify={'center'} onClick={() => addTokenToWallet(pair.liquidityToken.address)}>
-              <AddTokenText>Add LP Tokens to Wallet</AddTokenText>
+          {/*{account && pair && (*/}
+          {/*  <AddTokenRow justify={'center'} onClick={() => addTokenToWallet(pair.liquidityToken.address)}>*/}
+          {/*    <AddTokenText>Add LP Tokens to Wallet</AddTokenText>*/}
 
-              <ArrowRight width={16} height={15} style={{ marginBottom: '3.5px' }} />
-            </AddTokenRow>
-          )}
+          {/*    <ArrowRight width={16} height={15} style={{ marginBottom: '3.5px' }} />*/}
+          {/*  </AddTokenRow>*/}
+          {/*)}*/}
         </Wrapper>
       </AppBody>
 
