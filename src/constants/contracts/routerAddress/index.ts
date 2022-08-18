@@ -1,0 +1,14 @@
+import { ChainId } from '@jediswap/sdk'
+import ROUTER_ABI from './abi.json'
+
+//update abi
+
+const ROUTER_ADDRESS: { [chainId in ChainId]: string } = {
+  [ChainId.MAINNET]: '0x12b063b60553c91ed237d8905dff412fba830c5716b17821063176c6c073341',
+  [ChainId.ROPSTEN]: '0x12b063b60553c91ed237d8905dff412fba830c5716b17821063176c6c073341',
+  [ChainId.KOVAN]: '0x12b063b60553c91ed237d8905dff412fba830c5716b17821063176c6c073341',
+  [ChainId.RINKEBY]: '0x12b063b60553c91ed237d8905dff412fba830c5716b17821063176c6c073341',
+  [ChainId.GÖRLI]: '0x12b063b60553c91ed237d8905dff412fba830c5716b17821063176c6c073341'
+}
+
+export { ROUTER_ABI, ROUTER_ADDRESS }

@@ -103,7 +103,7 @@
     "react-error-overlay": "6.0.9"
   },
   "scripts": {
-    "dev": "vite --open",
+    "dev": "vite --open --force",
     "test": "vitest --ui",
     "build": "vite build",
     "production-build": "vite build",
