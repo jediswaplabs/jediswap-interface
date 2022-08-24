@@ -1,4 +1,4 @@
-import { FunctionAbi, Calldata  } from 'starknet'
+import { FunctionAbi, Calldata } from 'starknet'
 import { createAction } from '@reduxjs/toolkit'
 import { isAddress } from '../../utils'
 
