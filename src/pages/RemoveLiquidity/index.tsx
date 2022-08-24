@@ -1,22 +1,20 @@
-import { Contract, AddTransactionResponse, Args, stark, Call, RawArgs } from 'starknet'
-// import { TransactionResponse } from '@ethersproject/providers'
-import { Currency, currencyEquals, ETHER, Percent, WETH, Fraction } from '@jediswap/sdk'
+import { Contract, InvokeFunctionResponse, stark, Call, RawArgs } from 'starknet'
+import { Currency, currencyEquals, ETHER, Percent, WETH } from '@jediswap/sdk'
 import React, { useCallback, useContext, useMemo, useState } from 'react'
 import { ArrowDown, Plus } from 'react-feather'
 import { RouteComponentProps } from 'react-router'
 import { Text } from 'rebass'
 import { ThemeContext } from 'styled-components'
-import { ButtonPrimary, ButtonLight, ButtonError, ButtonConfirmed } from '../../components/Button'
-import { LightCard, WhiteOutlineCard, BlurCard } from '../../components/Card'
-import Column, { AutoColumn, ColumnCenter } from '../../components/Column'
+import { ButtonPrimary, ButtonLight, ButtonError, } from '../../components/Button'
+import { BlurCard } from '../../components/Card'
+import { AutoColumn, ColumnCenter } from '../../components/Column'
 import TransactionConfirmationModal, { ConfirmationModalContent } from '../../components/TransactionConfirmationModal'
 import CurrencyInputPanel from '../../components/CurrencyInputPanel'
 import DoubleCurrencyLogo from '../../components/DoubleLogo'
 import { AddRemoveTabs } from '../../components/NavigationTabs'
 import { MinimalPositionCard } from '../../components/PositionCard'
-import Row, { RowBetween, RowFixed } from '../../components/Row'
+import { RowBetween, RowFixed } from '../../components/Row'
 
-import Slider from '../../components/Slider'
 import CurrencyLogo from '../../components/CurrencyLogo'
 import { ROUTER_ADDRESS } from '../../constants'
 import { useActiveStarknetReact } from '../../hooks'
@@ -171,7 +169,7 @@ export default function RemoveLiquidity({
 
     await account
       .execute([approval, removeLiquidityCall])
-      .then((response: AddTransactionResponse) => {
+      .then((response: InvokeFunctionResponse) => {
         setAttemptingTxn(false)
 
         addTransaction(response, {
