@@ -1,0 +1,43 @@
+[
+  {
+    "inputs": [
+      {
+        "name": "calls_len",
+        "type": "felt"
+      },
+      {
+        "name": "calls",
+        "type": "felt*"
+      }
+    ],
+    "name": "aggregate",
+    "outputs": [
+      {
+        "name": "block_number",
+        "type": "felt"
+      },
+      {
+        "name": "result_len",
+        "type": "felt"
+      },
+      {
+        "name": "result",
+        "type": "felt*"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "get_current_block_timestamp",
+    "outputs": [
+      {
+        "name": "block_timestamp",
+        "type": "felt"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  }
+]

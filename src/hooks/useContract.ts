@@ -1,15 +1,15 @@
 import { Contract } from 'starknet'
-import JediswapPairABI from '../constants/abis/Pair.json'
 import { useMemo } from 'react'
-import ERC20_ABI from '../constants/abis/erc20.json'
 import { getContract } from '../utils'
 import { useActiveStarknetReact } from './index'
-import { ROUTER_ADDRESS, ZAP_IN_ADDRESS } from '../constants'
-import JediSwapRouterABI from '../constants/abis/Router.json'
-import { MULTICALL_NETWORKS, MULTICALL_ABI } from '../constants/multicall'
-import JediSwapZapInABI from '../constants/abis/ZapIn.json'
-import { FACTORY_ADDRESS } from '@jediswap/sdk'
-import FACTORY_ABI from '../constants/abis/Factory.json'
+
+import ERC20_ABI from '../constants/abis/erc20.json'
+import PAIR_ABI from '../constants/abis/Pair.json'
+
+import { MULTICALL_NETWORKS, MULTICALL_ABI } from '../constants/contracts/multicall'
+import { FACTORY_ADDRESS, FACTORY_ABI } from '../constants/contracts/factoryAddress'
+import { ROUTER_ADDRESS, ROUTER_ABI } from '../constants/contracts/routerAddress'
+import { ZAP_IN_ADDRESS, ZAP_IN_ABI } from '../constants/contracts/zapInAddress'
 
 // returns null on errors
 function useContract(address: string | undefined, ABI: any, withSignerIfPossible = true): Contract | null {
@@ -34,15 +34,19 @@ export function useTokenContract(tokenAddress?: string, withSignerIfPossible?: b
 }
 
 export function usePairContract(pairAddress?: string, withSignerIfPossible?: boolean): Contract | null {
-  return useContract(pairAddress, JediswapPairABI, withSignerIfPossible)
+  return useContract(pairAddress, PAIR_ABI, withSignerIfPossible)
 }
-
+//Change here
 export function useFactoryContract(): Contract | null {
-  return useContract(FACTORY_ADDRESS, FACTORY_ABI, true)
-}
+  const { chainId } = useActiveStarknetReact()
 
+  return useContract(FACTORY_ADDRESS[chainId ?? 5], FACTORY_ABI, true)
+}
+//Change Here
 export function useRouterContract(): Contract | null {
-  return useContract(ROUTER_ADDRESS, JediSwapRouterABI, true)
+  const { chainId } = useActiveStarknetReact()
+
+  return useContract(ROUTER_ADDRESS[chainId ?? 5], ROUTER_ABI, true)
 }
 
 export function useMulticallContract(): Contract | null {
@@ -50,7 +54,9 @@ export function useMulticallContract(): Contract | null {
 
   return useContract(MULTICALL_NETWORKS[chainId ?? 5], MULTICALL_ABI, false)
 }
-
+//Change Here
 export function useZapInContract(): Contract | null {
-  return useContract(ZAP_IN_ADDRESS, JediSwapZapInABI, true)
+  const { chainId } = useActiveStarknetReact()
+
+  return useContract(ZAP_IN_ADDRESS[chainId ?? 5], ZAP_IN_ABI, true)
 }

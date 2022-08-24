@@ -1,5 +1,5 @@
 import { ChainId, TokenAmount, JSBI } from '@jediswap/sdk'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 // import { Text } from 'rebass'
 import { NavLink, withRouter } from 'react-router-dom'
 import { darken } from 'polished'
@@ -185,6 +185,26 @@ const NetworkCard = styled(YellowCard)`
   `};
 `
 
+const NetworkSelect = styled.select`
+  border-radius: 8px;
+  flex: 1;
+  font-size: 16px;
+  font-weight: 600;
+  background-color: ${({ theme }) => theme.jediNavyBlue};
+  color: ${({ theme }) => theme.jediWhite};
+  padding: 0.82rem 2rem;
+  border: 2px solid transparent;
+
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    margin: 0;
+    margin-right: 0.5rem;
+    width: initial;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-shrink: 0;
+  `};
+`
+
 // const BalanceText = styled(Text)`
 //   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
 //     display: none;
@@ -319,15 +339,34 @@ const StarkNetCard = styled.div`
 `
 
 const NETWORK_LABELS: { [chainId in ChainId]?: string } = {
+  [ChainId.MAINNET]: 'Mainnet',
   [ChainId.RINKEBY]: 'Rinkeby',
   [ChainId.ROPSTEN]: 'Ropsten',
   [ChainId.GÖRLI]: 'Görli',
   [ChainId.KOVAN]: 'Kovan'
 }
+interface window {
+  starknet: any
+}
 
 function Header({ history }: { history: any }) {
   const { connectedAddress, chainId } = useActiveStarknetReact()
+
   const { t } = useTranslation()
+  const [currentNetwork, setCurrentNetwork] = useState('SN_MAIN')
+
+  async function changeNetwork(e) {
+    e.preventDefault()
+    console.log(e.target.value)
+    const change = await window.starknet?.request({
+      type: 'wallet_switchStarknetChain',
+      params: {
+        chainId: e.target.value
+      }
+    })
+    console.log('Network Change Call')
+    console.log(change)
+  }
 
   return (
     <HeaderFrame>
@@ -377,9 +416,10 @@ function Header({ history }: { history: any }) {
         {/* <StarkNetCard>Starknet</StarkNetCard> */}
         <HeaderElement>
           <HideSmall>
-            {chainId && NETWORK_LABELS[chainId] && (
-              <NetworkCard title={NETWORK_LABELS[chainId]}>Starknet-{NETWORK_LABELS[chainId]}</NetworkCard>
-            )}
+            <NetworkSelect onChange={changeNetwork}>
+              <option value="SN_MAIN">Starknet-Mainnet</option>
+              <option value="SN_GOERLI">Starknet-Görli</option>
+            </NetworkSelect>
           </HideSmall>
           <AccountElement active={!!connectedAddress} style={{ pointerEvents: 'auto' }}>
             <Web3Status />
