@@ -351,22 +351,21 @@ interface window {
 
 function Header({ history }: { history: any }) {
   const { connectedAddress, chainId } = useActiveStarknetReact()
-
   const { t } = useTranslation()
   const [currentNetwork, setCurrentNetwork] = useState('SN_MAIN')
 
-  async function changeNetwork(e) {
-    e.preventDefault()
-    console.log(e.target.value)
-    const change = await window.starknet?.request({
-      type: 'wallet_switchStarknetChain',
-      params: {
-        chainId: e.target.value
-      }
-    })
-    console.log('Network Change Call')
-    console.log(change)
-  }
+  // async function changeNetwork(e) {
+  //   e.preventDefault()
+  //   console.log(e.target.value)
+  //   const change = await window.starknet?.request({
+  //     type: 'wallet_switchStarknetChain',
+  //     params: {
+  //       chainId: e.target.value
+  //     }
+  //   })
+  //   console.log('Network Change Call')
+  //   console.log(change)
+  // }
 
   return (
     <HeaderFrame>
@@ -416,10 +415,13 @@ function Header({ history }: { history: any }) {
         {/* <StarkNetCard>Starknet</StarkNetCard> */}
         <HeaderElement>
           <HideSmall>
-            <NetworkSelect onChange={changeNetwork}>
-              <option value="SN_MAIN">Starknet-Mainnet</option>
-              <option value="SN_GOERLI">Starknet-Görli</option>
-            </NetworkSelect>
+            {chainId && NETWORK_LABELS[chainId] && (
+                <NetworkCard title={NETWORK_LABELS[chainId]}>Starknet-{NETWORK_LABELS[chainId]}</NetworkCard>
+            )}
+            {/*<NetworkSelect onChange={changeNetwork}>*/}
+            {/*  <option value="SN_MAIN">Starknet-Mainnet</option>*/}
+            {/*  <option value="SN_GOERLI">Starknet-Görli</option>*/}
+            {/*</NetworkSelect>*/}
           </HideSmall>
           <AccountElement active={!!connectedAddress} style={{ pointerEvents: 'auto' }}>
             <Web3Status />

@@ -104,7 +104,7 @@
     "starknet": "^4.3.0"
   },
   "scripts": {
-    "dev": "vite --open --force",
+    "dev": "vite --open",
     "test": "vitest --ui",
     "build": "vite build",
     "production-build": "vite build",
