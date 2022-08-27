@@ -1,4 +1,4 @@
-import { BASES_TO_CHECK_TRADES_AGAINST } from './../constants/index'
+import { BASES_TO_CHECK_TRADES_AGAINST } from '../constants'
 import { useMemo } from 'react'
 import { useActiveStarknetReact } from '.'
 import { Currency, CurrencyAmount, JSBI, LPToken, Pair, Percent, Token, TokenAmount, Trade } from '@jediswap/sdk'
@@ -65,8 +65,6 @@ export function useZapInPairs(inputCurrency?: Currency, outputLpToken?: LPToken)
     }
     return []
   }, [basePairs, bases, inputToken, outputToken0, outputToken1])
-
-  console.log('🚀 ~ file: Zap.ts ~ line 66 ~ useZapInPairs ~ allPairCombinations', allPairCombinations)
 
   const allPairs = usePairs(allPairCombinations)
 
@@ -344,14 +342,8 @@ export function useLPOutAmount(
     // Case 4: trade0 and trade1 ==> return [maxLpAmount(), tradeThatGiveThisAmount]
 
     if (lpAmountTrade0 && lpAmountTrade1) {
-      console.log(
-        '🚀 ~ file: Zap.ts ~ line 224 ~ lpAmountTrade0, lpAmountTrade1',
-        lpAmountTrade0.toSignificant(4),
-        lpAmountTrade1.toSignificant(4)
-      )
       const finalLPAmount = maxLPAmountOut(lpAmountTrade0, lpAmountTrade1)
       const finalTrade = finalLPAmount === lpAmountTrade0 ? tradeToken0Out : tradeToken1Out
-
       return [finalLPAmount, finalTrade, false]
     }
 

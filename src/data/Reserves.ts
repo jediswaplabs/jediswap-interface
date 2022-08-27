@@ -24,7 +24,6 @@ export interface LiquidityPairToken {
 export function usePairs(currencies: [Currency | undefined, Currency | undefined][]): [PairState, Pair | null][] {
   const { chainId } = useActiveStarknetReact()
   const allPairs = useAllPairs()
-  // console.log('🚀 ~ file: Reserves.ts ~ line 27 ~ usePairs ~ allPairs', allPairs)
 
   const tokens = useMemo(
     () =>
@@ -44,16 +43,13 @@ export function usePairs(currencies: [Currency | undefined, Currency | undefined
       }),
     [tokens]
   )
-  console.log('🚀 ~ file: Reserves.ts ~ line 44 ~ usePairs ~ pairAddresses', pairAddresses)
 
   const validatedPairAddress = useMemo(
     () => pairAddresses.map(addr => (addr && allPairs.includes(addr) ? addr : undefined)),
     [allPairs, pairAddresses]
   )
-  // console.log('🚀 ~ file: Reserves.ts ~ line 52 ~ usePairs ~ validatedPairAddress', validatedPairAddress)
 
   const results = useMultipleContractSingleData(validatedPairAddress, JediswapPairABI as Abi, 'get_reserves')
-  // console.log('🚀 ~ file: Reserves.ts ~ line 56 ~ usePairs ~ results', results)
 
   return useMemo(() => {
     return results.map((result, i) => {
@@ -81,6 +77,5 @@ export function usePairs(currencies: [Currency | undefined, Currency | undefined
 
 export function usePair(tokenA?: Currency, tokenB?: Currency): [PairState, Pair | null] {
   const pairs = usePairs([[tokenA, tokenB]])?.[0]
-  // console.log('🚀 ~ file: Reserves.ts ~ line 93 ~ usePair ~ pairs', pairs)
   return pairs ?? [PairState.LOADING, null]
 }

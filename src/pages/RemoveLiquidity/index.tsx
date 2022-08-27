@@ -73,7 +73,6 @@ export default function RemoveLiquidity({
   const { independentField, typedValue } = useBurnState()
   const { pair, parsedAmounts, error } = useDerivedBurnInfo(currencyA ?? undefined, currencyB ?? undefined)
 
-  // console.log('🚀 ~ file: index.tsx ~ line 71 ~ parsedAmounts', parsedAmounts)
   const { onUserInput: _onUserInput } = useBurnActionHandlers()
   const isValid = !error
 
@@ -100,15 +99,7 @@ export default function RemoveLiquidity({
     [Field.CURRENCY_B]:
       independentField === Field.CURRENCY_B ? typedValue : parsedAmounts[Field.CURRENCY_B]?.toSignificant(6) ?? ''
   }
-  // console.log('🚀 ~ file: index.tsx ~ line 98 ~ formattedAmounts', formattedAmounts)
-
-  // console.log(
-  //   '🚀 ~ file: index.tsx ~ line 101 ~ parsedAmounts[Field.LIQUIDITY_PERCENT]',
-  //   parsedAmounts[Field.LIQUIDITY_PERCENT]
-  // )
   const atMaxAmount = parsedAmounts[Field.LIQUIDITY_PERCENT]?.equalTo(new Percent('1'))
-
-  // console.log('🚀 ~ file: index.tsx ~ line 101 ~ atMaxAmount', atMaxAmount)
 
   // pair contract
   const pairContract: Contract | null = usePairContract(pair?.liquidityToken?.address)

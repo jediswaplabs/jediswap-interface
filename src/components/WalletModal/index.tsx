@@ -171,7 +171,6 @@ export default function WalletModal({
     let name = ''
     Object.keys(SUPPORTED_WALLETS).map(key => {
       if (connector === SUPPORTED_WALLETS[key].connector) {
-        console.log(SUPPORTED_WALLETS[key].name)
         return (name = SUPPORTED_WALLETS[key].name)
       }
       return true

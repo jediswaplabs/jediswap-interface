@@ -134,8 +134,6 @@ function CurrencyRow({
 
   const addTokenToWallet = useAddTokenToWallet()
 
-  // console.log('Currency Instance: ', currency instanceof WrappedLPTokenInfo)
-
   // only show add or remove buttons if not on selected list
   return (
     <MenuItem
@@ -166,7 +164,6 @@ function CurrencyRow({
           {/* 
           <StyledPlusCircle
             onClick={() => {
-              console.log('Add token')
               if (currency instanceof Token) {
                 addTokenToWallet(currency.address)
               } else if (currency === ETHER) {

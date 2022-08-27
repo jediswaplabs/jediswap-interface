@@ -278,7 +278,6 @@ export default function Swap() {
   // useEffect(() => {
   //   if (mintAddress && mintState === MintState.VALID) {
   //     mintCallback().then(() => {
-  //       console.log(`Minting ${mintAddress}`)
   //       setMintAddress(undefined)
   //     })
   //   }
