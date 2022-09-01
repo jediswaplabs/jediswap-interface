@@ -1706,41 +1706,42 @@
   dependencies:
     sirv "^2.0.2"
 
-"@web3-starknet-react/abstract-connector@^2.2.1":
-  version "2.2.1"
-  resolved "https://registry.npmjs.org/@web3-starknet-react/abstract-connector/-/abstract-connector-2.2.1.tgz#829846f42087812650378fcb9f6995ec05be4928"
-  integrity sha512-Uuqc3okRbQjFEKTZq3drfgxWcM8ibK03TP2vF7RP7tJDbSMfPh2d6fsIVuEvQTpTaka68OGKw4yhzv39Fvfz6A==
+"@web3-starknet-react/abstract-connector@^2.2.1", "@web3-starknet-react/abstract-connector@^2.2.2":
+  version "2.2.2"
+  resolved "https://registry.npmjs.org/@web3-starknet-react/abstract-connector/-/abstract-connector-2.2.2.tgz#1285c356141a7901a2500f108a2e779e000f805e"
+  integrity sha512-08sLznM2f8OA/gQHCAaOe0iMBsYWaiGdSL4Dpzxet6aGZ1WgnGAe36d2LzUphQnlHE0uH6/mK12FAKdgz+i7sw==
   dependencies:
-    "@web3-starknet-react/types" "^2.2.1"
+    "@web3-starknet-react/types" "^2.2.2"
+    events "^3.3.0"
 
 "@web3-starknet-react/argentx-connector@^2.2.1":
-  version "2.2.1"
-  resolved "https://registry.npmjs.org/@web3-starknet-react/argentx-connector/-/argentx-connector-2.2.1.tgz#e745784ddfc07abfc1fca2ba928457af0fc261a2"
-  integrity sha512-OFkvqjUqw5XHTqKKAPq2oYkkALI+/J+ygytMtml+jWGbjC8xw56AQb6YVDPeJkNIcy2i/KCGAUGSlYaYVlRAuQ==
+  version "2.2.2"
+  resolved "https://registry.npmjs.org/@web3-starknet-react/argentx-connector/-/argentx-connector-2.2.2.tgz#d609ae6df184b06c6af5418e6ae4f851892359bc"
+  integrity sha512-3HgBxq/4y6S6VCHWR8eeKjiWbzeklc3RUEmE9txT/xpKNBrSEhY77PI9EhKCz71iHgwIrqkOw0on73hOiEgmwg==
   dependencies:
-    "@web3-starknet-react/abstract-connector" "^2.2.1"
-    "@web3-starknet-react/types" "^2.2.1"
+    "@web3-starknet-react/abstract-connector" "^2.2.2"
+    "@web3-starknet-react/types" "^2.2.2"
 
 "@web3-starknet-react/braavos-connector@^2.2.1":
-  version "2.2.1"
-  resolved "https://registry.npmjs.org/@web3-starknet-react/braavos-connector/-/braavos-connector-2.2.1.tgz#925d46081a7ed71ca62bf8d5c54f81262aabfd14"
-  integrity sha512-7RHVs3kZabuysPCDi6r5z6gNh2t1D6rZar/IbBGP0sp/fjb1d82KBJSMCmwtGA/BuKORRmEI3zqXptuQhz9S6A==
+  version "2.2.2"
+  resolved "https://registry.npmjs.org/@web3-starknet-react/braavos-connector/-/braavos-connector-2.2.2.tgz#42088ef1d2bc8f6b56e5225c9610a67ca374fdfb"
+  integrity sha512-CiDaXL02newZNQyRO48jzHj7sAZrXAL6hS+MwibU8OP0CvAEEQ5x1Oc2WtOKzWyZ8ry/mmvdlpXp2y7uFMPVsQ==
   dependencies:
-    "@web3-starknet-react/abstract-connector" "^2.2.1"
-    "@web3-starknet-react/types" "^2.2.1"
+    "@web3-starknet-react/abstract-connector" "^2.2.2"
+    "@web3-starknet-react/types" "^2.2.2"
 
 "@web3-starknet-react/core@^2.2.1":
-  version "2.2.1"
-  resolved "https://registry.npmjs.org/@web3-starknet-react/core/-/core-2.2.1.tgz#9afa44e886f3fc4dc52880a808e28550bf48d098"
-  integrity sha512-2i0U4asgwUiZ05rnHW5YBitP/y0+979BHjDvEPxEBkXMzWnJLvv+/d7ZC68378936dH3IejgOcelvhaF7oLu4g==
+  version "2.2.2"
+  resolved "https://registry.npmjs.org/@web3-starknet-react/core/-/core-2.2.2.tgz#5391340dbf93bfac10af9bbe90d96242ffbb8070"
+  integrity sha512-lh6Ep/LSlNJAHAiSRxZpoKibXu4E4myMbZNfCde9dkTln31RpaftCWs7VaAvlp2FXEVUwB9Y8sy1uyXRI2XDNA==
   dependencies:
-    "@web3-starknet-react/abstract-connector" "^2.2.1"
-    "@web3-starknet-react/types" "^2.2.1"
+    "@web3-starknet-react/abstract-connector" "^2.2.2"
+    "@web3-starknet-react/types" "^2.2.2"
 
-"@web3-starknet-react/types@^2.2.1":
-  version "2.2.1"
-  resolved "https://registry.npmjs.org/@web3-starknet-react/types/-/types-2.2.1.tgz#654217c935a305eacecaebecafe9a83fb7daf1f4"
-  integrity sha512-PfjdJEFhAxSsWUFqNDHJJ7iSVO8Fkkac5tOD5WQdYPE/X7QClMrVGq0picOivpyMpaBids4hp+frR0DEzKs52Q==
+"@web3-starknet-react/types@^2.2.1", "@web3-starknet-react/types@^2.2.2":
+  version "2.2.2"
+  resolved "https://registry.npmjs.org/@web3-starknet-react/types/-/types-2.2.2.tgz#d76cc0a1fefbe6fbdc29de7f4912469021600968"
+  integrity sha512-96BlaezP6pfvUDrVBpeDYqa1ZcVVo6aLMQOUGcCX3qV5FRd/nv2Ui+2E4FP3KI37myS9AfN0Cs1uMY0ez0yXrQ==
 
 "@zeit/schemas@2.6.0":
   version "2.6.0"
