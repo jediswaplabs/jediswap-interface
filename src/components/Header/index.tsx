@@ -416,7 +416,7 @@ function Header({ history }: { history: any }) {
         <HeaderElement>
           <HideSmall>
             {chainId && NETWORK_LABELS[chainId] && (
-                <NetworkCard title={NETWORK_LABELS[chainId]}>Starknet-{NETWORK_LABELS[chainId]}</NetworkCard>
+              <NetworkCard title={NETWORK_LABELS[chainId]}>Starknet-{NETWORK_LABELS[chainId]}</NetworkCard>
             )}
             {/*<NetworkSelect onChange={changeNetwork}>*/}
             {/*  <option value="SN_MAIN">Starknet-Mainnet</option>*/}
