@@ -34,7 +34,7 @@ describe('application reducer', () => {
       expect(list).toHaveLength(1)
       expect(list[0].key).toEqual('abc')
       expect(list[0].show).toEqual(true)
-      expect(list[0].content).toEqual({ txn: { hash: 'def', summary: 'test2', status: false } })
+      expect(list[0].content).toEqual({ txn: { hash: 'def', summary: 'test2', status: 'REJECTED' } })
       expect(list[0].removeAfterMs).toEqual(15000)
     })
   })
