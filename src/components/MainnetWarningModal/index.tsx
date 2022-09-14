@@ -1,3 +1,4 @@
+import React from 'react'
 import Modal from '../Modal'
 import { ButtonGradient } from '../Button'
 import { useDispatch, useSelector } from 'react-redux'
