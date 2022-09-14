@@ -28,6 +28,7 @@ import Zap from './Zap'
 import ComingSoon from './ComingSoon'
 import Footer from '../components/Footer'
 import useFetchAllPairsCallback from '../hooks/useFetchAllPairs'
+import { MainnetWarningModal } from '../components/MainnetWarningModal'
 
 const AppWrapper = styled.div`
   display: flex;
@@ -89,6 +90,7 @@ export default function App() {
         </HeaderWrapper>
         <BodyWrapper>
           <Popups />
+          <MainnetWarningModal />
 
           {/* <TopLevelModals /> */}
           <Web3ReactManager>
