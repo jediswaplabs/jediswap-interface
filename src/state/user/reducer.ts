@@ -140,7 +140,7 @@ export default createReducer(initialState, builder =>
     })
     .addCase(toggleMainnetWarning, state => {
       if (typeof state.MainnetWarningVisible !== 'boolean') {
-        state.MainnetWarningVisible = false;
+        state.MainnetWarningVisible = false
       }
       state.MainnetWarningVisible = !state.MainnetWarningVisible
     })
