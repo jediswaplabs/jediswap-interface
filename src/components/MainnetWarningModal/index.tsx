@@ -44,8 +44,8 @@ export const MainnetWarningModal = () => {
               <TYPE.largeHeader color={'red2'}>MainNet Warning</TYPE.largeHeader>
             </AutoColumn>
             <TYPE.body textAlign="center" flex={1}>
-              JediSwap is on StarkNet MainNet which is currently in <ExternalLink href="">Alpha</ExternalLink>. There
-              will be a state reset by StarkWare in Q4 outlines <ExternalLink href="">here</ExternalLink>.
+              JediSwap is on StarkNet MainNet which is currently in Alpha. There
+              will be a state reset by StarkWare in Q4 outlines <ExternalLink href="https://medium.com/starkware/regenesis-starknets-no-sweat-state-reset-e296b12b80ae">here</ExternalLink>.
             </TYPE.body>
             <TYPE.body textAlign="center">
               NFTs on MainNet may not migrate to the new network and may lose its value
