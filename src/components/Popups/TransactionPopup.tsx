@@ -5,7 +5,7 @@ import styled, { ThemeContext } from 'styled-components'
 import { useActiveStarknetReact } from '../../hooks'
 import { TYPE } from '../../theme'
 import { ExternalLink } from '../../theme/components'
-import { getVoyagerLink } from '../../utils'
+import { getStarkscanLink } from '../../utils'
 import { AutoColumn } from '../Column'
 import { AutoRow } from '../Row'
 import TxReceivedIcon from '../../assets/jedi/tx/received.svg'
@@ -131,8 +131,8 @@ export default function TransactionPopup({
         <AutoColumn gap="12px">
           <TxSummary>{summary ?? 'Hash: ' + hash.slice(0, 8) + '...' + hash.slice(58, 65)}</TxSummary>
           {chainId && (
-            <StyledExternalLink href={getVoyagerLink(chainId, hash, 'transaction')}>
-              <span style={{ marginRight: '7px' }}>View on Voyager</span>
+            <StyledExternalLink href={getStarkscanLink(chainId, hash, 'transaction')}>
+              <span style={{ marginRight: '7px' }}>View on Starkscan</span>
               <LinkIcon size={20} style={{ color: '#50D5FF' }} />
             </StyledExternalLink>
           )}

@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { CheckSquare, AlertTriangle } from 'react-feather'
 
 import { useActiveStarknetReact } from '../../hooks'
-import { getVoyagerLink } from '../../utils'
+import { getStarkscanLink } from '../../utils'
 import { ExternalLink } from '../../theme'
 import { useAllTransactions } from '../../state/transactions/hooks'
 import { RowFixed } from '../Row'
@@ -69,7 +69,7 @@ export default function Transaction({ hash }: { hash: string }) {
 
   return (
     <TransactionWrapper>
-      <TransactionState href={getVoyagerLink(chainId, hash, 'transaction')} pending={pending} success={success}>
+      <TransactionState href={getStarkscanLink(chainId, hash, 'transaction')} pending={pending} success={success}>
         <RowFixed>
           <TransactionStatusText>{summary ?? hash} </TransactionStatusText>
           <LinkIcon size={16} />

@@ -11,7 +11,7 @@ import Transaction from './Transaction'
 
 import { SUPPORTED_WALLETS } from '../../constants'
 import { ReactComponent as Close } from '../../assets/images/x.svg'
-import { getVoyagerLink } from '../../utils'
+import { getStarkscanLink } from '../../utils'
 import argentXIcon from '../../assets/images/argentx.png'
 import braavosIcon from '../../assets/svg/Braavos.svg'
 // import { fortmatic, injected, portis, walletconnect, walletlink } from '../../connectors'
@@ -392,10 +392,10 @@ export default function AccountDetails({
                       <AddressLink
                         hasENS={!!ENSName}
                         isENS={true}
-                        href={chainId && getVoyagerLink(chainId, ENSName, 'contract')}
+                        href={chainId && getStarkscanLink(chainId, ENSName, 'contract')}
                       >
                         <LinkIcon size={16} />
-                        <span style={{ marginLeft: '4px' }}>View on Voyager</span>
+                        <span style={{ marginLeft: '4px' }}>View on Starkscan</span>
                       </AddressLink>
                     )}
                   </div>
@@ -414,10 +414,10 @@ export default function AccountDetails({
                       <AddressLink
                         hasENS={!!ENSName}
                         isENS={false}
-                        href={getVoyagerLink(chainId, connectedAddress, 'contract')}
+                        href={getStarkscanLink(chainId, connectedAddress, 'contract')}
                       >
                         <LinkIcon size={20} style={{ color: '#50D5FF' }} />
-                        <span style={{ marginLeft: '8px' }}>View on Voyager</span>
+                        <span style={{ marginLeft: '8px' }}>View on Starkscan</span>
                       </AddressLink>
                     )}
                   </div>
