@@ -28,8 +28,33 @@ const VOYAGER_PREFIXES: { [chainId in ChainId]: string } = {
   42: 'kovan.'
 }
 
+const STARKSCAN_PREFIXES: { [chainId in ChainId]: string } = {
+  1: '',
+  3: 'testnet.',
+  4: 'testnet.',
+  5: 'testnet.',
+  42: 'testnet.'
+}
+
 export function getVoyagerLink(chainId: ChainId, data: string, type: 'transaction' | 'block' | 'contract'): string {
   const prefix = `https://${VOYAGER_PREFIXES[chainId] || VOYAGER_PREFIXES[1]}voyager.online`
+
+  switch (type) {
+    case 'transaction': {
+      return `${prefix}/tx/${data}`
+    }
+    case 'block': {
+      return `${prefix}/block/${data}`
+    }
+    case 'contract':
+    default: {
+      return `${prefix}/contract/${data}`
+    }
+  }
+}
+
+export function getStarkscanLink(chainId: ChainId, data: string, type: 'transaction' | 'block' | 'contract'): string {
+  const prefix = `https://${STARKSCAN_PREFIXES[chainId] || STARKSCAN_PREFIXES[1]}starkscan.co`
 
   switch (type) {
     case 'transaction': {

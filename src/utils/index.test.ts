@@ -4,6 +4,7 @@ import { TokenAmount, Token, ChainId, Percent, JSBI } from '@jediswap/sdk'
 
 import {
   getVoyagerLink,
+  getStarkscanLink,
   calculateSlippageAmount,
   isAddress,
   shortenAddress,
@@ -30,6 +31,27 @@ describe('utils', () => {
     })
     it('enum', () => {
       expect(getVoyagerLink(ChainId.RINKEBY, 'abc', 'contract')).toEqual('https://rinkeby.voyager.online/contract/abc')
+    })
+  })
+
+  describe('#getStarkscanLink', () => {
+    it('correct for tx', () => {
+      expect(getStarkscanLink(1, 'abc', 'transaction')).toEqual('https://starkscan.co/tx/abc')
+    })
+    it('correct for contract', () => {
+      expect(getStarkscanLink(1, 'abc', 'contract')).toEqual('https://starkscan.co/contract/abc')
+    })
+    it('correct for block', () => {
+      expect(getStarkscanLink(1, 'abc', 'block')).toEqual('https://starkscan.co/block/abc')
+    })
+    it('unrecognized chain id defaults to mainnet', () => {
+      expect(getStarkscanLink(2, 'abc', 'contract')).toEqual('https://starkscan.co/contract/abc')
+    })
+    it('goerli', () => {
+      expect(getStarkscanLink(3, 'abc', 'contract')).toEqual('https://testnet.starkscan.co/contract/abc')
+    })
+    it('enum', () => {
+      expect(getStarkscanLink(ChainId.GÖRLI, 'abc', 'contract')).toEqual('https://testnet.starkscan.co/contract/abc')
     })
   })
 
