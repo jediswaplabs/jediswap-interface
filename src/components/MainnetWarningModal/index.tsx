@@ -1,9 +1,6 @@
 import React from 'react'
 import Modal from '../Modal'
 import { ButtonGradient } from '../Button'
-import { useDispatch, useSelector } from 'react-redux'
-import { AppDispatch, AppState } from '../../state'
-import { toggleMainnetWarning } from '../../state/user/actions'
 import { ExternalLink, TYPE } from '../../theme'
 import styled from 'styled-components'
 import Row from '../Row'
@@ -26,12 +23,11 @@ const StyledWarningIcon = styled(AlertTriangle)`
 `
 
 export const MainnetWarningModal = () => {
-  // displays mainnetwarning modal based on MainnetWarningModal state
-  const showMainnetWarningModal = useSelector((state: AppState) => state.user.MainnetWarningVisible)
-  const dispatch = useDispatch<AppDispatch>()
+  // displays mainnetwarning modal on page load
+  const [showMainnetWarningModal, setShowMainnetWarningModal] = React.useState(true)
 
   const hideMainnetWarningModal = () => {
-    dispatch(toggleMainnetWarning())
+    setShowMainnetWarningModal(false)
   }
 
   return showMainnetWarningModal ? (
