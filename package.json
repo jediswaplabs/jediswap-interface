@@ -107,6 +107,8 @@
     "dev": "vite --open",
     "test": "vitest --ui",
     "build": "vite build",
+    "lint": "eslint --ext js,jsx,ts,tsx,json ./src",
+    "lint:fix": "yarn lint --fix",
     "production-build": "vite build",
     "staging-build": "vite build --mode staging",
     "testnet-build": "vite build --mode staging"

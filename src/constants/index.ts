@@ -10,11 +10,11 @@ import BRAAVOS_ICON from '../assets/svg/Braavos.svg'
 export const DEFAULT_CHAIN_ID = 5;
 
 export const ROUTER_ADDRESS: { [chainId in ChainId]: string } = {
-  [ChainId.MAINNET]: validateAndParseAddress('0x6c7b37120855cce39351ed0284d88ee2cc62610228a291f54480555a1fb1b69'),
-  [ChainId.ROPSTEN]: validateAndParseAddress('0x36ee644f3e855be243023be2c49dcf9303840912c9b77d9106cfc5d3e051dd3'),
-  [ChainId.KOVAN]: validateAndParseAddress('0x36ee644f3e855be243023be2c49dcf9303840912c9b77d9106cfc5d3e051dd3'),
-  [ChainId.RINKEBY]: validateAndParseAddress('0x36ee644f3e855be243023be2c49dcf9303840912c9b77d9106cfc5d3e051dd3'),
-  [ChainId.GÖRLI]: validateAndParseAddress('0x36ee644f3e855be243023be2c49dcf9303840912c9b77d9106cfc5d3e051dd3')
+  [ChainId.MAINNET]: validateAndParseAddress('0x41fd22b238fa21cfcf5dd45a8548974d8263b3a531a60388411c5e230f97023'),
+  [ChainId.ROPSTEN]: validateAndParseAddress('0x2bcc885342ebbcbcd170ae6cafa8a4bed22bb993479f49806e72d96af94c965'),
+  [ChainId.KOVAN]: validateAndParseAddress('0x2bcc885342ebbcbcd170ae6cafa8a4bed22bb993479f49806e72d96af94c965'),
+  [ChainId.RINKEBY]: validateAndParseAddress('0x2bcc885342ebbcbcd170ae6cafa8a4bed22bb993479f49806e72d96af94c965'),
+  [ChainId.GÖRLI]: validateAndParseAddress('0x2bcc885342ebbcbcd170ae6cafa8a4bed22bb993479f49806e72d96af94c965')
 }
 
 export const ZAP_IN_ADDRESS: { [chainId in ChainId]: string } = {
