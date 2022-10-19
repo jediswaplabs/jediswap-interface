@@ -16,7 +16,7 @@ import { MinimalPositionCard } from '../../components/PositionCard'
 import { RowBetween, RowFixed } from '../../components/Row'
 
 import CurrencyLogo from '../../components/CurrencyLogo'
-import { ROUTER_ADDRESS } from '../../constants'
+import { DEFAULT_CHAIN_ID, ROUTER_ADDRESS} from '../../constants'
 import { useActiveStarknetReact } from '../../hooks'
 import { useCurrency } from '../../hooks/Tokens'
 import { usePairContract } from '../../hooks/useContract'
@@ -102,7 +102,7 @@ export default function RemoveLiquidity({
   // pair contract
   const pairContract: Contract | null = usePairContract(pair?.liquidityToken?.address)
 
-  const approvalCallback = useApprovalCall(parsedAmounts[Field.LIQUIDITY], ROUTER_ADDRESS)
+  const approvalCallback = useApprovalCall(parsedAmounts[Field.LIQUIDITY], ROUTER_ADDRESS[chainId ?? DEFAULT_CHAIN_ID])
 
   // wrapped onUserInput to clear signatures
   const onUserInput = useCallback(

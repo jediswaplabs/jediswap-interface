@@ -36,19 +36,17 @@ export default function Updater(): null {
     setState({ chainId, blockNumber: null })
 
     library
-      .getBlock()
-      .then(block => blockNumberCallback(Number(block.block_number)))
+      .getBlock('latest')
+      .then(block => blockNumberCallback((Number(block.block_number))))
       .catch(error => console.error(`Failed to get block number for chainId: ${chainId}`, error))
 
-    // library.on('block', blockNumberCallback)
     const interval = setInterval(() => {
       library
-        .getBlock()
-        .then(block => blockNumberCallback(Number(block.block_number)))
+        .getBlock('latest')
+        .then(block => blockNumberCallback((Number(block.block_number))))
         .catch(error => console.error(`Failed to get block number for chainId: ${chainId}`, error))
     }, 15000)
     return () => {
-      // library.removeListener('block', blockNumberCallback)
       clearInterval(interval)
     }
   }, [dispatch, chainId, library, blockNumberCallback, windowVisible])

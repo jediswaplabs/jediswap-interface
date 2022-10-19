@@ -16,7 +16,7 @@ import { AddRemoveTabs } from '../../components/NavigationTabs'
 import { MinimalPositionCard } from '../../components/PositionCard'
 import Row, { AutoRow, RowBetween, RowFixed, RowFlat } from '../../components/Row'
 
-import { ROUTER_ADDRESS } from '../../constants'
+import { DEFAULT_CHAIN_ID, ROUTER_ADDRESS} from '../../constants'
 import { PairState } from '../../data/Reserves'
 import { useActiveStarknetReact } from '../../hooks'
 import { useCurrency } from '../../hooks/Tokens'
@@ -162,10 +162,8 @@ export default function AddLiquidity({
   )
 
   // check whether the user has approved the router on the tokens
-  // const [approvalA, approveACallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_A], ROUTER_ADDRESS)
-  // const [approvalB, approveBCallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_B], ROUTER_ADDRESS)
-  const approvalACallback = useApprovalCall(parsedAmounts[Field.CURRENCY_A], ROUTER_ADDRESS)
-  const approvalBCallback = useApprovalCall(parsedAmounts[Field.CURRENCY_B], ROUTER_ADDRESS)
+  const approvalACallback = useApprovalCall(parsedAmounts[Field.CURRENCY_A], ROUTER_ADDRESS[chainId ?? DEFAULT_CHAIN_ID])
+  const approvalBCallback = useApprovalCall(parsedAmounts[Field.CURRENCY_B], ROUTER_ADDRESS[chainId ?? DEFAULT_CHAIN_ID])
 
   const addTransaction = useTransactionAdder()
 

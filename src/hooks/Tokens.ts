@@ -48,7 +48,7 @@ export function useJediLPTokens(): { [address: string]: LPToken } {
   }, [chainId, allLPTokens])
 
   // return {
-  //   ...jediLPTokenList
+  //   ...jediLPTokenList[chainId]
   // }
 }
 

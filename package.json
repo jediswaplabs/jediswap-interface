@@ -88,7 +88,7 @@
     "rebass": "^4.0.7",
     "redux-localstorage-simple": "^2.3.1",
     "serve": "13.0.2",
-    "starknet": "^4.3.0",
+    "starknet": "^4.4.2",
     "start-server-and-test": "^1.11.0",
     "styled-components": "^4.2.0",
     "tiny-invariant": "^1.2.0",
@@ -101,7 +101,7 @@
   },
   "resolutions": {
     "react-error-overlay": "6.0.9",
-    "starknet": "^4.3.0"
+    "starknet": "^4.4.2"
   },
   "scripts": {
     "dev": "vite --open",

@@ -6146,10 +6146,10 @@ sshpk@^1.14.1:
     safer-buffer "^2.0.2"
     tweetnacl "~0.14.0"
 
-starknet@^4.3.0:
-  version "4.3.0"
-  resolved "https://registry.npmjs.org/starknet/-/starknet-4.3.0.tgz#8722a14bf99ee96009e21ad30b75b8ce3ed04a05"
-  integrity sha512-MFEvG5mquwkh3JVgJtmzatq6kWVDOx0bo4LSLzZlgcDlydXGXjM/xMQwpCGBwr0d7ZHns5bWKfv9+3Y8BCbC1g==
+starknet@^4.3.0, starknet@^4.4.2:
+  version "4.4.2"
+  resolved "https://registry.npmjs.org/starknet/-/starknet-4.4.2.tgz#3da5df044c4aa2607b8f282dd34ad1e167ae3a5e"
+  integrity sha512-tSQNwsx0+27pf2oi1fc1bgGDQO7cHFTWBIm+HLT6yAGs53Y/YRrc6jaxbcEl/826gv36ck53pqmF+85t1ILNMg==
   dependencies:
     "@ethersproject/bytes" "^5.6.1"
     bn.js "^5.2.1"
