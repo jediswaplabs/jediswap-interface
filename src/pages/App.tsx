@@ -25,6 +25,7 @@ import {
 import { RedirectOldRemoveLiquidityPathStructure } from './RemoveLiquidity/redirects'
 
 import Zap from './Zap'
+import Bridge from './Bridge'
 import ComingSoon from './ComingSoon'
 import Footer from '../components/Footer'
 import useFetchAllPairsCallback from '../hooks/useFetchAllPairs'
@@ -47,7 +48,7 @@ const BodyWrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  padding-top: 100px;
+  padding-top: 155px;
   align-items: center;
   flex: 1;
   overflow-y: auto;
@@ -106,6 +107,7 @@ export default function App() {
               <Route exact path="/create/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
               <Route exact path="/zap" component={Zap} />
               <Route exact path="/stake" component={ComingSoon} />
+              <Route exact path="/bridge" component={Bridge} />
               <Route exact strict path="/remove/:currencyIdA/:currencyIdB" component={RemoveLiquidity} />
 
               {/* <Route exact strict path="/claim" component={OpenClaimAddressModalAndRedirectToSwap} />

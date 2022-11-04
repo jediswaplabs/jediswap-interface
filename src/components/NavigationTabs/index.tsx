@@ -54,7 +54,7 @@ const StyledArrowLeft = styled(ArrowLeft)`
   color: ${({ theme }) => theme.jediWhite};
 `
 
-export function SwapPoolTabs({ active }: { active: 'swap' | 'pool' | 'zap' }) {
+export function JediSwapTabs({ active }: { active: 'swap' | 'pool' | 'zap' | 'bridge' }) {
   const { t } = useTranslation()
   return (
     <Tabs style={{ marginBottom: '20px', display: 'none' }}>
@@ -66,6 +66,9 @@ export function SwapPoolTabs({ active }: { active: 'swap' | 'pool' | 'zap' }) {
       </StyledNavLink>
       <StyledNavLink id={`zap-nav-link`} to={'/zap'} isActive={() => active === 'zap'}>
         {t('zap')}
+      </StyledNavLink>
+      <StyledNavLink id={`bridge-nav-link`} to={'/bridge'} isActive={() => active === 'bridge'}>
+        {t('bridge')}
       </StyledNavLink>
     </Tabs>
   )

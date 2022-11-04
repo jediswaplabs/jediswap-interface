@@ -14,7 +14,7 @@ import Card, { GreyCard } from '../../components/Card'
 import Column, { AutoColumn } from '../../components/Column'
 import ConfirmSwapModal from '../../components/swap/ConfirmSwapModal'
 import CurrencyInputPanel from '../../components/CurrencyInputPanel'
-import { SwapPoolTabs } from '../../components/NavigationTabs'
+import { JediSwapTabs } from '../../components/NavigationTabs'
 import { AutoRow, RowBetween } from '../../components/Row'
 // import AdvancedSwapDetailsDropdown from '../../components/swap/AdvancedSwapDetailsDropdown'
 import BetterTradeLink, { DefaultVersionLink } from '../../components/swap/BetterTradeLink'
@@ -295,7 +295,7 @@ export default function Swap() {
         <Backdrop top={'30px'} left={'493px'} curveRight style={{ height: '60px' }} />
         <Backdrop bottom={'30px'} left={'-35px'} curveLeft style={{ height: '60px' }} />
         <Backdrop bottom={'0px'} left={'-45px'} curveLeft />
-        <SwapPoolTabs active={'swap'} />
+        <JediSwapTabs active={'swap'} />
         <Wrapper id="swap-page">
           <ConfirmSwapModal
             isOpen={showConfirm}

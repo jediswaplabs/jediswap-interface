@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { SwapPoolTabs } from '../../components/NavigationTabs'
+import { JediSwapTabs } from '../../components/NavigationTabs'
 import ReactGA from 'react-ga4'
 import AppBody from '../AppBody'
 import { Wrapper, HeaderRow, ZapHeader, HeaderNote, ZapHeaderInfo } from './styleds'
@@ -227,7 +227,7 @@ export default function Zap() {
   return (
     <>
       <AppBody>
-        <SwapPoolTabs active={'zap'} />
+        <JediSwapTabs active={'zap'} />
         <Wrapper>
           <ConfirmZapModal
             isOpen={showConfirm}
