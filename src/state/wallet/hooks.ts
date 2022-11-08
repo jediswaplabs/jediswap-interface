@@ -8,7 +8,7 @@ import { isAddress } from '../../utils'
 import { useAddressNormalizer } from '../../hooks/useAddressNormalizer'
 import { useTokenContract } from '../../hooks/useContract'
 import { useMultipleContractSingleData, useSingleCallResult } from '../multicall/hooks'
-import { DEFAULT_CHAIN_ID } from "../../constants";
+import { DEFAULT_CHAIN_ID } from '../../constants'
 
 /**
  * Returns a map of the given addresses to their eventually consistent ETH balances.

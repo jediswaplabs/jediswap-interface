@@ -37,13 +37,13 @@ export default function Updater(): null {
 
     library
       .getBlock('latest')
-      .then(block => blockNumberCallback((Number(block.block_number))))
+      .then(block => blockNumberCallback(Number(block.block_number)))
       .catch(error => console.error(`Failed to get block number for chainId: ${chainId}`, error))
 
     const interval = setInterval(() => {
       library
         .getBlock('latest')
-        .then(block => blockNumberCallback((Number(block.block_number))))
+        .then(block => blockNumberCallback(Number(block.block_number)))
         .catch(error => console.error(`Failed to get block number for chainId: ${chainId}`, error))
     }, 15000)
     return () => {

@@ -16,7 +16,7 @@ import { MinimalPositionCard } from '../../components/PositionCard'
 import { RowBetween, RowFixed } from '../../components/Row'
 
 import CurrencyLogo from '../../components/CurrencyLogo'
-import { DEFAULT_CHAIN_ID, ROUTER_ADDRESS} from '../../constants'
+import { DEFAULT_CHAIN_ID, ROUTER_ADDRESS } from '../../constants'
 import { useActiveStarknetReact } from '../../hooks'
 import { useCurrency } from '../../hooks/Tokens'
 import { usePairContract } from '../../hooks/useContract'

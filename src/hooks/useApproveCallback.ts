@@ -3,7 +3,7 @@ import { InvokeFunctionResponse, Args, uint256 } from 'starknet'
 import { MaxUint256 } from '@ethersproject/constants'
 import { Trade, TokenAmount, CurrencyAmount, ETHER, WETH, Token } from '@jediswap/sdk'
 
-import { DEFAULT_CHAIN_ID, ROUTER_ADDRESS, ZAP_IN_ADDRESS} from '../constants'
+import { DEFAULT_CHAIN_ID, ROUTER_ADDRESS, ZAP_IN_ADDRESS } from '../constants'
 import { useTokenAllowance } from '../data/Allowances'
 import { Field } from '../state/swap/actions'
 import { useTransactionAdder, useHasPendingApproval } from '../state/transactions/hooks'
@@ -119,5 +119,8 @@ export function useApproveCallbackFromTrade(trade?: Trade, allowedSlippage = 0, 
     [trade, allowedSlippage]
   )
 
-  return useApproveCallback(amountToApprove, tradeType === 'zap' ? ZAP_IN_ADDRESS[chainId ?? DEFAULT_CHAIN_ID] : ROUTER_ADDRESS[chainId ?? DEFAULT_CHAIN_ID])
+  return useApproveCallback(
+    amountToApprove,
+    tradeType === 'zap' ? ZAP_IN_ADDRESS[chainId ?? DEFAULT_CHAIN_ID] : ROUTER_ADDRESS[chainId ?? DEFAULT_CHAIN_ID]
+  )
 }

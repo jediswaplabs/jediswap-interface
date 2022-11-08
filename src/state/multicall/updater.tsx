@@ -325,5 +325,5 @@ export default function Updater(): null {
     }
   }, [chainId, multicallContract, dispatch, serializedOutdatedCallKeys, latestBlockNumber, debouncedListeners])
 
-  return null;
+  return null
 }
