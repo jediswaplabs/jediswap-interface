@@ -48,10 +48,10 @@ export const MainnetWarningModal = () => {
               .
             </TYPE.body>
             <TYPE.body textAlign="center">
-              NFTs on MainNet may not migrate to the new network and may lose its value
+              Tokens on MainNet may not migrate to the new network and may lose its value
             </TYPE.body>
             <TYPE.body textAlign="center" marginBottom={40}>
-              There will be a best effort attempt to migrate the NFTs during the state reset. However, successful
+              There will be a best effort attempt to migrate the tokens during the state reset. However, successful
               migration cannot be guaranteed.
             </TYPE.body>
           </Row>
