@@ -124,12 +124,12 @@ export function getContract(
 
   // const providerOrSigner = getProviderOrSigner(library, connector, account)
 
-  return new Contract(ABI as Abi, address)
+  return new Contract(ABI as Abi, address, library)
 }
 
 // account is optional
 // export function getRouterContract(_: number, library: any, account?: string): Contract {
-//   return getContract(ROUTER_ADDRESS, JediSwapRouterABI, library, account)
+//   return getContract(ROUTER_ADDRESS[chainId ?? DEFAULT_CHAIN_ID], JediSwapRouterABI, library, account)
 // }
 
 export function escapeRegExp(string: string): string {

@@ -22,6 +22,7 @@ import { useTokenComparator } from './sorting'
 import { PaddedColumn, SearchInput, Separator } from './styleds'
 import AutoSizer from 'react-virtualized-auto-sizer'
 import { wrappedCurrency } from '../../utils/wrappedCurrency'
+import { DEFAULT_CHAIN_ID } from "../../constants";
 
 interface CurrencySearchProps {
   isOpen: boolean
@@ -83,7 +84,7 @@ export function CurrencySearch({
   const filteredTokens: Token[] = useMemo(() => {
     if (isAddressSearch) {
       if (searchToken) return [searchToken]
-      else if (isAddressSearch === WETH[chainId ?? 5].address) {
+      else if (isAddressSearch === WETH[chainId ?? DEFAULT_CHAIN_ID].address) {
         const WETH = wrappedCurrency(ETHER, chainId)
         if (WETH) {
           return [WETH]
@@ -204,7 +205,7 @@ export function CurrencySearch({
           )}
         </AutoSizer>
       </div>
-      {/* 
+      {/*
       <Separator />
       <Card>
         <RowBetween>

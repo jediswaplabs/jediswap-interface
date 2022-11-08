@@ -161,13 +161,13 @@ function CurrencyRow({
           >
             {currency.symbol}
           </Text>
-          {/* 
+          {/*
           <StyledPlusCircle
             onClick={() => {
               if (currency instanceof Token) {
                 addTokenToWallet(currency.address)
               } else if (currency === ETHER) {
-                addTokenToWallet(WETH[chainId ?? 5].address)
+                addTokenToWallet(WETH[chainId ?? DEFAULT_CHAIN_ID].address)
               }
             }}
           /> */}

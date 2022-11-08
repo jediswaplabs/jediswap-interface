@@ -1,6 +1,6 @@
 import { Contract, FunctionAbi, number, hash, uint256 } from 'starknet'
 import { toBN } from 'starknet/dist/utils/number'
-import { useEffect, useMemo, useRef } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useActiveStarknetReact } from '../../hooks'
 import { useMulticallContract } from '../../hooks/useContract'
@@ -325,5 +325,5 @@ export default function Updater(): null {
     }
   }, [chainId, multicallContract, dispatch, serializedOutdatedCallKeys, latestBlockNumber, debouncedListeners])
 
-  return null
+  return null;
 }

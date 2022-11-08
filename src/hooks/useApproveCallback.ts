@@ -3,7 +3,7 @@ import { InvokeFunctionResponse, Args, uint256 } from 'starknet'
 import { MaxUint256 } from '@ethersproject/constants'
 import { Trade, TokenAmount, CurrencyAmount, ETHER, WETH, Token } from '@jediswap/sdk'
 
-import { ROUTER_ADDRESS, ZAP_IN_ADDRESS } from '../constants'
+import { DEFAULT_CHAIN_ID, ROUTER_ADDRESS, ZAP_IN_ADDRESS} from '../constants'
 import { useTokenAllowance } from '../data/Allowances'
 import { Field } from '../state/swap/actions'
 import { useTransactionAdder, useHasPendingApproval } from '../state/transactions/hooks'
@@ -28,7 +28,7 @@ export function useApproveCallback(
     amountToApprove instanceof TokenAmount
       ? amountToApprove.token
       : amountToApprove?.currency === ETHER
-      ? WETH[chainId ?? 5]
+      ? WETH[chainId ?? DEFAULT_CHAIN_ID]
       : undefined
 
   const currentAllowance = useTokenAllowance(token, connectedAddress ?? undefined, spender)
@@ -112,10 +112,12 @@ export type TradeType = 'swap' | 'zap'
 
 // wraps useApproveCallback in the context of a swap
 export function useApproveCallbackFromTrade(trade?: Trade, allowedSlippage = 0, tradeType: TradeType = 'swap') {
+  const { chainId } = useActiveStarknetReact()
+
   const amountToApprove = useMemo(
     () => (trade ? computeSlippageAdjustedAmounts(trade, allowedSlippage)[Field.INPUT] : undefined),
     [trade, allowedSlippage]
   )
 
-  return useApproveCallback(amountToApprove, tradeType === 'zap' ? ZAP_IN_ADDRESS : ROUTER_ADDRESS)
+  return useApproveCallback(amountToApprove, tradeType === 'zap' ? ZAP_IN_ADDRESS[chainId ?? DEFAULT_CHAIN_ID] : ROUTER_ADDRESS[chainId ?? DEFAULT_CHAIN_ID])
 }
