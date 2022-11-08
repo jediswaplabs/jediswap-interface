@@ -818,10 +818,10 @@
   resolved "https://registry.npmjs.org/@humanwhocodes/object-schema/-/object-schema-1.2.1.tgz#b520529ec21d8e5945a1851dfd1c32e94e39ff45"
   integrity sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==
 
-"@jediswap/sdk@^2.2.0":
-  version "2.2.0"
-  resolved "https://registry.npmjs.org/@jediswap/sdk/-/sdk-2.2.0.tgz#272f0cc11f3769c090a5086005f7a1365985a2b5"
-  integrity sha512-FDVF1x6trZxLbcU0kGGRnGuFtbHFPfA8HQdE32tl6awRscsZc9bOpDtbHz0e9Hs5rC58qX4KTqo9QFbdm7Axjw==
+"@jediswap/sdk@^2.3.0":
+  version "2.3.0"
+  resolved "https://registry.npmjs.org/@jediswap/sdk/-/sdk-2.3.0.tgz#550b55f2e316791064dd61128ee8fdcd2cbf06af"
+  integrity sha512-wi9V0V6dSxjs3gdibitdfugTv7A1tLZfMxeYCd5CWsfSnAcpfLU+p9kzsa0VwfwWl5OPg65IEMw+hBI6nzkcLQ==
   dependencies:
     big.js "^5.2.2"
     decimal.js-light "^2.5.0"
@@ -1714,18 +1714,18 @@
     "@web3-starknet-react/types" "^2.2.2"
     events "^3.3.0"
 
-"@web3-starknet-react/argentx-connector@^2.2.1":
-  version "2.2.2"
-  resolved "https://registry.npmjs.org/@web3-starknet-react/argentx-connector/-/argentx-connector-2.2.2.tgz#d609ae6df184b06c6af5418e6ae4f851892359bc"
-  integrity sha512-3HgBxq/4y6S6VCHWR8eeKjiWbzeklc3RUEmE9txT/xpKNBrSEhY77PI9EhKCz71iHgwIrqkOw0on73hOiEgmwg==
+"@web3-starknet-react/argentx-connector@^2.2.3":
+  version "2.2.3"
+  resolved "https://registry.npmjs.org/@web3-starknet-react/argentx-connector/-/argentx-connector-2.2.3.tgz#f7b41d5e85b03ded56f956c131098c98c51eb2d3"
+  integrity sha512-SCSsTDPMdMqB/xmI+sSDskh09Lyl6zOGAdwDMKL7jkfI2yiTxqnCqtKmJRKpUrAOOKU0ZBa8oHLiI8Wv+9dUsA==
   dependencies:
     "@web3-starknet-react/abstract-connector" "^2.2.2"
     "@web3-starknet-react/types" "^2.2.2"
 
-"@web3-starknet-react/braavos-connector@^2.2.1":
-  version "2.2.2"
-  resolved "https://registry.npmjs.org/@web3-starknet-react/braavos-connector/-/braavos-connector-2.2.2.tgz#42088ef1d2bc8f6b56e5225c9610a67ca374fdfb"
-  integrity sha512-CiDaXL02newZNQyRO48jzHj7sAZrXAL6hS+MwibU8OP0CvAEEQ5x1Oc2WtOKzWyZ8ry/mmvdlpXp2y7uFMPVsQ==
+"@web3-starknet-react/braavos-connector@^2.2.3":
+  version "2.2.3"
+  resolved "https://registry.npmjs.org/@web3-starknet-react/braavos-connector/-/braavos-connector-2.2.3.tgz#6e91cd5d60d267672b429710fea9df3ecbabdae2"
+  integrity sha512-+tD9pnrp1+QYkIEkcLq1fsgZbbK7UZwwsbHKUQ4JD8IKedMCqZ1YKoyXWz5jLWSqA2wHLcWlm/PC+TMrsjLPmQ==
   dependencies:
     "@web3-starknet-react/abstract-connector" "^2.2.2"
     "@web3-starknet-react/types" "^2.2.2"
