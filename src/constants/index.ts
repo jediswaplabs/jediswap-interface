@@ -19,10 +19,10 @@ export const ROUTER_ADDRESS: { [chainId in ChainId]: string } = {
 
 export const ZAP_IN_ADDRESS: { [chainId in ChainId]: string } = {
   [ChainId.MAINNET]: validateAndParseAddress('0x07e4a2e2ad496c7572228d922a50e656b5791a6f09818fb709e697f460f55735'),
-  [ChainId.ROPSTEN]: validateAndParseAddress('0x07e4a2e2ad496c7572228d922a50e656b5791a6f09818fb709e697f460f55735'),
-  [ChainId.KOVAN]: validateAndParseAddress('0x07e4a2e2ad496c7572228d922a50e656b5791a6f09818fb709e697f460f55735'),
-  [ChainId.RINKEBY]: validateAndParseAddress('0x07e4a2e2ad496c7572228d922a50e656b5791a6f09818fb709e697f460f55735'),
-  [ChainId.GÖRLI]: validateAndParseAddress('0x07e4a2e2ad496c7572228d922a50e656b5791a6f09818fb709e697f460f55735')
+  [ChainId.ROPSTEN]: validateAndParseAddress('0x73e3ccd627283aed4fa3940aa2bdb4d2c702e8e44c99b6851c019222558310f'),
+  [ChainId.KOVAN]: validateAndParseAddress('0x73e3ccd627283aed4fa3940aa2bdb4d2c702e8e44c99b6851c019222558310f'),
+  [ChainId.RINKEBY]: validateAndParseAddress('0x73e3ccd627283aed4fa3940aa2bdb4d2c702e8e44c99b6851c019222558310f'),
+  [ChainId.GÖRLI]: validateAndParseAddress('0x73e3ccd627283aed4fa3940aa2bdb4d2c702e8e44c99b6851c019222558310f')
 }
 
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000000000000000000000000000'
