@@ -161,14 +161,6 @@ export default function PendingView({
       {Object.keys(SUPPORTED_WALLETS).map(key => {
         const option = SUPPORTED_WALLETS[key]
         if (option.connector === connector) {
-          // if (option.connector === injected) {
-          //   if (isMetamask && option.name !== 'MetaMask') {
-          //     return null
-          //   }
-          //   if (!isMetamask && option.name === 'MetaMask') {
-          //     return null
-          //   }
-          // }
           return (
             <BorderWrapper key={key}>
               <Option

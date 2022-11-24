@@ -136,6 +136,9 @@ export function listToLPTokenMap(list: TokenList, allPairs: string[]): LPTokenAd
       const bases: Token[] = BASES_TO_BUILD_ZAPPER_LIST_AGAINST[tokenInfo.chainId]
 
       const lpTokens: WrappedLPTokenInfo[] = bases.map(baseToken => {
+        if (baseToken.symbol === tokenInfo.symbol) {
+          return false;
+        }
         const baseTokenInfo: TokenInfo = {
           address: baseToken.address,
           chainId: baseToken.chainId,
@@ -154,7 +157,7 @@ export function listToLPTokenMap(list: TokenList, allPairs: string[]): LPTokenAd
 
       if (tokenMap[tokenInfo.chainId][tokenInfo.address] !== undefined) throw Error('Duplicate tokens.')
 
-      const filteredLpTokens = lpTokens.filter(lpToken => allPairs.includes(lpToken.address))
+      const filteredLpTokens = lpTokens.filter(Boolean).filter(lpToken => allPairs.includes(lpToken.address))
 
       const internalMap = filteredLpTokens.reduce(
         (lpTokenMap, lpToken) => {
