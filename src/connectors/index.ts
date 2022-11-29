@@ -5,8 +5,8 @@ import { BraavosConnector } from '@web3-starknet-react/braavos-connector'
 export const NETWORK_CHAIN_ID: number = parseInt(process.env.REACT_APP_CHAIN_ID ?? '5')
 
 const isTestnetHost = () => {
-  const host = (new URL(String(location)))?.host || '';
-  return host === 'app.testnet.jediswap.xyz';
+  const host = new URL(String(location))?.host || ''
+  return host === 'app.testnet.jediswap.xyz'
 }
 
 const isProductionHost = () => {

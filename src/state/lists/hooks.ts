@@ -137,7 +137,7 @@ export function listToLPTokenMap(list: TokenList, allPairs: string[]): LPTokenAd
 
       const lpTokens: WrappedLPTokenInfo[] = bases.map(baseToken => {
         if (baseToken.symbol === tokenInfo.symbol) {
-          return false;
+          return false
         }
         const baseTokenInfo: TokenInfo = {
           address: baseToken.address,
