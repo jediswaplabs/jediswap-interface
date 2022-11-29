@@ -10,29 +10,17 @@ const isTestnetHost = () => {
 }
 
 const isProductionHost = () => {
-  const host = (new URL(String(location)))?.host || '';
-  return host === 'app.jediswap.xyz';
+  const host = new URL(String(location))?.host || ''
+  return host === 'app.jediswap.xyz'
 }
 
 // Starknet
-export const argentX = new ArgentXConnector({ supportedChainIds: [
-  ...(isProductionHost()
-    ? []
-    : [ChainId.GÖRLI]),
+export const argentX = new ArgentXConnector({
+  supportedChainIds: [...(isProductionHost() ? [] : [ChainId.GÖRLI]), ...(isTestnetHost() ? [] : [ChainId.MAINNET])]
+})
 
-  ...(isTestnetHost()
-    ? []
-    : [ChainId.MAINNET])
-]})
-
-export const braavosWallet = new BraavosConnector({ supportedChainIds: [
-  ...(isProductionHost()
-    ? []
-    : [ChainId.GÖRLI]),
-
-  ...(isTestnetHost()
-    ? []
-    : [ChainId.MAINNET])
-]})
+export const braavosWallet = new BraavosConnector({
+  supportedChainIds: [...(isProductionHost() ? [] : [ChainId.GÖRLI]), ...(isTestnetHost() ? [] : [ChainId.MAINNET])]
+})
 
 export type injectedConnector = 'argentx' | 'braavos'
