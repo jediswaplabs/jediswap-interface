@@ -3,10 +3,10 @@ import { ChainId } from '@jediswap/sdk'
 import { BlockNumber, Status } from 'starknet'
 
 export interface SerializableTransactionReceipt {
-  transactionIndex: number
-  blockHash: string
+  transactionIndex?: number
+  blockHash?: string
   transactionHash: string
-  blockNumber: BlockNumber
+  blockNumber?: BlockNumber
   status?: Status
 }
 
