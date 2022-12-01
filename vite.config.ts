@@ -12,7 +12,8 @@ export default ({ mode }) => {
       chunkSizeWarningLimit: 2048
     },
     test: {
-      globals: true
+      globals: true,
+      environment: 'happy-dom'
     }
   })
 }
