@@ -56,13 +56,15 @@ export default function Updater(): null {
                     chainId,
                     hash,
                     receipt: {
-                      ...(receipt.status != 'REJECTED' ? {
-                        blockHash: receipt.block_hash,
-                        blockNumber: Number(receipt.block_number),
-                        transactionIndex: Number(receipt.transaction_index),
-                      } : {}),
+                      ...(receipt.status != 'REJECTED'
+                        ? {
+                            blockHash: receipt.block_hash,
+                            blockNumber: Number(receipt.block_number),
+                            transactionIndex: Number(receipt.transaction_index)
+                          }
+                        : {}),
                       transactionHash: receipt.transaction_hash,
-                      status: receipt.status,
+                      status: receipt.status
                     }
                   })
                 )
