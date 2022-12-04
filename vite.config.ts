@@ -9,7 +9,12 @@ export default ({ mode }) => {
       'process.env.NODE_ENV': `"${mode}"`
     },
     build: {
-      chunkSizeWarningLimit: 2048
+      chunkSizeWarningLimit: 2048,
+      rollupOptions: {
+        input: {
+          app: './public/index.html',
+        },
+      },
     },
     test: {
       globals: true,
