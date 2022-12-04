@@ -12,9 +12,9 @@ export default ({ mode }) => {
       chunkSizeWarningLimit: 2048,
       rollupOptions: {
         input: {
-          app: './public/index.html',
-        },
-      },
+          app: './public/index.html'
+        }
+      }
     },
     test: {
       globals: true,
