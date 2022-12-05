@@ -10,9 +10,13 @@ export default ({ mode }) => {
     },
     build: {
       chunkSizeWarningLimit: 2048
+      // rollupOptions: {
+      //   input:  './public/index.html',
+      // },
     },
     test: {
-      globals: true
+      globals: true,
+      environment: 'happy-dom'
     }
   })
 }

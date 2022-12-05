@@ -4,13 +4,35 @@ import { BraavosConnector } from '@web3-starknet-react/braavos-connector'
 
 export const NETWORK_CHAIN_ID: number = parseInt(process.env.REACT_APP_CHAIN_ID ?? '5')
 
-// export const injected = new InjectedConnector({
-//   supportedChainIds: [1, 3, 4, 5, 42]
-// })
+const isTestnetHost = () => {
+  if (!location) {
+    return false
+  }
+  if (String(location) === '//') {
+    return false
+  }
+  const host = new URL(String(location))?.host || ''
+  return host === 'app.testnet.jediswap.xyz'
+}
+
+const isProductionHost = () => {
+  if (!location) {
+    return false
+  }
+  if (String(location) === '//') {
+    return false
+  }
+  const host = new URL(String(location))?.host || ''
+  return host === 'app.jediswap.xyz'
+}
 
 // Starknet
-export const argentX = new ArgentXConnector({ supportedChainIds: [ChainId.GÖRLI, ChainId.MAINNET] })
+export const argentX = new ArgentXConnector({
+  supportedChainIds: [...(isProductionHost() ? [] : [ChainId.GÖRLI]), ...(isTestnetHost() ? [] : [ChainId.MAINNET])]
+})
 
-export const braavosWallet = new BraavosConnector({ supportedChainIds: [ChainId.GÖRLI, ChainId.MAINNET] })
+export const braavosWallet = new BraavosConnector({
+  supportedChainIds: [...(isProductionHost() ? [] : [ChainId.GÖRLI]), ...(isTestnetHost() ? [] : [ChainId.MAINNET])]
+})
 
 export type injectedConnector = 'argentx' | 'braavos'

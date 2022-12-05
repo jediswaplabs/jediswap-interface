@@ -13,8 +13,7 @@ import {
   updateUserExpertMode,
   updateUserSlippageTolerance,
   updateUserDeadline,
-  toggleURLWarning,
-  toggleMainnetWarning
+  toggleURLWarning
 } from './actions'
 
 const currentTimestamp = () => new Date().getTime()
@@ -49,7 +48,6 @@ export interface UserState {
 
   timestamp: number
   URLWarningVisible: boolean
-  MainnetWarningVisible: boolean
 }
 
 function pairKey(token0Address: string, token1Address: string) {
@@ -65,8 +63,7 @@ export const initialState: UserState = {
   tokens: {},
   pairs: {},
   timestamp: currentTimestamp(),
-  URLWarningVisible: true,
-  MainnetWarningVisible: true
+  URLWarningVisible: true
 }
 
 export default createReducer(initialState, builder =>
@@ -137,11 +134,5 @@ export default createReducer(initialState, builder =>
     })
     .addCase(toggleURLWarning, state => {
       state.URLWarningVisible = !state.URLWarningVisible
-    })
-    .addCase(toggleMainnetWarning, state => {
-      if (typeof state.MainnetWarningVisible !== 'boolean') {
-        state.MainnetWarningVisible = false
-      }
-      state.MainnetWarningVisible = !state.MainnetWarningVisible
     })
 )

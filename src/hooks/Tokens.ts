@@ -10,9 +10,7 @@ import { isAddress } from '../utils'
 import { useActiveStarknetReact } from './index'
 import { useTokenContract } from './useContract'
 import { useSingleCallResult } from '../state/multicall/hooks'
-import { jediLPTokenList } from '../constants/jediLPTokenList'
 import { NEVER_RELOAD } from '../state/multicall/hooks'
-// import { BigNumberish } from 'starknet/dist/utils/number'
 export function useAllTokens(): { [address: string]: Token } {
   const { chainId } = useActiveStarknetReact()
   const userAddedTokens = useUserAddedTokens()
@@ -48,7 +46,7 @@ export function useJediLPTokens(): { [address: string]: LPToken } {
   }, [chainId, allLPTokens])
 
   // return {
-  //   ...jediLPTokenList
+  //   ...jediLPTokenList[chainId]
   // }
 }
 

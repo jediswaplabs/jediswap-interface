@@ -3,7 +3,7 @@ import styled, { keyframes } from 'styled-components'
 import { TYPE, ExternalLink } from '../../theme'
 
 import { useBlockNumber } from '../../state/application/hooks'
-import { getVoyagerLink } from '../../utils'
+import { getStarkscanLink } from '../../utils'
 import { useActiveStarknetReact } from '../../hooks'
 import { useBlockHash } from '../../hooks/useBlockHashCallback'
 
@@ -82,7 +82,7 @@ export default function Polling() {
   )
 
   return (
-    <ExternalLink href={chainId && blockHash ? getVoyagerLink(chainId, blockHash, 'block') : ''}>
+    <ExternalLink href={chainId && blockHash ? getStarkscanLink(chainId, blockHash, 'block') : ''}>
       <StyledPolling>
         <TYPE.small style={{ opacity: isMounted ? '0.2' : '0.6' }}>{blockNumber}</TYPE.small>
         <StyledPollingDot>{!isMounted && <Spinner />}</StyledPollingDot>
