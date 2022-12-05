@@ -454,12 +454,12 @@ export default function Swap() {
             {isExpertMode && swapErrorMessage ? <SwapCallbackError error={swapErrorMessage} /> : null}
           </BottomGrouping>
 
-          {account && outputToken && (
-            <AddTokenRow justify={'center'} onClick={() => addTokenToWallet(outputToken.address)}>
-              <AddTokenText>Add {outputToken.symbol} to Wallet</AddTokenText>
-              <ArrowRight width={16} height={15} style={{ marginBottom: '3.5px' }} />
-            </AddTokenRow>
-          )}
+          {/*{account && outputToken && (*/}
+          {/*  <AddTokenRow justify={'center'} onClick={() => addTokenToWallet(outputToken.address)}>*/}
+          {/*    <AddTokenText>Add {outputToken.symbol} to Wallet</AddTokenText>*/}
+          {/*    <ArrowRight width={16} height={15} style={{ marginBottom: '3.5px' }} />*/}
+          {/*  </AddTokenRow>*/}
+          {/*)}*/}
         </Wrapper>
       </AppBody>
       {/* TODO: FIX ADVANCED SWAP */}
