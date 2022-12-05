@@ -45,8 +45,10 @@ import { useApprovalCall } from '../../hooks/useApproveCall'
 import { AddTokenRow, AddTokenText } from '../Swap/styleds'
 import { useAddTokenToWallet } from '../../hooks/useAddTokenToWallet'
 import { ReactComponent as ArrowRight } from '../../assets/images/arrow-right-blue.svg'
+import Loader from "../../components/Loader";
 
 const BalanceText = styled.div`
+  display: flex;
   font-family: 'DM Sans', sans-serif;
   font-size: 16px;
   font-style: normal;
@@ -54,6 +56,10 @@ const BalanceText = styled.div`
   line-height: 16px;
   text-align: center;
   color: ${({ theme }) => theme.jediWhite};
+  
+  svg {
+    margin-left: 4px;  
+  }
 `
 
 const Separator = styled.div`
@@ -403,7 +409,7 @@ export default function AddLiquidity({
 
             <AutoColumn gap="16px">
               <AutoRow justify="flex-end">
-                <BalanceText>Balance: {currencyBalances.CURRENCY_A?.toSignificant(6) ?? 0}</BalanceText>
+                {(connectedAddress  && currencies[Field.CURRENCY_A]) ?  <BalanceText>Balance: {currencyBalances.CURRENCY_A?.toSignificant(6) ?? <Loader />}</BalanceText> : null}
               </AutoRow>
               <CurrencyInputPanel
                 value={formattedAmounts[Field.CURRENCY_A]}
@@ -424,7 +430,7 @@ export default function AddLiquidity({
 
             <AutoColumn gap="16px">
               <AutoRow justify="flex-end">
-                <BalanceText>Balance: {currencyBalances.CURRENCY_B?.toSignificant(6) ?? 0}</BalanceText>
+                {(connectedAddress  && currencies[Field.CURRENCY_B]) ?  <BalanceText>Balance: {currencyBalances.CURRENCY_B?.toSignificant(6) ?? <Loader />}</BalanceText> : null}
               </AutoRow>
               <CurrencyInputPanel
                 value={formattedAmounts[Field.CURRENCY_B]}

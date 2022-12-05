@@ -34,6 +34,7 @@ export const IconWrapper = styled.div`
   margin-bottom: -5px;
 `
 export const BalanceText = styled.div`
+  display: flex;
   font-family: 'DM Sans', sans-serif;
   font-size: 16px;
   font-style: normal;
@@ -42,7 +43,12 @@ export const BalanceText = styled.div`
   text-align: center;
   color: ${({ theme }) => theme.jediWhite};
   margin-bottom: 16px;
+  
+  svg {
+    margin-left: 4px;
+  }
 `
+
 export const Backdrop = styled.div<{
   top?: string
   bottom?: string
