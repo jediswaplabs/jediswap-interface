@@ -215,6 +215,7 @@ function Web3StatusInner() {
   const toggleWalletModal = useWalletModalToggle()
 
   if (connectedAddress) {
+    console.log(connectedAddress)
     return (
       <Web3StatusConnected id="web3-status-connected" onClick={toggleWalletModal} pending={hasPendingTransactions}>
         {!hasPendingTransactions && connector && <StatusIcon connector={connector} />}

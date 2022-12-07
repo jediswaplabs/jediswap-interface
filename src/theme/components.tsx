@@ -127,7 +127,7 @@ export const UniTokenAnimated = styled.img`
  * Outbound link that handles firing google analytics events
  */
 export function ExternalLink({
-  target = '_blank',
+  target = '\_blank',
   href,
   rel = 'noopener noreferrer',
   ...rest

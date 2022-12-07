@@ -16,6 +16,10 @@ const FooterWrapper = styled.div`
   left: 0;
   width: 100%;
   padding: 27px 50px;
+  @media (max-width: 800px) {
+    display:none;
+    width:0
+  }
 `
 export default function Footer() {
   return (

@@ -43,7 +43,7 @@ export const MainnetWarningModal = () => {
               JediSwap is on StarkNet MainNet which is currently in Alpha. There will be a state reset by StarkWare in
               Q4 outlines{' '}
               <ExternalLink href="https://medium.com/starkware/regenesis-starknets-no-sweat-state-reset-e296b12b80ae">
-                here
+                medium
               </ExternalLink>
               .
             </TYPE.body>
