@@ -6,7 +6,7 @@ import ReactGA from 'react-ga4'
 import styled from 'styled-components'
 import MetamaskIcon from '../../assets/images/metamask.png'
 import { ReactComponent as Close } from '../../assets/images/x.svg'
-import { argentX, braavosWallet } from '../../connectors'
+import { argentX, braavosWallet, isProductionEnvironment, isTestnetEnvironment } from '../../connectors'
 import { SUPPORTED_WALLETS } from '../../constants'
 import usePrevious from '../../hooks/usePrevious'
 import { ApplicationModal } from '../../state/application/actions'
@@ -277,7 +277,15 @@ export default function WalletModal({
           <HeaderRow>{error instanceof UnsupportedChainIdError ? 'Wrong Network' : 'Error connecting'}</HeaderRow>
           <ContentWrapper>
             {error instanceof UnsupportedChainIdError ? (
-              <h5>Please connect to the appropriate Ethereum network.</h5>
+              <h5>
+                Please connect to the $
+                {isTestnetEnvironment()
+                  ? 'StarkNet Testnet'
+                  : isProductionEnvironment()
+                  ? 'StarkNet Mainnet'
+                  : 'appropriate StarkNet'}{' '}
+                network.
+              </h5>
             ) : (
               'Error connecting. Try refreshing the page.'
             )}

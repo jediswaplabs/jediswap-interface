@@ -319,7 +319,9 @@ export default function Swap() {
           </div>
           <HeaderRow>
             <BalanceText>Swap From</BalanceText>
-            <BalanceText>Balance: {currencyBalances.INPUT?.toSignificant(6) ?? 0}</BalanceText>
+            {connectedAddress && currencies[Field.INPUT] ? (
+              <BalanceText>Balance: {currencyBalances.INPUT?.toSignificant(6) ?? <Loader />}</BalanceText>
+            ) : null}
           </HeaderRow>
           <AutoColumn>
             <CurrencyInputPanel
@@ -360,7 +362,9 @@ export default function Swap() {
               }
             >
               <BalanceText>Swap To (est.)</BalanceText>
-              <BalanceText>Balance: {currencyBalances.OUTPUT?.toSignificant(6) ?? 0}</BalanceText>
+              {connectedAddress && currencies[Field.OUTPUT] ? (
+                <BalanceText>Balance: {currencyBalances.OUTPUT?.toSignificant(6) ?? <Loader />}</BalanceText>
+              ) : null}
             </HeaderRow>
             <CurrencyInputPanel
               value={formattedAmounts[Field.OUTPUT]}
@@ -454,12 +458,12 @@ export default function Swap() {
             {isExpertMode && swapErrorMessage ? <SwapCallbackError error={swapErrorMessage} /> : null}
           </BottomGrouping>
 
-          {account && outputToken && (
-            <AddTokenRow justify={'center'} onClick={() => addTokenToWallet(outputToken.address)}>
-              <AddTokenText>Add {outputToken.symbol} to Wallet</AddTokenText>
-              <ArrowRight width={16} height={15} style={{ marginBottom: '3.5px' }} />
-            </AddTokenRow>
-          )}
+          {/*{account && outputToken && (*/}
+          {/*  <AddTokenRow justify={'center'} onClick={() => addTokenToWallet(outputToken.address)}>*/}
+          {/*    <AddTokenText>Add {outputToken.symbol} to Wallet</AddTokenText>*/}
+          {/*    <ArrowRight width={16} height={15} style={{ marginBottom: '3.5px' }} />*/}
+          {/*  </AddTokenRow>*/}
+          {/*)}*/}
         </Wrapper>
       </AppBody>
       {/* TODO: FIX ADVANCED SWAP */}

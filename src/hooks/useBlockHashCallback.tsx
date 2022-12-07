@@ -9,7 +9,7 @@ export function useBlockHash(blockNumber: number | undefined): string | undefine
     const block = await library?.getBlock(blockNumber)
 
     setBlockHash(block?.block_hash)
-  }, [blockNumber, library])
+  }, [blockNumber])
 
   useEffect(() => {
     blockhashCallback()
