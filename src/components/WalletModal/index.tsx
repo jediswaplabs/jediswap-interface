@@ -279,7 +279,7 @@ export default function WalletModal({
             {error instanceof UnsupportedChainIdError ? (
               <h5>
                 Please connect to the
-                {isTestnetEnvironment()
+                {' '}{isTestnetEnvironment()
                   ? 'StarkNet Testnet'
                   : isProductionEnvironment()
                   ? 'StarkNet Mainnet'
