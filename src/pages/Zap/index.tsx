@@ -19,7 +19,7 @@ import {
   useDerivedZapInfo,
   useZapActionHandlers,
   useZapDefaultsFromURLSearch,
-  useZapState,
+  useZapState
 } from '../../state/zap/hooks'
 import { Field } from '../../state/zap/actions'
 import { CurrencyAmount, JSBI, TokenAmount, Trade } from '@jediswap/sdk'
@@ -258,7 +258,9 @@ export default function Zap() {
 
           <HeaderRow>
             <BalanceText>From</BalanceText>
-            {(connectedAddress  && currencies[Field.INPUT]) ?  <BalanceText>Balance: {currencyBalances.INPUT?.toSignificant(6) ?? <Loader />}</BalanceText> : null}
+            {connectedAddress && currencies[Field.INPUT] ? (
+              <BalanceText>Balance: {currencyBalances.INPUT?.toSignificant(6) ?? <Loader />}</BalanceText>
+            ) : null}
           </HeaderRow>
           <AutoColumn>
             <CurrencyInputPanel
@@ -285,7 +287,11 @@ export default function Zap() {
               }}
             >
               <BalanceText>To LP (estimated)</BalanceText>
-              {(connectedAddress  && currencies[Field.OUTPUT]) ?  <BalanceText style={{display: 'flex'}}>Balance: {currencyBalances.OUTPUT?.toSignificant(6) ?? <Loader />}</BalanceText> : null}
+              {connectedAddress && currencies[Field.OUTPUT] ? (
+                <BalanceText style={{ display: 'flex' }}>
+                  Balance: {currencyBalances.OUTPUT?.toSignificant(6) ?? <Loader />}
+                </BalanceText>
+              ) : null}
             </HeaderRow>
             <CurrencyInputPanel
               id="zap-currency-output"

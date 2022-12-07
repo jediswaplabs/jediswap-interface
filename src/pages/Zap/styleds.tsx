@@ -39,7 +39,7 @@ export const BalanceText = styled.div`
   text-align: center;
   color: ${({ theme }) => theme.jediWhite};
   margin-bottom: 16px;
-  
+
   svg {
     margin-left: 4px;
   }

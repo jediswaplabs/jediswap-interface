@@ -319,7 +319,9 @@ export default function Swap() {
           </div>
           <HeaderRow>
             <BalanceText>Swap From</BalanceText>
-            {(connectedAddress && currencies[Field.INPUT]) ?  <BalanceText>Balance: {currencyBalances.INPUT?.toSignificant(6) ?? <Loader />}</BalanceText> : null}
+            {connectedAddress && currencies[Field.INPUT] ? (
+              <BalanceText>Balance: {currencyBalances.INPUT?.toSignificant(6) ?? <Loader />}</BalanceText>
+            ) : null}
           </HeaderRow>
           <AutoColumn>
             <CurrencyInputPanel
@@ -360,7 +362,9 @@ export default function Swap() {
               }
             >
               <BalanceText>Swap To (est.)</BalanceText>
-              {(connectedAddress  && currencies[Field.OUTPUT]) ?  <BalanceText>Balance: {currencyBalances.OUTPUT?.toSignificant(6) ?? <Loader />}</BalanceText> : null}
+              {connectedAddress && currencies[Field.OUTPUT] ? (
+                <BalanceText>Balance: {currencyBalances.OUTPUT?.toSignificant(6) ?? <Loader />}</BalanceText>
+              ) : null}
             </HeaderRow>
             <CurrencyInputPanel
               value={formattedAmounts[Field.OUTPUT]}

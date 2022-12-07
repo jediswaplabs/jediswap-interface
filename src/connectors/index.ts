@@ -28,11 +28,17 @@ export const isProductionEnvironment = () => {
 
 // Starknet
 export const argentX = new ArgentXConnector({
-  supportedChainIds: [...(isProductionEnvironment() ? [] : [ChainId.GÖRLI]), ...(isTestnetEnvironment() ? [] : [ChainId.MAINNET])]
+  supportedChainIds: [
+    ...(isProductionEnvironment() ? [] : [ChainId.GÖRLI]),
+    ...(isTestnetEnvironment() ? [] : [ChainId.MAINNET])
+  ]
 })
 
 export const braavosWallet = new BraavosConnector({
-  supportedChainIds: [...(isProductionEnvironment() ? [] : [ChainId.GÖRLI]), ...(isTestnetEnvironment() ? [] : [ChainId.MAINNET])]
+  supportedChainIds: [
+    ...(isProductionEnvironment() ? [] : [ChainId.GÖRLI]),
+    ...(isTestnetEnvironment() ? [] : [ChainId.MAINNET])
+  ]
 })
 
 export type injectedConnector = 'argentx' | 'braavos'
