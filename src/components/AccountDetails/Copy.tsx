@@ -21,7 +21,6 @@ const CopyIcon = styled(LinkStyledButton)`
   }
 `
 const TransactionStatusText = styled.span`
-  /* margin-left: 0.25rem; */
   font-size: 0.875rem;
   font-family: 'DM Sans', sans-serif;
   ${({ theme }) => theme.flexRowNoWrap};
