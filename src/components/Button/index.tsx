@@ -22,7 +22,6 @@ const Base = styled(RebassButton)<{
   border-radius: 8px;
   border-radius: ${({ borderRadius }) => borderRadius && borderRadius};
   outline: none;
-  /* border: 1px solid transparent; */
   color: white;
   text-decoration: none;
   display: flex;
@@ -55,10 +54,7 @@ export const ButtonPrimary = styled(Base)`
   :active {
     background: linear-gradient(95.64deg, #ff00e9 8.08%, #29aafd 105.91%);
   }
-  /* &:active {
-    box-shadow: 0 0 0 1pt ${({ theme }) => darken(0.1, theme.primary1)};
-    background-color: ${({ theme }) => darken(0.1, theme.primary1)};
-  } */
+
   &:disabled {
     background: ${({ theme }) => theme.jediNavyBlue};
     mix-blend-mode: normal;
@@ -101,8 +97,7 @@ export const ButtonLight = styled(Base)`
 export const ButtonGray = styled(Base)`
   background-color: ${({ theme }) => theme.bg3};
   color: ${({ theme }) => theme.text2};
-  /* font-size: 16px;
-  font-weight: 500; */
+ 
   &:focus {
     box-shadow: 0 0 0 1pt ${({ theme, disabled }) => !disabled && darken(0.05, theme.bg2)};
     background-color: ${({ theme, disabled }) => !disabled && darken(0.05, theme.bg2)};
@@ -194,13 +189,13 @@ export const ButtonEmpty = styled(Base)`
   align-items: center;
 
   &:focus {
-    /* text-decoration: underline; */
+    
   }
   &:hover {
-    /* text-decoration: underline; */
+   
   }
   &:active {
-    /* text-decoration: underline; */
+    
   }
   &:disabled {
     opacity: 50%;
@@ -214,7 +209,6 @@ export const ButtonWhite = styled(Base)`
   color: black;
 
   &:focus {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     box-shadow: 0 0 0 1pt ${darken(0.05, '#edeef2')};
   }
   &:hover {
@@ -230,12 +224,10 @@ export const ButtonWhite = styled(Base)`
 `
 
 const ButtonConfirmedStyle = styled(Base)`
-  /* background-color: ${({ theme }) => lighten(0.5, theme.jediBlue)}; */
   background-color: transparent;
   color: ${({ theme }) => theme.jediBlue};
   border: 1px solid ${({ theme }) => theme.jediBlue};
-  /* padding: 21px 10px; */
-
+  
   &:disabled {
     opacity: 50%;
     cursor: auto;
