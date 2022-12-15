@@ -51,7 +51,6 @@ export function useToggleSelfClaimModal(): () => void {
   return useToggleModal(ApplicationModal.SELF_CLAIM)
 }
 
-// returns a function that allows adding a popup
 export function useAddPopup(): (content: PopupContent, key?: string) => void {
   const dispatch = useDispatch()
 
@@ -63,7 +62,6 @@ export function useAddPopup(): (content: PopupContent, key?: string) => void {
   )
 }
 
-// returns a function that allows removing a popup via its key
 export function useRemovePopup(): (key: string) => void {
   const dispatch = useDispatch()
   return useCallback(
@@ -74,7 +72,6 @@ export function useRemovePopup(): (key: string) => void {
   )
 }
 
-// get the list of active popups
 export function useActivePopups(): AppState['application']['popupList'] {
   const list = useSelector((state: AppState) => state.application.popupList)
   return useMemo(() => list.filter(item => item.show), [list])
