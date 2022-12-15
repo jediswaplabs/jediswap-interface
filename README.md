@@ -6,12 +6,12 @@
 
 An open source interface for Jediswap -- a protocol for decentralized exchange of Ethereum tokens.
 
-- Website: [uniswap.org](https://uniswap.org/)
+- Website: [jediswap.org](https://jediswap.org/)
 - Interface: [app.testnet.jediswap.xyz](https://app.testnet.jediswap.xyz/)
-- Docs: [uniswap.org/docs/](https://uniswap.org/docs/)
+- Docs: [jediswap.org/docs/](https://jediswap.org/docs/)
 - Twitter: [@JediswapProtocol](https://twitter.com/JediswapProtocol)
 - Reddit: [/r/Jediswap](https://www.reddit.com/r/Jediswap/)
-- Email: [contact@uniswap.org](mailto:contact@uniswap.org)
+- Email: [contact@jediswap.org](mailto:contact@jediswap.org)
 - Discord: [Jediswap](https://discord.gg/Y7TF6QA)
 - Whitepaper: [Link](https://hackmd.io/C-DvwDSfSxuh-Gd4WKE_ig)
 
@@ -24,7 +24,7 @@ or visit [app.testnet.jediswap.xyz](https://app.testnet.jediswap.xyz/).
 ## Listing a token
 
 Please see the
-[@uniswap/default-token-list](https://github.com/uniswap/default-token-list)
+[@jediswap/default-token-list](https://github.com/jediswap/default-token-list)
 repository.
 
 ## Development
