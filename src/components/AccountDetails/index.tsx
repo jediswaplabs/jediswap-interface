@@ -14,7 +14,6 @@ import { ReactComponent as Close } from '../../assets/images/x.svg'
 import { getStarkscanLink } from '../../utils'
 import argentXIcon from '../../assets/images/argentx.png'
 import braavosIcon from '../../assets/svg/Braavos.svg'
-// import { fortmatic, injected, portis, walletconnect, walletlink } from '../../connectors'
 import { argentX, braavosWallet } from '../../connectors'
 import { ButtonSecondary } from '../Button'
 import { ExternalLink as LinkIcon } from 'react-feather'
@@ -23,7 +22,6 @@ import { AutoColumn } from '../Column'
 
 const HeaderRow = styled.div`
   ${({ theme }) => theme.flexRowNoWrap};
-  /* padding: 2rem 2rem; */
   font-weight: 400;
   font-size: 1.25rem;
   color: ${({ theme }) => theme.jediWhite};
@@ -66,12 +64,10 @@ const UpperSection = styled.div`
 const InfoCard = styled.div`
   background: ${({ theme }) => theme.jediNavyBlue};
   padding: 1rem;
-  /* border: 1px solid ${({ theme }) => theme.bg3}; */
   border-radius: 8px;
   position: relative;
   display: grid;
   grid-row-gap: 12px;
-  /* margin-bottom: 20px; */
 `
 
 const AccountGroupingRow = styled.div`
@@ -90,7 +86,6 @@ const AccountGroupingRow = styled.div`
 
 const AccountSection = styled.div`
   background-color: ${({ theme }) => theme.jediNavyBlue};
-  /* padding: 0rem 1rem; */
   ${({ theme }) => theme.mediaWidth.upToMedium`padding: 0rem 1rem 1.5rem 1rem;`}
 `
 
@@ -139,7 +134,7 @@ const AccountControl = styled.div`
   color: ${({ theme }) => theme.jediWhite};
 
   a:hover {
-    /* text-decoration: underline; */
+   
   }
 
   p {
@@ -163,9 +158,6 @@ const AddressLink = styled(ExternalLink)<{ hasENS: boolean; isENS: boolean }>`
 `
 
 const CloseIcon = styled.div`
-  /* position: absolute; */
-  /* right: 1rem; */
-  /* top: 14px; */
   color: ${({ theme }) => theme.jediWhite};
   &:hover {
     cursor: pointer;
@@ -355,23 +347,7 @@ export default function AccountDetails({
                       </AccountControl>
                     </AccountGroupingRow>
                     <AccountGroupingRow>
-                      {/* <div>
-                        <WalletAction
-                          style={{
-                            fontSize: '.825rem',
-                            fontWeight: 700,
-                            fontFamily: 'DM Sans',
-                            letterSpacing: '0px',
-                            border: 'none',
-                            background: 'transparent',
-                            boxShadow: 'none',
-                            padding: '0'
-                          }}
-                          onClick={openOptions}
-                        >
-                          Switch
-                        </WalletAction>
-                      </div> */}
+                      
                     </AccountGroupingRow>
                   </AccountGroupingRow>
                 </InfoCard>
