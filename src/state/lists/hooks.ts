@@ -36,7 +36,7 @@ export class WrappedLPTokenInfo extends LPToken {
       token0Info.decimals,
       token0Info.symbol,
       token0Info.name,
-      token0Info.logoURI,
+      token0Info.logoURI
     )
     const token1 = new Token(
       token1Info.chainId,
@@ -44,7 +44,7 @@ export class WrappedLPTokenInfo extends LPToken {
       token1Info.decimals,
       token1Info.symbol,
       token1Info.name,
-      token1Info.logoURI,
+      token1Info.logoURI
     )
 
     super(chainId, token0, token1, Pair.getAddress(token0, token1))

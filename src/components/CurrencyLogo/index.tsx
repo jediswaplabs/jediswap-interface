@@ -41,8 +41,10 @@ export default function CurrencyLogo({
   const uriLocations = useHttpLocations(currency?.logoURI ?? undefined)
 
   const srcs: string[] = useMemo(() => {
-    if (uriLocations?.length) { return [...uriLocations] }
-    return [];
+    if (uriLocations?.length) {
+      return [...uriLocations]
+    }
+    return []
   }, [currency, uriLocations])
 
   if (currency === ETHER) {
