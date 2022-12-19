@@ -18,12 +18,9 @@ export class WrappedTokenInfo extends Token {
   public readonly tokenInfo: TokenInfo
   public readonly tags: TagInfo[]
   constructor(tokenInfo: TokenInfo, tags: TagInfo[]) {
-    super(tokenInfo.chainId, tokenInfo.address, tokenInfo.decimals, tokenInfo.symbol, tokenInfo.name)
+    super(tokenInfo.chainId, tokenInfo.address, tokenInfo.decimals, tokenInfo.symbol, tokenInfo.name, tokenInfo.logoURI)
     this.tokenInfo = tokenInfo
     this.tags = tags
-  }
-  public get logoURI(): string | undefined {
-    return this.tokenInfo.logoURI
   }
 }
 
@@ -38,14 +35,16 @@ export class WrappedLPTokenInfo extends LPToken {
       token0Info.address,
       token0Info.decimals,
       token0Info.symbol,
-      token0Info.name
+      token0Info.name,
+      token0Info.logoURI
     )
     const token1 = new Token(
       token1Info.chainId,
       token1Info.address,
       token1Info.decimals,
       token1Info.symbol,
-      token1Info.name
+      token1Info.name,
+      token1Info.logoURI
     )
 
     super(chainId, token0, token1, Pair.getAddress(token0, token1))
@@ -144,7 +143,8 @@ export function listToLPTokenMap(list: TokenList, allPairs: string[]): LPTokenAd
           chainId: baseToken.chainId,
           decimals: baseToken.decimals,
           name: baseToken.name ?? '',
-          symbol: baseToken.symbol ?? ''
+          symbol: baseToken.symbol ?? '',
+          logoURI: baseToken.logoURI ?? ''
         }
 
         return new WrappedLPTokenInfo(

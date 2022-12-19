@@ -818,10 +818,10 @@
   resolved "https://registry.npmjs.org/@humanwhocodes/object-schema/-/object-schema-1.2.1.tgz#b520529ec21d8e5945a1851dfd1c32e94e39ff45"
   integrity sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==
 
-"@jediswap/sdk@^2.3.0":
-  version "2.3.0"
-  resolved "https://registry.npmjs.org/@jediswap/sdk/-/sdk-2.3.0.tgz#550b55f2e316791064dd61128ee8fdcd2cbf06af"
-  integrity sha512-wi9V0V6dSxjs3gdibitdfugTv7A1tLZfMxeYCd5CWsfSnAcpfLU+p9kzsa0VwfwWl5OPg65IEMw+hBI6nzkcLQ==
+"@jediswap/sdk@^2.3.1":
+  version "2.3.1"
+  resolved "https://registry.npmjs.org/@jediswap/sdk/-/sdk-2.3.1.tgz#8eaeeddb341139bab9bb9a31a7036680bbc56a2c"
+  integrity sha512-3hwgINydlZ6ehW/6j2UjsVv8rybrs43kUMzTAIVpTtX3CKHs9gx/2aZDMj3MCX28vP9JIx5dZP4UOUPWbe9oxg==
   dependencies:
     big.js "^5.2.2"
     decimal.js-light "^2.5.0"
