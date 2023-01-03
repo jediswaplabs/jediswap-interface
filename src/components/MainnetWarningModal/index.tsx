@@ -40,16 +40,21 @@ export const MainnetWarningModal = () => {
               <TYPE.largeHeader color={'red2'}>MainNet Warning</TYPE.largeHeader>
             </AutoColumn>
             <TYPE.body textAlign="center" flex={1}>
-              JediSwap is on StarkNet MainNet which is currently in Alpha stage. There will be a network upgrade by StarkWare (Regenesis)
-              in next few month as outlined
-              <ExternalLink href="https://medium.com/starkware/starknet-regenesis-the-plan-bd0219843ef4"> here</ExternalLink>.
-              Things can break on StarkNet MainNet and you might loose funds in an extreme scenario.
+              JediSwap is on StarkNet MainNet which is currently in Alpha stage. There will be a network upgrade by
+              StarkWare (Regenesis) in next few month as outlined
+              <ExternalLink href="https://medium.com/starkware/starknet-regenesis-the-plan-bd0219843ef4">
+                {' '}
+                here
+              </ExternalLink>
+              . Things can break on StarkNet MainNet and you might loose funds in an extreme scenario.
             </TYPE.body>
             <TYPE.body textAlign="center">
-              JediSwap smart contracts are upgradable till the Regenesis to make sure users have the least impact due to the Regenesis.
+              JediSwap smart contracts are upgradable till the Regenesis to make sure users have the least impact due to
+              the Regenesis.
             </TYPE.body>
             <TYPE.body textAlign="center" marginBottom={40}>
-              Also JediSwap smart contracts are not audited yet and there can be bugs in the code which can also cause loss of funds.
+              Also JediSwap smart contracts are not audited yet and there can be bugs in the code which can also cause
+              loss of funds.
             </TYPE.body>
           </Row>
         </AutoColumn>
