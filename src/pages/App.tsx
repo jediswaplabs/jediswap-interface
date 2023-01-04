@@ -22,6 +22,7 @@ import { RedirectOldRemoveLiquidityPathStructure } from './RemoveLiquidity/redir
 
 import Zap from './Zap'
 import ComingSoon from './ComingSoon'
+import Index from './Bridge/Index'
 
 const AppWrapper = styled.div`
   display: flex;
@@ -90,6 +91,7 @@ export default function App() {
               <Route exact path="/add/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
               <Route exact path="/zap" component={Zap} />
               <Route exact path="/stake" component={ComingSoon} />
+              <Route exact path="/bridge" component={Index} />
               <Route exact strict path="/remove/:currencyIdA/:currencyIdB" component={RemoveLiquidity} />
 
               {/* <Route exact strict path="/claim" component={OpenClaimAddressModalAndRedirectToSwap} />
