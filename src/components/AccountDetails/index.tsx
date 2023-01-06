@@ -287,46 +287,6 @@ export default function AccountDetails({
   }
 
   function getStatusIcon() {
-    // if (connector === injected) {
-    //   return (
-    //     <IconWrapper size={16}>
-    //       <Identicon />
-    //     </IconWrapper>
-    //   )
-    // } else if (connector === walletconnect) {
-    //   return (
-    //     <IconWrapper size={16}>
-    //       <img src={WalletConnectIcon} alt={'wallet connect logo'} />
-    //     </IconWrapper>
-    //   )
-    // } else if (connector === walletlink) {
-    //   return (
-    //     <IconWrapper size={16}>
-    //       <img src={CoinbaseWalletIcon} alt={'coinbase wallet logo'} />
-    //     </IconWrapper>
-    //   )
-    // } else if (connector === fortmatic) {
-    //   return (
-    //     <IconWrapper size={16}>
-    //       <img src={FortmaticIcon} alt={'fortmatic logo'} />
-    //     </IconWrapper>
-    //   )
-    // } else if (connector === portis) {
-    //   return (
-    //     <>
-    //       <IconWrapper size={16}>
-    //         <img src={PortisIcon} alt={'portis logo'} />
-    //         <MainWalletAction
-    //           onClick={() => {
-    //             portis.portis.showPortis()
-    //           }}
-    //         >
-    //           Show Portis
-    //         </MainWalletAction>
-    //       </IconWrapper>
-    //     </>
-    //   )
-    // }
     if (connector === argentX) {
       return (
         <IconWrapper size={32}>
