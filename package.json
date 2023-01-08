@@ -133,6 +133,6 @@
   },
   "license": "GPL-3.0-or-later",
   "dependencies": {
-    "@material-ui/core": "^4.12.4"
+    
   }
 }

@@ -136,8 +136,7 @@ export default function Option({
           ''
         )}
       </HeaderText>
-      <p>MATAMASK</p>
-      {/* <p>{connectedAddress && shortenAddress(connectedAddress)}</p> */}
+      <p style={{ color: 'white' }}>MetaMask</p>
       <SubHeader>{subheader}</SubHeader>
       <SubHeader>{subheader}</SubHeader>
     </OptionCardClickable>

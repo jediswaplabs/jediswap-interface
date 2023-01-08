@@ -26,7 +26,6 @@ import { BorderWrapper } from '../../components/AccountDetails'
 import Loader from '../../components/Loader'
 import { Wallet } from 'ethers'
 import Option from './Option'
-import Matamask from './Matamask'
 import { SUPPORTED_WALLETS } from '../../constants'
 import { isMobile } from 'react-device-detect'
 import { useModalOpen, useWalletModalToggle } from '../../state/application/hooks'
@@ -38,10 +37,10 @@ import MetamaskIcon from '../../assets/images/metamask.png'
 import argentXIcon from '../../assets/images/argentx.png'
 import { argentX } from '../../connectors'
 import { shortenAddress } from '../../utils'
+import MetaMask from './MetaMask'
 
 const UpperSection = styled.div`
   position: relative;
-
   h5 {
     margin: 0;
     margin-bottom: 0.5rem;
@@ -169,7 +168,7 @@ export default function WalletModal({
     return null
   }
 
-  function getOptions() {
+  function getOption() {
     return Object.keys(SUPPORTED_WALLETS).map(key => {
       const option = SUPPORTED_WALLETS[key]
       if (isMobile) {
@@ -215,14 +214,14 @@ export default function WalletModal({
       )
     })
   }
-  // .....................getMatamasks.......................
-  function getMatamasks() {
+  // .....................getMetaMask.......................
+  function getMetaMask() {
     return Object.keys(SUPPORTED_WALLETS).map(key => {
       const option = SUPPORTED_WALLETS[key]
       if (isMobile) {
         if (!window.starknet && option.mobile) {
           return (
-            <Matamask
+            <MetaMask
               onClick={() => {
                 option.connector !== connector && !option.href && tryActivation(option.connector)
               }}
@@ -243,7 +242,7 @@ export default function WalletModal({
       return (
         !isMobile &&
         !option.mobileOnly && (
-          <Matamask
+          <MetaMask
             id={`connect-${key}`}
             onClick={() => {
               option.connector === connector
@@ -276,17 +275,18 @@ export default function WalletModal({
         <AppBody>
           <Wrapper>
             <AutoColumn gap="14px" style={{ marginBottom: '18px' }}>
-              <HeaderInfo fontSize={16}>Please connect your Ethereum wellet and Argent wellet</HeaderInfo>
+              <HeaderInfo fontSize={16}>Please connect your Ethereum wallet and Argent wallet</HeaderInfo>
             </AutoColumn>
+            <AutoColumn gap="14px" style={{ marginTop: '20px' }}></AutoColumn>
             <>
               <>
-                <BorderWrapper>{getOptions()}</BorderWrapper>
+                <BorderWrapper>{getOption()}</BorderWrapper>
               </>
             </>
             <AutoColumn gap="14px" style={{ marginTop: '20px' }}></AutoColumn>
             <>
               <>
-                <BorderWrapper>{getMatamasks()}</BorderWrapper>
+                <BorderWrapper>{getMetaMask()}</BorderWrapper>
               </>
             </>
           </Wrapper>

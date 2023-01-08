@@ -124,7 +124,6 @@ export default function Option({
           <img src={icon} alt={'Icon'} />
         </IconWrapper>
       </OptionCardLeft>
-      <b>ArgentX</b>
       <HeaderText color={color}>
         {active ? (
           <CircleWrapper>
@@ -136,7 +135,8 @@ export default function Option({
           ''
         )}
       </HeaderText>
-      <p>{connectedAddress && shortenAddress(connectedAddress)}</p>
+      <p style={{ color: 'white' }}>ArgentX</p>
+      <p style={{ color: 'white' }}>{connectedAddress && shortenAddress(connectedAddress)}</p>
       <SubHeader>{subheader}</SubHeader>
       <SubHeader>{subheader}</SubHeader>
     </OptionCardClickable>
