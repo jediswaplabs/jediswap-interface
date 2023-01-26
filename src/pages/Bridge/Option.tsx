@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { ExternalLink } from '../../theme'
 import { shortenAddress } from '../../utils'
-import { UnsupportedChainIdError, useStarknetReact } from '@web3-starknet-react/core'
+import { WalletText } from './styleds'
 import { useActiveStarknetReact } from '../../hooks'
 
 const InfoCard = styled.button<{ active?: boolean }>`
@@ -135,10 +135,11 @@ export default function Option({
           ''
         )}
       </HeaderText>
-      <p style={{ color: 'white' }}>ArgentX</p>
-      <p style={{ color: 'white' }}>{connectedAddress && shortenAddress(connectedAddress)}</p>
-      <SubHeader>{subheader}</SubHeader>
-      <SubHeader>{subheader}</SubHeader>
+      {!account ? (
+        <WalletText style={{ color: 'white' }}>ArgentX</WalletText>
+      ) : (
+        <WalletText style={{ color: 'white' }}>{connectedAddress && shortenAddress(connectedAddress)}</WalletText>
+      )}
     </OptionCardClickable>
   )
   if (link) {

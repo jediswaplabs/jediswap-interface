@@ -1,42 +1,21 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { AbstractConnector } from '@web3-starknet-react/abstract-connector'
-import { SwapPoolTabs } from '../../components/NavigationTabs'
 import { UnsupportedChainIdError, useStarknetReact } from '@web3-starknet-react/core'
 import ReactGA from 'react-ga4'
 import AppBody from '../AppBody'
-import { Wrapper, HeaderRow, HeaderNote, HeaderInfo } from './styleds'
+import { Wrapper, HeaderRow, HeaderInfo } from './styleds'
 import styled from 'styled-components'
-import Settings from '../../components/Settings'
-import { DMSansText } from '../../theme'
 import Column, { AutoColumn } from '../../components/Column'
-import AddressInputPanel from '../../components/AddressInputPanel'
-import { AutoRow, RowBetween, RowCentered } from '../../components/Row'
-import { ArrowWrapper, BottomGrouping } from '../../components/swap/styleds'
-import { AddTokenRow, AddTokenText, Icon, IconWrapper } from '../Swap/styleds'
-import SwapWidget from '../../assets/jedi/SwapWidget.svg'
-import { useActiveStarknetReact } from '../../hooks'
-import {
-  ButtonConfirmed,
-  ButtonError,
-  ButtonPrimary,
-  RedGradientButton,
-  ButtonSecondary
-} from '../../components/Button'
+import { IconWrapper } from '../Swap/styleds'
 import { BorderWrapper } from '../../components/AccountDetails'
-import Loader from '../../components/Loader'
-import { Wallet } from 'ethers'
 import Option from './Option'
 import { SUPPORTED_WALLETS } from '../../constants'
 import { isMobile } from 'react-device-detect'
 import { useModalOpen, useWalletModalToggle } from '../../state/application/hooks'
 import { ApplicationModal } from '../../state/application/actions'
 import usePrevious from '../../hooks/usePrevious'
-import { ExternalLink } from '../../theme'
-import PendingView from '../../components/WalletModal/PendingView'
-import MetamaskIcon from '../../assets/images/metamask.png'
 import argentXIcon from '../../assets/images/argentx.png'
 import { argentX } from '../../connectors'
-import { shortenAddress } from '../../utils'
 import MetaMask from './MetaMask'
 
 const UpperSection = styled.div`
@@ -57,22 +36,6 @@ const UpperSection = styled.div`
     font-weight: 500;
   }
 `
-
-const HoverText = styled.div`
-  :hover {
-    cursor: pointer;
-  }
-`
-
-const OptionGrid = styled.div`
-  display: grid;
-  grid-gap: 10px;
-  ${({ theme }) => theme.mediaWidth.upToMedium`
-    grid-template-columns: 1fr;
-    grid-gap: 10px;
-  `};
-`
-
 export const WALLET_VIEWS = {
   OPTIONS: 'options',
   OPTIONS_SECONDARY: 'options_secondary',
@@ -81,16 +44,14 @@ export const WALLET_VIEWS = {
 }
 
 export default function WalletModal({
-  pendingTransactions,
-  confirmedTransactions,
-  ENSName
+ 
 }: {
   pendingTransactions: string[] // hashes of pending
   confirmedTransactions: string[] // hashes of confirmed
   ENSName?: string
 }) {
   // important that these are destructed from the account-specific web3-react context
-  const { active, connectedAddress, account, connector, activate, error } = useStarknetReact()
+  const { active, account, connector, activate, error } = useStarknetReact()
 
   // const connectStarknet = useStarknetConnector({ showModal: true })
 
@@ -214,54 +175,6 @@ export default function WalletModal({
       )
     })
   }
-  // .....................getMetaMask.......................
-  function getMetaMask() {
-    return Object.keys(SUPPORTED_WALLETS).map(key => {
-      const option = SUPPORTED_WALLETS[key]
-      if (isMobile) {
-        if (!window.starknet && option.mobile) {
-          return (
-            <MetaMask
-              onClick={() => {
-                option.connector !== connector && !option.href && tryActivation(option.connector)
-              }}
-              id={`connect-${key}`}
-              key={key}
-              active={option.connector && option.connector === connector}
-              color={option.color}
-              link={option.href}
-              header={option.name}
-              subheader={null}
-              icon={option.icon}
-            />
-          )
-        }
-        return null
-      }
-
-      return (
-        !isMobile &&
-        !option.mobileOnly && (
-          <MetaMask
-            id={`connect-${key}`}
-            onClick={() => {
-              option.connector === connector
-                ? setWalletView(WALLET_VIEWS.ACCOUNT)
-                : !option.href && tryActivation(option.connector)
-            }}
-            key={key}
-            active={option.connector === connector}
-            color={option.color}
-            link={option.href}
-            header={option.name}
-            subheader={null} //use option.descriptio to bring back multi-line
-            icon={option.icon}
-          />
-        )
-      )
-    })
-  }
-
   {
     if (error) {
       return (
@@ -286,7 +199,9 @@ export default function WalletModal({
             <AutoColumn gap="14px" style={{ marginTop: '20px' }}></AutoColumn>
             <>
               <>
-                <BorderWrapper>{getMetaMask()}</BorderWrapper>
+                <BorderWrapper>
+                  <MetaMask />
+                </BorderWrapper>
               </>
             </>
           </Wrapper>

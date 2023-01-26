@@ -1,10 +1,18 @@
 import styled from 'styled-components'
-// import { Zap as ZapIcon } from 'react-feather'
 import { DMSansText } from '../../theme'
 
 export const Wrapper = styled.div`
   position: relative;
 `
+
+export const WalletText = styled.div`
+  padding-left: 10px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: normal;
+  font-size: 16px;
+  text-align: ;
+  margin-right: 30px;
+  `
 
 export const HeaderRow = styled.div`
   display: flex;

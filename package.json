@@ -72,7 +72,6 @@
     "react-markdown": "^4.3.1",
     "react-popper": "^2.2.3",
     "react-redux": "^7.2.0",
-    "react-router-dom": "^5.0.0",
     "react-scripts": "^4.0.3",
     "react-spring": "^8.0.27",
     "react-switch": "^6.0.0",
@@ -86,7 +85,7 @@
     "start-server-and-test": "^1.11.0",
     "styled-components": "^4.2.0",
     "tiny-invariant": "^1.2.0",
-    "typescript": "^3.8.3",
+    "typescript": "^3.9.10",
     "use-count-up": "^2.2.5",
     "use-deep-compare-effect": "^1.8.1",
     "wcag-contrast": "^3.0.0"
@@ -131,8 +130,5 @@
       "last 1 safari version"
     ]
   },
-  "license": "GPL-3.0-or-later",
-  "dependencies": {
-    
-  }
+  "license": "GPL-3.0-or-later"
 }

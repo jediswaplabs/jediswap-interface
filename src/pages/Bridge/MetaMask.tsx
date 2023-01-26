@@ -1,149 +1,120 @@
+import { useEffect, useState } from 'react'
 import React from 'react'
 import styled from 'styled-components'
-import { ExternalLink } from '../../theme'
+import metamask from '../../assets/images/metamask.png'
+import { WalletText } from './styleds'
 import { shortenAddress } from '../../utils'
-import { UnsupportedChainIdError, useStarknetReact } from '@web3-starknet-react/core'
-import { useActiveStarknetReact } from '../../hooks'
-import MetamaskIcon from '../../assets/images/metamask.png'
 
-const InfoCard = styled.button<{ active?: boolean }>`
-  background-color: ${({ theme, active }) => (active ? theme.bg3 : theme.bg2)};
-  padding: 2rem;
-  outline: none;
-  border: 1px solid;
-  border-radius: 8px;
-  width: 100% !important;
-  &:focus {
+const MetaMask: React.FC = () => {
+  const [isMetamaskInstalled, setIsMetamaskInstalled] = useState<boolean>(false)
+  const [ethereumAccount, setEthereumAccount] = useState<string | null>(null)
+
+  const InfoCard = styled.button<{ active?: boolean }>`
+    background-color: ${({ theme, active }) => (active ? theme.bg3 : theme.bg2)};
+    padding: 2rem;
+    outline: none;
+    border: 1px solid;
+    border-radius: 8px;
+    width: 100% !important;
+    &:focus {
     box-shadow: 0 0 0 1px ${({ theme }) => theme.primary1};
   }
   /* border-color: ${({ theme, active }) => (active ? 'transparent' : theme.bg3)}; */
 `
 
-const OptionCard = styled(InfoCard as any)`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 2rem;
-  padding: 1rem;
-  background: ${({ theme }) => theme.jediNavyBlue};
-`
+  const OptionCard = styled(InfoCard as any)`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 2rem;
+    padding: 1rem;
+    background: ${({ theme }) => theme.jediNavyBlue};
+  `
 
-const OptionCardLeft = styled.div`
-  ${({ theme }) => theme.flexColumnNoWrap};
-  justify-content: center;
-  height: 100%;
-`
+  const OptionCardLeft = styled.div`
+    ${({ theme }) => theme.flexColumnNoWrap};
+    justify-content: center;
+    height: 100%;
+  `
 
-const OptionCardClickable = styled(OptionCard as any)<{ clickable?: boolean }>`
-  margin-top: 0;
-  &:hover {
-    cursor: ${({ clickable }) => (clickable ? 'pointer' : '')};
-    /* border: ${({ clickable, theme }) => (clickable ? `1px solid ${theme.primary1}` : ``)}; */
-  }
-  opacity: ${({ disabled }) => (disabled ? '0.5' : '1')};
-`
-
-const GreenCircle = styled.div`
-  ${({ theme }) => theme.flexRowNoWrap}
-  justify-content: center;
-  align-items: center;
-
-  &:first-child {
-    height: 8px;
-    width: 8px;
-    margin-right: 8px;
-    background-color: ${({ theme }) => theme.green1};
-    border-radius: 50%;
-  }
-`
-
-const CircleWrapper = styled.div`
-  color: ${({ theme }) => theme.green1};
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`
-
-const HeaderText = styled.div`
-  ${({ theme }) => theme.flexRowNoWrap};
-  color: ${({ theme }) => theme.jediWhite};
-  font-size: 1rem;
-  font-weight: 500;
-  font-family: 'DM Sans', sans-serif;
-`
-
-const SubHeader = styled.div`
-  color: ${({ theme }) => theme.jediWhite};
-  margin-top: 10px;
-  font-size: 12px;
-  font-family: 'DM Sans', sans-serif;
-`
-
-const IconWrapper = styled.div<{ size?: number | null }>`
-  ${({ theme }) => theme.flexColumnNoWrap};
-  align-items: center;
-  justify-content: center;
-  & > img,
-  span {
-    height: ${({ size }) => (size ? size + 'px' : '24px')};
-    width: ${({ size }) => (size ? size + 'px' : '24px')};
-  }
-  ${({ theme }) => theme.mediaWidth.upToMedium`
+  const IconWrapper = styled.div<{ size?: number | null }>`
+    ${({ theme }) => theme.flexColumnNoWrap};
+    align-items: center;
+    justify-content: center;
+    & > img,
+    span {
+      height: ${({ size }) => (size ? size + 'px' : '24px')};
+      width: ${({ size }) => (size ? size + 'px' : '24px')};
+    }
+    ${({ theme }) => theme.mediaWidth.upToMedium`
     align-items: flex-end;
   `};
-`
+  `
 
-export default function Option({
-  link = null,
-  clickable = true,
-  size,
-  onClick = null,
-  color,
-  header,
-  subheader = null,
-  icon,
-  active = false,
-  id
-}: {
-  link?: string | null
-  clickable?: boolean
-  size?: number | null
-  onClick?: null | (() => void)
-  color: string
-  header: React.ReactNode
-  subheader: React.ReactNode | null
-  icon: string
-  active?: boolean
-  id: string
-}) {
-  const { chainId, account, connectedAddress, connector } = useActiveStarknetReact()
-  const content = (
-    <OptionCardClickable id={id} onClick={onClick} clickable={clickable && !active} active={active}>
-      <OptionCardLeft>
-        <IconWrapper size={size}>
-          <img src={MetamaskIcon} alt={'Icon'} />
-        </IconWrapper>
-      </OptionCardLeft>
-      <HeaderText color={color}>
-        {active ? (
-          <CircleWrapper>
-            <GreenCircle>
-              <div />
-            </GreenCircle>
-          </CircleWrapper>
-        ) : (
-          ''
-        )}
-      </HeaderText>
-      <p style={{ color: 'white' }}>MetaMask</p>
-      <SubHeader>{subheader}</SubHeader>
-      <SubHeader>{subheader}</SubHeader>
-    </OptionCardClickable>
-  )
-  if (link) {
-    return <ExternalLink href={link}>{content}</ExternalLink>
+  const OptionCardClickable = styled(OptionCard as any)<{ clickable?: boolean }>`
+    margin-top: 0;
+    &:hover {
+    cursor: ${({ clickable }) => (clickable ? 'pointer' : '')};
+    /* border: ${({ clickable, theme }) => (clickable ? `1px solid ${theme.primary1}` : ``)}; */
+    }
+    opacity: ${({ disabled }) => (disabled ? '0.5' : '1')};
+  `
+
+  useEffect(() => {
+    if ((window as any).ethereum) {
+      setIsMetamaskInstalled(true)
+    }
+  }, [])
+
+  //Does the User have an Ethereum wallet/account?
+  async function connectMetamaskWallet(): Promise<void> {
+    //to get around type checking
+    (window as any).ethereum
+      .request({
+        method: 'eth_requestAccounts'
+      })
+      .then((accounts: string[]) => {
+        setEthereumAccount(accounts[0])
+      })
+      .catch((error: any) => {
+        alert(`Something went wrong: ${error}`)
+      })
   }
 
-  return content
+  if (ethereumAccount === null) {
+    return (
+      <OptionCardClickable onClick={connectMetamaskWallet}>
+        <OptionCardLeft>
+          <IconWrapper>
+            <img src={metamask} alt={'metamask'} />
+          </IconWrapper>
+        </OptionCardLeft>
+        {isMetamaskInstalled ? (
+         <WalletText style={{ color: 'white' }}>Metamask</WalletText>
+        ) : (
+          <p style={{ color: 'white' }}>Install Your Metamask wallet</p>
+        )
+        }
+          
+      </OptionCardClickable>
+      
+    );
+  }
+
+
+ return (
+   <OptionCardClickable>
+        <IconWrapper>
+          <img src={metamask} alt={'metamask'} />
+        </IconWrapper>
+       <WalletText style={{ color: 'white' }}>
+         {ethereumAccount && shortenAddress(ethereumAccount)}
+       </WalletText>
+   </OptionCardClickable>
+ )
 }
+
+
+
+export default MetaMask;
