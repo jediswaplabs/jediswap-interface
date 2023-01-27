@@ -351,9 +351,7 @@ export default function AccountDetails({
                         )}
                       </AccountControl>
                     </AccountGroupingRow>
-                    <AccountGroupingRow>
-               
-                    </AccountGroupingRow>
+                    <AccountGroupingRow></AccountGroupingRow>
                   </AccountGroupingRow>
                 </InfoCard>
               </BorderWrapper>
