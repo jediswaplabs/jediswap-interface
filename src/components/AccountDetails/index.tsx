@@ -163,9 +163,6 @@ const AddressLink = styled(ExternalLink)<{ hasENS: boolean; isENS: boolean }>`
 `
 
 const CloseIcon = styled.div`
-  /* position: absolute; */
-  /* right: 1rem; */
-  /* top: 14px; */
   color: ${({ theme }) => theme.jediWhite};
   &:hover {
     cursor: pointer;
@@ -355,23 +352,7 @@ export default function AccountDetails({
                       </AccountControl>
                     </AccountGroupingRow>
                     <AccountGroupingRow>
-                      {/* <div>
-                        <WalletAction
-                          style={{
-                            fontSize: '.825rem',
-                            fontWeight: 700,
-                            fontFamily: 'DM Sans',
-                            letterSpacing: '0px',
-                            border: 'none',
-                            background: 'transparent',
-                            boxShadow: 'none',
-                            padding: '0'
-                          }}
-                          onClick={openOptions}
-                        >
-                          Switch
-                        </WalletAction>
-                      </div> */}
+               
                     </AccountGroupingRow>
                   </AccountGroupingRow>
                 </InfoCard>
