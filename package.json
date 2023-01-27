@@ -65,6 +65,7 @@
     "react-confetti": "^6.0.0",
     "react-device-detect": "^1.6.2",
     "react-dom": "^16.13.1",
+    "react-router-dom": "^5.0.0",
     "react-error-overlay": "6.0.9",
     "react-feather": "^2.0.8",
     "react-ga4": "^1.4.1",
