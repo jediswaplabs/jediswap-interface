@@ -14,7 +14,7 @@ import { useActiveStarknetReact } from '../../hooks'
 // import { useETHBalances } from '../../state/wallet/hooks'
 import { CardNoise } from './styled'
 import { CountUp } from 'use-count-up'
-import { TYPE } from '../../theme'
+import {ExternalLink, TYPE} from '../../theme'
 // import { ExternalLink } from '../../theme'
 
 import { YellowCard } from '../Card'
@@ -291,36 +291,33 @@ const StyledNavLink = styled(NavLink).attrs({
   }
 `
 
-// const StyledExternalLink = styled(ExternalLink).attrs({
-//   activeClassName
-// })<{ isActive?: boolean }>`
-//   ${({ theme }) => theme.flexRowNoWrap}
-//   align-items: left;
-//   border-radius: 3rem;
-//   outline: none;
-//   cursor: pointer;
-//   text-decoration: none;
-//   color: ${({ theme }) => theme.white};
-//   font-size: 1rem;
-//   width: fit-content;
-//   margin: 0 12px;
-//   font-weight: 500;
+const StyledExternalLink = styled(ExternalLink).attrs({
+  activeClassName
+})<{ isActive?: boolean }>`
+  ${({ theme }) => theme.flexRowNoWrap}
+  align-items: left;
+  // border-radius: 3rem;
+  outline: none;
+  cursor: pointer;
+  text-decoration: none;
+  color: ${({ theme }) => theme.white};
+  font-size: 1rem;
+  width: fit-content;
+  margin: 0 12px;
+  padding: 12px 0;
 
-//   &.${activeClassName} {
-//     border-radius: 12px;
-//     font-weight: 600;
-//     color: ${({ theme }) => theme.text1};
-//   }
+  font-weight: 800;
+  line-height: 100%;
+  text-align: center;
+  text-transform: uppercase;
 
-//   :hover,
-//   :focus {
-//     color: ${({ theme }) => darken(0.1, theme.text1)};
-//   }
-
-//   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-//       display: none;
-// `}
-// `
+  :hover,
+  :focus {
+      // color: ${({ theme }) => darken(0.1, theme.text1)};
+    color:rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+  }
+`
 const StarkNetCard = styled.div`
   height: 38px;
   width: 124px;
@@ -393,9 +390,11 @@ function Header({ history }: { history: any }) {
         <StyledNavLink id={`swap-nav-link`} to={'/zap'} isActive={() => history.location.pathname.includes('/zap')}>
           {t('Zap')}
         </StyledNavLink>
-        <StyledNavLink id={`swap-nav-link`} to={'/stake'} isActive={() => history.location.pathname.includes('/stake')}>
-          {t('Stake')}
-        </StyledNavLink>
+
+        <StyledExternalLink id={`stake-nav-link`} href={'https://info.jediswap.xyz'}>
+          Dashboard
+        </StyledExternalLink>
+
         {/* <StyledNavLink id={`stake-nav-link`} to={'/uni'} isActive={() => history.location.pathname.includes('/uni')}>
             UNI
           </StyledNavLink> */}
