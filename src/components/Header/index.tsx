@@ -14,7 +14,7 @@ import { useActiveStarknetReact } from '../../hooks'
 // import { useETHBalances } from '../../state/wallet/hooks'
 import { CardNoise } from './styled'
 import { CountUp } from 'use-count-up'
-import {ExternalLink, TYPE} from '../../theme'
+import { ExternalLink, TYPE } from '../../theme'
 // import { ExternalLink } from '../../theme'
 
 import { YellowCard } from '../Card'
