@@ -1,6 +1,5 @@
 ---
 name: Bug Report
-about: Describe an issue in the JediSwap Interface
 title: ''
 labels: bug
 assignees: ''
