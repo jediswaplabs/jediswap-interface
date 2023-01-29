@@ -12,7 +12,7 @@ export const WalletText = styled.div`
   font-size: 16px;
   text-align: ;
   margin-right: 30px;
-  `
+`
 
 export const HeaderRow = styled.div`
   display: flex;

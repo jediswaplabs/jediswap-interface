@@ -43,9 +43,7 @@ export const WALLET_VIEWS = {
   PENDING: 'pending'
 }
 
-export default function WalletModal({
- 
-}: {
+export default function WalletModal({}: {
   pendingTransactions: string[] // hashes of pending
   confirmedTransactions: string[] // hashes of confirmed
   ENSName?: string

@@ -67,10 +67,8 @@ const MetaMask: React.FC = () => {
     }
   }, [])
 
-  //Does the User have an Ethereum wallet/account?
   async function connectMetamaskWallet(): Promise<void> {
-    //to get around type checking
-    (window as any).ethereum
+    ;(window as any).ethereum
       .request({
         method: 'eth_requestAccounts'
       })
@@ -91,30 +89,22 @@ const MetaMask: React.FC = () => {
           </IconWrapper>
         </OptionCardLeft>
         {isMetamaskInstalled ? (
-         <WalletText style={{ color: 'white' }}>Metamask</WalletText>
+          <WalletText style={{ color: 'white' }}>Metamask</WalletText>
         ) : (
           <p style={{ color: 'white' }}>Install Your Metamask wallet</p>
-        )
-        }
-          
+        )}
       </OptionCardClickable>
-      
-    );
+    )
   }
 
-
- return (
-   <OptionCardClickable>
-        <IconWrapper>
-          <img src={metamask} alt={'metamask'} />
-        </IconWrapper>
-       <WalletText style={{ color: 'white' }}>
-         {ethereumAccount && shortenAddress(ethereumAccount)}
-       </WalletText>
-   </OptionCardClickable>
- )
+  return (
+    <OptionCardClickable>
+      <IconWrapper>
+        <img src={metamask} alt={'metamask'} />
+      </IconWrapper>
+      <WalletText style={{ color: 'white' }}>{ethereumAccount && shortenAddress(ethereumAccount)}</WalletText>
+    </OptionCardClickable>
+  )
 }
 
-
-
-export default MetaMask;
+export default MetaMask
