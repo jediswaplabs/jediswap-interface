@@ -91,7 +91,7 @@ const MetaMask: React.FC = () => {
         {isMetamaskInstalled ? (
           <WalletText style={{ color: 'white' }}>Metamask</WalletText>
         ) : (
-          <p style={{ color: 'white' }}>Install Your Metamask wallet</p>
+          <WalletText style={{ color: 'white' }}>Install Your Metamask wallet</WalletText>
         )}
       </OptionCardClickable>
     )
