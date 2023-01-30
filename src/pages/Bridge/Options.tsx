@@ -90,7 +90,7 @@ const IconWrapper = styled.div<{ size?: number | null }>`
   `};
 `
 
-export default function Option({
+export default function Options({
   link = null,
   clickable = true,
   size,
