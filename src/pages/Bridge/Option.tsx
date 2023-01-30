@@ -142,9 +142,6 @@ export default function Option({
       )}
     </OptionCardClickable>
   )
-  if (link) {
-    return <ExternalLink href={link}>{content}</ExternalLink>
-  }
 
   return content
 }
