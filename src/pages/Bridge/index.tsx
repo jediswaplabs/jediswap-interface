@@ -131,7 +131,7 @@ export default function WalletModal({}: {
     return Object.keys(SUPPORTED_WALLETS).map(key => {
       const options = SUPPORTED_WALLETS[key]
       if (isMobile) {
-        if (!window.starknet && option.mobile) {
+        if (!window.starknet && options.mobile) {
           return (
             <Options
               onClick={() => {
@@ -154,7 +154,7 @@ export default function WalletModal({}: {
        return (
         !isMobile &&
         !options.mobileOnly && (
-          <Option
+          <Options
             id={`connect-${key}`}
             onClick={() => {
               options.connector === connector
