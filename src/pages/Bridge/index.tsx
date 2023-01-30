@@ -8,7 +8,7 @@ import styled from 'styled-components'
 import Column, { AutoColumn } from '../../components/Column'
 import { IconWrapper } from '../Swap/styleds'
 import { BorderWrapper } from '../../components/AccountDetails'
-import Option from './Option'
+import Options from './Options'
 import { SUPPORTED_WALLETS } from '../../constants'
 import { isMobile } from 'react-device-detect'
 import { useModalOpen, useWalletModalToggle } from '../../state/application/hooks'
@@ -127,24 +127,24 @@ export default function WalletModal({}: {
     return null
   }
 
-  function getOption() {
+  function getOptions() {
     return Object.keys(SUPPORTED_WALLETS).map(key => {
-      const option = SUPPORTED_WALLETS[key]
+      const options = SUPPORTED_WALLETS[key]
       if (isMobile) {
         if (!window.starknet && option.mobile) {
           return (
-            <Option
+            <Options
               onClick={() => {
-                option.connector !== connector && !option.href && tryActivation(option.connector)
+                options.connector !== connector && !options.href && tryActivation(options.connector)
               }}
               id={`connect-${key}`}
               key={key}
-              active={option.connector && option.connector === connector}
-              color={option.color}
-              link={option.href}
-              header={option.name}
+              active={options.connector && options.connector === connector}
+              color={options.color}
+              link={options.href}
+              header={options.name}
               subheader={null}
-              icon={option.icon}
+              icon={options.icon}
             />
           )
         }
@@ -153,21 +153,21 @@ export default function WalletModal({}: {
 
        return (
         !isMobile &&
-        !option.mobileOnly && (
+        !options.mobileOnly && (
           <Option
             id={`connect-${key}`}
             onClick={() => {
-              option.connector === connector
+              options.connector === connector
                 ? setWalletView(WALLET_VIEWS.ACCOUNT)
-                : !option.href && tryActivation(option.connector)
+                : !options.href && tryActivation(options.connector)
             }}
             key={key}
-            active={option.connector === connector}
-            color={option.color}
-            link={option.href}
-            header={option.name}
+            active={options.connector === connector}
+            color={options.color}
+            link={options.href}
+            header={options.name}
             subheader={null} //use option.descriptio to bring back multi-line
-            icon={option.icon}
+            icon={options.icon}
           />
         )
       )
@@ -191,7 +191,7 @@ export default function WalletModal({}: {
             <AutoColumn gap="14px" style={{ marginTop: '20px' }}></AutoColumn>
             <>
               <>
-                <BorderWrapper>{getOption()}</BorderWrapper>
+                <BorderWrapper>{getOptions()}</BorderWrapper>
               </>
             </>
             <AutoColumn gap="14px" style={{ marginTop: '20px' }}></AutoColumn>
