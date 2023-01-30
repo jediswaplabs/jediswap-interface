@@ -151,7 +151,7 @@ export default function WalletModal({}: {
         return null
       }
 
-            return (
+       return (
         !isMobile &&
         !option.mobileOnly && (
           <Option
