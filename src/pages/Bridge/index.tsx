@@ -8,7 +8,7 @@ import styled from 'styled-components'
 import Column, { AutoColumn } from '../../components/Column'
 import { IconWrapper } from '../Swap/styleds'
 import { BorderWrapper } from '../../components/AccountDetails'
-import Option from './Option'
+import Argent from './Argent'
 import { SUPPORTED_WALLETS } from '../../constants'
 import { isMobile } from 'react-device-detect'
 import { useModalOpen, useWalletModalToggle } from '../../state/application/hooks'
@@ -127,24 +127,24 @@ export default function WalletModal({}: {
     return null
   }
 
-  function getOption() {
+  function getArgent() {
     return Object.keys(SUPPORTED_WALLETS).map(key => {
-      const option = SUPPORTED_WALLETS[key]
+      const argent = SUPPORTED_WALLETS[key]
       if (isMobile) {
-        if (!window.starknet && option.mobile) {
+        if (!window.starknet && argentargent.mobile) {
           return (
-            <Option
+            <Argent
               onClick={() => {
-                option.connector !== connector && !option.href && tryActivation(option.connector)
+                argentargent.connector !== connector && !argentargent.href && tryActivation(argentargent.connector)
               }}
               id={`connect-${key}`}
               key={key}
-              active={option.connector && option.connector === connector}
-              color={option.color}
-              link={option.href}
-              header={option.name}
+              active={argentargent.connector && argentargent.connector === connector}
+              color={argentargent.color}
+              link={argentargent.href}
+              header={argentargent.name}
               subheader={null}
-              icon={option.icon}
+              icon={argentargent.icon}
             />
           )
         }
@@ -153,21 +153,21 @@ export default function WalletModal({}: {
 
       return (
         !isMobile &&
-        !option.mobileOnly && (
-          <Option
+        !argent.mobileOnly && (
+          <Argent
             id={`connect-${key}`}
             onClick={() => {
-              option.connector === connector
+              argent.connector === connector
                 ? setWalletView(WALLET_VIEWS.ACCOUNT)
-                : !option.href && tryActivation(option.connector)
+                : !argent.href && tryActivation(argent.connector)
             }}
             key={key}
-            active={option.connector === connector}
-            color={option.color}
-            link={option.href}
-            header={option.name}
-            subheader={null} //use option.descriptio to bring back multi-line
-            icon={option.icon}
+            active={argent.connector === connector}
+            color={argent.color}
+            link={argent.href}
+            header={argent.name}
+            subheader={null} //use argent.descriptio to bring back multi-line
+            icon={argent.icon}
           />
         )
       )
@@ -191,7 +191,7 @@ export default function WalletModal({}: {
             <AutoColumn gap="14px" style={{ marginTop: '20px' }}></AutoColumn>
             <>
               <>
-                <BorderWrapper>{getOption()}</BorderWrapper>
+                <BorderWrapper>{getArgent()}</BorderWrapper>
               </>
             </>
             <AutoColumn gap="14px" style={{ marginTop: '20px' }}></AutoColumn>
