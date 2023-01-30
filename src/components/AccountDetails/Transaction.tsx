@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { CheckSquare, AlertTriangle } from 'react-feather'
 
 import { useActiveStarknetReact } from '../../hooks'
-import { getVoyagerLink } from '../../utils'
+import { getStarkscanLink } from '../../utils'
 import { ExternalLink } from '../../theme'
 import { useAllTransactions } from '../../state/transactions/hooks'
 import { RowFixed } from '../Row'
@@ -62,6 +62,7 @@ export default function Transaction({ hash }: { hash: string }) {
 
   const tx = allTransactions?.[hash]
   const summary = tx?.summary
+  const rejected = tx?.receipt?.status === 'REJECTED'
   const pending = !tx.receipt || tx.receipt.status === 'PENDING' || tx.receipt.status === 'RECEIVED'
   const success = !pending && tx && tx.receipt?.status !== 'REJECTED'
 
@@ -69,18 +70,18 @@ export default function Transaction({ hash }: { hash: string }) {
 
   return (
     <TransactionWrapper>
-      <TransactionState href={getVoyagerLink(chainId, hash, 'transaction')} pending={pending} success={success}>
+      <TransactionState href={getStarkscanLink(chainId, hash, 'transaction')} pending={pending} success={success}>
         <RowFixed>
           <TransactionStatusText>{summary ?? hash} </TransactionStatusText>
           <LinkIcon size={16} />
         </RowFixed>
         <IconWrapper pending={pending} success={success}>
-          {pending ? (
-            <PendingText>Pending</PendingText>
+          {rejected ? (
+            <AlertTriangle size="16" />
           ) : success ? (
             <CheckSquare size="16" />
           ) : (
-            <AlertTriangle size="16" />
+            <PendingText>Pending</PendingText>
           )}
         </IconWrapper>
       </TransactionState>

@@ -65,8 +65,6 @@ export function useZapPairs(inputCurrency?: Currency, outputLpToken?: LPToken): 
     return []
   }, [basePairs, bases, inputToken, outputToken0, outputToken1])
 
-  console.log('🚀 ~ file: Zap.ts ~ line 66 ~ useZapPairs ~ allPairCombinations', allPairCombinations)
-
   const allPairs = usePairs(allPairCombinations)
 
   const anyPairLoading = allPairs.some(([pairState]) => pairState === PairState.LOADING)
@@ -225,14 +223,8 @@ export function useLPOutAmount(
     // Case 4: trade0 and trade1 ==> return [maxLpAmount(), tradeThatGiveThisAmount]
 
     if (lpAmountTrade0 && lpAmountTrade1) {
-      console.log(
-        '🚀 ~ file: Zap.ts ~ line 224 ~ lpAmountTrade0, lpAmountTrade1',
-        lpAmountTrade0.toSignificant(4),
-        lpAmountTrade1.toSignificant(4)
-      )
       const finalLPAmount = maxLPAmountOut(lpAmountTrade0, lpAmountTrade1)
       const finalTrade = finalLPAmount === lpAmountTrade0 ? tradeToken0Out : tradeToken1Out
-
       return [finalLPAmount, finalTrade, false]
     }
 

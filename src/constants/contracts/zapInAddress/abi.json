@@ -1,0 +1,222 @@
+[
+  {
+    "name": "Uint256",
+    "size": 2,
+    "type": "struct",
+    "members": [
+      {
+        "name": "low",
+        "type": "felt",
+        "offset": 0
+      },
+      {
+        "name": "high",
+        "type": "felt",
+        "offset": 1
+      }
+    ]
+  },
+  {
+    "data": [
+      {
+        "name": "sender",
+        "type": "felt"
+      },
+      {
+        "name": "from_token",
+        "type": "felt"
+      },
+      {
+        "name": "pool_address",
+        "type": "felt"
+      },
+      {
+        "name": "tokens_rec",
+        "type": "Uint256"
+      }
+    ],
+    "keys": [],
+    "name": "Zapped_in",
+    "type": "event"
+  },
+  {
+    "data": [
+      {
+        "name": "current_owner",
+        "type": "felt"
+      },
+      {
+        "name": "future_owner",
+        "type": "felt"
+      }
+    ],
+    "keys": [],
+    "name": "owner_change_initiated",
+    "type": "event"
+  },
+  {
+    "data": [
+      {
+        "name": "current_owner",
+        "type": "felt"
+      },
+      {
+        "name": "future_owner",
+        "type": "felt"
+      }
+    ],
+    "keys": [],
+    "name": "owner_change_completed",
+    "type": "event"
+  },
+  {
+    "name": "constructor",
+    "type": "constructor",
+    "inputs": [
+      {
+        "name": "router",
+        "type": "felt"
+      },
+      {
+        "name": "initial_owner",
+        "type": "felt"
+      }
+    ],
+    "outputs": []
+  },
+  {
+    "name": "owner",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "owner",
+        "type": "felt"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "router",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "router",
+        "type": "felt"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "goodwill",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "goodwill",
+        "type": "felt"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "update_goodwill",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "new_goodwill",
+        "type": "felt"
+      }
+    ],
+    "outputs": []
+  },
+  {
+    "name": "update_router",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "new_router",
+        "type": "felt"
+      }
+    ],
+    "outputs": []
+  },
+  {
+    "name": "initiate_ownership_transfer",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "future_owner",
+        "type": "felt"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "future_owner",
+        "type": "felt"
+      }
+    ]
+  },
+  {
+    "name": "accept_ownership",
+    "type": "function",
+    "inputs": [],
+    "outputs": []
+  },
+  {
+    "name": "zap_in",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "from_token_address",
+        "type": "felt"
+      },
+      {
+        "name": "pair_address",
+        "type": "felt"
+      },
+      {
+        "name": "amount",
+        "type": "Uint256"
+      },
+      {
+        "name": "min_pool_token",
+        "type": "Uint256"
+      },
+      {
+        "name": "path_len",
+        "type": "felt"
+      },
+      {
+        "name": "path",
+        "type": "felt*"
+      },
+      {
+        "name": "transfer_residual",
+        "type": "felt"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "lp_bought",
+        "type": "Uint256"
+      }
+    ]
+  },
+  {
+    "name": "withdraw_tokens",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "tokens_len",
+        "type": "felt"
+      },
+      {
+        "name": "tokens",
+        "type": "felt*"
+      }
+    ],
+    "outputs": []
+  }
+]

@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react'
+import React, { Suspense, useEffect } from 'react'
 import { Route, Switch } from 'react-router-dom'
 import styled from 'styled-components'
 import Header from '../components/Header'
@@ -17,12 +17,22 @@ import Pool from './Pool'
 
 import AddLiquidity from './AddLiquidity'
 import RemoveLiquidity from './RemoveLiquidity'
-import { RedirectDuplicateTokenIds, RedirectOldAddLiquidityPathStructure } from './AddLiquidity/redirects'
+import {
+  RedirectDuplicateTokenIds,
+  RedirectOldAddLiquidityPathStructure,
+  RedirectToAddLiquidity
+} from './AddLiquidity/redirects'
 import { RedirectOldRemoveLiquidityPathStructure } from './RemoveLiquidity/redirects'
 
 import Zap from './Zap'
 import ComingSoon from './ComingSoon'
+
 import Bridge from './Bridge'
+
+import Footer from '../components/Footer'
+import useFetchAllPairsCallback from '../hooks/useFetchAllPairs'
+import { MainnetWarningModal } from '../components/MainnetWarningModal'
+
 
 const AppWrapper = styled.div`
   display: flex;
@@ -67,6 +77,12 @@ const Marginer = styled.div`
 // }
 
 export default function App() {
+  const fetchAllPairs = useFetchAllPairsCallback()
+
+  useEffect(() => {
+    fetchAllPairs()
+  }, [fetchAllPairs])
+
   return (
     <Suspense fallback={null}>
       {/* <Route component={GoogleAnalyticsReporter} /> */}
@@ -78,17 +94,20 @@ export default function App() {
         </HeaderWrapper>
         <BodyWrapper>
           <Popups />
-          <Polling />
+          <MainnetWarningModal />
+
           {/* <TopLevelModals /> */}
           <Web3ReactManager>
             <Switch>
               <Route exact strict path="/swap" component={Swap} />
               <Route exact strict path="/swap/:outputCurrency" component={RedirectToSwap} />
               <Route exact strict path="/pool" component={Pool} />
-              <Route exact path="/create" component={AddLiquidity} />
-              <Route exact path="/add" component={AddLiquidity} />
+              <Route exact path="/add" component={RedirectToAddLiquidity} />
               <Route exact path="/add/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />
               <Route exact path="/add/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
+              <Route exact path="/create" component={RedirectToAddLiquidity} />
+              <Route exact path="/create/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />
+              <Route exact path="/create/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
               <Route exact path="/zap" component={Zap} />
               <Route exact path="/stake" component={ComingSoon} />
               <Route exact path="/bridge" component={Bridge} />
@@ -100,10 +119,6 @@ export default function App() {
               <Route exact strict path="/find" component={PoolFinder} />
               <Route exact strict path="/uni" component={Earn} />
               <Route exact strict path="/vote" component={Vote} />
-              <Route exact strict path="/create" component={RedirectToAddLiquidity} />
-             
-              <Route exact path="/create/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />
-              <Route exact path="/create/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
               <Route exact strict path="/remove/v1/:address" component={RemoveV1Exchange} />
               
               <Route exact strict path="/migrate/v1" component={MigrateV1} />
@@ -115,6 +130,7 @@ export default function App() {
           </Web3ReactManager>
           <Marginer />
         </BodyWrapper>
+        <Footer />
       </AppWrapper>
     </Suspense>
   )

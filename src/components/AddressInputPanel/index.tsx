@@ -5,7 +5,7 @@ import { useActiveStarknetReact } from '../../hooks'
 import { ExternalLink, TYPE } from '../../theme'
 import { AutoColumn } from '../Column'
 import { RowBetween } from '../Row'
-import { getVoyagerLink } from '../../utils'
+import { getStarkscanLink } from '../../utils'
 // import { normalizeAccount } from '@web3-starknet-react/core/dist/normalizers'
 import { useAddressNormalizer } from '../../hooks/useAddressNormalizer'
 
@@ -106,8 +106,8 @@ export default function AddressInputPanel({
                 Recipient
               </TYPE.black>
               {address && chainId && (
-                <ExternalLink href={getVoyagerLink(chainId, address, 'contract')} style={{ fontSize: '14px' }}>
-                  (View on Voyager)
+                <ExternalLink href={getStarkscanLink(chainId, address, 'contract')} style={{ fontSize: '14px' }}>
+                  (View on Starkscan)
                 </ExternalLink>
               )}
             </RowBetween>

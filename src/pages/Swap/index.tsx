@@ -61,8 +61,6 @@ import { useAddressNormalizer } from '../../hooks/useAddressNormalizer'
 import styled from 'styled-components'
 import HeaderIcon from '../../assets/jedi/SwapPanel_headerItem.svg'
 import SwapWidget from '../../assets/jedi/SwapWidget.svg'
-import { jediTokensList } from '../../constants/jediTokens'
-import { MintState, useMintCallback } from '../../hooks/useMintCallback'
 import { useUserTransactionTTL } from '../../state/user/hooks'
 import { ReactComponent as ArrowRight } from '../../assets/images/arrow-right-blue.svg'
 import { useAddTokenToWallet } from '../../hooks/useAddTokenToWallet'
@@ -100,8 +98,6 @@ export default function Swap() {
   // const handleConfirmTokenWarning = useCallback(() => {
   //   setDismissTokenWarning(true)
   // }, [])
-
-  const [mintAddress, setMintAddress] = useState<string | undefined>(undefined)
 
   const { account, chainId, connectedAddress } = useActiveStarknetReact()
   const theme = useContext(ThemeContext)
@@ -186,8 +182,6 @@ export default function Swap() {
     currencies[Field.INPUT] && currencies[Field.OUTPUT] && parsedAmounts[independentField]?.greaterThan(JSBI.BigInt(0))
   )
   const noRoute = !route
-
-  const [mintState, mintCallback] = useMintCallback()
 
   // check if user has gone through approval process, used to show two step buttons, reset on token change
   const [approvalSubmitted, setApprovalSubmitted] = useState<boolean>(false)
@@ -281,17 +275,9 @@ export default function Swap() {
     onCurrencySelection
   ])
 
-  const handleMint = useCallback(() => {
-    // setMintAddress(tokenAddress)
-    mintCallback().then(() => {
-      console.log(`Minting ${mintAddress}`)
-    })
-  }, [mintAddress, mintCallback])
-
   // useEffect(() => {
   //   if (mintAddress && mintState === MintState.VALID) {
   //     mintCallback().then(() => {
-  //       console.log(`Minting ${mintAddress}`)
   //       setMintAddress(undefined)
   //     })
   //   }
@@ -333,7 +319,9 @@ export default function Swap() {
           </div>
           <HeaderRow>
             <BalanceText>Swap From</BalanceText>
-            <BalanceText>Balance: {currencyBalances.INPUT?.toSignificant(6) ?? 0}</BalanceText>
+            {connectedAddress && currencies[Field.INPUT] ? (
+              <BalanceText>Balance: {currencyBalances.INPUT?.toSignificant(6) ?? <Loader />}</BalanceText>
+            ) : null}
           </HeaderRow>
           <AutoColumn>
             <CurrencyInputPanel
@@ -374,7 +362,9 @@ export default function Swap() {
               }
             >
               <BalanceText>Swap To (est.)</BalanceText>
-              <BalanceText>Balance: {currencyBalances.OUTPUT?.toSignificant(6) ?? 0}</BalanceText>
+              {connectedAddress && currencies[Field.OUTPUT] ? (
+                <BalanceText>Balance: {currencyBalances.OUTPUT?.toSignificant(6) ?? <Loader />}</BalanceText>
+              ) : null}
             </HeaderRow>
             <CurrencyInputPanel
               value={formattedAmounts[Field.OUTPUT]}
@@ -431,7 +421,7 @@ export default function Swap() {
               <ButtonPrimary onClick={toggleWalletModal}>Connect Wallet</ButtonPrimary>
             ) : noRoute && userHasSpecifiedInputOutput ? (
               <RedGradientButton style={{ textAlign: 'center' }} disabled>
-                {tradeLoading ? 'Fetching route...' : 'Insufficient liquidity for this trade'}
+                {tradeLoading ? 'Fetching Amount...' : 'Insufficient liquidity for this trade'}
               </RedGradientButton>
             ) : insufficientBalanceError ? (
               <RedGradientButton id="swap-button" disabled>
@@ -468,24 +458,14 @@ export default function Swap() {
             {isExpertMode && swapErrorMessage ? <SwapCallbackError error={swapErrorMessage} /> : null}
           </BottomGrouping>
 
-          {account && outputToken && (
-            <AddTokenRow justify={'center'} onClick={() => addTokenToWallet(outputToken.address)}>
-              <AddTokenText>Add {outputToken.symbol} to Wallet</AddTokenText>
-              <ArrowRight width={16} height={15} style={{ marginBottom: '3.5px' }} />
-            </AddTokenRow>
-          )}
+          {/*{account && outputToken && (*/}
+          {/*  <AddTokenRow justify={'center'} onClick={() => addTokenToWallet(outputToken.address)}>*/}
+          {/*    <AddTokenText>Add {outputToken.symbol} to Wallet</AddTokenText>*/}
+          {/*    <ArrowRight width={16} height={15} style={{ marginBottom: '3.5px' }} />*/}
+          {/*  </AddTokenRow>*/}
+          {/*)}*/}
         </Wrapper>
       </AppBody>
-
-      {account && (
-        <MintSection>
-          <AutoRow justify={'center'}>
-            <AutoColumn style={{ margin: '6px' }}>
-              <MintButton onClick={handleMint}> Mint Jedi Test Tokens </MintButton>
-            </AutoColumn>
-          </AutoRow>
-        </MintSection>
-      )}
       {/* TODO: FIX ADVANCED SWAP */}
       {/* <AdvancedSwapDetailsDropdown trade={trade} /> */}
     </>

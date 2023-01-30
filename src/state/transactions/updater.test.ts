@@ -6,7 +6,12 @@ describe('transactions updater', () => {
       expect(shouldCheck(10, { addedTime: 100 })).toEqual(true)
     })
     it('returns false if has receipt and never checked', () => {
-      expect(shouldCheck(10, { addedTime: 100, receipt: {} })).toEqual(false)
+      expect(
+        shouldCheck(10, {
+          addedTime: 100,
+          receipt: { blockHash: '0x0acsa', blockNumber: 1234324, transactionHash: '0xqedwd', transactionIndex: 2 }
+        })
+      ).toEqual(true)
     })
     it('returns true if has not been checked in 1 blocks', () => {
       expect(shouldCheck(10, { addedTime: new Date().getTime(), lastCheckedBlockNumber: 9 })).toEqual(true)

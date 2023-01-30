@@ -1,5 +1,5 @@
 import { ChainId, TokenAmount, JSBI } from '@jediswap/sdk'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 // import { Text } from 'rebass'
 import { NavLink, withRouter } from 'react-router-dom'
 import { darken } from 'polished'
@@ -7,14 +7,14 @@ import { useTranslation } from 'react-i18next'
 
 import styled from 'styled-components'
 
-import Logo from '../../assets/svg/logo.svg'
+import Logo from '../../assets/jedi/logo.png'
 // import LogoDark from '../../assets/svg/logo_white.svg'
 import { useActiveStarknetReact } from '../../hooks'
 // import { useDarkModeManager } from '../../state/user/hooks'
 // import { useETHBalances } from '../../state/wallet/hooks'
 import { CardNoise } from './styled'
 import { CountUp } from 'use-count-up'
-import { TYPE } from '../../theme'
+import { ExternalLink, TYPE } from '../../theme'
 // import { ExternalLink } from '../../theme'
 
 import { YellowCard } from '../Card'
@@ -172,7 +172,27 @@ const NetworkCard = styled(YellowCard)`
   font-weight: 600;
   background-color: ${({ theme }) => theme.jediNavyBlue};
   color: ${({ theme }) => theme.jediWhite};
-  padding: 0.65rem 2rem;
+  padding: 0.82rem 2rem;
+  border: 2px solid transparent;
+
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    margin: 0;
+    margin-right: 0.5rem;
+    width: initial;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-shrink: 0;
+  `};
+`
+
+const NetworkSelect = styled.select`
+  border-radius: 8px;
+  flex: 1;
+  font-size: 16px;
+  font-weight: 600;
+  background-color: ${({ theme }) => theme.jediNavyBlue};
+  color: ${({ theme }) => theme.jediWhite};
+  padding: 0.82rem 2rem;
   border: 2px solid transparent;
 
   ${({ theme }) => theme.mediaWidth.upToSmall`
@@ -271,36 +291,33 @@ const StyledNavLink = styled(NavLink).attrs({
   }
 `
 
-// const StyledExternalLink = styled(ExternalLink).attrs({
-//   activeClassName
-// })<{ isActive?: boolean }>`
-//   ${({ theme }) => theme.flexRowNoWrap}
-//   align-items: left;
-//   border-radius: 3rem;
-//   outline: none;
-//   cursor: pointer;
-//   text-decoration: none;
-//   color: ${({ theme }) => theme.white};
-//   font-size: 1rem;
-//   width: fit-content;
-//   margin: 0 12px;
-//   font-weight: 500;
+const StyledExternalLink = styled(ExternalLink).attrs({
+  activeClassName
+})<{ isActive?: boolean }>`
+  ${({ theme }) => theme.flexRowNoWrap}
+  align-items: left;
+  // border-radius: 3rem;
+  outline: none;
+  cursor: pointer;
+  text-decoration: none;
+  color: ${({ theme }) => theme.white};
+  font-size: 1rem;
+  width: fit-content;
+  margin: 0 12px;
+  padding: 12px 0;
 
-//   &.${activeClassName} {
-//     border-radius: 12px;
-//     font-weight: 600;
-//     color: ${({ theme }) => theme.text1};
-//   }
+  font-weight: 800;
+  line-height: 100%;
+  text-align: center;
+  text-transform: uppercase;
 
-//   :hover,
-//   :focus {
-//     color: ${({ theme }) => darken(0.1, theme.text1)};
-//   }
-
-//   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-//       display: none;
-// `}
-// `
+  :hover,
+  :focus {
+      // color: ${({ theme }) => darken(0.1, theme.text1)};
+    color:rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+  }
+`
 const StarkNetCard = styled.div`
   height: 38px;
   width: 124px;
@@ -319,15 +336,33 @@ const StarkNetCard = styled.div`
 `
 
 const NETWORK_LABELS: { [chainId in ChainId]?: string } = {
+  [ChainId.MAINNET]: 'Mainnet',
   [ChainId.RINKEBY]: 'Rinkeby',
   [ChainId.ROPSTEN]: 'Ropsten',
   [ChainId.GÖRLI]: 'Görli',
   [ChainId.KOVAN]: 'Kovan'
 }
+interface window {
+  starknet: any
+}
 
 function Header({ history }: { history: any }) {
   const { connectedAddress, chainId } = useActiveStarknetReact()
   const { t } = useTranslation()
+  const [currentNetwork, setCurrentNetwork] = useState('SN_MAIN')
+
+  // async function changeNetwork(e) {
+  //   e.preventDefault()
+  //   console.log(e.target.value)
+  //   const change = await window.starknet?.request({
+  //     type: 'wallet_switchStarknetChain',
+  //     params: {
+  //       chainId: e.target.value
+  //     }
+  //   })
+  //   console.log('Network Change Call')
+  //   console.log(change)
+  // }
 
   return (
     <HeaderFrame>
@@ -355,6 +390,7 @@ function Header({ history }: { history: any }) {
         <StyledNavLink id={`swap-nav-link`} to={'/zap'} isActive={() => history.location.pathname.includes('/zap')}>
           {t('Zap')}
         </StyledNavLink>
+
         <StyledNavLink id={`swap-nav-link`} to={'/stake'} isActive={() => history.location.pathname.includes('/stake')}>
           {t('Stake')}
         </StyledNavLink>
@@ -365,6 +401,13 @@ function Header({ history }: { history: any }) {
         >
           {t('Bridge')}
         </StyledNavLink>
+
+
+        <StyledExternalLink id={`stake-nav-link`} href={'https://info.jediswap.xyz'}>
+          Dashboard
+        </StyledExternalLink>
+
+
         {/* <StyledNavLink id={`stake-nav-link`} to={'/uni'} isActive={() => history.location.pathname.includes('/uni')}>
             UNI
           </StyledNavLink> */}
@@ -387,6 +430,10 @@ function Header({ history }: { history: any }) {
             {chainId && NETWORK_LABELS[chainId] && (
               <NetworkCard title={NETWORK_LABELS[chainId]}>Starknet-{NETWORK_LABELS[chainId]}</NetworkCard>
             )}
+            {/*<NetworkSelect onChange={changeNetwork}>*/}
+            {/*  <option value="SN_MAIN">Starknet-Mainnet</option>*/}
+            {/*  <option value="SN_GOERLI">Starknet-Görli</option>*/}
+            {/*</NetworkSelect>*/}
           </HideSmall>
           <AccountElement active={!!connectedAddress} style={{ pointerEvents: 'auto' }}>
             <Web3Status />

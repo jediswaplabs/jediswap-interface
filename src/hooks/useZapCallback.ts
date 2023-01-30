@@ -1,5 +1,5 @@
 import { BigNumber } from '@ethersproject/bignumber'
-import { Contract, Args, uint256, RawArgs, stark, Call } from 'starknet'
+import { Contract, uint256, RawArgs, stark, Call } from 'starknet'
 import { JSBI, Percent, Router, SwapParameters as ZapParameters, TokenAmount, Trade, TradeType } from '@jediswap/sdk'
 import { useMemo } from 'react'
 import { BIPS_BASE, INITIAL_ALLOWED_SLIPPAGE } from '../constants'
@@ -12,7 +12,6 @@ import useTransactionDeadline from './useTransactionDeadline'
 import { wrappedCurrency } from '../utils/wrappedCurrency'
 import { computeSlippageAdjustedLPAmount } from '../utils/prices'
 import { useApprovalCallFromTrade } from './useApproveCall'
-// import useENS from './useENS'
 
 export enum ZapCallbackState {
   INVALID,
@@ -125,11 +124,6 @@ export function useZapCallback(
     const inputToken = wrappedCurrency(trade.inputAmount.currency, chainId)
 
     const minLPAmountOut = computeSlippageAdjustedLPAmount(lpAmountOut, 5000)
-    // console.log(
-    //   '🚀 ~ file: useZapCallback.ts ~ line 127 ~ returnuseMemo ~ minLPAmountOut',
-    //   allowedSlippage,
-    //   minLPAmountOut?.toSignificant(6)
-    // )
 
     if (!inputToken || !minLPAmountOut) {
       return { state: ZapCallbackState.INVALID, callback: null, error: 'Input Token Missing' }

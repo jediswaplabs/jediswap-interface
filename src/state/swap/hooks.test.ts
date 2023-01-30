@@ -1,4 +1,5 @@
 import { parse } from 'qs'
+import { isAddress } from '../../utils'
 import { Field } from './actions'
 import { queryParametersToSwapState } from './hooks'
 
@@ -8,12 +9,12 @@ describe('hooks', () => {
       expect(
         queryParametersToSwapState(
           parse(
-            '?inputCurrency=ETH&outputCurrency=0x6b175474e89094c44da98b954eedeac495271d0f&exactAmount=20.5&exactField=outPUT',
+            '?inputCurrency=ETH&outputCurrency=0x03e85bfbb8e2a42b7bead9e88e9a1b19dbccf661471061807292120462396ec9&exactAmount=20.5&exactField=outPUT',
             { parseArrays: false, ignoreQueryPrefix: true }
           )
         )
       ).toEqual({
-        [Field.OUTPUT]: { currencyId: '0x6B175474E89094C44Da98b954EedeAC495271d0F' },
+        [Field.OUTPUT]: { currencyId: isAddress('0x03e85bfbb8e2a42b7bead9e88e9a1b19dbccf661471061807292120462396ec9') },
         [Field.INPUT]: { currencyId: 'ETH' },
         typedValue: '20.5',
         independentField: Field.OUTPUT,
@@ -64,17 +65,20 @@ describe('hooks', () => {
     test('valid recipient', () => {
       expect(
         queryParametersToSwapState(
-          parse('?outputCurrency=eth&exactAmount=20.5&recipient=0x0fF2D1eFd7A57B7562b2bf27F3f37899dB27F4a5', {
-            parseArrays: false,
-            ignoreQueryPrefix: true
-          })
+          parse(
+            '?outputCurrency=eth&exactAmount=20.5&recipient=0x05a6475063f5f27c34088529588749A3De02df3548F3901CFf7654E32d97FFDd',
+            {
+              parseArrays: false,
+              ignoreQueryPrefix: true
+            }
+          )
         )
       ).toEqual({
         [Field.OUTPUT]: { currencyId: 'ETH' },
         [Field.INPUT]: { currencyId: '' },
         typedValue: '20.5',
         independentField: Field.INPUT,
-        recipient: '0x0fF2D1eFd7A57B7562b2bf27F3f37899dB27F4a5'
+        recipient: isAddress('0x05a6475063f5f27c34088529588749A3De02df3548F3901CFf7654E32d97FFDd')
       })
     })
     test('accepts any recipient', () => {

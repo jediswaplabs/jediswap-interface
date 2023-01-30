@@ -11,15 +11,11 @@ import Transaction from './Transaction'
 
 import { SUPPORTED_WALLETS } from '../../constants'
 import { ReactComponent as Close } from '../../assets/images/x.svg'
-import { getVoyagerLink } from '../../utils'
+import { getStarkscanLink } from '../../utils'
 import argentXIcon from '../../assets/images/argentx.png'
+import braavosIcon from '../../assets/svg/Braavos.svg'
 // import { fortmatic, injected, portis, walletconnect, walletlink } from '../../connectors'
-import { argentX } from '../../connectors'
-import CoinbaseWalletIcon from '../../assets/images/coinbaseWalletIcon.svg'
-import WalletConnectIcon from '../../assets/images/walletConnectIcon.svg'
-import FortmaticIcon from '../../assets/images/fortmaticIcon.png'
-import PortisIcon from '../../assets/images/portisIcon.png'
-import Identicon from '../Identicon'
+import { argentX, braavosWallet } from '../../connectors'
 import { ButtonSecondary } from '../Button'
 import { ExternalLink as LinkIcon } from 'react-feather'
 import { ExternalLink, LinkStyledButton, TYPE } from '../../theme'
@@ -167,9 +163,6 @@ const AddressLink = styled(ExternalLink)<{ hasENS: boolean; isENS: boolean }>`
 `
 
 const CloseIcon = styled.div`
-  /* position: absolute; */
-  /* right: 1rem; */
-  /* top: 14px; */
   color: ${({ theme }) => theme.jediWhite};
   &:hover {
     cursor: pointer;
@@ -195,7 +188,7 @@ const IconWrapper = styled.div<{ size?: number }>`
   ${({ theme }) => theme.flexColumnNoWrap};
   align-items: center;
   justify-content: center;
-  margin-right: 1.5rem;
+  margin-right: 0.75rem;
   & > img,
   span {
     height: ${({ size }) => (size ? size + 'px' : '32px')};
@@ -294,6 +287,14 @@ export default function AccountDetails({
         </IconWrapper>
       )
     }
+
+    if (connector === braavosWallet) {
+      return (
+        <IconWrapper size={42}>
+          <img src={braavosIcon} alt="myBraavos" />
+        </IconWrapper>
+      )
+    }
     return null
   }
 
@@ -313,12 +314,12 @@ export default function AccountDetails({
           </AccountGroupingRow>
           <AccountGroupingRow>
             {formatConnectorName()}
-            {connector === argentX && (
+            {(connector === argentX || connector === braavosWallet) && (
               <ButtonBorderWrapper>
                 <WalletAction
                   style={{ fontSize: '.875rem', color: '#9B9B9B' }}
                   onClick={() => {
-                    connector.deactivate()
+                    connector?.deactivate()
                   }}
                 >
                   Disconnect
@@ -350,27 +351,7 @@ export default function AccountDetails({
                         )}
                       </AccountControl>
                     </AccountGroupingRow>
-                    <AccountGroupingRow>
-                      <div>
-                        <WalletAction
-                          style={{
-                            fontSize: '.825rem',
-                            fontWeight: 700,
-                            fontFamily: 'DM Sans',
-                            letterSpacing: '0px',
-                            border: 'none',
-                            background: 'transparent',
-                            boxShadow: 'none',
-                            padding: '0'
-                          }}
-                          onClick={() => {
-                            openOptions()
-                          }}
-                        >
-                          Switch
-                        </WalletAction>
-                      </div>
-                    </AccountGroupingRow>
+                    <AccountGroupingRow></AccountGroupingRow>
                   </AccountGroupingRow>
                 </InfoCard>
               </BorderWrapper>
@@ -390,10 +371,10 @@ export default function AccountDetails({
                       <AddressLink
                         hasENS={!!ENSName}
                         isENS={true}
-                        href={chainId && getVoyagerLink(chainId, ENSName, 'contract')}
+                        href={chainId && getStarkscanLink(chainId, ENSName, 'contract')}
                       >
                         <LinkIcon size={16} />
-                        <span style={{ marginLeft: '4px' }}>View on Voyager</span>
+                        <span style={{ marginLeft: '4px' }}>View on Starkscan</span>
                       </AddressLink>
                     )}
                   </div>
@@ -412,10 +393,10 @@ export default function AccountDetails({
                       <AddressLink
                         hasENS={!!ENSName}
                         isENS={false}
-                        href={getVoyagerLink(chainId, connectedAddress, 'contract')}
+                        href={getStarkscanLink(chainId, connectedAddress, 'contract')}
                       >
                         <LinkIcon size={20} style={{ color: '#50D5FF' }} />
-                        <span style={{ marginLeft: '8px' }}>View on Voyager</span>
+                        <span style={{ marginLeft: '8px' }}>View on Starkscan</span>
                       </AddressLink>
                     )}
                   </div>

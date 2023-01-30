@@ -1,5 +1,4 @@
 import { FunctionAbi } from 'starknet'
-import { Abi } from 'starknet'
 import { createReducer } from '@reduxjs/toolkit'
 import {
   addMulticallListeners,

@@ -1,6 +1,5 @@
-import { FunctionAbi } from 'starknet'
+import { FunctionAbi, Calldata } from 'starknet'
 import { createAction } from '@reduxjs/toolkit'
-import { Abi, Calldata } from 'starknet'
 import { isAddress } from '../../utils'
 
 export interface Call {

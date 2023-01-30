@@ -1,4 +1,4 @@
-import { Currency, Token, ETHER } from '@jediswap/sdk'
+import { Currency, ETHER, Token, WETH } from '@jediswap/sdk'
 import React, { KeyboardEvent, RefObject, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import ReactGA from 'react-ga4'
 import { useTranslation } from 'react-i18next'
@@ -21,6 +21,8 @@ import SortButton from './SortButton'
 import { useTokenComparator } from './sorting'
 import { PaddedColumn, SearchInput, Separator } from './styleds'
 import AutoSizer from 'react-virtualized-auto-sizer'
+import { wrappedCurrency } from '../../utils/wrappedCurrency'
+import { DEFAULT_CHAIN_ID } from '../../constants'
 
 interface CurrencySearchProps {
   isOpen: boolean
@@ -80,9 +82,19 @@ export function CurrencySearch({
   const tokenComparator = useTokenComparator(invertSearchOrder)
 
   const filteredTokens: Token[] = useMemo(() => {
-    if (isAddressSearch) return searchToken ? [searchToken] : []
+    if (isAddressSearch) {
+      if (searchToken) return [searchToken]
+      else if (isAddressSearch === WETH[chainId ?? DEFAULT_CHAIN_ID].address) {
+        const WETH = wrappedCurrency(ETHER, chainId)
+        if (WETH) {
+          return [WETH]
+        }
+        return []
+      }
+      return []
+    }
     return filterTokens(Object.values(showLPTokens ? jediLPTokens : allTokens), searchQuery)
-  }, [isAddressSearch, showLPTokens, jediLPTokens, allTokens, searchQuery, searchToken])
+  }, [isAddressSearch, showLPTokens, jediLPTokens, allTokens, searchQuery, searchToken, chainId])
 
   const filteredSortedTokens: Token[] = useMemo(() => {
     if (searchToken) return [searchToken]
@@ -127,7 +139,7 @@ export function CurrencySearch({
     (e: KeyboardEvent<HTMLInputElement>) => {
       if (e.key === 'Enter') {
         const s = searchQuery.toLowerCase().trim()
-        if (s === 'eth') {
+        if (s === 'token0') {
           handleCurrencySelect(ETHER)
         } else if (filteredSortedTokens.length > 0) {
           if (
@@ -193,7 +205,7 @@ export function CurrencySearch({
           )}
         </AutoSizer>
       </div>
-      {/* 
+      {/*
       <Separator />
       <Card>
         <RowBetween>

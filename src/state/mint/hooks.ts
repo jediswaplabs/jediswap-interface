@@ -51,12 +51,7 @@ export function useDerivedMintInfo(
 
   // pair
   const [pairState, pair] = usePair(currencies[Field.CURRENCY_A], currencies[Field.CURRENCY_B])
-  // console.log('🚀 ~ file: hooks.ts ~ line 53 ~ pairState', PairState[pairState])
-  // console.log('🚀 ~ file: hooks.ts ~ line 53 ~ pair', pair)
   const totalSupply = useTotalSupply(pair?.liquidityToken)
-  const debouncedPairState = useDebounce(pairState, pairState === PairState.EXISTS ? 0 : 5000)
-  // console.log('🚀 ~ file: hooks.ts ~ line 58 ~ debouncedPairState', PairState[debouncedPairState])
-
   const noLiquidity: boolean =
     pairState === PairState.NOT_EXISTS || Boolean(totalSupply && JSBI.equal(totalSupply.raw, ZERO))
 
@@ -148,14 +143,6 @@ export function useDerivedMintInfo(
 
   if (pairState === PairState.INVALID) {
     error = error ?? 'Invalid pair'
-  }
-
-  if (debouncedPairState === PairState.LOADING || pairState === PairState.NOT_EXISTS) {
-    error = error ?? 'Loading...'
-  }
-
-  if (debouncedPairState === PairState.NOT_EXISTS && pairState === PairState.NOT_EXISTS) {
-    error = 'No Pool found'
   }
 
   if (!parsedAmounts[Field.CURRENCY_A] || !parsedAmounts[Field.CURRENCY_B]) {

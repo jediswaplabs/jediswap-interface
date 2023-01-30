@@ -1,23 +1,29 @@
 import { validateAndParseAddress } from 'starknet'
 import { ChainId, JSBI, Percent, Token, WETH } from '@jediswap/sdk'
 import { AbstractConnector } from '@web3-starknet-react/abstract-connector'
-import { WBTC, DAI, USDC } from './jediTokens'
 
 // import { fortmatic, injected, portis, walletconnect, walletlink, argentX } from '../connectors'
-import { argentX } from '../connectors'
+import { argentX, braavosWallet } from '../connectors'
 import ARGENTX_ICON from '../assets/images/argentx.png'
+import BRAAVOS_ICON from '../assets/svg/Braavos.svg'
 
-export const REGISTRY_ADDRESS = validateAndParseAddress(
-  '0x1a8c2876e13ebf0e2f23cc1109ad6dfd722c0bd2dbf50721ce8ad91f98c1bef'
-)
+export const DEFAULT_CHAIN_ID = 5
 
-export const ROUTER_ADDRESS = validateAndParseAddress(
-  '0x16adfcc056a7d1f654feb7493b59853bef1442f109645dd97d433f71a1f6ee7'
-)
+export const ROUTER_ADDRESS: { [chainId in ChainId]: string } = {
+  [ChainId.MAINNET]: validateAndParseAddress('0x41fd22b238fa21cfcf5dd45a8548974d8263b3a531a60388411c5e230f97023'),
+  [ChainId.ROPSTEN]: validateAndParseAddress('0x2bcc885342ebbcbcd170ae6cafa8a4bed22bb993479f49806e72d96af94c965'),
+  [ChainId.KOVAN]: validateAndParseAddress('0x2bcc885342ebbcbcd170ae6cafa8a4bed22bb993479f49806e72d96af94c965'),
+  [ChainId.RINKEBY]: validateAndParseAddress('0x2bcc885342ebbcbcd170ae6cafa8a4bed22bb993479f49806e72d96af94c965'),
+  [ChainId.GÖRLI]: validateAndParseAddress('0x2bcc885342ebbcbcd170ae6cafa8a4bed22bb993479f49806e72d96af94c965')
+}
 
-export const ZAP_IN_ADDRESS = validateAndParseAddress(
-  '0x03bb1993de7d3b52941ec3672166e81267c20c2b66efb3dba6c7f28d48ca2dec'
-)
+export const ZAP_IN_ADDRESS: { [chainId in ChainId]: string } = {
+  [ChainId.MAINNET]: validateAndParseAddress('0x29a303b928b9391ce797ec27d011d3937054bee783ca7831df792bae00c925c'),
+  [ChainId.ROPSTEN]: validateAndParseAddress('0x73e3ccd627283aed4fa3940aa2bdb4d2c702e8e44c99b6851c019222558310f'),
+  [ChainId.KOVAN]: validateAndParseAddress('0x73e3ccd627283aed4fa3940aa2bdb4d2c702e8e44c99b6851c019222558310f'),
+  [ChainId.RINKEBY]: validateAndParseAddress('0x73e3ccd627283aed4fa3940aa2bdb4d2c702e8e44c99b6851c019222558310f'),
+  [ChainId.GÖRLI]: validateAndParseAddress('0x73e3ccd627283aed4fa3940aa2bdb4d2c702e8e44c99b6851c019222558310f')
+}
 
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000000000000000000000000000'
 
@@ -26,8 +32,62 @@ type ChainTokenList = {
   readonly [chainId in ChainId]: Token[]
 }
 
-// export const DAI = new Token(ChainId.MAINNET, '0x6B175474E89094C44Da98b954EedeAC495271d0F', 18, 'DAI', 'Dai Stablecoin')
-// export const USDC = new Token(ChainId.MAINNET, '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48', 6, 'USDC', 'USD//C')
+export const DAI = {
+  [ChainId.GÖRLI]: new Token(
+    ChainId.GÖRLI,
+    '0x03e85bfbb8e2a42b7bead9e88e9a1b19dbccf661471061807292120462396ec9',
+    18,
+    'DAI',
+    'Dai Stablecoin',
+    'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x6B175474E89094C44Da98b954EedeAC495271d0F/logo.png'
+  ),
+  [ChainId.MAINNET]: new Token(
+    ChainId.MAINNET,
+    '0x00da114221cb83fa859dbdb4c44beeaa0bb37c7537ad5ae66fe5e0efd20e6eb3',
+    18,
+    'DAI',
+    'Dai Stablecoin',
+    'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x6B175474E89094C44Da98b954EedeAC495271d0F/logo.png'
+  )
+}
+export const USDC = {
+  [ChainId.GÖRLI]: new Token(
+    ChainId.GÖRLI,
+    '0x005a643907b9a4bc6a55e9069c4fd5fd1f5c79a22470690f75556c4736e34426',
+    6,
+    'USDC',
+    'USD//C',
+    'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png'
+  ),
+  [ChainId.MAINNET]: new Token(
+    ChainId.MAINNET,
+    '0x053c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8',
+    6,
+    'USDC',
+    'USD//C',
+    'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png'
+  )
+}
+
+export const USDT = {
+  [ChainId.GÖRLI]: new Token(
+    ChainId.GÖRLI,
+    '0x386e8d061177f19b3b485c20e31137e6f6bc497cc635ccdfcab96fadf5add6a',
+    6,
+    'USDT',
+    'Tether USD',
+    'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png'
+  ),
+  [ChainId.MAINNET]: new Token(
+    ChainId.MAINNET,
+    '0x068f5c6a61780768455de69077e07e89787839bf8166decfbf92b645209c0fb8',
+    6,
+    'USDT',
+    'Tether USD',
+    'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png'
+  )
+}
+
 // export const USDT = new Token(ChainId.MAINNET, '0xdAC17F958D2ee523a2206206994597C13D831ec7', 6, 'USDT', 'Tether USD')
 // export const COMP = new Token(ChainId.MAINNET, '0xc00e94Cb662C3520282E6f5717214004A7f26888', 18, 'COMP', 'Compound')
 // export const MKR = new Token(ChainId.MAINNET, '0x9f8F72aA9304c8B593d555F12eF6589cC3A579A2', 18, 'MKR', 'Maker')
@@ -45,11 +105,21 @@ const WETH_ONLY: ChainTokenList = {
   [ChainId.KOVAN]: [WETH[ChainId.KOVAN]]
 }
 
+// const TOKEN0_ONLY: ChainTokenList = {
+//   [ChainId.GÖRLI]: [TOKEN0],
+//   [ChainId.MAINNET]: [TOKEN0],
+//   [ChainId.KOVAN]: [TOKEN0],
+//   [ChainId.ROPSTEN]: [TOKEN0],
+//   [ChainId.RINKEBY]: [TOKEN0]
+// }
+
 // used to construct intermediary pairs for trading
 export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
   ...WETH_ONLY,
-  // [ChainId.MAINNET]: [...WETH_ONLY[ChainId.MAINNET], DAI, USDC, USDT, COMP, MKR]
-  [ChainId.GÖRLI]: [...WETH_ONLY[ChainId.GÖRLI], DAI, USDC]
+  [ChainId.GÖRLI]: [...WETH_ONLY[ChainId.GÖRLI], DAI[ChainId.GÖRLI], USDC[ChainId.GÖRLI], USDT[ChainId.GÖRLI]],
+  [ChainId.MAINNET]: [...WETH_ONLY[ChainId.MAINNET], DAI[ChainId.MAINNET], USDC[ChainId.MAINNET], USDT[ChainId.MAINNET]]
+  // [ChainId.GÖRLI]: [TOKEN0]
+  // [ChainId.MAINNET]: [TOKEN0, TOKEN1],
 }
 
 /**
@@ -64,25 +134,32 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
 
 // used for display in the default list when adding liquidity
 export const SUGGESTED_BASES: ChainTokenList = {
-  ...WETH_ONLY
+  ...WETH_ONLY,
+  [ChainId.GÖRLI]: [...WETH_ONLY[ChainId.GÖRLI], DAI[ChainId.GÖRLI], USDC[ChainId.GÖRLI], USDT[ChainId.GÖRLI]],
+  [ChainId.MAINNET]: [...WETH_ONLY[ChainId.MAINNET], DAI[ChainId.MAINNET], USDC[ChainId.MAINNET], USDT[ChainId.MAINNET]]
 }
 
 // used to construct the list of all pairs we consider by default in the frontend
 export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
   ...WETH_ONLY,
-  [ChainId.GÖRLI]: [WETH[ChainId.GÖRLI], USDC, DAI, WBTC]
+  [ChainId.GÖRLI]: [...WETH_ONLY[ChainId.GÖRLI], DAI[ChainId.GÖRLI], USDC[ChainId.GÖRLI], USDT[ChainId.GÖRLI]],
+  [ChainId.MAINNET]: [...WETH_ONLY[ChainId.MAINNET], DAI[ChainId.MAINNET], USDC[ChainId.MAINNET], USDT[ChainId.MAINNET]]
+}
+
+export const BASES_TO_BUILD_ZAPPER_LIST_AGAINST: ChainTokenList = {
+  ...WETH_ONLY,
+  [ChainId.GÖRLI]: [...WETH_ONLY[ChainId.GÖRLI], DAI[ChainId.GÖRLI], USDC[ChainId.GÖRLI], USDT[ChainId.GÖRLI]],
+  [ChainId.MAINNET]: [...WETH_ONLY[ChainId.MAINNET], DAI[ChainId.MAINNET], USDC[ChainId.MAINNET], USDT[ChainId.MAINNET]]
 }
 
 export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } = {
   [ChainId.GÖRLI]: [
-    // [
-    //   new Token(ChainId.GÖRLI, '0x5d3a536E4D6DbD6114cc1Ead35777bAB948E3643', 8, 'cDAI', 'Compound Dai'),
-    //   new Token(ChainId.GÖRLI, '0x39AA39c021dfbaE8faC545936693aC917d5E7563', 8, 'cUSDC', 'Compound USD Coin')
-    // ],
-    [WETH[ChainId.GÖRLI], WBTC],
-    [WETH[ChainId.GÖRLI], DAI],
-    [WETH[ChainId.GÖRLI], USDC]
-    // [DAI, USDT]
+    [WETH[ChainId.GÖRLI], DAI[ChainId.GÖRLI]],
+    [WETH[ChainId.GÖRLI], USDC[ChainId.GÖRLI]]
+  ],
+  [ChainId.MAINNET]: [
+    [WETH[ChainId.MAINNET], DAI[ChainId.MAINNET]],
+    [WETH[ChainId.MAINNET], USDC[ChainId.MAINNET]]
   ]
 }
 
@@ -96,6 +173,7 @@ export interface WalletInfo {
   primary?: true
   mobile?: true
   mobileOnly?: true
+  size?: number
 }
 
 export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
@@ -106,6 +184,15 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
     description: 'Starknet Browser Wallet',
     href: null,
     color: '#FF875B'
+  },
+  Braavos: {
+    connector: braavosWallet,
+    name: 'Braavos',
+    icon: BRAAVOS_ICON,
+    description: 'Braavos Wallet for Starknet',
+    href: null,
+    color: '#E0B137',
+    size: 30
   }
 
   // INJECTED: {

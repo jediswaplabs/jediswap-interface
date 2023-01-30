@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import { useActiveStarknetReact } from '../../hooks'
 import { useAllTokens } from '../../hooks/Tokens'
 import { ExternalLink, TYPE } from '../../theme'
-import { getVoyagerLink, shortenAddress } from '../../utils'
+import { getStarkscanLink, shortenAddress } from '../../utils'
 import CurrencyLogo from '../CurrencyLogo'
 import Modal from '../Modal'
 import { AutoRow, RowBetween } from '../Row'
@@ -73,8 +73,8 @@ function TokenWarningCard({ token }: TokenWarningCardProps) {
               : token.name || token.symbol}{' '}
           </TYPE.main>
           {chainId && (
-            <ExternalLink style={{ fontWeight: 400 }} href={getVoyagerLink(chainId, token.address, 'contract')}>
-              <TYPE.blue title={token.address}>{shortenAddress(token.address)} (View on Voyager)</TYPE.blue>
+            <ExternalLink style={{ fontWeight: 400 }} href={getStarkscanLink(chainId, token.address, 'contract')}>
+              <TYPE.blue title={token.address}>{shortenAddress(token.address)} (View on Starkscan)</TYPE.blue>
             </ExternalLink>
           )}
         </AutoColumn>
