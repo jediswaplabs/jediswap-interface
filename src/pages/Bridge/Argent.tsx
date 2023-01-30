@@ -1,6 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
 import { ExternalLink } from '../../theme'
+import { shortenAddress } from '../../utils'
+import { WalletText } from './styleds'
+import { useActiveStarknetReact } from '../../hooks'
 
 const InfoCard = styled.button<{ active?: boolean }>`
   background-color: ${({ theme, active }) => (active ? theme.bg3 : theme.bg2)};
@@ -113,26 +116,30 @@ export default function Argent({
   active?: boolean
   id: string
 }) {
+  const { chainId, account, connectedAddress, connector } = useActiveStarknetReact()
   const content = (
     <OptionCardClickable id={id} onClick={onClick} clickable={clickable && !active} active={active}>
       <OptionCardLeft>
-        <HeaderText color={color}>
-          {active ? (
-            <CircleWrapper>
-              <GreenCircle>
-                <div />
-              </GreenCircle>
-            </CircleWrapper>
-          ) : (
-            ''
-          )}
-          {header}
-        </HeaderText>
-        {subheader && <SubHeader>{subheader}</SubHeader>}
+        <IconWrapper size={size}>
+          <img src={icon} alt={'Icon'} />
+        </IconWrapper>
       </OptionCardLeft>
-      <IconWrapper size={size}>
-        <img src={icon} alt={'Icon'} />
-      </IconWrapper>
+      <HeaderText color={color}>
+        {active ? (
+          <CircleWrapper>
+            <GreenCircle>
+              <div />
+            </GreenCircle>
+          </CircleWrapper>
+        ) : (
+          ''
+        )}
+      </HeaderText>
+      {!account ? (
+        <WalletText style={{ color: 'white' }}>ArgentX</WalletText>
+      ) : (
+        <WalletText style={{ color: 'white' }}>{connectedAddress && shortenAddress(connectedAddress)}</WalletText>
+      )}
     </OptionCardClickable>
   )
   if (link) {
