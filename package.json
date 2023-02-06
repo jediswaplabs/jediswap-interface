@@ -42,7 +42,7 @@
     "@web3-starknet-react/braavos-connector": "^2.2.3",
     "@web3-starknet-react/core": "^2.2.1",
     "@web3-starknet-react/types": "^2.2.1",
-    "ajv": "^6.12.3",
+    "ajv": "^8.12.0",
     "bn.js": "^5.2.0",
     "cids": "^1.0.0",
     "copy-to-clipboard": "^3.2.0",
