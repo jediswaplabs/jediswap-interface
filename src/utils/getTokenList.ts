@@ -11,7 +11,7 @@ const tokenListValidator = new Ajv({ allErrors: true }).compile(schema)
  */
 export default async function getTokenList(listUrl: string): Promise<TokenList> {
   const urls = uriToHttp(listUrl)
-  const maxAttempt = 5;
+  const maxAttempt = 5
   const processTokenLists = async () => {
     for (let i = 0; i < urls.length; i++) {
       const url = urls[i]
@@ -34,28 +34,28 @@ export default async function getTokenList(listUrl: string): Promise<TokenList> 
 
       if (!tokenListValidator(json)) {
         const validationErrors: string =
-            tokenListValidator.errors?.reduce<string>((memo, error) => {
-              const add = `${error.dataPath} ${error.message ?? ''}`
-              return memo.length > 0 ? `${memo}; ${add}` : `${add}`
-            }, '') ?? 'unknown error'
+          tokenListValidator.errors?.reduce<string>((memo, error) => {
+            const add = `${error.dataPath} ${error.message ?? ''}`
+            return memo.length > 0 ? `${memo}; ${add}` : `${add}`
+          }, '') ?? 'unknown error'
         throw new Error(`Token list failed validation: ${validationErrors}`)
       }
       return json
     }
   }
-  let result;
-  let currentAttempt = 0;
+  let result
+  let currentAttempt = 0
 
-  while (!result && (currentAttempt < maxAttempt)) {
+  while (!result && currentAttempt < maxAttempt) {
     try {
-      currentAttempt++;
-      result = await processTokenLists();
+      currentAttempt++
+      result = await processTokenLists()
     } catch (error) {
-      console.debug('Failed to fetch list', listUrl, error);
+      console.debug('Failed to fetch list', listUrl, error)
     }
   }
   if (!result) {
     throw new Error('Unrecognized list URL protocol.')
   }
-  return result;
+  return result
 }
