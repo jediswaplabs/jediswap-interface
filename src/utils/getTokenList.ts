@@ -11,35 +11,51 @@ const tokenListValidator = new Ajv({ allErrors: true }).compile(schema)
  */
 export default async function getTokenList(listUrl: string): Promise<TokenList> {
   const urls = uriToHttp(listUrl)
+  const maxAttempt = 5;
+  const processTokenLists = async () => {
+    for (let i = 0; i < urls.length; i++) {
+      const url = urls[i]
+      const isLast = i === urls.length - 1
+      let response
+      try {
+        response = await fetch(url)
+      } catch (error) {
+        console.debug('Failed to fetch list', listUrl, error)
+        if (isLast) throw new Error(`Failed to download list ${listUrl}`)
+        continue
+      }
 
-  for (let i = 0; i < urls.length; i++) {
-    const url = urls[i]
-    const isLast = i === urls.length - 1
-    let response
-    try {
-      response = await fetch(url)
-    } catch (error) {
-      console.debug('Failed to fetch list', listUrl, error)
-      if (isLast) throw new Error(`Failed to download list ${listUrl}`)
-      continue
+      if (!response.ok) {
+        if (isLast) throw new Error(`Failed to download list ${listUrl}`)
+        continue
+      }
+
+      const json = await response.json()
+
+      if (!tokenListValidator(json)) {
+        const validationErrors: string =
+            tokenListValidator.errors?.reduce<string>((memo, error) => {
+              const add = `${error.dataPath} ${error.message ?? ''}`
+              return memo.length > 0 ? `${memo}; ${add}` : `${add}`
+            }, '') ?? 'unknown error'
+        throw new Error(`Token list failed validation: ${validationErrors}`)
+      }
+      return json
     }
-
-    if (!response.ok) {
-      if (isLast) throw new Error(`Failed to download list ${listUrl}`)
-      continue
-    }
-
-    const json = await response.json()
-
-    if (!tokenListValidator(json)) {
-      const validationErrors: string =
-        tokenListValidator.errors?.reduce<string>((memo, error) => {
-          const add = `${error.dataPath} ${error.message ?? ''}`
-          return memo.length > 0 ? `${memo}; ${add}` : `${add}`
-        }, '') ?? 'unknown error'
-      throw new Error(`Token list failed validation: ${validationErrors}`)
-    }
-    return json
   }
-  throw new Error('Unrecognized list URL protocol.')
+  let result;
+  let currentAttempt = 0;
+
+  while (!result && (currentAttempt < maxAttempt)) {
+    try {
+      currentAttempt++;
+      result = await processTokenLists();
+    } catch (error) {
+      console.debug('Failed to fetch list', listUrl, error);
+    }
+  }
+  if (!result) {
+    throw new Error('Unrecognized list URL protocol.')
+  }
+  return result;
 }
