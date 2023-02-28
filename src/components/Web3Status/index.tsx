@@ -246,13 +246,14 @@ export default function Web3Status() {
   const { active, connectedAddress } = useStarknetReact()
   const contextNetwork = useStarknetReact(NetworkContextName)
 
-  const [domain, setDomain] = useState<any>('')
+  type DomainToAddrData = { domain: string; domain_expiry: number }
+
+  const [domain, setDomain] = useState<string>('')
 
   useEffect(() => {
     fetch('https://app.starknet.id/api/indexer/addr_to_domain?addr=' + hexToDecimalString(connectedAddress ?? ''))
       .then(response => response.json())
-      .then(data => {
-        console.log(data.domain)
+      .then((data: DomainToAddrData) => {
         setDomain(data.domain)
       })
       .catch(error => {
