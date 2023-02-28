@@ -29,6 +29,12 @@ import ComingSoon from './ComingSoon'
 import Footer from '../components/Footer'
 import useFetchAllPairsCallback from '../hooks/useFetchAllPairs'
 import { MainnetWarningModal } from '../components/MainnetWarningModal'
+import { Web3ReactProvider } from '@web3-react/core'
+import { providers } from 'ethers'
+
+function getLibrary(provider: any) {
+  return new providers.Web3Provider(provider)
+}
 
 const AppWrapper = styled.div`
   display: flex;
@@ -94,21 +100,22 @@ export default function App() {
 
           {/* <TopLevelModals /> */}
           <Web3ReactManager>
-            <Switch>
-              <Route exact strict path="/swap" component={Swap} />
-              <Route exact strict path="/swap/:outputCurrency" component={RedirectToSwap} />
-              <Route exact strict path="/pool" component={Pool} />
-              <Route exact path="/add" component={RedirectToAddLiquidity} />
-              <Route exact path="/add/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />
-              <Route exact path="/add/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
-              <Route exact path="/create" component={RedirectToAddLiquidity} />
-              <Route exact path="/create/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />
-              <Route exact path="/create/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
-              <Route exact path="/zap" component={Zap} />
-              <Route exact path="/stake" component={ComingSoon} />
-              <Route exact strict path="/remove/:currencyIdA/:currencyIdB" component={RemoveLiquidity} />
+            <Web3ReactProvider getLibrary={getLibrary}>
+              <Switch>
+                <Route exact strict path="/swap" component={Swap} />
+                <Route exact strict path="/swap/:outputCurrency" component={RedirectToSwap} />
+                <Route exact strict path="/pool" component={Pool} />
+                <Route exact path="/add" component={RedirectToAddLiquidity} />
+                <Route exact path="/add/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />
+                <Route exact path="/add/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
+                <Route exact path="/create" component={RedirectToAddLiquidity} />
+                <Route exact path="/create/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />
+                <Route exact path="/create/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
+                <Route exact path="/zap" component={Zap} />
+                <Route exact path="/stake" component={ComingSoon} />
+                <Route exact strict path="/remove/:currencyIdA/:currencyIdB" component={RemoveLiquidity} />
 
-              {/* <Route exact strict path="/claim" component={OpenClaimAddressModalAndRedirectToSwap} />
+                {/* <Route exact strict path="/claim" component={OpenClaimAddressModalAndRedirectToSwap} />
               <Route exact strict path="/send" component={RedirectPathToSwapOnly} />
               <Route exact strict path="/remove/:tokens" component={RedirectOldRemoveLiquidityPathStructure} />
               <Route exact strict path="/find" component={PoolFinder} />
@@ -120,8 +127,9 @@ export default function App() {
               <Route exact strict path="/migrate/v1/:address" component={MigrateV1Exchange} />
               <Route exact strict path="/uni/:currencyIdA/:currencyIdB" component={Manage} />
               <Route exact strict path="/vote/:id" component={VotePage} /> */}
-              <Route component={RedirectPathToSwapOnly} />
-            </Switch>
+                <Route component={RedirectPathToSwapOnly} />
+              </Switch>
+            </Web3ReactProvider>
           </Web3ReactManager>
           <Marginer />
         </BodyWrapper>
