@@ -243,7 +243,7 @@ function Web3StatusInner({ starkID }: { starkID?: string }) {
 }
 
 export default function Web3Status() {
-  const { active, connectedAddress } = useStarknetReact()
+  const { active, connectedAddress, chainId } = useStarknetReact()
   const contextNetwork = useStarknetReact(NetworkContextName)
 
   type DomainToAddrData = { domain: string; domain_expiry: number }
@@ -251,15 +251,29 @@ export default function Web3Status() {
   const [domain, setDomain] = useState<string>('')
 
   useEffect(() => {
-    fetch('https://app.starknet.id/api/indexer/addr_to_domain?addr=' + hexToDecimalString(connectedAddress ?? ''))
-      .then(response => response.json())
-      .then((data: DomainToAddrData) => {
-        setDomain(data.domain)
-      })
-      .catch(error => {
-        console.error(error)
-      })
-  }, [connectedAddress])
+    if (chainId == 1) {
+      fetch('https://app.starknet.id/api/indexer/addr_to_domain?addr=' + hexToDecimalString(connectedAddress ?? ''))
+        .then(response => response.json())
+        .then((data: DomainToAddrData) => {
+          setDomain(data.domain)
+        })
+        .catch(error => {
+          console.error(error)
+        })
+    }
+    if (chainId == 5) {
+      fetch(
+        'https://goerli.app.starknet.id/api/indexer/addr_to_domain?addr=' + hexToDecimalString(connectedAddress ?? '')
+      )
+        .then(response => response.json())
+        .then((data: DomainToAddrData) => {
+          setDomain(data.domain)
+        })
+        .catch(error => {
+          console.error(error)
+        })
+    }
+  }, [connectedAddress, chainId])
 
   const allTransactions = useAllTransactions()
 
