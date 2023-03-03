@@ -54,7 +54,6 @@ export default function Zap() {
         <ZapHeaderInfo fontSize={16}>
           Zap helps you convert any of your tokens into LP tokens with 1-click
         </ZapHeaderInfo>
-        <HeaderNote> WARNING: Zaps can cause slippage. Small amounts only.</HeaderNote>
       </AutoColumn>
       <StyledAppBody>
         <Backdrop top={'0'} left={'503px'} curveRight />
