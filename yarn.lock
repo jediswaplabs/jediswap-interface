@@ -7650,7 +7650,7 @@ react-popper@^2.2.3:
     react-fast-compare "^3.0.1"
     warning "^4.0.2"
 
-react-redux@>=7.2.2, react-redux@^8.0.5:
+react-redux@^8.0.5:
   version "8.0.5"
   resolved "https://registry.yarnpkg.com/react-redux/-/react-redux-8.0.5.tgz#e5fb8331993a019b8aaf2e167a93d10af469c7bd"
   integrity sha512-Q2f6fCKxPFpkXt1qNRZdEDLlScsDWyrgSj0mliK59qU6W5gvBiKkdMEG2lJzhd1rCctf0hb6EtePPLZ2e0m1uw==
@@ -9784,10 +9784,10 @@ widest-line@^3.1.0:
   dependencies:
     string-width "^4.0.0"
 
-wido-widget@^0.1.10:
-  version "0.1.10"
-  resolved "https://registry.yarnpkg.com/wido-widget/-/wido-widget-0.1.10.tgz#f8ef8a2a44d6f767def583b0ac8ced31ff3ebbd4"
-  integrity sha512-juF/qazPNwbphyErFLUGlUdg8FUxq7FdrPaZGcTFE2y0DDOhgXcF+z/9u5kFT4OtOi81N45OYrBIM079n2wxXQ==
+wido-widget@^0.1.12:
+  version "0.1.12"
+  resolved "https://registry.yarnpkg.com/wido-widget/-/wido-widget-0.1.12.tgz#653f1da4f0de2d50984a3ffdf005a657cac2fe86"
+  integrity sha512-ErVyY+m1buydGcc5Vz36305FXtYI33+A5D4aUOvpAjDb1Tb0cAywO7fnBsoDG84ePG7xU6b74VTinRLy5EaXcA==
   dependencies:
     "@argent/get-starknet" "^5.2.0"
     "@babel/runtime" ">=7.17.0"
@@ -9827,7 +9827,7 @@ wido-widget@^0.1.10:
     react-dom ">=17.0.1"
     react-feather "^2.0.8"
     react-popper "^2.2.3"
-    react-redux ">=7.2.2"
+    react-redux "^8.0.5"
     react-virtualized-auto-sizer "^1.0.2"
     react-window "^1.8.5"
     rebass "^4.0.7"

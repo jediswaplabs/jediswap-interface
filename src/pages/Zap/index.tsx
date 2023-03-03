@@ -57,6 +57,7 @@ export default function Zap() {
           snAccount={account ?? undefined}
           srcChainIds={[5, 15367]}
           dstChainIds={[15367]}
+          toProtocols={['jediswap.xyz']}
           theme={{
             ...darkTheme,
             accent: theme.jediBlue,
