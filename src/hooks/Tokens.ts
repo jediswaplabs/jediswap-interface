@@ -11,14 +11,13 @@ import { useActiveStarknetReact } from './index'
 import { useTokenContract } from './useContract'
 import { useSingleCallResult } from '../state/multicall/hooks'
 import { NEVER_RELOAD } from '../state/multicall/hooks'
+import { DEFAULT_CHAIN_ID } from '../constants'
 export function useAllTokens(): { [address: string]: Token } {
   const { chainId } = useActiveStarknetReact()
   const userAddedTokens = useUserAddedTokens()
-
   const allTokens = useSelectedTokenList()
 
   return useMemo(() => {
-    if (!chainId) return {}
     return (
       userAddedTokens
         // reduce into all ALL_TOKENS filtered by the current chain
@@ -29,7 +28,7 @@ export function useAllTokens(): { [address: string]: Token } {
           },
           // must make a copy because reduce modifies the map, and we do not
           // want to make a copy in every iteration
-          { ...allTokens[chainId] }
+          { ...allTokens[chainId ?? DEFAULT_CHAIN_ID] }
         )
     )
   }, [chainId, userAddedTokens, allTokens])
@@ -40,9 +39,7 @@ export function useJediLPTokens(): { [address: string]: LPToken } {
   const { chainId } = useActiveStarknetReact()
 
   return useMemo(() => {
-    if (!chainId) return {}
-
-    return allLPTokens[chainId]
+    return allLPTokens[chainId ?? DEFAULT_CHAIN_ID]
   }, [chainId, allLPTokens])
 
   // return {
