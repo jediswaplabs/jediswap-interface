@@ -1,17 +1,18 @@
-import React, { useCallback, useContext } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { SwapPoolTabs } from '../../components/NavigationTabs'
 import { BodyWrapper } from '../AppBody'
 
 import { Backdrop, HeaderRow } from '../Swap/styleds'
 import { useActiveStarknetReact } from '../../hooks'
 import { useWalletModalToggle } from '../../state/application/hooks'
-import { darkTheme, SwapWidget as ZapWidget, isStarknetChain } from 'wido-widget'
+import { darkTheme, WidoWidget, isStarknetChain } from 'wido-widget'
 import styled, { ThemeContext } from 'styled-components'
 import { useWeb3React } from '@web3-react/core'
 import { InjectedConnector } from '@web3-react/injected-connector'
 import { AutoColumn } from '../../components/Column'
 import ZapIcon from '../../assets/jedi/zap.svg'
 import { HeaderNote, ZapHeader, ZapHeaderInfo } from './styleds'
+import { Account } from 'starknet'
 
 export const StyledAppBody = styled(BodyWrapper)`
   padding: 0rem;
@@ -20,9 +21,21 @@ export const injected = new InjectedConnector({})
 
 export default function Zap() {
   const theme = useContext(ThemeContext)
-  const { account } = useActiveStarknetReact()
+  const { chainId, account, connectedAddress, library } = useActiveStarknetReact()
   const { library: ethProvider, activate, deactivate } = useWeb3React()
   const toggleWalletModal = useWalletModalToggle() // toggle wallet when disconnected
+
+  const [passedAccount, setPassedAccount] = useState(account ?? undefined)
+
+  // Work-around: unfortunately account.chainId does not get updated when the user changes network
+  // Solution: re-create the account object each time chainId or account changes
+  useEffect(() => {
+    if (!account || !library || !connectedAddress) {
+      setPassedAccount(undefined)
+    } else {
+      setPassedAccount(new Account(library, connectedAddress, account.signer))
+    }
+  }, [library, account, chainId, connectedAddress, setPassedAccount])
 
   const handleMetamask = useCallback(async () => {
     if (ethProvider) {
@@ -61,13 +74,13 @@ export default function Zap() {
         <Backdrop bottom={'30px'} left={'-35px'} curveLeft style={{ height: '60px' }} />
         <Backdrop bottom={'0px'} left={'-45px'} curveLeft />
         <SwapPoolTabs active={'zap'} />
-        <ZapWidget
+        <WidoWidget
           className="wido-widget"
-          width={'100%'}
+          width="100%"
           onConnectWalletClick={handleConnectWalletClick}
           testnetsVisible
           ethProvider={ethProvider}
-          snAccount={account ?? undefined}
+          snAccount={passedAccount}
           srcChainIds={[5, 15367]}
           dstChainIds={[15367]}
           toProtocols={['jediswap.xyz']}
@@ -79,8 +92,6 @@ export default function Zap() {
               variable: "'DM Sans',sans-serif"
             },
             networkDefaultShadow: 'none'
-            // outline: theme.jediBlue
-            // container: 'transparent'
           }}
         />
       </StyledAppBody>
