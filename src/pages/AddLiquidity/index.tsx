@@ -3,7 +3,7 @@ import { Call, RawArgs, stark } from 'starknet'
 import { Currency, CurrencyAmount, currencyEquals, JSBI, LPToken, Token, ETHER, TokenAmount, WETH } from '@jediswap/sdk'
 import { Plus } from 'react-feather'
 import ReactGA from 'react-ga4'
-import { RouteComponentProps } from 'react-router-dom'
+import { NavLink, RouteComponentProps } from 'react-router-dom'
 import { Text } from 'rebass'
 import { ThemeContext } from 'styled-components'
 import { ButtonError, ButtonGradient, ButtonLight, ButtonPrimary } from '../../components/Button'
@@ -84,6 +84,10 @@ const LiquidityTokens = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+`
+
+const StyledNavLink = styled(NavLink)`
+  color: ${({ theme }) => theme.jediBlue};
 `
 
 export default function AddLiquidity({
@@ -399,11 +403,19 @@ export default function AddLiquidity({
                   &bull; It might take a <span style={{ fontWeight: 700 }}>few minutes</span> for pool to reflect and
                   enable swap.{' '}
                 </div>
+                <div style={{ fontWeight: 500, marginTop: '15px' }}>
+                  Don&apos;t have token pairs?{' '}
+                  <StyledNavLink to={'/zap'}>Add liquidity with a single token on the zap page.</StyledNavLink>
+                </div>
               </HeaderNote>
             ) : (
               <HeaderNote>
                 Note: When you add liquidity, you will receive pool tokens representing your position. These tokens
                 automatically earn fees proportional to your share of the pool, and can be redeemed at any time.
+                <div style={{ fontWeight: 500, marginTop: '15px' }}>
+                  Don&apos;t have token pairs?{' '}
+                  <StyledNavLink to={'/zap'}>Add liquidity with a single token on the zap page.</StyledNavLink>
+                </div>
               </HeaderNote>
             )}
 
