@@ -39,11 +39,13 @@ export default function Zap() {
 
   // Work-around: unfortunately account.chainId does not get updated when the user changes network
   // Solution: re-create the account object each time chainId or account changes
+  console.log('📜 LOG > Zap > account?.chainId:', account?.chainId)
   useEffect(() => {
     if (!account || !library || !connectedAddress) {
       setPassedAccount(undefined)
     } else {
-      setPassedAccount(new Account(library, connectedAddress, account.signer))
+      setPassedAccount(account)
+      // setPassedAccount(new Account(library, connectedAddress, account.signer))
     }
   }, [library, account, chainId, connectedAddress, setPassedAccount])
 
