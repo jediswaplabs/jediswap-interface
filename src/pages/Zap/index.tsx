@@ -13,6 +13,7 @@ import { AutoColumn } from '../../components/Column'
 import ZapIcon from '../../assets/jedi/zap.svg'
 import { HeaderNote, ZapHeader, ZapHeaderInfo } from './styleds'
 import { Account } from 'starknet'
+import { Token, ChainId, getSupportedTokens } from 'wido'
 
 export const StyledAppBody = styled(BodyWrapper)`
   padding: 0rem;
@@ -21,6 +22,15 @@ export const injected = new InjectedConnector({})
 
 export default function Zap() {
   const theme = useContext(ThemeContext)
+  const [tokenList, setTokenList] = useState<Token[]>([])
+
+  useEffect(() => {
+    getSupportedTokens({ chainId: [5, 15367 as ChainId] }).then(setTokenList)
+  }, [])
+
+  /**
+   * Starknet wallet connection
+   */
   const { chainId, account, connectedAddress, library } = useActiveStarknetReact()
   const { library: ethProvider, activate, deactivate } = useWeb3React()
   const toggleWalletModal = useWalletModalToggle() // toggle wallet when disconnected
@@ -37,6 +47,9 @@ export default function Zap() {
     }
   }, [library, account, chainId, connectedAddress, setPassedAccount])
 
+  /**
+   * Ethereum wallet connection
+   */
   const handleMetamask = useCallback(async () => {
     if (ethProvider) {
       deactivate()
@@ -78,12 +91,11 @@ export default function Zap() {
           className="wido-widget"
           width="100%"
           onConnectWalletClick={handleConnectWalletClick}
-          testnetsVisible
           ethProvider={ethProvider}
           snAccount={passedAccount}
-          srcChainIds={[5, 15367]}
-          dstChainIds={[15367]}
-          toProtocols={['jediswap.xyz']}
+          testnetsVisible
+          fromTokens={tokenList}
+          toTokens={tokenList}
           theme={{
             ...darkTheme,
             accent: theme.jediBlue,
