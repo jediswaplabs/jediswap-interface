@@ -9784,10 +9784,10 @@ widest-line@^3.1.0:
   dependencies:
     string-width "^4.0.0"
 
-wido-widget@^0.1.17:
-  version "0.1.17"
-  resolved "https://registry.yarnpkg.com/wido-widget/-/wido-widget-0.1.17.tgz#9024093effdc7a26077058edfb00ed2ae113efd6"
-  integrity sha512-Go0jgCZa6jvixDE1mbSUCIh3GTS1caSM0BixLNc58W40dHFE4gXaTFE3fp3qUyGMFJviW2VtwyTdWv9Qq+k5QQ==
+wido-widget@^0.1.19:
+  version "0.1.19"
+  resolved "https://registry.yarnpkg.com/wido-widget/-/wido-widget-0.1.19.tgz#13a4223fbc096cb9f518474791f1a7e7219255e1"
+  integrity sha512-md2anOAI9dtV0O16B26sI+Iv5srZh1AxyAhaQZk83iee/KLYvAHXE3yu6k5IaljLcchFfoPIZxu0Nu/D8WKJnA==
   dependencies:
     "@argent/get-starknet" "^5.2.0"
     "@babel/runtime" ">=7.17.0"
@@ -9841,16 +9841,16 @@ wido-widget@^0.1.17:
     wcag-contrast "^3.0.0"
     web3 "^1.8.2"
     wicg-inert "^3.1.1"
-    wido "^0.2.2"
+    wido "^0.2.3"
   optionalDependencies:
     bufferutil "^4.0.6"
     encoding "^0.1.13"
     utf-8-validate "^5.0.8"
 
-wido@^0.2.2:
-  version "0.2.2"
-  resolved "https://registry.yarnpkg.com/wido/-/wido-0.2.2.tgz#5c960bf1451379286703c249cbae24fc5a44458d"
-  integrity sha512-e8xHKmmlF2EtWdQFqOhgW1ndwEKSrbJkSnUlnayw/KW0JCALY3Z/B9uYC4wZveq+AOchTPBdAzOTF3swuLiSeQ==
+wido@^0.2.3:
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/wido/-/wido-0.2.3.tgz#58b7c01cde3e72831da0344bda483ba7f5b3627d"
+  integrity sha512-Hpt1JmAC8tR6gDZ0u3rrEIG0siovB1KqlF64uDtLAFIlAOy6Rx7mNEbcW/yJKzlneDEsvLAhD4U6EASnTfa32w==
 
 word-wrap@^1.2.3:
   version "1.2.3"
