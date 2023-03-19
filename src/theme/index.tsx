@@ -21,7 +21,7 @@ const MEDIA_WIDTHS = {
 
 const mediaWidthTemplates: { [width in keyof typeof MEDIA_WIDTHS]: typeof css } = Object.keys(MEDIA_WIDTHS).reduce(
   (accumulator, size) => {
-    ;(accumulator as any)[size] = (a: any, b: any, c: any) => css`
+    ; (accumulator as any)[size] = (a: any, b: any, c: any) => css`
       @media (max-width: ${(MEDIA_WIDTHS as any)[size]}px) {
         ${css(a, b, c)}
       }
@@ -39,6 +39,8 @@ const jediPink = '#FF00E9'
 const jediWhite = white
 const jediGrey = '#959595'
 const jediNavyBlue = '#141451'
+const jediLightPurple = 'rgba(60, 10, 61, 1)'
+
 
 const signalRed = '#FF3257'
 const signalGreen = '#21E70F'
@@ -55,6 +57,7 @@ export function colors(darkMode: boolean): Colors {
     jediWhite,
     jediGrey,
     jediNavyBlue,
+    jediLightPurple,
 
     // Signal Colors
     signalRed,
@@ -152,7 +155,7 @@ export default function ThemeProvider({ children }: { children: React.ReactNode 
   return <StyledComponentsThemeProvider theme={themeObject}>{children}</StyledComponentsThemeProvider>
 }
 
-const TextWrapper = styled(Text)<{ color: keyof Colors }>`
+const TextWrapper = styled(Text) <{ color: keyof Colors }>`
   color: ${({ color, theme }) => theme.jediWhite};
 `
 

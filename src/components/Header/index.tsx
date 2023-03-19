@@ -170,7 +170,7 @@ const NetworkCard = styled(YellowCard)`
   flex: 1;
   font-size: 16px;
   font-weight: 600;
-  background-color: ${({ theme }) => theme.jediNavyBlue};
+  background-color: ${({ theme }) => theme.jediLightPurple};
   color: ${({ theme }) => theme.jediWhite};
   padding: 0.82rem 2rem;
   border: 2px solid transparent;
@@ -293,7 +293,7 @@ const StyledNavLink = styled(NavLink).attrs({
 
 const StyledExternalLink = styled(ExternalLink).attrs({
   activeClassName
-})<{ isActive?: boolean }>`
+}) <{ isActive?: boolean }>`
   ${({ theme }) => theme.flexRowNoWrap}
   align-items: left;
   // border-radius: 3rem;

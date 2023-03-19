@@ -12,6 +12,7 @@ export interface Colors {
   jediWhite: Color
   jediGrey: Color
   jediNavyBlue: Color
+  jediLightPurple: Color
 
   // Signal Colors
   signalRed: Color
