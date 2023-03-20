@@ -1,17 +1,15 @@
-import { MaxUint256 } from '@ethersproject/constants'
-import { TransactionResponse } from '@ethersproject/providers'
-import { Trade, TokenAmount, CurrencyAmount, ETHER, WETH, Token } from '@jediswap/sdk'
 import { useCallback, useMemo } from 'react'
-import { ROUTER_ADDRESS, ZAP_IN_ADDRESS } from '../constants'
+import { InvokeFunctionResponse, Args, uint256 } from 'starknet'
+import { MaxUint256 } from '@ethersproject/constants'
+import { Trade, TokenAmount, CurrencyAmount, ETHER, WETH, Token } from '@jediswap/sdk'
+
+import { DEFAULT_CHAIN_ID, ROUTER_ADDRESS, ZAP_IN_ADDRESS } from '../constants'
 import { useTokenAllowance } from '../data/Allowances'
-// import { getTradeVersion, useV1TradeExchangeAddress } from '../data/V1'
 import { Field } from '../state/swap/actions'
 import { useTransactionAdder, useHasPendingApproval } from '../state/transactions/hooks'
 import { computeSlippageAdjustedAmounts } from '../utils/prices'
-import { calculateGasMargin } from '../utils'
 import { useTokenContract } from './useContract'
 import { useActiveStarknetReact } from './index'
-import { AddTransactionResponse, Args, uint256 } from 'starknet'
 
 export enum ApprovalState {
   UNKNOWN,
@@ -30,7 +28,7 @@ export function useApproveCallback(
     amountToApprove instanceof TokenAmount
       ? amountToApprove.token
       : amountToApprove?.currency === ETHER
-      ? WETH[chainId ?? 5]
+      ? WETH[chainId ?? DEFAULT_CHAIN_ID]
       : undefined
 
   const currentAllowance = useTokenAllowance(token, connectedAddress ?? undefined, spender)
@@ -39,7 +37,7 @@ export function useApproveCallback(
   // check the current approval status
   const approvalState: ApprovalState = useMemo(() => {
     if (!amountToApprove || !spender) return ApprovalState.UNKNOWN
-    if (amountToApprove.currency === ETHER) return ApprovalState.APPROVED
+    // if (amountToApprove.currency === ETHER) return ApprovalState.APPROVED
     // we might not have enough data to know whether or not we need to approve
     if (!currentAllowance) return ApprovalState.UNKNOWN
 
@@ -95,7 +93,7 @@ export function useApproveCallback(
 
     return tokenContract
       .approve(spender, approveArgs.amount)
-      .then((response: AddTransactionResponse) => {
+      .then((response: InvokeFunctionResponse) => {
         addTransaction(response, {
           summary: 'Approve ' + amountToApprove.currency.symbol,
           approval: { tokenAddress: token.address, spender: spender }
@@ -114,10 +112,15 @@ export type TradeType = 'swap' | 'zap'
 
 // wraps useApproveCallback in the context of a swap
 export function useApproveCallbackFromTrade(trade?: Trade, allowedSlippage = 0, tradeType: TradeType = 'swap') {
+  const { chainId } = useActiveStarknetReact()
+
   const amountToApprove = useMemo(
     () => (trade ? computeSlippageAdjustedAmounts(trade, allowedSlippage)[Field.INPUT] : undefined),
     [trade, allowedSlippage]
   )
 
-  return useApproveCallback(amountToApprove, tradeType === 'zap' ? ZAP_IN_ADDRESS : ROUTER_ADDRESS)
+  return useApproveCallback(
+    amountToApprove,
+    tradeType === 'zap' ? ZAP_IN_ADDRESS[chainId ?? DEFAULT_CHAIN_ID] : ROUTER_ADDRESS[chainId ?? DEFAULT_CHAIN_ID]
+  )
 }

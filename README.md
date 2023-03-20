@@ -7,7 +7,7 @@
 An open source interface for Jediswap -- a protocol for decentralized exchange of Ethereum tokens.
 
 - Website: [uniswap.org](https://uniswap.org/)
-- Interface: [app.uniswap.org](https://app.uniswap.org)
+- Interface: [app.testnet.jediswap.xyz](https://app.testnet.jediswap.xyz/)
 - Docs: [uniswap.org/docs/](https://uniswap.org/docs/)
 - Twitter: [@JediswapProtocol](https://twitter.com/JediswapProtocol)
 - Reddit: [/r/Jediswap](https://www.reddit.com/r/Jediswap/)
@@ -19,7 +19,7 @@ An open source interface for Jediswap -- a protocol for decentralized exchange o
 
 To access the Jediswap Interface, use an IPFS gateway link from the
 [latest release](https://github.com/Jediswap/uniswap-interface/releases/latest),
-or visit [app.uniswap.org](https://app.uniswap.org).
+or visit [app.testnet.jediswap.xyz](https://app.testnet.jediswap.xyz/).
 
 ## Listing a token
 
@@ -38,7 +38,7 @@ yarn
 ### Run
 
 ```bash
-yarn start
+yarn dev
 ```
 
 ### Configuring the environment (optional)
@@ -56,7 +56,7 @@ The interface will not work on other networks.
 
 ## Contributions
 
-**Please open all pull requests against the `master` branch.**
+**Please open all pull requests against the `jedi-staging` branch.**
 CI checks will run against all PRs.
 
 ## Accessing Jediswap Interface V1

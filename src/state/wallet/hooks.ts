@@ -1,13 +1,14 @@
-import { Currency, CurrencyAmount, ETHER, JSBI, Token, TokenAmount, WETH } from '@jediswap/sdk'
 import { useMemo } from 'react'
+import { Abi, uint256 } from 'starknet'
+import { Currency, CurrencyAmount, ETHER, JSBI, Token, TokenAmount, WETH } from '@jediswap/sdk'
 import ERC20_ABI from '../../constants/abis/erc20.json'
 import { useAllTokens } from '../../hooks/Tokens'
 import { useActiveStarknetReact } from '../../hooks'
 import { isAddress } from '../../utils'
-import { Abi, uint256 } from 'starknet'
 import { useAddressNormalizer } from '../../hooks/useAddressNormalizer'
 import { useTokenContract } from '../../hooks/useContract'
 import { useMultipleContractSingleData, useSingleCallResult } from '../multicall/hooks'
+import { DEFAULT_CHAIN_ID } from '../../constants'
 
 /**
  * Returns a map of the given addresses to their eventually consistent ETH balances.
@@ -54,7 +55,7 @@ import { useMultipleContractSingleData, useSingleCallResult } from '../multicall
 export function useToken0Balance(uncheckedAddress?: string): CurrencyAmount | undefined {
   const { chainId } = useActiveStarknetReact()
 
-  const tokenContract = useTokenContract(WETH[chainId ?? 5].address)
+  const tokenContract = useTokenContract(WETH[chainId ?? DEFAULT_CHAIN_ID].address)
 
   const address = useAddressNormalizer(uncheckedAddress)
 
@@ -65,10 +66,10 @@ export function useToken0Balance(uncheckedAddress?: string): CurrencyAmount | un
   ])
 
   return useMemo(() => {
-    const value = balance ? uint256.uint256ToBN(uint256Balance) : undefined
+    const value = balance?.result ? uint256.uint256ToBN(uint256Balance) : undefined
     if (value && address) return CurrencyAmount.ether(JSBI.BigInt(value.toString()))
     return undefined
-  }, [address, balance, uint256Balance])
+  }, [address, balance, uint256Balance, chainId])
 }
 
 /**
@@ -141,7 +142,6 @@ export function useCurrencyBalances(
 
   const token0Balance = useToken0Balance(account)
   const tokenBalances = useTokenBalances(account, tokens)
-
   const containsTOKEN0: boolean = useMemo(() => currencies?.some(currency => currency === ETHER) ?? false, [currencies])
 
   return useMemo(

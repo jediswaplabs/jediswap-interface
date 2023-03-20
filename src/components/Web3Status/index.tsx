@@ -1,7 +1,7 @@
 import { AbstractConnector } from '@web3-starknet-react/abstract-connector'
 import { UnsupportedChainIdError, useStarknetReact } from '@web3-starknet-react/core'
 import { darken, lighten } from 'polished'
-import React, { useMemo } from 'react'
+import React, { useMemo, useEffect, useState } from 'react'
 // import { Activity } from 'react-feather'
 import { useTranslation } from 'react-i18next'
 import styled, { css } from 'styled-components'
@@ -10,7 +10,8 @@ import FortmaticIcon from '../../assets/images/fortmaticIcon.png'
 import PortisIcon from '../../assets/images/portisIcon.png'
 import WalletConnectIcon from '../../assets/images/walletConnectIcon.svg'
 import ArgentXIcon from '../../assets/images/argentx.png'
-import { argentX } from '../../connectors'
+import braavosIcon from '../../assets/svg/Braavos.svg'
+import { argentX, braavosWallet } from '../../connectors'
 import { NetworkContextName } from '../../constants'
 import { useWalletModalToggle } from '../../state/application/hooks'
 import { isTransactionRecent, useAllTransactions } from '../../state/transactions/hooks'
@@ -25,12 +26,14 @@ import { RowBetween } from '../Row'
 import WalletModal from '../WalletModal'
 import WrongNetwork from '../../assets/jedi/WrongNetwork.svg'
 import { useActiveStarknetReact } from '../../hooks'
+import { hexToDecimalString } from 'starknet/dist/utils/number'
 
 const IconWrapper = styled.div<{ size?: number }>`
   ${({ theme }) => theme.flexColumnNoWrap};
   align-items: center;
   justify-content: center;
   margin-left: 10px;
+  padding-bottom: 4px;
   & > * {
     height: ${({ size }) => (size ? size + 'px' : '32px')};
     width: ${({ size }) => (size ? size + 'px' : '32px')};
@@ -93,7 +96,7 @@ const Web3StatusConnect = styled(Web3StatusGeneric)<{ faded?: boolean }>`
 
 const Web3StatusConnected = styled(Web3StatusGeneric)<{ pending?: boolean }>`
   background-color: ${({ pending, theme }) => (pending ? theme.primary1 : ' rgba(255, 255, 255, 0.15)')};
- border: 2px solid transparent;
+  border: 2px solid transparent;
   padding: 0.6rem 1rem 0.6rem 0.9rem;
   color: ${({ pending, theme }) => (pending ? theme.white : theme.jediWhite)};
   /* padding: 0.4rem 1rem 0.4rem 0.9rem; */
@@ -175,19 +178,25 @@ function StatusIcon({ connector }: { connector: AbstractConnector }) {
   // }
   if (connector === argentX) {
     return (
-      <IconWrapper size={16}>
+      <IconWrapper size={20}>
         <img src={ArgentXIcon} alt="ArgentX" />
+      </IconWrapper>
+    )
+  }
+
+  if (connector === braavosWallet) {
+    return (
+      <IconWrapper size={20}>
+        <img src={braavosIcon} alt="myBraavos" />
       </IconWrapper>
     )
   }
   return null
 }
 
-function Web3StatusInner() {
+function Web3StatusInner({ starkID }: { starkID?: string }) {
   const { t } = useTranslation()
   const { connectedAddress, connector, error } = useActiveStarknetReact()
-
-  // const { ENSName } = useENSName(connectedAddress ?? undefined)
 
   const allTransactions = useAllTransactions()
 
@@ -213,7 +222,7 @@ function Web3StatusInner() {
             <Text>{pending?.length} Pending</Text> <Loader stroke="white" />
           </RowBetween>
         ) : (
-          <Text>{shortenAddress(connectedAddress)}</Text>
+          <Text>{starkID ? starkID : shortenAddress(connectedAddress)}</Text>
         )}
       </Web3StatusConnected>
     )
@@ -234,10 +243,37 @@ function Web3StatusInner() {
 }
 
 export default function Web3Status() {
-  const { active, connectedAddress } = useStarknetReact()
+  const { active, connectedAddress, chainId } = useStarknetReact()
   const contextNetwork = useStarknetReact(NetworkContextName)
 
-  // const { ENSName } = useENSName(connectedAddress ?? undefined)
+  type DomainToAddrData = { domain: string; domain_expiry: number }
+
+  const [domain, setDomain] = useState<string>('')
+
+  useEffect(() => {
+    if (chainId == 1) {
+      fetch('https://app.starknet.id/api/indexer/addr_to_domain?addr=' + hexToDecimalString(connectedAddress ?? ''))
+        .then(response => response.json())
+        .then((data: DomainToAddrData) => {
+          setDomain(data.domain)
+        })
+        .catch(error => {
+          console.error(error)
+        })
+    }
+    if (chainId == 5) {
+      fetch(
+        'https://goerli.app.starknet.id/api/indexer/addr_to_domain?addr=' + hexToDecimalString(connectedAddress ?? '')
+      )
+        .then(response => response.json())
+        .then((data: DomainToAddrData) => {
+          setDomain(data.domain)
+        })
+        .catch(error => {
+          console.error(error)
+        })
+    }
+  }, [connectedAddress, chainId])
 
   const allTransactions = useAllTransactions()
 
@@ -260,8 +296,8 @@ export default function Web3Status() {
 
   return (
     <>
-      <Web3StatusInner />
-      <WalletModal pendingTransactions={pending} confirmedTransactions={confirmed} />
+      <Web3StatusInner starkID={domain} />
+      <WalletModal pendingTransactions={pending} confirmedTransactions={confirmed} ENSName={domain} />
     </>
   )
 }

@@ -1,24 +1,22 @@
-import { Contract, AddTransactionResponse, Args, stark, Call, RawArgs } from 'starknet'
-// import { TransactionResponse } from '@ethersproject/providers'
-import { Currency, currencyEquals, ETHER, Percent, WETH, Fraction } from '@jediswap/sdk'
+import { Contract, InvokeFunctionResponse, stark, Call, RawArgs } from 'starknet'
+import { Currency, currencyEquals, ETHER, Percent, WETH } from '@jediswap/sdk'
 import React, { useCallback, useContext, useMemo, useState } from 'react'
 import { ArrowDown, Plus } from 'react-feather'
 import { RouteComponentProps } from 'react-router'
 import { Text } from 'rebass'
 import { ThemeContext } from 'styled-components'
-import { ButtonPrimary, ButtonLight, ButtonError, ButtonConfirmed } from '../../components/Button'
-import { LightCard, WhiteOutlineCard, BlurCard } from '../../components/Card'
-import Column, { AutoColumn, ColumnCenter } from '../../components/Column'
+import { ButtonPrimary, ButtonLight, ButtonError } from '../../components/Button'
+import { BlurCard } from '../../components/Card'
+import { AutoColumn, ColumnCenter } from '../../components/Column'
 import TransactionConfirmationModal, { ConfirmationModalContent } from '../../components/TransactionConfirmationModal'
 import CurrencyInputPanel from '../../components/CurrencyInputPanel'
 import DoubleCurrencyLogo from '../../components/DoubleLogo'
 import { AddRemoveTabs } from '../../components/NavigationTabs'
 import { MinimalPositionCard } from '../../components/PositionCard'
-import Row, { RowBetween, RowFixed } from '../../components/Row'
+import { RowBetween, RowFixed } from '../../components/Row'
 
-import Slider from '../../components/Slider'
 import CurrencyLogo from '../../components/CurrencyLogo'
-import { ROUTER_ADDRESS } from '../../constants'
+import { DEFAULT_CHAIN_ID, ROUTER_ADDRESS } from '../../constants'
 import { useActiveStarknetReact } from '../../hooks'
 import { useCurrency } from '../../hooks/Tokens'
 import { usePairContract } from '../../hooks/useContract'
@@ -73,7 +71,6 @@ export default function RemoveLiquidity({
   const { independentField, typedValue } = useBurnState()
   const { pair, parsedAmounts, error } = useDerivedBurnInfo(currencyA ?? undefined, currencyB ?? undefined)
 
-  // console.log('🚀 ~ file: index.tsx ~ line 71 ~ parsedAmounts', parsedAmounts)
   const { onUserInput: _onUserInput } = useBurnActionHandlers()
   const isValid = !error
 
@@ -100,38 +97,24 @@ export default function RemoveLiquidity({
     [Field.CURRENCY_B]:
       independentField === Field.CURRENCY_B ? typedValue : parsedAmounts[Field.CURRENCY_B]?.toSignificant(6) ?? ''
   }
-  // console.log('🚀 ~ file: index.tsx ~ line 98 ~ formattedAmounts', formattedAmounts)
-
-  // console.log(
-  //   '🚀 ~ file: index.tsx ~ line 101 ~ parsedAmounts[Field.LIQUIDITY_PERCENT]',
-  //   parsedAmounts[Field.LIQUIDITY_PERCENT]
-  // )
   const atMaxAmount = parsedAmounts[Field.LIQUIDITY_PERCENT]?.equalTo(new Percent('1'))
-
-  // console.log('🚀 ~ file: index.tsx ~ line 101 ~ atMaxAmount', atMaxAmount)
 
   // pair contract
   const pairContract: Contract | null = usePairContract(pair?.liquidityToken?.address)
 
-  const approvalCallback = useApprovalCall(parsedAmounts[Field.LIQUIDITY], ROUTER_ADDRESS)
+  const approvalCallback = useApprovalCall(parsedAmounts[Field.LIQUIDITY], ROUTER_ADDRESS[chainId ?? DEFAULT_CHAIN_ID])
 
   // wrapped onUserInput to clear signatures
   const onUserInput = useCallback(
     (field: Field, typedValue: string) => {
-      return _onUserInput(field, typedValue)
+      return !typedValue.includes('.') && _onUserInput(field, typedValue)
     },
     [_onUserInput]
   )
 
-  const onLiquidityInput = useCallback((typedValue: string): void => onUserInput(Field.LIQUIDITY, typedValue), [
-    onUserInput
-  ])
-  const onCurrencyAInput = useCallback((typedValue: string): void => onUserInput(Field.CURRENCY_A, typedValue), [
-    onUserInput
-  ])
-  const onCurrencyBInput = useCallback((typedValue: string): void => onUserInput(Field.CURRENCY_B, typedValue), [
-    onUserInput
-  ])
+  const onLiquidityInput = useCallback((typedValue: string) => onUserInput(Field.LIQUIDITY, typedValue), [onUserInput])
+  const onCurrencyAInput = useCallback((typedValue: string) => onUserInput(Field.CURRENCY_A, typedValue), [onUserInput])
+  const onCurrencyBInput = useCallback((typedValue: string) => onUserInput(Field.CURRENCY_B, typedValue), [onUserInput])
 
   // tx sending
   const addTransaction = useTransactionAdder()
@@ -186,7 +169,7 @@ export default function RemoveLiquidity({
 
     await account
       .execute([approval, removeLiquidityCall])
-      .then((response: AddTransactionResponse) => {
+      .then((response: InvokeFunctionResponse) => {
         setAttemptingTxn(false)
 
         addTransaction(response, {
@@ -457,8 +440,8 @@ export default function RemoveLiquidity({
                         ) : oneCurrencyIsWETH ? (
                           <StyledInternalLink
                             to={`/remove/${
-                              currencyA && currencyEquals(currencyA, WETH[chainId]) ? 'ETHER' : currencyIdA
-                            }/${currencyB && currencyEquals(currencyB, WETH[chainId]) ? 'ETHER' : currencyIdB}`}
+                              currencyA && currencyEquals(currencyA, WETH[chainId]) ? 'ETH' : currencyIdA
+                            }/${currencyB && currencyEquals(currencyB, WETH[chainId]) ? 'ETH' : currencyIdB}`}
                           >
                             Receive ETHER
                           </StyledInternalLink>

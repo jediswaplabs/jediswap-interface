@@ -1,6 +1,6 @@
-import { BigNumber } from '@ethersproject/bignumber'
-import { Currency, CurrencyAmount, currencyEquals, JSBI, LPToken, Token, ETHER, TokenAmount, WETH } from '@jediswap/sdk'
 import React, { useCallback, useContext, useState } from 'react'
+import { Call, RawArgs, stark } from 'starknet'
+import { Currency, CurrencyAmount, currencyEquals, JSBI, LPToken, Token, ETHER, TokenAmount, WETH } from '@jediswap/sdk'
 import { Plus } from 'react-feather'
 import ReactGA from 'react-ga4'
 import { RouteComponentProps } from 'react-router-dom'
@@ -16,7 +16,7 @@ import { AddRemoveTabs } from '../../components/NavigationTabs'
 import { MinimalPositionCard } from '../../components/PositionCard'
 import Row, { AutoRow, RowBetween, RowFixed, RowFlat } from '../../components/Row'
 
-import { ROUTER_ADDRESS } from '../../constants'
+import { DEFAULT_CHAIN_ID, ROUTER_ADDRESS } from '../../constants'
 import { PairState } from '../../data/Reserves'
 import { useActiveStarknetReact } from '../../hooks'
 import { useCurrency } from '../../hooks/Tokens'
@@ -38,7 +38,6 @@ import { ConfirmAddModalBottom } from './ConfirmAddModalBottom'
 import { currencyId } from '../../utils/currencyId'
 import { PoolPriceBar } from './PoolPriceBar'
 import { useRouterContract } from '../../hooks/useContract'
-import { AddTransactionResponse, Args, Call, RawArgs, stark, uint256 } from 'starknet'
 import { parsedAmountToUint256Args } from '../../utils'
 
 import styled from 'styled-components'
@@ -46,8 +45,10 @@ import { useApprovalCall } from '../../hooks/useApproveCall'
 import { AddTokenRow, AddTokenText } from '../Swap/styleds'
 import { useAddTokenToWallet } from '../../hooks/useAddTokenToWallet'
 import { ReactComponent as ArrowRight } from '../../assets/images/arrow-right-blue.svg'
+import Loader from '../../components/Loader'
 
 const BalanceText = styled.div`
+  display: flex;
   font-family: 'DM Sans', sans-serif;
   font-size: 16px;
   font-style: normal;
@@ -55,6 +56,10 @@ const BalanceText = styled.div`
   line-height: 16px;
   text-align: center;
   color: ${({ theme }) => theme.jediWhite};
+
+  svg {
+    margin-left: 4px;
+  }
 `
 
 const Separator = styled.div`
@@ -65,7 +70,7 @@ const HeaderNote = styled.div`
   font-family: 'DM Sans', sans-serif;
   font-weight: normal;
   font-size: 14px;
-  line-height: 120%;
+  line-height: 140%;
   color: ${({ theme }) => theme.jediWhite};
   background-color: ${({ theme }) => theme.jediNavyBlue};
   border-radius: 8px;
@@ -95,7 +100,7 @@ export default function AddLiquidity({
 
   const routerContract = useRouterContract()
 
-  const oneCurrencyIsWTOKEN0 = Boolean(
+  const oneCurrencyIsWETH = Boolean(
     chainId &&
       ((currencyA && currencyEquals(currencyA, WETH[chainId])) ||
         (currencyB && currencyEquals(currencyB, WETH[chainId])))
@@ -163,10 +168,14 @@ export default function AddLiquidity({
   )
 
   // check whether the user has approved the router on the tokens
-  // const [approvalA, approveACallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_A], ROUTER_ADDRESS)
-  // const [approvalB, approveBCallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_B], ROUTER_ADDRESS)
-  const approvalACallback = useApprovalCall(parsedAmounts[Field.CURRENCY_A], ROUTER_ADDRESS)
-  const approvalBCallback = useApprovalCall(parsedAmounts[Field.CURRENCY_B], ROUTER_ADDRESS)
+  const approvalACallback = useApprovalCall(
+    parsedAmounts[Field.CURRENCY_A],
+    ROUTER_ADDRESS[chainId ?? DEFAULT_CHAIN_ID]
+  )
+  const approvalBCallback = useApprovalCall(
+    parsedAmounts[Field.CURRENCY_B],
+    ROUTER_ADDRESS[chainId ?? DEFAULT_CHAIN_ID]
+  )
 
   const addTransaction = useTransactionAdder()
 
@@ -378,33 +387,31 @@ export default function AddLiquidity({
             pendingText={pendingText}
           />
           <AutoColumn gap="16px">
-            {noLiquidity ||
-              (isCreate && (
-                <ColumnCenter>
-                  <BlueCard>
-                    <AutoColumn gap="10px">
-                      <TYPE.link fontWeight={600} color={'primaryText1'}>
-                        You are the first liquidity provider.
-                      </TYPE.link>
-                      <TYPE.link fontWeight={400} color={'primaryText1'}>
-                        The ratio of tokens you add will set the price of this pool.
-                      </TYPE.link>
-                      <TYPE.link fontWeight={400} color={'primaryText1'}>
-                        Once you are happy with the rate click supply to review.
-                      </TYPE.link>
-                    </AutoColumn>
-                  </BlueCard>
-                </ColumnCenter>
-              ))}
-
-            <HeaderNote>
-              Note: When you add liquidity, you will receive pool tokens representing your position. These tokens
-              automatically earn fees proportional to your share of the pool, and can be redeemed at any time.
-            </HeaderNote>
+            {noLiquidity || isCreate ? (
+              <HeaderNote>
+                Note: <span style={{ fontWeight: 700 }}>You are the first liquidity provider.</span>
+                <div style={{ fontWeight: 500, marginTop: '10px' }}>
+                  {' '}
+                  &bull; The ratio of tokens you add will set the price of this pool.{' '}
+                </div>
+                <div style={{ fontWeight: 500, marginTop: '5px' }}>
+                  {' '}
+                  &bull; It might take a <span style={{ fontWeight: 700 }}>few minutes</span> for pool to reflect and
+                  enable swap.{' '}
+                </div>
+              </HeaderNote>
+            ) : (
+              <HeaderNote>
+                Note: When you add liquidity, you will receive pool tokens representing your position. These tokens
+                automatically earn fees proportional to your share of the pool, and can be redeemed at any time.
+              </HeaderNote>
+            )}
 
             <AutoColumn gap="16px">
               <AutoRow justify="flex-end">
-                <BalanceText>Balance: {currencyBalances.CURRENCY_A?.toSignificant(6) ?? 0}</BalanceText>
+                {connectedAddress && currencies[Field.CURRENCY_A] ? (
+                  <BalanceText>Balance: {currencyBalances.CURRENCY_A?.toSignificant(6) ?? <Loader />}</BalanceText>
+                ) : null}
               </AutoRow>
               <CurrencyInputPanel
                 value={formattedAmounts[Field.CURRENCY_A]}
@@ -425,7 +432,9 @@ export default function AddLiquidity({
 
             <AutoColumn gap="16px">
               <AutoRow justify="flex-end">
-                <BalanceText>Balance: {currencyBalances.CURRENCY_B?.toSignificant(6) ?? 0}</BalanceText>
+                {connectedAddress && currencies[Field.CURRENCY_B] ? (
+                  <BalanceText>Balance: {currencyBalances.CURRENCY_B?.toSignificant(6) ?? <Loader />}</BalanceText>
+                ) : null}
               </AutoRow>
               <CurrencyInputPanel
                 value={formattedAmounts[Field.CURRENCY_B]}
@@ -479,19 +488,19 @@ export default function AddLiquidity({
               </AutoColumn>
             )}
           </AutoColumn>
-          {account && pair && (
-            <AddTokenRow justify={'center'} onClick={() => addTokenToWallet(pair.liquidityToken.address)}>
-              <AddTokenText>Add LP Tokens to Wallet</AddTokenText>
+          {/*{account && pair && (*/}
+          {/*  <AddTokenRow justify={'center'} onClick={() => addTokenToWallet(pair.liquidityToken.address)}>*/}
+          {/*    <AddTokenText>Add LP Tokens to Wallet</AddTokenText>*/}
 
-              <ArrowRight width={16} height={15} style={{ marginBottom: '3.5px' }} />
-            </AddTokenRow>
-          )}
+          {/*    <ArrowRight width={16} height={15} style={{ marginBottom: '3.5px' }} />*/}
+          {/*  </AddTokenRow>*/}
+          {/*)}*/}
         </Wrapper>
       </AppBody>
 
       {pair && !noLiquidity && pairState !== PairState.INVALID ? (
         <AutoColumn style={{ minWidth: '20rem', width: '100%', maxWidth: '468px', marginTop: '24px' }}>
-          <MinimalPositionCard showUnwrapped={oneCurrencyIsWTOKEN0} pair={pair} />
+          <MinimalPositionCard showUnwrapped={oneCurrencyIsWETH} pair={pair} />
         </AutoColumn>
       ) : null}
     </>

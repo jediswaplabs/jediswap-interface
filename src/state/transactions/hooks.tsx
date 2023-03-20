@@ -1,4 +1,4 @@
-import { AddTransactionResponse } from 'starknet'
+import { InvokeFunctionResponse } from 'starknet'
 import { useCallback, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -9,7 +9,7 @@ import { TransactionDetails } from './reducer'
 
 // helper that can take a ethers library transaction response and add it to the list of transactions
 export function useTransactionAdder(): (
-  response: AddTransactionResponse,
+  response: InvokeFunctionResponse,
   customData?: { summary?: string; approval?: { tokenAddress: string; spender: string }; claim?: { recipient: string } }
 ) => void {
   const { chainId, account, connectedAddress } = useActiveStarknetReact()
@@ -17,7 +17,7 @@ export function useTransactionAdder(): (
 
   return useCallback(
     (
-      response: AddTransactionResponse,
+      response: InvokeFunctionResponse,
       {
         summary,
         approval,

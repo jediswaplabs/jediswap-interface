@@ -42,9 +42,7 @@ describe('list reducer', () => {
           byUrl: {
             'fake-url': {
               error: null,
-              loadingRequestId: 'request-id',
-              current: null,
-              pendingUpdate: null
+              loadingRequestId: 'request-id'
             }
           },
           selectedListUrl: undefined
@@ -320,7 +318,7 @@ describe('list reducer', () => {
       store.dispatch(removeList('fake-url'))
       expect(store.getState()).toEqual({
         byUrl: {},
-        selectedListUrl: 'tokens.uniswap.eth'
+        selectedListUrl: DEFAULT_TOKEN_LIST_URL
       })
     })
   })

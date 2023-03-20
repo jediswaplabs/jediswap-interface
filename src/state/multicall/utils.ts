@@ -1,12 +1,5 @@
-import { Abi, Args, Calldata, stark, FunctionAbi, RawArgs } from 'starknet'
+import { Abi, Calldata, stark, FunctionAbi, RawArgs } from 'starknet'
 export function computeCallDataProps(args: RawArgs = {}): { calldata_len: number | string; calldata: Calldata } {
-  //   if (!args) {
-  //     return {
-  //       calldata_len: 0,
-  //       calldata: undefined
-  //     }
-  //   }
-
   const { compileCalldata } = stark
 
   const calldata = compileCalldata(args)

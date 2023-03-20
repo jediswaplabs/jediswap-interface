@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { SwapPoolTabs } from '../../components/NavigationTabs'
 import ReactGA from 'react-ga4'
 import AppBody from '../AppBody'
-import { Wrapper, HeaderRow, ZapHeader, HeaderNote, ZapHeaderInfo } from './styleds'
+import { Wrapper, HeaderRow, ZapHeader, HeaderNote, ZapHeaderInfo, BalanceText } from './styleds'
 import Settings from '../../components/Settings'
 import { DMSansText } from '../../theme'
 import Column, { AutoColumn } from '../../components/Column'
@@ -42,7 +42,7 @@ import { useAddTokenToWallet } from '../../hooks/useAddTokenToWallet'
 export default function Zap() {
   const loadedUrlParams = useZapDefaultsFromURLSearch()
 
-  const { account } = useActiveStarknetReact()
+  const { account, connectedAddress } = useActiveStarknetReact()
 
   const toggleWalletModal = useWalletModalToggle()
 
@@ -81,7 +81,6 @@ export default function Zap() {
   }
 
   const route = zapTrade?.route
-  // console.log('🚀 ~ file: index.tsx ~ line 73 ~ Zap ~ route', route)
 
   const userHasSpecifiedInputOutput = Boolean(
     currencies[Field.INPUT] && currencies[Field.OUTPUT] && parsedAmounts[independentField]?.greaterThan(JSBI.BigInt(0))
@@ -157,7 +156,6 @@ export default function Zap() {
 
   const handleInputSelect = useCallback(
     inputCurrency => {
-      console.log('🚀 ~ file: index.tsx ~ line 103 ~ Zap ~ inputCurrency', inputCurrency)
       // setApprovalSubmitted(false)
       onCurrencySelection(Field.INPUT, inputCurrency)
       handleTypeInput('')
@@ -167,8 +165,6 @@ export default function Zap() {
 
   const handleOutputSelect = useCallback(
     outputCurrency => {
-      console.log('🚀 ~ file: index.tsx ~ line 112 ~ Zap ~ outputCurrency', outputCurrency)
-
       onCurrencySelection(Field.OUTPUT, outputCurrency)
     },
     [onCurrencySelection]
@@ -260,9 +256,11 @@ export default function Zap() {
             <HeaderNote> WARNING: Zap can cause slippage. Small amounts only.</HeaderNote>
           </AutoColumn>
 
-          <HeaderRow style={{ marginBottom: '16px' }}>
-            <DMSansText.body>From</DMSansText.body>
-            <DMSansText.body>Balance: {currencyBalances.INPUT?.toSignificant(6) ?? 0}</DMSansText.body>
+          <HeaderRow>
+            <BalanceText>From</BalanceText>
+            {connectedAddress && currencies[Field.INPUT] ? (
+              <BalanceText>Balance: {currencyBalances.INPUT?.toSignificant(6) ?? <Loader />}</BalanceText>
+            ) : null}
           </HeaderRow>
           <AutoColumn>
             <CurrencyInputPanel
@@ -284,13 +282,16 @@ export default function Zap() {
 
             <HeaderRow
               style={{
-                marginBottom: '16px',
                 marginTop:
                   currencyBalances.OUTPUT && currencyBalances.OUTPUT?.toSignificant(6).length > 10 ? '10px' : '0'
               }}
             >
-              <DMSansText.body>To LP (estimated)</DMSansText.body>
-              <DMSansText.body>Balance: {currencyBalances.OUTPUT?.toSignificant(6) ?? 0}</DMSansText.body>
+              <BalanceText>To LP (estimated)</BalanceText>
+              {connectedAddress && currencies[Field.OUTPUT] ? (
+                <BalanceText style={{ display: 'flex' }}>
+                  Balance: {currencyBalances.OUTPUT?.toSignificant(6) ?? <Loader />}
+                </BalanceText>
+              ) : null}
             </HeaderRow>
             <CurrencyInputPanel
               id="zap-currency-output"
@@ -383,12 +384,12 @@ export default function Zap() {
             )} */}
           </BottomGrouping>
 
-          {account && lpAmountOut && lpAmountOut.token && (
-            <AddTokenRow justify={'center'} onClick={() => addTokenToWallet(lpAmountOut.token.address)}>
-              <AddTokenText>Add LP Tokens to Wallet</AddTokenText>
-              <ArrowRight width={16} height={15} style={{ marginBottom: '3.5px' }} />
-            </AddTokenRow>
-          )}
+          {/*{account && lpAmountOut && lpAmountOut.token && (*/}
+          {/*  <AddTokenRow justify={'center'} onClick={() => addTokenToWallet(lpAmountOut.token.address)}>*/}
+          {/*    <AddTokenText>Add LP Tokens to Wallet</AddTokenText>*/}
+          {/*    <ArrowRight width={16} height={15} style={{ marginBottom: '3.5px' }} />*/}
+          {/*  </AddTokenRow>*/}
+          {/*)}*/}
         </Wrapper>
       </AppBody>
     </>

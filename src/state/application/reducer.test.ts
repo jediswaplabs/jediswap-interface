@@ -18,23 +18,23 @@ describe('application reducer', () => {
 
   describe('addPopup', () => {
     it('adds the popup to list with a generated id', () => {
-      store.dispatch(addPopup({ content: { txn: { hash: 'abc', summary: 'test', success: true } } }))
+      store.dispatch(addPopup({ content: { txn: { hash: 'abc', summary: 'test', status: 'RECEIVED' } } }))
       const list = store.getState().popupList
       expect(list).toHaveLength(1)
       expect(typeof list[0].key).toEqual('string')
       expect(list[0].show).toEqual(true)
-      expect(list[0].content).toEqual({ txn: { hash: 'abc', summary: 'test', success: true } })
+      expect(list[0].content).toEqual({ txn: { hash: 'abc', summary: 'test', status: 'RECEIVED' } })
       expect(list[0].removeAfterMs).toEqual(15000)
     })
 
     it('replaces any existing popups with the same key', () => {
-      store.dispatch(addPopup({ key: 'abc', content: { txn: { hash: 'abc', summary: 'test', success: true } } }))
-      store.dispatch(addPopup({ key: 'abc', content: { txn: { hash: 'def', summary: 'test2', success: false } } }))
+      store.dispatch(addPopup({ key: 'abc', content: { txn: { hash: 'abc', summary: 'test', status: 'RECEIVED' } } }))
+      store.dispatch(addPopup({ key: 'abc', content: { txn: { hash: 'def', summary: 'test2', status: 'REJECTED' } } }))
       const list = store.getState().popupList
       expect(list).toHaveLength(1)
       expect(list[0].key).toEqual('abc')
       expect(list[0].show).toEqual(true)
-      expect(list[0].content).toEqual({ txn: { hash: 'def', summary: 'test2', success: false } })
+      expect(list[0].content).toEqual({ txn: { hash: 'def', summary: 'test2', status: 'REJECTED' } })
       expect(list[0].removeAfterMs).toEqual(15000)
     })
   })
@@ -72,7 +72,7 @@ describe('application reducer', () => {
 
   describe('removePopup', () => {
     beforeEach(() => {
-      store.dispatch(addPopup({ key: 'abc', content: { txn: { hash: 'abc', summary: 'test', success: true } } }))
+      store.dispatch(addPopup({ key: 'abc', content: { txn: { hash: 'abc', summary: 'test', status: 'RECEIVED' } } }))
     })
     it('hides the popup', () => {
       expect(store.getState().popupList[0].show).toBe(true)

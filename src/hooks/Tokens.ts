@@ -1,7 +1,7 @@
-import { jediTokensList } from '../constants/jediTokens'
+import { useSelectedLPTokenList } from './../state/lists/hooks'
 import { Args, shortString, number as starkNumber } from 'starknet'
 import { parseBytes32String } from '@ethersproject/strings'
-import { Currency, Token, currencyEquals, ETHER } from '@jediswap/sdk'
+import { Currency, ETHER, Token, currencyEquals, LPToken } from '@jediswap/sdk'
 import { useMemo } from 'react'
 import { useSelectedTokenList } from '../state/lists/hooks'
 import { useUserAddedTokens } from '../state/user/hooks'
@@ -10,17 +10,14 @@ import { isAddress } from '../utils'
 import { useActiveStarknetReact } from './index'
 import { useTokenContract } from './useContract'
 import { useSingleCallResult } from '../state/multicall/hooks'
-import { jediLPTokenList } from '../constants/jediLPTokenList'
 import { NEVER_RELOAD } from '../state/multicall/hooks'
-// import { BigNumberish } from 'starknet/dist/utils/number'
+import { DEFAULT_CHAIN_ID } from '../constants'
 export function useAllTokens(): { [address: string]: Token } {
   const { chainId } = useActiveStarknetReact()
   const userAddedTokens = useUserAddedTokens()
-
   const allTokens = useSelectedTokenList()
 
   return useMemo(() => {
-    if (!chainId) return {}
     return (
       userAddedTokens
         // reduce into all ALL_TOKENS filtered by the current chain
@@ -31,19 +28,23 @@ export function useAllTokens(): { [address: string]: Token } {
           },
           // must make a copy because reduce modifies the map, and we do not
           // want to make a copy in every iteration
-          { ...allTokens[chainId] }
+          { ...allTokens[chainId ?? DEFAULT_CHAIN_ID] }
         )
     )
   }, [chainId, userAddedTokens, allTokens])
 }
 
-export function useJediLPTokens(): { [address: string]: Token } {
-  return useMemo(
-    () => ({
-      ...jediLPTokenList
-    }),
-    []
-  )
+export function useJediLPTokens(): { [address: string]: LPToken } {
+  const allLPTokens = useSelectedLPTokenList()
+  const { chainId } = useActiveStarknetReact()
+
+  return useMemo(() => {
+    return allLPTokens[chainId ?? DEFAULT_CHAIN_ID]
+  }, [chainId, allLPTokens])
+
+  // return {
+  //   ...jediLPTokenList[chainId]
+  // }
 }
 
 // Check if currency is included in custom list from user storage
@@ -85,7 +86,7 @@ export function useToken(tokenAddress?: string): Token | undefined | null {
   const tokens = { ...currencyTokens, ...lpTokens }
 
   const address = isAddress(tokenAddress)
-  const token: Token | undefined = address ? tokens[address] : undefined
+  const token: Token | LPToken | undefined = address ? tokens[address] : undefined
 
   const tokenContract = useTokenContract(address ? address : undefined)
 
@@ -107,7 +108,6 @@ export function useToken(tokenAddress?: string): Token | undefined | null {
         parseStringFromArgs(symbol.result?.[0]),
         parseStringFromArgs(symbol.result?.[0])
       )
-      //
       return token
     }
     return undefined

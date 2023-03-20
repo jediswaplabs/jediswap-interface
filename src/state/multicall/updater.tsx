@@ -1,6 +1,6 @@
 import { Contract, FunctionAbi, number, hash, uint256 } from 'starknet'
 import { toBN } from 'starknet/dist/utils/number'
-import { useEffect, useMemo, useRef } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useActiveStarknetReact } from '../../hooks'
 import { useMulticallContract } from '../../hooks/useContract'
@@ -46,12 +46,8 @@ async function fetchChunk(
     ])
 
     // Keep it here for multicall debugging
-    // const dateTime = new Date().getTime()
-
-    // console.log(`at timestamp ${dateTime.toString()}`, '🚀 ~ file: updater.tsx ~ line 46 ~ calls', calls)
-
+    const dateTime = new Date().getTime()
     const response = await multicallContract.aggregate(calls)
-    // console.log(`at timestamp ${dateTime.toString()}`, '🚀 ~ file: updater.tsx ~ line 48 ~ response', response)
 
     resultsBlockNumber = response.block_number
     returnData_len = response.result_len
@@ -142,13 +138,32 @@ export function parseReturnData(
     const numberOfOutputs = contractInterface.outputs.length
     const hasMultipleOutputs = numberOfOutputs > 1
     const hasUint256Output = contractInterface.outputs.some(o => o.type === 'Uint256')
+    const hasArrayOutput = contractInterface.outputs.some(o => /_len$/.test(o.name))
 
     if (hasMultipleOutputs) {
       const outputAbiEntries = contractInterface.outputs
 
       if (!hasUint256Output) {
         // If output is not of type uint256, no. of results = no. of calls * no. of outputs
+
         const parsedReturnData = outputAbiEntries.reduce<{ [outputName: string]: string }>((memo, entry, i) => {
+          if (hasArrayOutput && memo[`${entry.name}_len`]) {
+            const len = parseInt(memo[`${entry.name}_len`], 16)
+            const arr: string[] = []
+
+            while (arr.length < len) {
+              const data = returnDataIterator.next().value
+              arr.push(data)
+            }
+
+            delete memo[`${entry.name}_len`]
+
+            return {
+              ...memo,
+              [entry.name]: arr
+            }
+          }
+
           return {
             ...memo,
             [entry.name]: returnDataIterator.next().value
@@ -262,9 +277,6 @@ export default function Updater(): null {
         promise
           .then(({ results: returnData, blockNumber: fetchBlockNumber }) => {
             cancellations.current = { cancellations: [], blockNumber: latestBlockNumber }
-
-            // console.log('🚀 ~ file: updater.tsx ~ line 305 ~ .then ~ returnData', returnData)
-
             // accumulates the length of all previous indices
             const firstCallKeyIndex = chunkedCalls.slice(0, index).reduce<number>((memo, curr) => memo + curr.length, 0)
 
