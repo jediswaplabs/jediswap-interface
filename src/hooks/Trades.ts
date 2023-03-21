@@ -79,7 +79,7 @@ export function useTradeExactIn(currencyAmountIn?: CurrencyAmount, currencyOut?:
     useMemo(() => {
       if (currencyAmountIn && currencyOut && allowedPairs.length > 0) {
         const trade =
-          Trade.bestTradeExactIn(allowedPairs, currencyAmountIn, currencyOut, { maxHops: 3, maxNumResults: 1 })[0] ??
+          Trade.bestTradeExactIn(allowedPairs, currencyAmountIn, currencyOut, { maxHops: 1, maxNumResults: 1 })[0] ??
           null
 
         return trade
@@ -100,7 +100,7 @@ export function useTradeExactOut(currencyIn?: Currency, currencyAmountOut?: Curr
     useMemo(() => {
       if (currencyIn && currencyAmountOut && allowedPairs.length > 0) {
         return (
-          Trade.bestTradeExactOut(allowedPairs, currencyIn, currencyAmountOut, { maxHops: 3, maxNumResults: 1 })[0] ??
+          Trade.bestTradeExactOut(allowedPairs, currencyIn, currencyAmountOut, { maxHops: 1, maxNumResults: 1 })[0] ??
           null
         )
       }

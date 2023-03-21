@@ -197,7 +197,7 @@ export default function SlippageTabs({ rawSlippage, setRawSlippage, deadline, se
         </RowFixed>
         <SlippageWrapper>
           <RowBetween>
-            <OptionCustom active={![10, 50, 100].includes(rawSlippage)} warning={!slippageInputIsValid} tabIndex={-1}>
+            <OptionCustom active={![10, 50, 200].includes(rawSlippage)} warning={!slippageInputIsValid} tabIndex={-1}>
               <RowBetween>
                 {!!slippageInput &&
                 (slippageError === SlippageError.RiskyLow || slippageError === SlippageError.RiskyHigh) ? (
@@ -242,11 +242,11 @@ export default function SlippageTabs({ rawSlippage, setRawSlippage, deadline, se
             <Option
               onClick={() => {
                 setSlippageInput('')
-                setRawSlippage(100)
+                setRawSlippage(200)
               }}
-              active={rawSlippage === 100}
+              active={rawSlippage === 200}
             >
-              1%
+              2%
             </Option>
           </RowBetween>
         </SlippageWrapper>
