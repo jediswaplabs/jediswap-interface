@@ -103,13 +103,13 @@ export function useZapTrades(currencyAmountIn?: CurrencyAmount, lpTokenOut?: LPT
       if (currencyAmountIn && lpTokenOut && allowedPairs.length > 0) {
         const bestTradeToken0 =
           Trade.bestTradeExactIn(allowedPairs, currencyAmountIn, lpTokenOut.token0, {
-            maxHops: 3,
+            maxHops: 1,
             maxNumResults: 1
           })[0] ?? null
 
         const bestTradeToken1 =
           Trade.bestTradeExactIn(allowedPairs, currencyAmountIn, lpTokenOut.token1, {
-            maxHops: 3,
+            maxHops: 1,
             maxNumResults: 1
           })[0] ?? null
 
