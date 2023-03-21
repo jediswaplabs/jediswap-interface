@@ -11,7 +11,7 @@ import { useActiveStarknetReact } from './index'
 import { useTokenContract } from './useContract'
 import { useSingleCallResult } from '../state/multicall/hooks'
 import { NEVER_RELOAD } from '../state/multicall/hooks'
-import { DEFAULT_CHAIN_ID } from "../constants";
+import { DEFAULT_CHAIN_ID } from '../constants'
 export function useAllTokens(): { [address: string]: Token } {
   const { chainId } = useActiveStarknetReact()
   const userAddedTokens = useUserAddedTokens()
