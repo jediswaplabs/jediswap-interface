@@ -42,7 +42,7 @@ const HeaderFrame = styled.div`
   height: 76px;
   top: 0;
   position: relative;
-  border-bottom: 1.25px solid ${({ theme }) => transparentize(0.75, theme.jediGrey)};
+  border-bottom: 1.25px solid ${({ theme }) => transparentize(0.75, theme.jediPink)};
   z-index: 2;
   padding: 1rem 64px;
 
