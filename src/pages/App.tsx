@@ -31,6 +31,7 @@ import useFetchAllPairsCallback from '../hooks/useFetchAllPairs'
 import { MainnetWarningModal } from '../components/MainnetWarningModal'
 import { Web3ReactProvider } from '@web3-react/core'
 import { providers } from 'ethers'
+import Bridge from './Bridge'
 
 function getLibrary(provider: any) {
   return new providers.Web3Provider(provider)
@@ -112,6 +113,7 @@ export default function App() {
                 <Route exact path="/create/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />
                 <Route exact path="/create/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
                 <Route exact path="/zap" component={Zap} />
+                <Route exact path="/bridge" component={Bridge} />
                 <Route exact path="/stake" component={ComingSoon} />
                 <Route exact strict path="/remove/:currencyIdA/:currencyIdB" component={RemoveLiquidity} />
 

@@ -390,6 +390,13 @@ function Header({ history }: { history: any }) {
         <StyledNavLink id={`swap-nav-link`} to={'/zap'} isActive={() => history.location.pathname.includes('/zap')}>
           {t('Zap')}
         </StyledNavLink>
+        <StyledNavLink
+          id={`swap-nav-link`}
+          to={'/bridge'}
+          isActive={() => history.location.pathname.includes('/bridge')}
+        >
+          {t('Bridge')}
+        </StyledNavLink>
 
         <StyledExternalLink id={`stake-nav-link`} href={'https://info.jediswap.xyz'}>
           Dashboard

@@ -8,24 +8,20 @@ import { useWalletModalToggle } from '../../state/application/hooks'
 import { darkTheme, WidoWidget, isStarknetChain } from 'wido-widget'
 import styled, { ThemeContext } from 'styled-components'
 import { useWeb3React } from '@web3-react/core'
-import { InjectedConnector } from '@web3-react/injected-connector'
 import { AutoColumn } from '../../components/Column'
-import ZapIcon from '../../assets/jedi/zap.svg'
-import { HeaderNote, Header, HeaderInfo } from './styleds'
-import { Account } from 'starknet'
+import { HeaderNote, Header, HeaderInfo } from '../Zap/styleds'
 import { Token, ChainId, getSupportedTokens } from 'wido'
+import { injected } from '../Zap'
 
 export const StyledAppBody = styled(BodyWrapper)`
   padding: 0rem;
 `
-export const injected = new InjectedConnector({})
-
 export default function Zap() {
   const theme = useContext(ThemeContext)
-  const [tokenList, setTokenList] = useState<Token[]>([])
+  const [fromTokens, setFromTokens] = useState<Token[]>([])
 
   useEffect(() => {
-    getSupportedTokens({ chainId: [5, 15367 as ChainId] }).then(setTokenList)
+    getSupportedTokens({ chainId: [5] }).then(setFromTokens)
   }, [])
 
   /**
@@ -39,7 +35,7 @@ export default function Zap() {
 
   // Work-around: unfortunately account.chainId does not get updated when the user changes network
   // Solution: re-create the account object each time chainId or account changes
-  console.log('📜 LOG > Zap > account?.chainId:', account?.chainId)
+  console.log('📜 LOG > Bridge > account?.chainId:', account?.chainId)
   useEffect(() => {
     if (!account || !library || !connectedAddress) {
       setPassedAccount(undefined)
@@ -75,11 +71,9 @@ export default function Zap() {
     <>
       <AutoColumn gap="14px" style={{ maxWidth: 470, padding: '2rem' }}>
         <HeaderRow>
-          <Header>
-            ZAP <img src={ZapIcon} />
-          </Header>
+          <Header>Bridge</Header>
         </HeaderRow>
-        <HeaderInfo fontSize={16}>Zap helps you convert any of your tokens into LP tokens with 1-click</HeaderInfo>
+        <HeaderInfo fontSize={16}>Bridge your assets over to Starknet.</HeaderInfo>
       </AutoColumn>
       <StyledAppBody>
         <Backdrop top={'0'} left={'503px'} curveRight />
@@ -95,7 +89,13 @@ export default function Zap() {
           snAccount={passedAccount}
           testnetsVisible
           // TODO: remove once zap outs are supported
-          fromTokens={[
+          fromTokens={fromTokens}
+          toTokens={[
+            {
+              chainId: 15367,
+              address: '0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7'
+              // name: 'Ether',
+            },
             {
               chainId: 15367,
               address: '0x5a643907b9a4bc6a55e9069c4fd5fd1f5c79a22470690f75556c4736e34426'
@@ -103,16 +103,15 @@ export default function Zap() {
             },
             {
               chainId: 15367,
-              address: '0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7'
-              // name: 'Ether',
+              address: '0x3e85bfbb8e2a42b7bead9e88e9a1b19dbccf661471061807292120462396ec9'
+              // "name": "Dai Stablecoin",
             },
             {
-              address: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
-              chainId: 5
-              // name: 'ETH',
+              chainId: 15367,
+              address: '0x12d537dc323c439dc65c976fad242d5610d27cfb5f31689a0a319b8be7f3d56'
+              // "name": "Wrapped BTC",
             }
           ]}
-          toTokens={tokenList}
           theme={{
             ...darkTheme,
             accent: theme.jediBlue,
