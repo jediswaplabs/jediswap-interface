@@ -225,8 +225,6 @@ const StyledNavLink = styled(NavLink).attrs({
   &.${activeClassName} {
     
     color:rgba(255, 255, 255, 0.8);
-    /* border-bottom: 2px solid rgba(49, 255, 156, 0.5); */
-    /* display: block; */
     position: relative;
 
 
