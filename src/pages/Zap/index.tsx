@@ -122,6 +122,7 @@ export default function Zap() {
             },
             networkDefaultShadow: 'none'
           }}
+          largeTokenSelect
         />
       </StyledAppBody>
     </>
