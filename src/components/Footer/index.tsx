@@ -9,7 +9,12 @@ import DocIcon from '../../assets/svg/doc.svg'
 import { ExternalLink } from '../../theme'
 import Polling from '../Header/Polling'
 
+const ClickableExternalLink = styled(ExternalLink)`
+  pointer-events: all;
+`
+
 const FooterWrapper = styled.div`
+  pointer-events: none;
   position: fixed;
   z-index: 1;
   bottom: 0;
@@ -22,18 +27,18 @@ export default function Footer() {
     <FooterWrapper>
       <RowBetween>
         <RowStart gap={'26px'}>
-          <ExternalLink href="https://twitter.com/JediSwap">
+          <ClickableExternalLink href="https://twitter.com/JediSwap">
             <img src={TwitterIcon} alt="Twitter" />
-          </ExternalLink>
-          <ExternalLink href="https://discord.com/invite/9sAPRUfv7t">
+          </ClickableExternalLink>
+          <ClickableExternalLink href="https://discord.com/invite/9sAPRUfv7t">
             <img src={DiscordIcon} alt="Discord" />
-          </ExternalLink>
-          <ExternalLink href="https://github.com/jediswaplabs">
+          </ClickableExternalLink>
+          <ClickableExternalLink href="https://github.com/jediswaplabs">
             <img src={GithubIcon} alt="Github" />
-          </ExternalLink>
-          <ExternalLink href=" https://bip.so/@meshfinance/public">
+          </ClickableExternalLink>
+          <ClickableExternalLink href=" https://bip.so/@meshfinance/public">
             <img src={DocIcon} alt="'Docs" />
-          </ExternalLink>
+          </ClickableExternalLink>
         </RowStart>
         <Polling />
       </RowBetween>
