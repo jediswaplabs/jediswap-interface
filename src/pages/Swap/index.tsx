@@ -65,7 +65,7 @@ import { useUserTransactionTTL } from '../../state/user/hooks'
 import { ReactComponent as ArrowRight } from '../../assets/images/arrow-right-blue.svg'
 import { useAddTokenToWallet } from '../../hooks/useAddTokenToWallet'
 import { wrappedCurrency } from '../../utils/wrappedCurrency'
-import AdvancedSwapDetailsDropdown from "../../components/swap/AdvancedSwapDetailsDropdown";
+import AdvancedSwapDetailsDropdown from '../../components/swap/AdvancedSwapDetailsDropdown'
 
 const MintSection = styled.section`
   margin-top: 3rem;
