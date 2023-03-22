@@ -138,6 +138,6 @@
     "@web3-react/injected-connector": "^6.0.7",
     "events": "^3.3.0",
     "vite-plugin-svgr": "^2.2.0",
-    "wido-widget": "^0.1.19"
+    "wido-widget": "^0.1.23"
   }
 }

@@ -22,7 +22,7 @@ export default function Zap() {
 
   useEffect(() => {
     getSupportedTokens({ chainId: [5] }).then(setFromTokens)
-  }, [])
+  }, [setFromTokens])
 
   /**
    * Starknet wallet connection
@@ -82,6 +82,7 @@ export default function Zap() {
         <Backdrop bottom={'0px'} left={'-45px'} curveLeft />
         <SwapPoolTabs active={'zap'} />
         <WidoWidget
+          title="Bridge"
           className="wido-widget"
           width="100%"
           onConnectWalletClick={handleConnectWalletClick}
