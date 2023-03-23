@@ -10,7 +10,8 @@ import styled, { ThemeContext } from 'styled-components'
 import { useWeb3React } from '@web3-react/core'
 import { AutoColumn } from '../../components/Column'
 import { HeaderNote, Header, HeaderInfo } from '../Zap/styleds'
-import { Token, ChainId, getSupportedTokens } from 'wido'
+import { Token, getSupportedTokens } from 'wido'
+import { ChainId } from '@jediswap/sdk'
 import { injected } from '../Zap'
 
 export const StyledAppBody = styled(BodyWrapper)`
@@ -18,16 +19,11 @@ export const StyledAppBody = styled(BodyWrapper)`
 `
 export default function Zap() {
   const theme = useContext(ThemeContext)
-  const [fromTokens, setFromTokens] = useState<Token[]>([])
-
-  useEffect(() => {
-    getSupportedTokens({ chainId: [5] }).then(setFromTokens)
-  }, [setFromTokens])
 
   /**
    * Starknet wallet connection
    */
-  const { chainId, account, connectedAddress, library } = useActiveStarknetReact()
+  const { chainId: snChainId, account, connectedAddress, library } = useActiveStarknetReact()
   const { library: ethProvider, activate, deactivate } = useWeb3React()
   const toggleWalletModal = useWalletModalToggle() // toggle wallet when disconnected
 
@@ -43,7 +39,7 @@ export default function Zap() {
       setPassedAccount(account)
       // setPassedAccount(new Account(library, connectedAddress, account.signer))
     }
-  }, [library, account, chainId, connectedAddress, setPassedAccount])
+  }, [library, account, snChainId, connectedAddress, setPassedAccount])
 
   /**
    * Ethereum wallet connection
@@ -67,6 +63,51 @@ export default function Zap() {
     [toggleWalletModal, handleMetamask]
   )
 
+  const [fromTokens, setFromTokens] = useState<{ chainId: number; address: string }[]>([])
+  const [toTokens, setToTokens] = useState<{ chainId: number; address: string }[]>([])
+
+  useEffect(() => {
+    if (snChainId === ChainId.MAINNET) {
+      getSupportedTokens({ chainId: [1] }).then(setFromTokens)
+      setToTokens([
+        {
+          chainId: 15366,
+          address: '0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7'
+          // name: 'Ether',
+        },
+        {
+          chainId: 15366,
+          address: '0x053c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8'
+          // name: 'USD Coin',
+        }
+      ])
+    } else {
+      getSupportedTokens({ chainId: [5] }).then(setFromTokens)
+      setToTokens([
+        {
+          chainId: 15367,
+          address: '0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7'
+          // name: 'Ether',
+        },
+        {
+          chainId: 15367,
+          address: '0x5a643907b9a4bc6a55e9069c4fd5fd1f5c79a22470690f75556c4736e34426'
+          // name: 'Goerli USD Coin',
+        },
+        {
+          chainId: 15367,
+          address: '0x3e85bfbb8e2a42b7bead9e88e9a1b19dbccf661471061807292120462396ec9'
+          // "name": "Dai Stablecoin",
+        },
+        {
+          chainId: 15367,
+          address: '0x12d537dc323c439dc65c976fad242d5610d27cfb5f31689a0a319b8be7f3d56'
+          // "name": "Wrapped BTC",
+        }
+      ])
+    }
+  }, [snChainId, setFromTokens])
+
   return (
     <>
       <AutoColumn gap="14px" style={{ maxWidth: 470, padding: '2rem' }}>
@@ -89,30 +130,8 @@ export default function Zap() {
           ethProvider={ethProvider}
           snAccount={passedAccount}
           testnetsVisible
-          // TODO: remove once zap outs are supported
           fromTokens={fromTokens}
-          toTokens={[
-            {
-              chainId: 15367,
-              address: '0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7'
-              // name: 'Ether',
-            },
-            {
-              chainId: 15367,
-              address: '0x5a643907b9a4bc6a55e9069c4fd5fd1f5c79a22470690f75556c4736e34426'
-              // name: 'Goerli USD Coin',
-            },
-            {
-              chainId: 15367,
-              address: '0x3e85bfbb8e2a42b7bead9e88e9a1b19dbccf661471061807292120462396ec9'
-              // "name": "Dai Stablecoin",
-            },
-            {
-              chainId: 15367,
-              address: '0x12d537dc323c439dc65c976fad242d5610d27cfb5f31689a0a319b8be7f3d56'
-              // "name": "Wrapped BTC",
-            }
-          ]}
+          toTokens={toTokens}
           theme={{
             ...darkTheme,
             accent: theme.jediBlue,
