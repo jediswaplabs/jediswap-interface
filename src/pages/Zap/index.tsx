@@ -117,7 +117,10 @@ export default function Zap() {
             ZAP <img src={ZapIcon} />
           </Header>
         </HeaderRow>
-        <HeaderInfo fontSize={16}>Zap helps you convert any of your tokens into LP tokens with 1-click</HeaderInfo>
+        <HeaderInfo fontSize={16}>
+          Zap helps you convert any of your tokens into LP tokens with 1-click. Thanks to Wido, it also supports tokens
+          on Ethereum!
+        </HeaderInfo>
       </AutoColumn>
       <StyledAppBody>
         <Backdrop top={'0'} left={'503px'} curveRight />
