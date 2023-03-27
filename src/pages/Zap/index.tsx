@@ -131,7 +131,6 @@ export default function Zap() {
           onConnectWalletClick={handleConnectWalletClick}
           ethProvider={ethProvider}
           snAccount={passedAccount}
-          testnetsVisible
           fromTokens={fromTokens}
           toTokens={toTokens}
           theme={{
