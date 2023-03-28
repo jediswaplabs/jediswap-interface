@@ -15,6 +15,7 @@ import { HeaderNote, Header, HeaderInfo } from './styleds'
 import { Account } from 'starknet'
 import { Token, getSupportedTokens } from 'wido'
 import { ChainId } from '@jediswap/sdk'
+import { providers } from 'ethers'
 
 export const StyledAppBody = styled(BodyWrapper)`
   padding: 0rem;
@@ -26,27 +27,34 @@ export default function Zap() {
   /**
    * Starknet wallet connection
    */
-  const { chainId: snChainId, account, connectedAddress, library } = useActiveStarknetReact()
-  const { library: ethProvider, activate, deactivate } = useWeb3React()
+  const { chainId: snChainId, account: snAccount, connectedAddress, library: snLibrary } = useActiveStarknetReact()
   const toggleWalletModal = useWalletModalToggle() // toggle wallet when disconnected
 
-  const [passedAccount, setPassedAccount] = useState(account ?? undefined)
+  const [passedAccount, setPassedAccount] = useState(snAccount ?? undefined)
 
   // Work-around: unfortunately account.chainId does not get updated when the user changes network
   // Solution: re-create the account object each time chainId or account changes
-  console.log('📜 LOG > Zap > account?.chainId:', account?.chainId)
+  console.log('📜 LOG > Zap > account?.chainId:', snAccount?.chainId)
   useEffect(() => {
-    if (!account || !library || !connectedAddress) {
+    if (!snAccount || !snLibrary || !connectedAddress) {
       setPassedAccount(undefined)
     } else {
-      setPassedAccount(account)
+      setPassedAccount(snAccount)
       // setPassedAccount(new Account(library, connectedAddress, account.signer))
     }
-  }, [library, account, snChainId, connectedAddress, setPassedAccount])
+  }, [snLibrary, snAccount, snChainId, connectedAddress, setPassedAccount])
 
   /**
    * Ethereum wallet connection
    */
+  const { library, chainId, account, activate, deactivate } = useWeb3React()
+  const [ethProvider, setEthProvider] = useState<providers.Web3Provider | undefined>()
+  useEffect(() => {
+    if (!library) return
+    // every time account or chainId changes we need to re-create the provider
+    // for the widget to update with the proper address
+    setEthProvider(new providers.Web3Provider(library))
+  }, [library, account, chainId, setEthProvider])
   const handleMetamask = useCallback(async () => {
     if (ethProvider) {
       deactivate()

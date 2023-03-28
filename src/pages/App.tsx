@@ -30,12 +30,7 @@ import Footer from '../components/Footer'
 import useFetchAllPairsCallback from '../hooks/useFetchAllPairs'
 import { MainnetWarningModal } from '../components/MainnetWarningModal'
 import { Web3ReactProvider } from '@web3-react/core'
-import { providers } from 'ethers'
 import Bridge from './Bridge'
-
-function getLibrary(provider: any) {
-  return new providers.Web3Provider(provider)
-}
 
 const AppWrapper = styled.div`
   display: flex;
@@ -101,7 +96,7 @@ export default function App() {
 
           {/* <TopLevelModals /> */}
           <Web3ReactManager>
-            <Web3ReactProvider getLibrary={getLibrary}>
+            <Web3ReactProvider getLibrary={web3 => web3}>
               <Switch>
                 <Route exact strict path="/swap" component={Swap} />
                 <Route exact strict path="/swap/:outputCurrency" component={RedirectToSwap} />
