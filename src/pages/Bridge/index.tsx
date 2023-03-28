@@ -77,8 +77,18 @@ export default function Zap() {
         },
         {
           chainId: 15366,
-          address: '0x053c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8'
+          address: '0x53c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8'
           // name: 'USD Coin',
+        },
+        {
+          chainId: 15366,
+          address: '0xda114221cb83fa859dbdb4c44beeaa0bb37c7537ad5ae66fe5e0efd20e6eb3'
+          // name: 'Dai Stablecoin',
+        },
+        {
+          chainId: 15366,
+          address: '0x3fe2b97c1fd336e750087d68b9b867997fd64a2661ff3ca5a7c771641e8e7ac'
+          // name: 'Wrapped BTC',
         }
       ])
     } else {
