@@ -104,7 +104,7 @@ export default function Zap() {
           ...ethTokens
         ])
       })
-      getSupportedTokens({ chainId: [15366] }).then(setToTokens)
+      getSupportedTokens({ chainId: [15366], protocol: ['jediswap.xyz'] }).then(setToTokens)
     } else {
       setFromTokens([
         {
@@ -133,7 +133,7 @@ export default function Zap() {
           // name: 'ETH',
         }
       ])
-      getSupportedTokens({ chainId: [15367] }).then(setToTokens)
+      getSupportedTokens({ chainId: [15367], protocol: ['jediswap.xyz'] }).then(setToTokens)
     }
   }, [snChainId, setToTokens])
 
