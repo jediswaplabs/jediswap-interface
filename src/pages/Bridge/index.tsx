@@ -75,7 +75,7 @@ export default function Zap() {
   const [toTokens, setToTokens] = useState<{ chainId: number; address: string }[]>([])
 
   useEffect(() => {
-    if (snChainId === ChainId.MAINNET) {
+    if (!snChainId || snChainId === ChainId.MAINNET) {
       getSupportedTokens({ chainId: [1] }).then(setFromTokens)
       setToTokens([
         {
