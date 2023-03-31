@@ -101,6 +101,11 @@ export default function Zap() {
             address: '0x3fe2b97c1fd336e750087d68b9b867997fd64a2661ff3ca5a7c771641e8e7ac'
             // name: 'Wrapped BTC',
           },
+          {
+            chainId: 15366,
+            address: '0x68f5c6a61780768455de69077e07e89787839bf8166decfbf92b645209c0fb8'
+            // name: 'Tether USD'
+          },
           ...ethTokens
         ])
       })
