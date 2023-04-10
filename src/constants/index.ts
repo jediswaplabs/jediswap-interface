@@ -183,7 +183,8 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
     icon: ARGENTX_ICON,
     description: 'Starknet Browser Wallet',
     href: null,
-    color: '#FF875B'
+    color: '#FF875B',
+    mobile: true
   },
   Braavos: {
     connector: braavosWallet,
@@ -192,7 +193,8 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
     description: 'Braavos Wallet for Starknet',
     href: null,
     color: '#E0B137',
-    size: 30
+    size: 30,
+    mobile: true
   }
 
   // INJECTED: {

@@ -216,36 +216,39 @@ export default function WalletModal({
     return Object.keys(SUPPORTED_WALLETS).map(key => {
       const option = SUPPORTED_WALLETS[key]
       // check for mobile options
-      if (isMobile) {
-        //disable portis on mobile for now
-        // if (option.connector === portis) {
-        //   return null
-        // }
-
-        if (!window.starknet && option.mobile) {
-          return (
-            <Option
-              onClick={() => {
-                option.connector !== connector && !option.href && tryActivation(option.connector)
-              }}
-              id={`connect-${key}`}
-              key={key}
-              active={option.connector && option.connector === connector}
-              color={option.color}
-              link={option.href}
-              header={option.name}
-              subheader={null}
-              icon={option.icon}
-            />
-          )
-        }
-        return null
-      }
+      // if (isMobile) {
+      //   //disable portis on mobile for now
+      //   // if (option.connector === portis) {
+      //   //   return null
+      //   // }
+      //
+      //   if (!window.starknet && option.mobile) {
+      //     return (
+      //       <Option
+      //         id={`connect-${key}`}
+      //         onClick={() => {
+      //           option.connector === connector
+      //             ? setWalletView(WALLET_VIEWS.ACCOUNT)
+      //             : !option.href && tryActivation(option.connector)
+      //         }}
+      //         key={key}
+      //         active={option.connector === connector}
+      //         color={option.color}
+      //         link={option.href}
+      //         header={option.name}
+      //         subheader={null} //use option.descriptio to bring back multi-line
+      //         icon={option.icon}
+      //         size={option.size ?? null}
+      //       />
+      //     )
+      //   }
+      //   return null
+      // }
 
       // return rest of options
       return (
-        !isMobile &&
-        !option.mobileOnly && (
+        // !isMobile &&
+        // !option.mobileOnly && (
           <Option
             id={`connect-${key}`}
             onClick={() => {
@@ -262,7 +265,7 @@ export default function WalletModal({
             icon={option.icon}
             size={option.size ?? null}
           />
-        )
+        // )
       )
     })
   }
