@@ -32,7 +32,6 @@ export default function Updater(): null {
   useEffect(() => {
     Object.keys(lists).forEach(listUrl => {
       const list = lists[listUrl]
-
       if (!list.current && !list.loadingRequestId && !list.error) {
         fetchList(listUrl).catch(error => console.debug('list added fetching error', error))
       }
