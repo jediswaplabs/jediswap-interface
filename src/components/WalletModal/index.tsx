@@ -249,22 +249,22 @@ export default function WalletModal({
       return (
         // !isMobile &&
         // !option.mobileOnly && (
-          <Option
-            id={`connect-${key}`}
-            onClick={() => {
-              option.connector === connector
-                ? setWalletView(WALLET_VIEWS.ACCOUNT)
-                : !option.href && tryActivation(option.connector)
-            }}
-            key={key}
-            active={option.connector === connector}
-            color={option.color}
-            link={option.href}
-            header={option.name}
-            subheader={null} //use option.descriptio to bring back multi-line
-            icon={option.icon}
-            size={option.size ?? null}
-          />
+        <Option
+          id={`connect-${key}`}
+          onClick={() => {
+            option.connector === connector
+              ? setWalletView(WALLET_VIEWS.ACCOUNT)
+              : !option.href && tryActivation(option.connector)
+          }}
+          key={key}
+          active={option.connector === connector}
+          color={option.color}
+          link={option.href}
+          header={option.name}
+          subheader={null} //use option.descriptio to bring back multi-line
+          icon={option.icon}
+          size={option.size ?? null}
+        />
         // )
       )
     })
