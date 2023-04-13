@@ -11,11 +11,12 @@ import { useWeb3React } from '@web3-react/core'
 import { InjectedConnector } from '@web3-react/injected-connector'
 import { AutoColumn } from '../../components/Column'
 import ZapIcon from '../../assets/jedi/zap.svg'
-import { HeaderNote, Header, HeaderInfo } from './styleds'
-import { Account } from 'starknet'
-import { Token, getSupportedTokens } from 'wido'
+import { Header, HeaderInfo } from './styleds'
+import { getSupportedTokens } from 'wido'
 import { ChainId } from '@jediswap/sdk'
 import { providers } from 'ethers'
+import { useJediLPTokens } from '../../hooks/Tokens'
+import { isAddress } from '../../utils'
 
 export const StyledAppBody = styled(BodyWrapper)`
   padding: 0rem;
@@ -76,6 +77,7 @@ export default function Zap() {
 
   const [fromTokens, setFromTokens] = useState<{ chainId: number; address: string }[]>([])
   const [toTokens, setToTokens] = useState<{ chainId: number; address: string }[]>([])
+  const lpTokens = useJediLPTokens()
 
   useEffect(() => {
     if (!snChainId || snChainId === ChainId.MAINNET) {
@@ -131,7 +133,17 @@ export default function Zap() {
           // name: 'USD Coin'
         }
       ])
-      getSupportedTokens({ chainId: [15366], protocol: ['jediswap.xyz'] }).then(setToTokens)
+      getSupportedTokens({ chainId: [15366], protocol: ['jediswap.xyz'] }).then(tokens => {
+        setToTokens(
+          tokens.filter(token => {
+            const formattedToken = isAddress(token.address)
+            if (formattedToken == false) {
+              return false
+            }
+            return formattedToken in lpTokens
+          })
+        )
+      })
     } else {
       setFromTokens([
         {
@@ -160,7 +172,17 @@ export default function Zap() {
           // name: 'ETH',
         }
       ])
-      getSupportedTokens({ chainId: [15367], protocol: ['jediswap.xyz'] }).then(setToTokens)
+      getSupportedTokens({ chainId: [15367], protocol: ['jediswap.xyz'] }).then(tokens => {
+        setToTokens(
+          tokens.filter(token => {
+            const formattedToken = isAddress(token.address)
+            if (formattedToken == false) {
+              return false
+            }
+            return formattedToken in lpTokens
+          })
+        )
+      })
     }
   }, [snChainId, setToTokens])
 
