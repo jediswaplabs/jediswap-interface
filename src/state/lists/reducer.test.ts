@@ -318,7 +318,7 @@ describe('list reducer', () => {
       store.dispatch(removeList('fake-url'))
       expect(store.getState()).toEqual({
         byUrl: {},
-        selectedListUrl: 'ipns://tokens.jediswap.xyz'
+        selectedListUrl: DEFAULT_TOKEN_LIST_URL
       })
     })
   })

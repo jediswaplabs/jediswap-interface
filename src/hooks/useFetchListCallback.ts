@@ -11,24 +11,7 @@ import resolveENSContentHash from '../utils/resolveENSContentHash'
 import { useActiveStarknetReact } from './index'
 
 export function useFetchListCallback(): (listUrl: string) => Promise<TokenList> {
-  const { chainId, library } = useActiveStarknetReact()
   const dispatch = useDispatch<AppDispatch>()
-
-  // const ensResolver = useCallback(
-  //   (ensName: string) => {
-  //     if (!library || chainId !== ChainId.MAINNET) {
-  //       if (NETWORK_CHAIN_ID === ChainId.MAINNET) {
-  //         const networkLibrary = getNetworkLibrary()
-  //         if (networkLibrary) {
-  //           return resolveENSContentHash(ensName, networkLibrary)
-  //         }
-  //       }
-  //       throw new Error('Could not construct mainnet ENS resolver')
-  //     }
-  //     return resolveENSContentHash(ensName, library as any)
-  //   },
-  //   [chainId, library]
-  // )
 
   return useCallback(
     async (listUrl: string) => {

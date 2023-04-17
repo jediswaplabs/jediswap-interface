@@ -13,7 +13,7 @@ import burn from './burn/reducer'
 import zap from './zap/reducer'
 import pairs from './pairs/reducer'
 
-const PERSISTED_KEYS: string[] = ['user', 'transactions', 'lists', 'pairs']
+const PERSISTED_KEYS: string[] = ['user', 'transactions']
 
 const store = configureStore({
   reducer: {

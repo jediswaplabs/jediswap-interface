@@ -7,7 +7,7 @@ import { argentX, braavosWallet } from '../connectors'
 import ARGENTX_ICON from '../assets/images/argentx.png'
 import BRAAVOS_ICON from '../assets/svg/Braavos.svg'
 
-export const DEFAULT_CHAIN_ID = 5
+export const DEFAULT_CHAIN_ID = 1
 
 export const ROUTER_ADDRESS: { [chainId in ChainId]: string } = {
   [ChainId.MAINNET]: validateAndParseAddress('0x41fd22b238fa21cfcf5dd45a8548974d8263b3a531a60388411c5e230f97023'),
@@ -183,7 +183,8 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
     icon: ARGENTX_ICON,
     description: 'Starknet Browser Wallet',
     href: null,
-    color: '#FF875B'
+    color: '#FF875B',
+    mobile: true
   },
   Braavos: {
     connector: braavosWallet,
@@ -192,7 +193,8 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
     description: 'Braavos Wallet for Starknet',
     href: null,
     color: '#E0B137',
-    size: 30
+    size: 30,
+    mobile: true
   }
 
   // INJECTED: {
@@ -261,7 +263,7 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
 export const NetworkContextName = 'NETWORK'
 
 // default allowed slippage, in bips
-export const INITIAL_ALLOWED_SLIPPAGE = 50
+export const INITIAL_ALLOWED_SLIPPAGE = 200
 // 60 minutes, denominated in seconds
 export const DEFAULT_DEADLINE_FROM_NOW = 60 * 60
 
