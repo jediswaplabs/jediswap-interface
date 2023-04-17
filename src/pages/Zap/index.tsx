@@ -15,8 +15,8 @@ import { Header, HeaderInfo } from './styleds'
 import { getSupportedTokens } from 'wido'
 import { ChainId } from '@jediswap/sdk'
 import { providers } from 'ethers'
-import { useJediLPTokens } from '../../hooks/Tokens'
 import { isAddress } from '../../utils'
+import { useAllPairs } from '../../state/pairs/hooks'
 
 export const StyledAppBody = styled(BodyWrapper)`
   padding: 0rem;
@@ -77,7 +77,7 @@ export default function Zap() {
 
   const [fromTokens, setFromTokens] = useState<{ chainId: number; address: string }[]>([])
   const [toTokens, setToTokens] = useState<{ chainId: number; address: string }[]>([])
-  const lpTokens = useJediLPTokens()
+  const lpTokens = useAllPairs()
 
   useEffect(() => {
     if (!snChainId || snChainId === ChainId.MAINNET) {
@@ -140,7 +140,7 @@ export default function Zap() {
             if (formattedToken == false) {
               return false
             }
-            return formattedToken in lpTokens
+            return lpTokens.includes(formattedToken)
           })
         )
       })
@@ -184,7 +184,7 @@ export default function Zap() {
         )
       })
     }
-  }, [snChainId, setToTokens])
+  }, [snChainId, lpTokens, setToTokens])
 
   return (
     <>
