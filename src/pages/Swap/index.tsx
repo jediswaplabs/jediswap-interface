@@ -25,7 +25,7 @@ import TokenWarningModal from '../../components/TokenWarningModal'
 import ProgressSteps from '../../components/ProgressSteps'
 
 import { BETTER_TRADE_LINK_THRESHOLD, INITIAL_ALLOWED_SLIPPAGE } from '../../constants'
-import { useActiveStarknetReact } from '../../hooks'
+import { useActiveStarknetReact, useWalletConnected } from '../../hooks'
 import { useCurrency } from '../../hooks/Tokens'
 import { ApprovalState, useApproveCallbackFromTrade } from '../../hooks/useApproveCallback'
 // import useENSAddress from '../../hooks/useENSAddress.ts'
@@ -101,6 +101,9 @@ export default function Swap() {
   // }, [])
 
   const { account, chainId, connectedAddress } = useActiveStarknetReact()
+
+  const { address } = useWalletConnected()
+
   const theme = useContext(ThemeContext)
 
   // toggle wallet when disconnected
@@ -418,7 +421,7 @@ export default function Swap() {
             </Card>
           </AutoColumn>
           <BottomGrouping marginTop={'0px'}>
-            {!account ? (
+            {!address ? (
               <ButtonPrimary onClick={toggleWalletModal}>Connect Wallet</ButtonPrimary>
             ) : noRoute && userHasSpecifiedInputOutput ? (
               <RedGradientButton style={{ textAlign: 'center' }} disabled>

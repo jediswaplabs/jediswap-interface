@@ -17,7 +17,7 @@ import { RowBetween, RowFixed } from '../../components/Row'
 
 import CurrencyLogo from '../../components/CurrencyLogo'
 import { DEFAULT_CHAIN_ID, ROUTER_ADDRESS } from '../../constants'
-import { useActiveStarknetReact } from '../../hooks'
+import { useActiveStarknetReact, useWalletConnected } from '../../hooks'
 import { useCurrency } from '../../hooks/Tokens'
 import { usePairContract } from '../../hooks/useContract'
 import useTransactionDeadline from '../../hooks/useTransactionDeadline'
@@ -53,6 +53,7 @@ export default function RemoveLiquidity({
 }: RouteComponentProps<{ currencyIdA: string; currencyIdB: string }>) {
   const [currencyA, currencyB] = [useCurrency(currencyIdA) ?? undefined, useCurrency(currencyIdB) ?? undefined]
   const { account, chainId, library, connectedAddress } = useActiveStarknetReact()
+  const { address } = useWalletConnected()
   const [tokenA, tokenB] = useMemo(() => [wrappedCurrency(currencyA, chainId), wrappedCurrency(currencyB, chainId)], [
     currencyA,
     currencyB,
@@ -506,7 +507,7 @@ export default function RemoveLiquidity({
               </DMSansText.body>
             )}
             <div style={{ position: 'relative' }}>
-              {!account ? (
+              {!address ? (
                 <ButtonLight onClick={toggleWalletModal}>Connect Wallet</ButtonLight>
               ) : (
                 <RowBetween>

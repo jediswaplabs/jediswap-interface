@@ -11,7 +11,7 @@ import { AutoRow, RowBetween, RowCentered } from '../../components/Row'
 import { ArrowWrapper, BottomGrouping } from '../../components/swap/styleds'
 import { AddTokenRow, AddTokenText, Icon, IconWrapper } from '../Swap/styleds'
 import SwapWidget from '../../assets/jedi/SwapWidget.svg'
-import { useActiveStarknetReact } from '../../hooks'
+import { useActiveStarknetReact, useWalletConnected } from '../../hooks'
 import { ButtonConfirmed, ButtonError, ButtonPrimary, RedGradientButton } from '../../components/Button'
 import { useWalletModalToggle } from '../../state/application/hooks'
 import { useUserSlippageTolerance } from '../../state/user/hooks'
@@ -44,6 +44,7 @@ export default function Zap() {
 
   const { account, connectedAddress } = useActiveStarknetReact()
 
+  const { address } = useWalletConnected()
   const toggleWalletModal = useWalletModalToggle()
 
   const [allowedSlippage] = useUserSlippageTolerance()
@@ -308,7 +309,7 @@ export default function Zap() {
           </AutoColumn>
 
           <BottomGrouping marginTop="50px">
-            {!account ? (
+            {!address ? (
               <ButtonPrimary fontSize={20} onClick={toggleWalletModal}>
                 Connect Wallet
               </ButtonPrimary>

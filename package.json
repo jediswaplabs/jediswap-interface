@@ -134,6 +134,7 @@
   },
   "license": "GPL-3.0-or-later",
   "dependencies": {
+    "@starknet-react/core": "^0.17.0",
     "events": "^3.3.0",
     "vite-plugin-svgr": "^2.2.0"
   }

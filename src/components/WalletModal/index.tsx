@@ -17,6 +17,7 @@ import AccountDetails from '../AccountDetails'
 import Modal from '../Modal'
 import Option from './Option'
 import PendingView from './PendingView'
+import { useConnectors } from '@starknet-react/core'
 
 const CloseIcon = styled.div`
   position: absolute;
@@ -130,6 +131,13 @@ export default function WalletModal({
   // important that these are destructed from the account-specific web3-react context
   const { active, connectedAddress, account, connector, activate, error, deactivate } = useStarknetReact()
 
+  const { available, connect, refresh } = useConnectors()
+
+  useEffect(() => {
+    const interval = setInterval(refresh, 5000)
+    return () => clearInterval(interval)
+  }, [refresh])
+
   // const connectStarknet = useStarknetConnector({ showModal: true })
 
   const [walletView, setWalletView] = useState(WALLET_VIEWS.ACCOUNT)
@@ -194,7 +202,7 @@ export default function WalletModal({
       )
         .then(() => {
           if (connector === argentX) {
-            localStorage.setItem('auto-injected-wallet', 'argentx')
+            localStorage.setItem('auto-injected-wallet', 'argentX')
           } else if (connector === braavosWallet) {
             localStorage.setItem('auto-injected-wallet', 'braavos')
           } else {
@@ -211,61 +219,85 @@ export default function WalletModal({
         })
   }
 
+  const handleWalletActivation = (item: any) => {
+    try {
+      connect(item)
+      if (item.id() === 'argentX') {
+        localStorage.setItem('auto-injected-wallet', 'argentX')
+      } else if (item.id() === 'braavos') {
+        localStorage.setItem('auto-injected-wallet', 'braavos')
+      } else {
+        localStorage.removeItem('auto-injected-wallet')
+      }
+    } catch (error) {
+      // Store the error in a variable
+      const errorValue = error
+      // Now you can use the errorValue variable to handle the error or log it
+      console.log('Error:', errorValue)
+    }
+  }
+
   // get wallets user can switch too, depending on device/browser
   function getOptions() {
-    return Object.keys(SUPPORTED_WALLETS).map(key => {
-      const option = SUPPORTED_WALLETS[key]
-      // check for mobile options
-      // if (isMobile) {
-      //   //disable portis on mobile for now
-      //   // if (option.connector === portis) {
-      //   //   return null
-      //   // }
-      //
-      //   if (!window.starknet && option.mobile) {
-      //     return (
-      //       <Option
-      //         id={`connect-${key}`}
-      //         onClick={() => {
-      //           option.connector === connector
-      //             ? setWalletView(WALLET_VIEWS.ACCOUNT)
-      //             : !option.href && tryActivation(option.connector)
-      //         }}
-      //         key={key}
-      //         active={option.connector === connector}
-      //         color={option.color}
-      //         link={option.href}
-      //         header={option.name}
-      //         subheader={null} //use option.descriptio to bring back multi-line
-      //         icon={option.icon}
-      //         size={option.size ?? null}
-      //       />
-      //     )
-      //   }
-      //   return null
-      // }
+    // return Object.keys(SUPPORTED_WALLETS).map(key => {
+    //   const option = SUPPORTED_WALLETS[key]
 
-      // return rest of options
+    //   // return rest of options
+    //   return (
+    //     // !isMobile &&
+    //     // !option.mobileOnly && (
+    //     <Option
+    //       id={`connect-${key}`}
+    //       onClick={() => {
+    //         option.connector === connector
+    //           ? setWalletView(WALLET_VIEWS.ACCOUNT)
+    //           : !option.href && tryActivation(option.connector)
+    //       }}
+    //       key={key}
+    //       active={option.connector === connector}
+    //       color={option.color}
+    //       link={option.href}
+    //       header={option.name}
+    //       subheader={null} //use option.descriptio to bring back multi-line
+    //       icon={option.icon}
+    //       size={option.size ?? null}
+    //     />
+    //     // )
+    //   )
+    // })
+
+    return available.map(item => {
       return (
-        // !isMobile &&
-        // !option.mobileOnly && (
         <Option
-          id={`connect-${key}`}
-          onClick={() => {
-            option.connector === connector
-              ? setWalletView(WALLET_VIEWS.ACCOUNT)
-              : !option.href && tryActivation(option.connector)
-          }}
-          key={key}
-          active={option.connector === connector}
-          color={option.color}
-          link={option.href}
-          header={option.name}
+          id={`connect-${item.id()}`}
+          onClick={() => handleWalletActivation(item)}
+          key={item.id()}
+          // active={item === connector}
+          color={'#FF875B'}
+          // link={option.href}
+          header={item.id()}
           subheader={null} //use option.descriptio to bring back multi-line
-          icon={option.icon}
-          size={option.size ?? null}
+          icon={item.id()}
         />
-        // )
+
+        // <button
+        //   key={connector.id()}
+        //   onClick={() => {
+        //     try {
+        //       const x = connect(connector)
+        //     } catch (error) {
+        //       // Store the error in a variable
+        //       const errorValue = error
+
+        //       // Now you can use the errorValue variable to handle the error or log it
+        //       console.log('Error:', errorValue)
+        //     }
+        //     // Access the captured errors
+        //     // console.log(capturedErrors);
+        //   }}
+        // >
+        //   {connector.id()}
+        // </button>
       )
     })
   }
