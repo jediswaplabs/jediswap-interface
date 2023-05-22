@@ -41,4 +41,4 @@ export const braavosWallet = new BraavosConnector({
   ]
 })
 
-export type injectedConnector = 'argentx' | 'braavos'
+export type injectedConnector = 'argentX' | 'braavos'

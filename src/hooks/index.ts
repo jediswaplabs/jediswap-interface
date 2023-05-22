@@ -8,11 +8,31 @@ import { isMobile } from 'react-device-detect'
 import { argentX, braavosWallet, injectedConnector } from '../connectors'
 import { NetworkContextName } from '../constants'
 import { BraavosConnector } from '@web3-starknet-react/braavos-connector'
+import { useConnectors } from '@starknet-react/core'
 
 export function useActiveStarknetReact(): StarknetReactContextInterface<Web3Provider> & { chainId?: ChainId } {
   const context = useStarknetReactCore<Web3Provider>()
   const contextNetwork = useStarknetReactCore<Web3Provider>(NetworkContextName)
   return context.active ? context : contextNetwork
+}
+
+export const useWalletConnected = () => {
+  const [connectedAccount, setConnectedAccount] = useState({ address: '' })
+  const { connectors } = useConnectors()
+  useEffect(() => {
+    const checkIfAccountExists = async () => {
+      for (const connector of connectors) {
+        const accountExist = await connector.account()
+        console.log(accountExist, 'accountExist')
+        if (accountExist) setConnectedAccount(accountExist)
+      }
+    }
+
+    const timeout = setTimeout(checkIfAccountExists, 500) // waiting for connectors to inject
+
+    return () => clearTimeout(timeout)
+  }, [])
+  return connectedAccount
 }
 
 export function useEagerConnect() {
@@ -23,7 +43,7 @@ export function useEagerConnect() {
 
   let connector: ArgentXConnector | BraavosConnector | undefined
 
-  if (injected === 'argentx') {
+  if (injected === 'argentX') {
     connector = argentX
   } else if (injected === 'braavos') {
     connector = braavosWallet

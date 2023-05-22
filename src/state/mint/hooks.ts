@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { PairState, usePair } from '../../data/Reserves'
 import { useTotalSupply } from '../../data/TotalSupply'
 
-import { useActiveStarknetReact } from '../../hooks'
+import { useActiveStarknetReact, useWalletConnected } from '../../hooks'
 import useDebounce from '../../hooks/useDebounce'
 import { wrappedCurrency, wrappedCurrencyAmount } from '../../utils/wrappedCurrency'
 import { AppDispatch, AppState } from '../index'
@@ -36,6 +36,7 @@ export function useDerivedMintInfo(
 } {
   const { account, chainId, connectedAddress } = useActiveStarknetReact()
 
+  const { address } = useWalletConnected()
   const { independentField, typedValue, otherTypedValue } = useMintState()
 
   const dependentField = independentField === Field.CURRENCY_A ? Field.CURRENCY_B : Field.CURRENCY_A
@@ -133,7 +134,7 @@ export function useDerivedMintInfo(
   }, [liquidityMinted, totalSupply])
 
   let error: string | undefined
-  if (!account) {
+  if (!address) {
     error = 'Connect Wallet'
   }
 
