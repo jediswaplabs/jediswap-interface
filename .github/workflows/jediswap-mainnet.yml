@@ -14,15 +14,17 @@ on:
           - 'MAJOR'
 jobs:
   bump:
-    - name: Automated Version Bump
-      uses: phips28/gh-action-bump-version@v9.1.4
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        version-type:  inputs.bumpType
-        tag-prefix:  'v'
-        target-branch: 'main'
-        commit-message: 'CI: bumps version to {{version}}'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Automated Version Bump
+        uses: phips28/gh-action-bump-version@v9.1.4
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          version-type:  inputs.bumpType
+          tag-prefix:  'v'
+          target-branch: 'main'
+          commit-message: 'CI: bumps version to {{version}}'
 #
 #  build:
 #    runs-on: ubuntu-latest
