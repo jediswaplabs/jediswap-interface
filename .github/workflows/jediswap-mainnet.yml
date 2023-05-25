@@ -18,6 +18,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          persist-credentials: false
 
       - uses: actions/setup-node@v3
         with:
@@ -27,7 +29,7 @@ jobs:
       - name: Automated Version Bump
         uses: phips28/gh-action-bump-version@v9.1.4
         env:
-          token: ${{ secrets.PAT }}
+          GITHUB_TOKEN: ${{ secrets.PAT }}
         with:
           version-type:  ${{ inputs.bumpType }}
           tag-prefix:  'v'
