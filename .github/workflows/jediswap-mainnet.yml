@@ -6,12 +6,12 @@ on:
       bumpType:
         description: 'Bump version'
         required: true
-        default: 'PATCH'
+        default: 'patch'
         type: choice
         options:
-          - 'PATCH'
-          - 'MINOR'
-          - 'MAJOR'
+          - 'patch'
+          - 'minor'
+          - 'major'
 jobs:
   bump:
     runs-on: ubuntu-latest
@@ -29,7 +29,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          version-type:  inputs.bumpType
+          version-type:  ${{ inputs.bumpType }}
           tag-prefix:  'v'
           target-branch: 'main'
           commit-message: 'CI: bumps version to {{version}}'
