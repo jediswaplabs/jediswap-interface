@@ -20,6 +20,7 @@ import { ButtonSecondary } from '../Button'
 import { ExternalLink as LinkIcon } from 'react-feather'
 import { ExternalLink, LinkStyledButton, TYPE } from '../../theme'
 import { AutoColumn } from '../Column'
+import { useAccount, useConnectors } from '@starknet-react/core'
 
 const HeaderRow = styled.div`
   ${({ theme }) => theme.flexRowNoWrap};
@@ -268,15 +269,15 @@ export default function AccountDetails({
   ENSName,
   openOptions
 }: AccountDetailsProps) {
-  const { chainId, account, connectedAddress, connector } = useActiveStarknetReact()
+  const { chainId } = useActiveStarknetReact()
+  const { account, address, connector } = useAccount()
+  const { disconnect } = useConnectors()
+
   const theme = useContext(ThemeContext)
   const dispatch = useDispatch<AppDispatch>()
 
   function formatConnectorName() {
-    const name = Object.keys(SUPPORTED_WALLETS)
-      .filter(k => SUPPORTED_WALLETS[k].connector === connector)
-      .map(k => SUPPORTED_WALLETS[k].name)[0]
-    return <WalletName>Connected with {name}</WalletName>
+    return <WalletName>{connector && `Connected with ${SUPPORTED_WALLETS[connector.id()].name}`}</WalletName>
   }
 
   function getStatusIcon() {
@@ -316,12 +317,7 @@ export default function AccountDetails({
             {formatConnectorName()}
             {(connector === argentX || connector === braavosWallet) && (
               <ButtonBorderWrapper>
-                <WalletAction
-                  style={{ fontSize: '.875rem', color: '#9B9B9B' }}
-                  onClick={() => {
-                    connector?.deactivate()
-                  }}
-                >
+                <WalletAction style={{ fontSize: '.875rem', color: '#9B9B9B' }} onClick={disconnect}>
                   Disconnect
                 </WalletAction>
               </ButtonBorderWrapper>
@@ -345,7 +341,7 @@ export default function AccountDetails({
                           <>
                             <div>
                               {getStatusIcon()}
-                              <p> {connectedAddress && shortenAddress(connectedAddress)}</p>
+                              <p> {address && shortenAddress(address)}</p>
                             </div>
                           </>
                         )}
@@ -362,12 +358,12 @@ export default function AccountDetails({
               <>
                 <AccountControl>
                   <div>
-                    {connectedAddress && (
-                      <Copy toCopy={connectedAddress}>
+                    {address && (
+                      <Copy toCopy={address}>
                         <span style={{ marginLeft: '4px' }}>Copy Address</span>
                       </Copy>
                     )}
-                    {chainId && connectedAddress && account && (
+                    {chainId && address && account && (
                       <AddressLink
                         hasENS={!!ENSName}
                         isENS={true}
@@ -384,16 +380,16 @@ export default function AccountDetails({
               <>
                 <AccountControl>
                   <div>
-                    {connectedAddress && (
-                      <Copy toCopy={connectedAddress}>
+                    {address && (
+                      <Copy toCopy={address}>
                         <span style={{ marginLeft: '8px' }}>Copy Address</span>
                       </Copy>
                     )}
-                    {chainId && connectedAddress && (
+                    {chainId && address && (
                       <AddressLink
                         hasENS={!!ENSName}
                         isENS={false}
-                        href={getStarkscanLink(chainId, connectedAddress, 'contract')}
+                        href={getStarkscanLink(chainId, address, 'contract')}
                       >
                         <LinkIcon size={20} style={{ color: '#50D5FF' }} />
                         <span style={{ marginLeft: '8px' }}>View on Starkscan</span>

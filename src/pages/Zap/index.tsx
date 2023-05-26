@@ -11,7 +11,7 @@ import { AutoRow, RowBetween, RowCentered } from '../../components/Row'
 import { ArrowWrapper, BottomGrouping } from '../../components/swap/styleds'
 import { AddTokenRow, AddTokenText, Icon, IconWrapper } from '../Swap/styleds'
 import SwapWidget from '../../assets/jedi/SwapWidget.svg'
-import { useActiveStarknetReact, useWalletConnected } from '../../hooks'
+import { useActiveStarknetReact } from '../../hooks'
 import { ButtonConfirmed, ButtonError, ButtonPrimary, RedGradientButton } from '../../components/Button'
 import { useWalletModalToggle } from '../../state/application/hooks'
 import { useUserSlippageTolerance } from '../../state/user/hooks'
@@ -38,13 +38,14 @@ import confirmPriceImpactWithoutFee from '../../components/swap/confirmPriceImpa
 import ConfirmZapModal from '../../components/Zap/ConfirmZapModal'
 import { ReactComponent as ArrowRight } from '../../assets/images/arrow-right-blue.svg'
 import { useAddTokenToWallet } from '../../hooks/useAddTokenToWallet'
+import { useAccount } from '@starknet-react/core'
 
 export default function Zap() {
   const loadedUrlParams = useZapDefaultsFromURLSearch()
 
   const { account, connectedAddress } = useActiveStarknetReact()
 
-  const { address } = useWalletConnected()
+  const { address } = useAccount()
   const toggleWalletModal = useWalletModalToggle()
 
   const [allowedSlippage] = useUserSlippageTolerance()
