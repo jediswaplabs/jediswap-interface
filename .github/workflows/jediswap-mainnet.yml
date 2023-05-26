@@ -35,6 +35,7 @@ jobs:
           tag-prefix:  'v'
           target-branch: 'main'
           commit-message: 'CI: bumps version to {{version}}'
+          bump-policy: 'last-commit'
 
   build:
     runs-on: ubuntu-latest
