@@ -2,7 +2,7 @@ import { Currency, CurrencyAmount, Token, ETHER, LPToken, TokenAmount, Trade } f
 import { ParsedQs } from 'qs'
 import { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useActiveStarknetReact, useWalletConnected } from '../../hooks'
+import { useActiveStarknetReact } from '../../hooks'
 import { useCurrency } from '../../hooks/Tokens'
 import { useAddressNormalizer } from '../../hooks/useAddressNormalizer'
 import useParsedQueryString from '../../hooks/useParsedQueryString'
@@ -20,6 +20,7 @@ import { useUserSlippageTolerance } from '../user/hooks'
 import { useCurrencyBalances } from '../wallet/hooks'
 import { Field, replaceZapState, selectCurrency, setRecipient, typeInput } from './actions'
 import { ZapState } from './reducer'
+import { useAccount } from '@starknet-react/core'
 
 export function useZapState(): AppState['zap'] {
   return useSelector<AppState, AppState['zap']>(state => state.zap)
@@ -76,7 +77,7 @@ export function useDerivedZapInfo(): {
   tradeLoading?: boolean
 } {
   const { account, connectedAddress } = useActiveStarknetReact()
-  const { address: walletAddress } = useWalletConnected()
+  const { address: walletAddress } = useAccount()
   const {
     independentField,
     typedValue,

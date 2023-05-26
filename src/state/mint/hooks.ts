@@ -4,13 +4,14 @@ import { useDispatch, useSelector } from 'react-redux'
 import { PairState, usePair } from '../../data/Reserves'
 import { useTotalSupply } from '../../data/TotalSupply'
 
-import { useActiveStarknetReact, useWalletConnected } from '../../hooks'
+import { useActiveStarknetReact } from '../../hooks'
 import useDebounce from '../../hooks/useDebounce'
 import { wrappedCurrency, wrappedCurrencyAmount } from '../../utils/wrappedCurrency'
 import { AppDispatch, AppState } from '../index'
 import { tryParseAmount } from '../swap/hooks'
 import { useCurrencyBalances } from '../wallet/hooks'
 import { Field, typeInput } from './actions'
+import { useAccount } from '@starknet-react/core'
 
 const ZERO = JSBI.BigInt(0)
 
@@ -36,7 +37,7 @@ export function useDerivedMintInfo(
 } {
   const { account, chainId, connectedAddress } = useActiveStarknetReact()
 
-  const { address } = useWalletConnected()
+  const { address } = useAccount()
   const { independentField, typedValue, otherTypedValue } = useMintState()
 
   const dependentField = independentField === Field.CURRENCY_A ? Field.CURRENCY_B : Field.CURRENCY_A

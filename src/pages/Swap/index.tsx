@@ -25,7 +25,7 @@ import TokenWarningModal from '../../components/TokenWarningModal'
 import ProgressSteps from '../../components/ProgressSteps'
 
 import { BETTER_TRADE_LINK_THRESHOLD, INITIAL_ALLOWED_SLIPPAGE } from '../../constants'
-import { useActiveStarknetReact, useWalletConnected } from '../../hooks'
+import { useActiveStarknetReact } from '../../hooks'
 import { useCurrency } from '../../hooks/Tokens'
 import { ApprovalState, useApproveCallbackFromTrade } from '../../hooks/useApproveCallback'
 // import useENSAddress from '../../hooks/useENSAddress.ts'
@@ -66,6 +66,7 @@ import { ReactComponent as ArrowRight } from '../../assets/images/arrow-right-bl
 import { useAddTokenToWallet } from '../../hooks/useAddTokenToWallet'
 import { wrappedCurrency } from '../../utils/wrappedCurrency'
 import AdvancedSwapDetailsDropdown from '../../components/swap/AdvancedSwapDetailsDropdown'
+import { useAccount } from '@starknet-react/core'
 
 const MintSection = styled.section`
   margin-top: 3rem;
@@ -101,8 +102,7 @@ export default function Swap() {
   // }, [])
 
   const { account, chainId, connectedAddress } = useActiveStarknetReact()
-
-  const { address } = useWalletConnected()
+  const { address } = useAccount()
 
   const theme = useContext(ThemeContext)
 

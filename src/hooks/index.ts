@@ -5,10 +5,10 @@ import { useStarknetReact as useStarknetReactCore } from '@web3-starknet-react/c
 import { StarknetReactContextInterface } from '@web3-starknet-react/core/dist/types'
 import { useEffect, useState } from 'react'
 import { isMobile } from 'react-device-detect'
-import { argentX, braavosWallet, injectedConnector } from '../connectors'
-import { NetworkContextName } from '../constants'
+import { argentX, braavosWallet } from '../connectors'
+import { NetworkContextName, SUPPORTED_WALLETS } from '../constants'
 import { BraavosConnector } from '@web3-starknet-react/braavos-connector'
-import { useConnectors } from '@starknet-react/core'
+import { InjectedConnector, useAccount, useConnectors, useBalance } from '@starknet-react/core'
 
 export function useActiveStarknetReact(): StarknetReactContextInterface<Web3Provider> & { chainId?: ChainId } {
   const context = useStarknetReactCore<Web3Provider>()
@@ -16,32 +16,16 @@ export function useActiveStarknetReact(): StarknetReactContextInterface<Web3Prov
   return context.active ? context : contextNetwork
 }
 
-export const useWalletConnected = () => {
-  const [connectedAccount, setConnectedAccount] = useState({ address: '' })
-  const { connectors } = useConnectors()
-  useEffect(() => {
-    const checkIfAccountExists = async () => {
-      for (const connector of connectors) {
-        const accountExist = await connector.account()
-        console.log(accountExist, 'accountExist')
-        if (accountExist) setConnectedAccount(accountExist)
-      }
-    }
-
-    const timeout = setTimeout(checkIfAccountExists, 500) // waiting for connectors to inject
-
-    return () => clearTimeout(timeout)
-  }, [])
-  return connectedAccount
-}
-
 export function useEagerConnect() {
+  const { account, address, status } = useAccount()
+  // const { data } = useBalance({ address })
   const { activate, active } = useStarknetReactCore() // specifically using useStarknetReactCore because of what this hook does
   const [tried, setTried] = useState(false)
+  const { connect, refresh } = useConnectors()
 
-  const injected = localStorage.getItem('auto-injected-wallet') as injectedConnector | undefined
+  const injected = localStorage.getItem('auto-injected-wallet')
 
-  let connector: ArgentXConnector | BraavosConnector | undefined
+  let connector: InjectedConnector
 
   if (injected === 'argentX') {
     connector = argentX
@@ -50,26 +34,35 @@ export function useEagerConnect() {
   }
 
   useEffect(() => {
-    setTimeout(() => {
-      if (!connector) return
+    const interval = setInterval(refresh, 5000)
+    return () => clearInterval(interval)
+  }, [refresh])
 
-      connector.isAuthorized().then(isAuthorized => {
-        if (isAuthorized && connector) {
-          activate(connector, undefined, true).catch(() => {
-            setTried(true)
-          })
-        } else {
-          if (isMobile && window.starknet && connector) {
-            activate(connector, undefined, true).catch(() => {
-              setTried(true)
-            })
-          } else {
-            setTried(true)
-          }
-        }
-      })
-    }, 100)
-  }, [activate, connector]) // intentionally only running on mount (make sure it's only mounted once :))
+  useEffect(() => {
+    connect(connector)
+  }, [])
+
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     if (!connector) return
+
+  //     connector.isAuthorized().then(isAuthorized => {
+  //       if (isAuthorized && connector) {
+  //         activate(connector, undefined, true).catch(() => {
+  //           setTried(true)
+  //         })
+  //       } else {
+  //         if (isMobile && window.starknet && connector) {
+  //           activate(connector, undefined, true).catch(() => {
+  //             setTried(true)
+  //           })
+  //         } else {
+  //           setTried(true)
+  //         }
+  //       }
+  //     })
+  //   }, 100)
+  // }, [activate, connector]) // intentionally only running on mount (make sure it's only mounted once :))
 
   // if the connection worked, wait until we get confirmation of that to flip the flag
   useEffect(() => {

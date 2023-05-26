@@ -5,7 +5,7 @@ import { ParsedQs } from 'qs'
 import { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 // import { useV1Trade } from '../../data/V1'
-import { useActiveStarknetReact, useWalletConnected } from '../../hooks'
+import { useActiveStarknetReact } from '../../hooks'
 import { useCurrency } from '../../hooks/Tokens'
 import { useTradeExactIn, useTradeExactOut } from '../../hooks/Trades'
 import useParsedQueryString from '../../hooks/useParsedQueryString'
@@ -117,7 +117,7 @@ export function useDerivedSwapInfo(): {
   tradeLoading: boolean
 } {
   const { account, connectedAddress } = useActiveStarknetReact()
-  const { address: walletAddress } = useWalletConnected()
+  const { address: walletAddress } = useAccount()
   const {
     independentField,
     typedValue,

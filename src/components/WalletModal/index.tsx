@@ -13,11 +13,10 @@ import { ApplicationModal } from '../../state/application/actions'
 import { useModalOpen, useWalletModalToggle } from '../../state/application/hooks'
 import { ExternalLink } from '../../theme'
 import AccountDetails from '../AccountDetails'
-
 import Modal from '../Modal'
 import Option from './Option'
 import PendingView from './PendingView'
-import { useConnectors } from '@starknet-react/core'
+import { InjectedConnector, useAccount, useConnectors } from '@starknet-react/core'
 
 const CloseIcon = styled.div`
   position: absolute;
@@ -129,8 +128,8 @@ export default function WalletModal({
   ENSName?: string
 }) {
   // important that these are destructed from the account-specific web3-react context
-  const { active, connectedAddress, account, connector, activate, error, deactivate } = useStarknetReact()
-
+  const { active, error } = useStarknetReact()
+  const { account, connector } = useAccount()
   const { available, connect, refresh } = useConnectors()
 
   useEffect(() => {
@@ -142,7 +141,7 @@ export default function WalletModal({
 
   const [walletView, setWalletView] = useState(WALLET_VIEWS.ACCOUNT)
 
-  const [pendingWallet, setPendingWallet] = useState<AbstractConnector | undefined>()
+  const [pendingWallet, setPendingWallet] = useState<InjectedConnector | undefined>()
 
   const [pendingError, setPendingError] = useState<any>()
 
@@ -175,59 +174,27 @@ export default function WalletModal({
     }
   }, [setWalletView, active, error, connector, walletModalOpen, activePrevious, connectorPrevious])
 
-  const tryActivation = async (connector: AbstractConnector | undefined) => {
-    let name = ''
-    Object.keys(SUPPORTED_WALLETS).map(key => {
-      if (connector === SUPPORTED_WALLETS[key].connector) {
-        return (name = SUPPORTED_WALLETS[key].name)
-      }
-      return true
-    })
+  const tryActivation = async (connector: InjectedConnector | undefined) => {
     // log selected wallet
     ReactGA.event({
       category: 'Wallet',
       action: 'Change Wallet',
-      label: name
+      label: (connector && SUPPORTED_WALLETS[connector.id()].name) || ''
     })
     setPendingWallet(connector) // set wallet for pending view
     setWalletView(WALLET_VIEWS.PENDING)
-
-    connector &&
-      activate(
-        connector,
-        error => {
-          console.debug('Error activating connector', name, error)
-        },
-        true
-      )
-        .then(() => {
-          if (connector === argentX) {
-            localStorage.setItem('auto-injected-wallet', 'argentX')
-          } else if (connector === braavosWallet) {
-            localStorage.setItem('auto-injected-wallet', 'braavos')
-          } else {
-            localStorage.removeItem('auto-injected-wallet')
-          }
-        })
-        .catch(error => {
-          if (error instanceof UnsupportedChainIdError) {
-            activate(connector) // a little janky...can't use setError because the connector isn't set
-          } else {
-            console.error(error)
-            setPendingError(error)
-          }
-        })
-  }
-
-  const handleWalletActivation = (item: any) => {
     try {
-      connect(item)
-      if (item.id() === 'argentX') {
-        localStorage.setItem('auto-injected-wallet', 'argentX')
-      } else if (item.id() === 'braavos') {
-        localStorage.setItem('auto-injected-wallet', 'braavos')
-      } else {
-        localStorage.removeItem('auto-injected-wallet')
+      if (connector) {
+        connect(connector)
+        toggleWalletModal()
+        if (connector.id() === 'argentX') {
+          localStorage.setItem('auto-injected-wallet', 'argentX')
+        } else if (connector.id() === 'braavos') {
+          localStorage.setItem('auto-injected-wallet', 'braavos')
+        } else {
+          localStorage.removeItem('auto-injected-wallet')
+        }
+        setWalletView(WALLET_VIEWS.ACCOUNT)
       }
     } catch (error) {
       // Store the error in a variable
@@ -239,65 +206,25 @@ export default function WalletModal({
 
   // get wallets user can switch too, depending on device/browser
   function getOptions() {
-    // return Object.keys(SUPPORTED_WALLETS).map(key => {
-    //   const option = SUPPORTED_WALLETS[key]
-
-    //   // return rest of options
-    //   return (
-    //     // !isMobile &&
-    //     // !option.mobileOnly && (
-    //     <Option
-    //       id={`connect-${key}`}
-    //       onClick={() => {
-    //         option.connector === connector
-    //           ? setWalletView(WALLET_VIEWS.ACCOUNT)
-    //           : !option.href && tryActivation(option.connector)
-    //       }}
-    //       key={key}
-    //       active={option.connector === connector}
-    //       color={option.color}
-    //       link={option.href}
-    //       header={option.name}
-    //       subheader={null} //use option.descriptio to bring back multi-line
-    //       icon={option.icon}
-    //       size={option.size ?? null}
-    //     />
-    //     // )
-    //   )
-    // })
-
-    return available.map(item => {
+    return Object.keys(SUPPORTED_WALLETS).map(key => {
+      const option = SUPPORTED_WALLETS[key]
       return (
         <Option
-          id={`connect-${item.id()}`}
-          onClick={() => handleWalletActivation(item)}
-          key={item.id()}
-          // active={item === connector}
-          color={'#FF875B'}
-          // link={option.href}
-          header={item.id()}
+          id={`connect-${key}`}
+          onClick={() => {
+            option.connector === connector
+              ? setWalletView(WALLET_VIEWS.ACCOUNT)
+              : !option.href && tryActivation(option.connector)
+          }}
+          key={key}
+          active={option.connector === connector}
+          color={option.color}
+          link={option.href}
+          header={option.name}
           subheader={null} //use option.descriptio to bring back multi-line
-          icon={item.id()}
+          icon={option.icon}
+          size={option.size ?? null}
         />
-
-        // <button
-        //   key={connector.id()}
-        //   onClick={() => {
-        //     try {
-        //       const x = connect(connector)
-        //     } catch (error) {
-        //       // Store the error in a variable
-        //       const errorValue = error
-
-        //       // Now you can use the errorValue variable to handle the error or log it
-        //       console.log('Error:', errorValue)
-        //     }
-        //     // Access the captured errors
-        //     // console.log(capturedErrors);
-        //   }}
-        // >
-        //   {connector.id()}
-        // </button>
       )
     })
   }

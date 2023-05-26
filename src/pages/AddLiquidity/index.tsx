@@ -18,7 +18,7 @@ import Row, { AutoRow, RowBetween, RowFixed, RowFlat } from '../../components/Ro
 
 import { DEFAULT_CHAIN_ID, ROUTER_ADDRESS } from '../../constants'
 import { PairState } from '../../data/Reserves'
-import { useActiveStarknetReact, useWalletConnected } from '../../hooks'
+import { useActiveStarknetReact } from '../../hooks'
 import { useCurrency } from '../../hooks/Tokens'
 import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
 import useTransactionDeadline from '../../hooks/useTransactionDeadline'
@@ -46,6 +46,7 @@ import { AddTokenRow, AddTokenText } from '../Swap/styleds'
 import { useAddTokenToWallet } from '../../hooks/useAddTokenToWallet'
 import { ReactComponent as ArrowRight } from '../../assets/images/arrow-right-blue.svg'
 import Loader from '../../components/Loader'
+import { useAccount } from '@starknet-react/core'
 
 const BalanceText = styled.div`
   display: flex;
@@ -93,7 +94,7 @@ export default function AddLiquidity({
   history
 }: RouteComponentProps<{ currencyIdA?: string; currencyIdB?: string }>) {
   const { account, chainId, library, connectedAddress } = useActiveStarknetReact()
-  const { address } = useWalletConnected()
+  const { address } = useAccount()
   const theme = useContext(ThemeContext)
 
   const currencyA = useCurrency(currencyIdA)
