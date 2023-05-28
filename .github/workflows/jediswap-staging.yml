@@ -1,0 +1,45 @@
+name: Release - Staging
+
+on:
+  workflow_dispatch:
+    inputs:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    environment:
+      name: staging
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: 'yarn'
+
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      - name: Build Project
+        run: yarn staging-build
+        env:
+          CI: false
+          RELEASE_TYPE: 'STAGING'
+
+      - name: Configure AWS
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets[format('AWS_ACCESS_KEY_ID_{0}', 'STAGING')] }}
+          aws-secret-access-key: ${{ secrets[format('AWS_SECRET_ACCESS_KEY_{0}', 'STAGING')] }}
+          aws-region: us-east-1
+      - name: Deploy app build to S3 bucket
+        run: aws s3 sync ./dist/ s3://$BUCKET_NAME
+        env:
+          BUCKET_NAME: ${{ secrets[format('AWS_S3_BUCKET_NAME_{0}', 'STAGING')] }}
+
+      - name: Run Cache Invalidation
+        run: aws cloudfront create-invalidation --distribution-id $CDN_DISTRIBUTION_ID --paths /\*
+        env:
+          CDN_DISTRIBUTION_ID: ${{ secrets[format('AWS_CDN_DISTRIBUTION_ID_{0}', 'STAGING')] }}

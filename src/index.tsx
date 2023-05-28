@@ -27,7 +27,7 @@ const StarknetProviderNetwork = createStarknetReactRoot(NetworkContextName)
 Sentry.init({
   dsn: "https://6911d3472d9a467b962b9a4b2848abc6@o4505240445911040.ingest.sentry.io/4505240447287296",
   integrations: [new Sentry.BrowserTracing(), new Sentry.Replay()],
-  release: `${process.env.NPM_PACKAGE_NAME?.replace('/', '_')}@${process.env.NPM_PACKAGE_VERSION}`,
+  release: `${process.env.NPM_PACKAGE_VERSION}`,
   // Performance Monitoring
   tracesSampleRate: 1.0, // Capture 100% of the transactions, reduce in production!
   // Session Replay
@@ -57,7 +57,6 @@ ReactDOM.render(
           <ThemeProvider>
             <ThemedGlobalStyle />
             <HashRouter>
-              <button onClick={() => masdfasdfsdethodDoesNotExist()}>Break the world</button>
               <App />
             </HashRouter>
           </ThemeProvider>

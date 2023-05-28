@@ -1,0 +1,78 @@
+name: Release - Mainnet
+
+on:
+  workflow_dispatch:
+    inputs:
+      bumpType:
+        description: 'Bump version'
+        required: true
+        default: 'patch'
+        type: choice
+        options:
+          - 'patch'
+          - 'minor'
+          - 'major'
+jobs:
+  bump:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: 'yarn'
+
+      - name: Automated Version Bump
+        uses: phips28/gh-action-bump-version@v9.1.4
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT }}
+        with:
+          version-type:  ${{ inputs.bumpType }}
+          tag-prefix:  'v'
+          target-branch: 'main'
+          commit-message: 'CI: bumps version to {{version}}'
+          bump-policy: 'last-commit'
+
+  build:
+    runs-on: ubuntu-latest
+    needs: [bump]
+    environment:
+      name: mainnet
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: 'yarn'
+
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      - name: Build Project
+        run: yarn production-build
+        env:
+          CI: false
+          RELEASE_TYPE: 'PRODUCTION'
+
+      - name: Configure AWS
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets[format('AWS_ACCESS_KEY_ID_{0}', 'PRODUCTION')] }}
+          aws-secret-access-key: ${{ secrets[format('AWS_SECRET_ACCESS_KEY_{0}', 'PRODUCTION')] }}
+          aws-region: us-east-1
+      - name: Deploy app build to S3 bucket
+        run: aws s3 sync ./dist/ s3://$BUCKET_NAME
+        env:
+          BUCKET_NAME: ${{ secrets[format('AWS_S3_BUCKET_NAME_{0}', 'PRODUCTION')] }}
+
+      - name: Run Cache Invalidation
+        run: aws cloudfront create-invalidation --distribution-id $CDN_DISTRIBUTION_ID --paths /\*
+        env:
+          CDN_DISTRIBUTION_ID: ${{ secrets[format('AWS_CDN_DISTRIBUTION_ID_{0}', 'PRODUCTION')] }}
