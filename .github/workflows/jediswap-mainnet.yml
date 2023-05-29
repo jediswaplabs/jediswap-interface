@@ -41,8 +41,9 @@ jobs:
         uses: martinbeentjes/npm-get-version-action@v1.3.1
   
       - name: debug
-      - run: pwd
-      - run: ls
+        run: |
+          pwd
+          ls
         
       - name: Create Sentry release
         uses: getsentry/action-release@v1
