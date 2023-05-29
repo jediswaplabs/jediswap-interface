@@ -13,8 +13,33 @@ on:
           - 'minor'
           - 'major'
 jobs:
+  bump:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: 'yarn'
+
+      - name: Automated Version Bump
+        uses: phips28/gh-action-bump-version@v9.1.4
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT }}
+        with:
+          version-type:  ${{ inputs.bumpType }}
+          tag-prefix:  'v'
+          target-branch: 'main'
+          commit-message: 'CI: bumps version to {{version}}'
+          bump-policy: 'last-commit'
+          
   sentry-release:
     runs-on: ubuntu-latest
+    needs: [bump]
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -36,15 +61,10 @@ jobs:
           RELEASE_TYPE: 'PRODUCTION'
           GENERATE_SOURCEMAPS: true
 
-      - name: Get NPM Version
-        id: package-version
-        uses: martinbeentjes/npm-get-version-action@v1.3.1
-  
-      - name: debug
-        run: |
-          pwd
-          ls
-        
+      - name: Get package info
+        id: package
+        uses: codex-team/action-nodejs-package-info@v1.1
+
       - name: Create Sentry release
         uses: getsentry/action-release@v1
         env:
@@ -54,68 +74,45 @@ jobs:
         with:
           environment: production
           sourcemaps: "./dist"
-          version: ${{ steps.package-version.outputs.current-version}}
-#   bump:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: Checkout
-#         uses: actions/checkout@v3
-#         with:
-#           persist-credentials: false
+          version: ${{ steps.package.outputs.version }}
 
-#       - uses: actions/setup-node@v3
-#         with:
-#           node-version: 16
-#           cache: 'yarn'
+  build:
+    runs-on: ubuntu-latest
+    needs: [bump]
+    environment:
+      name: mainnet
 
-#       - name: Automated Version Bump
-#         uses: phips28/gh-action-bump-version@v9.1.4
-#         env:
-#           GITHUB_TOKEN: ${{ secrets.PAT }}
-#         with:
-#           version-type:  ${{ inputs.bumpType }}
-#           tag-prefix:  'v'
-#           target-branch: 'main'
-#           commit-message: 'CI: bumps version to {{version}}'
-#           bump-policy: 'last-commit'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
 
-#   build:
-#     runs-on: ubuntu-latest
-#     needs: [bump]
-#     environment:
-#       name: mainnet
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: 'yarn'
 
-#     steps:
-#       - name: Checkout
-#         uses: actions/checkout@v3
+      - name: Install dependencies
+        run: yarn install --immutable
 
-#       - uses: actions/setup-node@v3
-#         with:
-#           node-version: 16
-#           cache: 'yarn'
+      - name: Build Project
+        run: yarn production-build
+        env:
+          CI: false
+          RELEASE_TYPE: 'PRODUCTION'
 
-#       - name: Install dependencies
-#         run: yarn install --immutable
+      - name: Configure AWS
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets[format('AWS_ACCESS_KEY_ID_{0}', 'PRODUCTION')] }}
+          aws-secret-access-key: ${{ secrets[format('AWS_SECRET_ACCESS_KEY_{0}', 'PRODUCTION')] }}
+          aws-region: us-east-1
 
-#       - name: Build Project
-#         run: yarn production-build
-#         env:
-#           CI: false
-#           RELEASE_TYPE: 'PRODUCTION'
+      - name: Deploy app build to S3 bucket
+        run: aws s3 sync ./dist/ s3://$BUCKET_NAME
+        env:
+          BUCKET_NAME: ${{ secrets[format('AWS_S3_BUCKET_NAME_{0}', 'PRODUCTION')] }}
 
-#       - name: Configure AWS
-#         uses: aws-actions/configure-aws-credentials@v1
-#         with:
-#           aws-access-key-id: ${{ secrets[format('AWS_ACCESS_KEY_ID_{0}', 'PRODUCTION')] }}
-#           aws-secret-access-key: ${{ secrets[format('AWS_SECRET_ACCESS_KEY_{0}', 'PRODUCTION')] }}
-#           aws-region: us-east-1
-
-#       - name: Deploy app build to S3 bucket
-#         run: aws s3 sync ./dist/ s3://$BUCKET_NAME
-#         env:
-#           BUCKET_NAME: ${{ secrets[format('AWS_S3_BUCKET_NAME_{0}', 'PRODUCTION')] }}
-
-#       - name: Run Cache Invalidation
-#         run: aws cloudfront create-invalidation --distribution-id $CDN_DISTRIBUTION_ID --paths /\*
-#         env:
-#           CDN_DISTRIBUTION_ID: ${{ secrets[format('AWS_CDN_DISTRIBUTION_ID_{0}', 'PRODUCTION')] }}
+      - name: Run Cache Invalidation
+        run: aws cloudfront create-invalidation --distribution-id $CDN_DISTRIBUTION_ID --paths /\*
+        env:
+          CDN_DISTRIBUTION_ID: ${{ secrets[format('AWS_CDN_DISTRIBUTION_ID_{0}', 'PRODUCTION')] }}
