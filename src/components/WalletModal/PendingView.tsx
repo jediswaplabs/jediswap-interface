@@ -1,4 +1,3 @@
-import { AbstractConnector } from '@web3-starknet-react/abstract-connector'
 import React, { FC } from 'react'
 import styled from 'styled-components'
 import Option from './Option'

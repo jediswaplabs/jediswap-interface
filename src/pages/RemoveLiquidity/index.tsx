@@ -53,7 +53,7 @@ export default function RemoveLiquidity({
   }
 }: RouteComponentProps<{ currencyIdA: string; currencyIdB: string }>) {
   const [currencyA, currencyB] = [useCurrency(currencyIdA) ?? undefined, useCurrency(currencyIdB) ?? undefined]
-  const { account, chainId, library, connectedAddress } = useActiveStarknetReact()
+  const { account, chainId, library } = useActiveStarknetReact()
   const { address } = useAccount()
   const [tokenA, tokenB] = useMemo(() => [wrappedCurrency(currencyA, chainId), wrappedCurrency(currencyB, chainId)], [
     currencyA,
@@ -121,7 +121,7 @@ export default function RemoveLiquidity({
   // tx sending
   const addTransaction = useTransactionAdder()
   async function onRemove() {
-    if (!chainId || !library || !account || !deadline || !connectedAddress) throw new Error('missing dependencies')
+    if (!chainId || !library || !account || !deadline || !address) throw new Error('missing dependencies')
 
     if (!router) return
 
@@ -155,7 +155,7 @@ export default function RemoveLiquidity({
       liquidity: parsedAmountToUint256Args(liquidityAmount.raw),
       amountAMin: parsedAmountToUint256Args(amountsMin[Field.CURRENCY_A]),
       amountBMin: parsedAmountToUint256Args(amountsMin[Field.CURRENCY_B]),
-      to: connectedAddress,
+      to: address,
       deadline: deadline.toHexString()
     }
 

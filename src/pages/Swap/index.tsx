@@ -101,7 +101,7 @@ export default function Swap() {
   //   setDismissTokenWarning(true)
   // }, [])
 
-  const { account, chainId, connectedAddress } = useActiveStarknetReact()
+  const { chainId } = useActiveStarknetReact()
   const { address } = useAccount()
 
   const theme = useContext(ThemeContext)
@@ -213,11 +213,7 @@ export default function Swap() {
         ReactGA.event({
           category: 'Swap',
           action:
-            recipient === null
-              ? 'Swap w/o Send'
-              : recipient === connectedAddress
-              ? 'Swap w/o Send + recipient'
-              : 'Swap w/ Send',
+            recipient === null ? 'Swap w/o Send' : recipient === address ? 'Swap w/o Send + recipient' : 'Swap w/ Send',
           label: [trade?.inputAmount?.currency?.symbol, trade?.outputAmount?.currency?.symbol, Version.v2].join('/')
         })
       })
@@ -237,7 +233,7 @@ export default function Swap() {
     tradeToConfirm,
     showConfirm,
     recipient,
-    connectedAddress,
+    address,
     trade?.inputAmount?.currency?.symbol,
     trade?.outputAmount?.currency?.symbol
   ])
@@ -323,7 +319,7 @@ export default function Swap() {
           </div>
           <HeaderRow>
             <BalanceText>Swap From</BalanceText>
-            {connectedAddress && currencies[Field.INPUT] ? (
+            {address && currencies[Field.INPUT] ? (
               <BalanceText>Balance: {currencyBalances.INPUT?.toSignificant(6) ?? <Loader />}</BalanceText>
             ) : null}
           </HeaderRow>
@@ -366,7 +362,7 @@ export default function Swap() {
               }
             >
               <BalanceText>Swap To (est.)</BalanceText>
-              {connectedAddress && currencies[Field.OUTPUT] ? (
+              {address && currencies[Field.OUTPUT] ? (
                 <BalanceText>Balance: {currencyBalances.OUTPUT?.toSignificant(6) ?? <Loader />}</BalanceText>
               ) : null}
             </HeaderRow>

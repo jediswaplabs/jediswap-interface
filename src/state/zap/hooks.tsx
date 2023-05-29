@@ -76,8 +76,7 @@ export function useDerivedZapInfo(): {
   inputError?: string
   tradeLoading?: boolean
 } {
-  const { account, connectedAddress } = useActiveStarknetReact()
-  const { address: walletAddress } = useAccount()
+  const { address: connectedAddress } = useAccount()
   const {
     independentField,
     typedValue,
@@ -117,7 +116,7 @@ export function useDerivedZapInfo(): {
 
   let inputError: string | undefined
 
-  if (!walletAddress) {
+  if (!connectedAddress) {
     inputError = 'Connect Wallet'
   }
 

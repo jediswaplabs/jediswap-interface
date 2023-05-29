@@ -1,4 +1,3 @@
-import { AbstractConnector } from '@web3-starknet-react/abstract-connector'
 import { UnsupportedChainIdError, useStarknetReact } from '@web3-starknet-react/core'
 import { darken, lighten } from 'polished'
 import React, { useMemo, useEffect, useState } from 'react'
@@ -27,7 +26,7 @@ import WalletModal from '../WalletModal'
 import WrongNetwork from '../../assets/jedi/WrongNetwork.svg'
 import { useActiveStarknetReact } from '../../hooks'
 import { hexToDecimalString } from 'starknet/dist/utils/number'
-import { useAccount } from '@starknet-react/core'
+import { InjectedConnector, useAccount } from '@starknet-react/core'
 
 const IconWrapper = styled.div<{ size?: number }>`
   ${({ theme }) => theme.flexColumnNoWrap};
@@ -149,7 +148,7 @@ const SOCK = (
 )
 
 // eslint-disable-next-line react/prop-types
-function StatusIcon({ connector }: { connector: AbstractConnector }) {
+function StatusIcon({ connector }: { connector: InjectedConnector }) {
   // if (connector === injected) {
   //   return <Identicon />
   // } else if (connector === walletconnect) {
@@ -197,8 +196,8 @@ function StatusIcon({ connector }: { connector: AbstractConnector }) {
 
 function Web3StatusInner({ starkID }: { starkID?: string }) {
   const { t } = useTranslation()
-  const { connector, error } = useActiveStarknetReact()
-  const { address } = useAccount()
+  const { error } = useActiveStarknetReact()
+  const { address, connector } = useAccount()
 
   const allTransactions = useAllTransactions()
 

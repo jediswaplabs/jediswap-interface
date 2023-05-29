@@ -1,6 +1,5 @@
 import { validateAndParseAddress } from 'starknet'
 import { ChainId, JSBI, Percent, Token, WETH } from '@jediswap/sdk'
-import { AbstractConnector } from '@web3-starknet-react/abstract-connector'
 
 // import { fortmatic, injected, portis, walletconnect, walletlink, argentX } from '../connectors'
 import { argentX, braavosWallet } from '../connectors'

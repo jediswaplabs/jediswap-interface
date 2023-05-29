@@ -17,15 +17,13 @@ export function useActiveStarknetReact(): StarknetReactContextInterface<Web3Prov
 }
 
 export function useEagerConnect() {
-  const { account, address, status } = useAccount()
-  // const { data } = useBalance({ address })
   const { activate, active } = useStarknetReactCore() // specifically using useStarknetReactCore because of what this hook does
   const [tried, setTried] = useState(false)
-  const { connect, refresh } = useConnectors()
+  const { connect } = useConnectors()
 
   const injected = localStorage.getItem('auto-injected-wallet')
 
-  let connector: InjectedConnector
+  let connector: InjectedConnector | undefined
 
   if (injected === 'argentX') {
     connector = argentX
@@ -34,13 +32,10 @@ export function useEagerConnect() {
   }
 
   useEffect(() => {
-    const interval = setInterval(refresh, 5000)
-    return () => clearInterval(interval)
-  }, [refresh])
-
-  useEffect(() => {
-    connect(connector)
-  }, [])
+    if (connector) {
+      connect(connector)
+    }
+  }, [connector])
 
   // useEffect(() => {
   //   setTimeout(() => {
@@ -79,27 +74,25 @@ export function useEagerConnect() {
  * and out after checking what network theyre on
  */
 export function useInactiveListener(suppress = false) {
-  const { active, error, activate, connector } = useStarknetReactCore() // specifically using useStarknetReact because of what this hook does
+  const { active, error, activate } = useStarknetReactCore() // specifically using useStarknetReact because of what this hook does
+  const { connector } = useAccount()
+  const { connect } = useConnectors()
 
   useEffect(() => {
     const { starknet, starknet_braavos } = window
 
     if (starknet && !active && !error && !suppress && connector) {
-      const activeConnector = connector instanceof ArgentXConnector ? argentX : braavosWallet
+      const activeConnector = connector instanceof InjectedConnector ? argentX : braavosWallet
 
       const handleChainChanged = () => {
         // eat errors
-        activate(activeConnector, undefined, true).catch(error => {
-          console.error('Failed to activate after chain changed', error)
-        })
+        connect(activeConnector)
       }
 
       const handleAccountsChanged = (accounts: string[]) => {
         if (accounts.length > 0) {
           // eat errors
-          activate(activeConnector, undefined, true).catch(error => {
-            console.error('Failed to activate after accounts changed', error)
-          })
+          connect(activeConnector)
         }
       }
 
