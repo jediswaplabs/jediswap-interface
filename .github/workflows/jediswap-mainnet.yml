@@ -103,6 +103,7 @@ jobs:
           environment: production
           sourcemaps: "./dist"
           version: ${{ steps.package.outputs.version }}
+          url_prefix: '~'
 
   build:
     runs-on: ubuntu-latest
