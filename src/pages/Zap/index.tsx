@@ -42,9 +42,6 @@ import { useAccount } from '@starknet-react/core'
 
 export default function Zap() {
   const loadedUrlParams = useZapDefaultsFromURLSearch()
-
-  const { account, connectedAddress } = useActiveStarknetReact()
-
   const { address } = useAccount()
   const toggleWalletModal = useWalletModalToggle()
 
@@ -260,7 +257,7 @@ export default function Zap() {
 
           <HeaderRow>
             <BalanceText>From</BalanceText>
-            {connectedAddress && currencies[Field.INPUT] ? (
+            {address && currencies[Field.INPUT] ? (
               <BalanceText>Balance: {currencyBalances.INPUT?.toSignificant(6) ?? <Loader />}</BalanceText>
             ) : null}
           </HeaderRow>
@@ -289,7 +286,7 @@ export default function Zap() {
               }}
             >
               <BalanceText>To LP (estimated)</BalanceText>
-              {connectedAddress && currencies[Field.OUTPUT] ? (
+              {address && currencies[Field.OUTPUT] ? (
                 <BalanceText style={{ display: 'flex' }}>
                   Balance: {currencyBalances.OUTPUT?.toSignificant(6) ?? <Loader />}
                 </BalanceText>

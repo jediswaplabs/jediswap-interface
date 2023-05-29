@@ -1,5 +1,4 @@
 import { BigNumberish } from 'starknet/dist/utils/number'
-import { AbstractConnector } from '@web3-starknet-react/abstract-connector'
 import { validateAndParseAddress, Abi, Provider, uint256, Contract } from 'starknet'
 
 import { BigNumber } from '@ethersproject/bignumber'
@@ -7,6 +6,7 @@ import { ZERO_ADDRESS } from '../constants'
 import { ChainId, JSBI, Percent, Token, CurrencyAmount, Currency, ETHER } from '@jediswap/sdk'
 import { LPTokenAddressMap, TokenAddressMap } from '../state/lists/hooks'
 import isZero from './isZero'
+import { InjectedConnector } from '@starknet-react/core'
 
 // returns the checksummed address if the address is valid, otherwise returns false
 export function isAddress(addr: string | null | undefined): string | false {
@@ -113,7 +113,7 @@ export function getContract(
   address: string,
   ABI: any,
   library: Provider,
-  connector?: AbstractConnector,
+  connector?: InjectedConnector,
   account?: string
 ): Contract {
   const parsedAddress = isAddress(address)

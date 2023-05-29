@@ -12,6 +12,7 @@ import useTransactionDeadline from './useTransactionDeadline'
 import { wrappedCurrency } from '../utils/wrappedCurrency'
 import { computeSlippageAdjustedLPAmount } from '../utils/prices'
 import { useApprovalCallFromTrade } from './useApproveCall'
+import { useAccount } from '@starknet-react/core'
 
 export enum ZapCallbackState {
   INVALID,
@@ -47,17 +48,18 @@ function useZapCallArguments(
   allowedSlippage: number = INITIAL_ALLOWED_SLIPPAGE, // in bips
   recipientAddressOrName: string | null // the ENS name or address of the recipient of the trade, or null if zap should be returned to sender
 ): ZapCall[] {
-  const { account, chainId, library, connectedAddress } = useActiveStarknetReact()
+  const { account, chainId, library } = useActiveStarknetReact()
+  const { address } = useAccount()
 
   // const { address: recipientAddress } = useENS(recipientAddressOrName)
-  const recipient = recipientAddressOrName === null ? connectedAddress : recipientAddressOrName
+  const recipient = recipientAddressOrName === null ? address : recipientAddressOrName
 
   const deadline = useTransactionDeadline()
 
   const contract: Contract | null = useZapInContract()
 
   return useMemo(() => {
-    if (!trade || !recipient || !library || !account || !chainId || !deadline || !connectedAddress) {
+    if (!trade || !recipient || !library || !account || !chainId || !deadline || !address) {
       return []
     }
 
@@ -88,7 +90,7 @@ function useZapCallArguments(
       )
     }
     return zapMethods.map(parameters => ({ parameters, contract }))
-  }, [account, allowedSlippage, chainId, connectedAddress, contract, deadline, library, recipient, trade])
+  }, [account, allowedSlippage, chainId, address, contract, deadline, library, recipient, trade])
 }
 
 // returns a function that will execute a zap, if the parameters are all valid

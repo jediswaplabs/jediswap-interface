@@ -29,14 +29,14 @@ export function useDerivedBurnInfo(
   }
   error?: string
 } {
-  const { account, chainId, connectedAddress } = useActiveStarknetReact()
+  const { chainId } = useActiveStarknetReact()
   const { address } = useAccount()
   const { independentField, typedValue } = useBurnState()
 
   // pair + totalsupply
   const [pairState, pair] = usePair(currencyA, currencyB)
   // balances
-  const relevantTokenBalances = useTokenBalances(connectedAddress ?? undefined, [pair?.liquidityToken])
+  const relevantTokenBalances = useTokenBalances(address ?? undefined, [pair?.liquidityToken])
   const userLiquidity: undefined | TokenAmount = relevantTokenBalances?.[pair?.liquidityToken?.address ?? '']
 
   const [tokenA, tokenB] = [wrappedCurrency(currencyA, chainId), wrappedCurrency(currencyB, chainId)]

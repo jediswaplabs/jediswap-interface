@@ -1,4 +1,3 @@
-import { AbstractConnector } from '@web3-starknet-react/abstract-connector'
 import { UnsupportedChainIdError, useStarknetReact } from '@web3-starknet-react/core'
 import React, { useEffect, useState } from 'react'
 import { isMobile } from 'react-device-detect'
@@ -130,12 +129,7 @@ export default function WalletModal({
   // important that these are destructed from the account-specific web3-react context
   const { active, error } = useStarknetReact()
   const { account, connector } = useAccount()
-  const { available, connect, refresh } = useConnectors()
-
-  useEffect(() => {
-    const interval = setInterval(refresh, 5000)
-    return () => clearInterval(interval)
-  }, [refresh])
+  const { connect } = useConnectors()
 
   // const connectStarknet = useStarknetConnector({ showModal: true })
 

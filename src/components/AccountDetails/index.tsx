@@ -269,10 +269,10 @@ export default function AccountDetails({
   ENSName,
   openOptions
 }: AccountDetailsProps) {
-  const { chainId } = useActiveStarknetReact()
   const { account, address, connector } = useAccount()
+  console.log('account', account?.chainId)
   const { disconnect } = useConnectors()
-
+  const chainId = account?.chainId
   const theme = useContext(ThemeContext)
   const dispatch = useDispatch<AppDispatch>()
 

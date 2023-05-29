@@ -109,7 +109,6 @@ const ComingSoonSection = styled(Row)`
 
 export default function Pool() {
   const theme = useContext(ThemeContext)
-  const { account, connectedAddress } = useActiveStarknetReact()
   const { address } = useAccount()
 
   // fetch the user's balances of all tracked V2 LP tokens
@@ -132,7 +131,7 @@ export default function Pool() {
   )
 
   const [pairsBalances, fetchingPairBalances] = useTokenBalancesWithLoadingIndicator(
-    connectedAddress ?? undefined,
+    address ?? undefined,
     validatedLiquidityTokens
   )
 
