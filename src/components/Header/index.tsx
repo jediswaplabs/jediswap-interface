@@ -9,7 +9,6 @@ import styled from 'styled-components'
 
 import Logo from '../../assets/jedi/logo.png'
 // import LogoDark from '../../assets/svg/logo_white.svg'
-import { useActiveStarknetReact } from '../../hooks'
 // import { useDarkModeManager } from '../../state/user/hooks'
 // import { useETHBalances } from '../../state/wallet/hooks'
 import { CardNoise } from './styled'

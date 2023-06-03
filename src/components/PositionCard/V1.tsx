@@ -8,8 +8,8 @@ import { ButtonSecondary } from '../Button'
 import { RowBetween, RowFixed } from '../Row'
 import { FixedHeightRow, HoverCard } from './index'
 import DoubleCurrencyLogo from '../DoubleLogo'
-import { useActiveStarknetReact } from '../../hooks'
 import { ThemeContext } from 'styled-components'
+import { useAccount } from '@starknet-react/core'
 
 interface PositionCardProps extends RouteComponentProps<Record<string, string | undefined>> {
   token: Token
@@ -19,7 +19,8 @@ interface PositionCardProps extends RouteComponentProps<Record<string, string | 
 function V1PositionCard({ token, V1LiquidityBalance }: PositionCardProps) {
   const theme = useContext(ThemeContext)
 
-  const { chainId } = useActiveStarknetReact()
+  const { account } = useAccount()
+  const chainId = account?.chainId
 
   return (
     <HoverCard>

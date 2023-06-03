@@ -12,8 +12,6 @@ import Card from '../../components/Card'
 import Row, { RowBetween, RowFixed } from '../../components/Row'
 import { ButtonPrimary, ButtonSecondary } from '../../components/Button'
 import { AutoColumn } from '../../components/Column'
-
-import { useActiveStarknetReact } from '../../hooks'
 import { PairState, usePairs } from '../../data/Reserves'
 import { getLiquidityToken, useTrackedTokenPairs } from '../../state/user/hooks'
 import { Dots } from '../../components/swap/styleds'

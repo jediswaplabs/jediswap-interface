@@ -6,14 +6,14 @@ import { useMemo } from 'react'
 import { useSelectedTokenList } from '../state/lists/hooks'
 import { useUserAddedTokens } from '../state/user/hooks'
 import { isAddress } from '../utils'
-
-import { useActiveStarknetReact } from './index'
 import { useTokenContract } from './useContract'
 import { useSingleCallResult } from '../state/multicall/hooks'
 import { NEVER_RELOAD } from '../state/multicall/hooks'
 import { DEFAULT_CHAIN_ID } from '../constants'
+import { useAccount } from '@starknet-react/core'
 export function useAllTokens(): { [address: string]: Token } {
-  const { chainId } = useActiveStarknetReact()
+  const { account } = useAccount()
+  const chainId = account?.chainId
   const userAddedTokens = useUserAddedTokens()
   const allTokens = useSelectedTokenList()
 
@@ -36,7 +36,8 @@ export function useAllTokens(): { [address: string]: Token } {
 
 export function useJediLPTokens(): { [address: string]: LPToken } {
   const allLPTokens = useSelectedLPTokenList()
-  const { chainId } = useActiveStarknetReact()
+  const { account } = useAccount()
+  const chainId = account?.chainId
 
   return useMemo(() => {
     return allLPTokens[chainId ?? DEFAULT_CHAIN_ID]
@@ -79,7 +80,8 @@ function parseStringFromArgs(data: any, isHexNumber?: boolean): string | undefin
 // null if loading
 // otherwise returns the token
 export function useToken(tokenAddress?: string): Token | undefined | null {
-  const { chainId } = useActiveStarknetReact()
+  const { account } = useAccount()
+  const chainId = account?.chainId
   const currencyTokens = useAllTokens()
   const lpTokens = useJediLPTokens()
 

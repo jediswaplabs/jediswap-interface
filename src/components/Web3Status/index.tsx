@@ -24,9 +24,8 @@ import Loader from '../Loader'
 import { RowBetween } from '../Row'
 import WalletModal from '../WalletModal'
 import WrongNetwork from '../../assets/jedi/WrongNetwork.svg'
-import { useActiveStarknetReact } from '../../hooks'
 import { hexToDecimalString } from 'starknet/dist/utils/number'
-import { InjectedConnector, useAccount } from '@starknet-react/core'
+import { InjectedConnector, useAccount, useStarknet } from '@starknet-react/core'
 
 const IconWrapper = styled.div<{ size?: number }>`
   ${({ theme }) => theme.flexColumnNoWrap};
@@ -196,7 +195,7 @@ function StatusIcon({ connector }: { connector: InjectedConnector }) {
 
 function Web3StatusInner({ starkID }: { starkID?: string }) {
   const { t } = useTranslation()
-  const { error } = useActiveStarknetReact()
+  const { error } = useStarknet()
   const { address, connector } = useAccount()
 
   const allTransactions = useAllTransactions()
@@ -244,8 +243,8 @@ function Web3StatusInner({ starkID }: { starkID?: string }) {
 }
 
 export default function Web3Status() {
-  const { chainId } = useStarknetReact()
-  const { address } = useAccount()
+  const { address, account } = useAccount()
+  const chainId = account?.chainId
   const contextNetwork = useStarknetReact(NetworkContextName)
 
   type DomainToAddrData = { domain: string; domain_expiry: number }
@@ -253,7 +252,7 @@ export default function Web3Status() {
   const [domain, setDomain] = useState<string>('')
 
   useEffect(() => {
-    if (chainId == 1) {
+    if (chainId === 1) {
       fetch('https://app.starknet.id/api/indexer/addr_to_domain?addr=' + hexToDecimalString(address ?? ''))
         .then(response => response.json())
         .then((data: DomainToAddrData) => {

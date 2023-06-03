@@ -3,7 +3,6 @@ import { Abi, uint256 } from 'starknet'
 import { Currency, CurrencyAmount, ETHER, JSBI, Token, TokenAmount, WETH } from '@jediswap/sdk'
 import ERC20_ABI from '../../constants/abis/erc20.json'
 import { useAllTokens } from '../../hooks/Tokens'
-import { useActiveStarknetReact } from '../../hooks'
 import { isAddress } from '../../utils'
 import { useAddressNormalizer } from '../../hooks/useAddressNormalizer'
 import { useTokenContract } from '../../hooks/useContract'
@@ -54,9 +53,10 @@ import { useAccount } from '@starknet-react/core'
  */
 
 export function useToken0Balance(uncheckedAddress?: string): CurrencyAmount | undefined {
-  const { chainId } = useActiveStarknetReact()
+  const { account } = useAccount()
+  const chainId = account?.chainId
 
-  const tokenContract = useTokenContract(WETH[chainId ?? DEFAULT_CHAIN_ID].address)
+  const tokenContract = useTokenContract(WETH[chainId ?? DEFAULT_CHAIN_ID]?.address)
 
   const address = useAddressNormalizer(uncheckedAddress)
 

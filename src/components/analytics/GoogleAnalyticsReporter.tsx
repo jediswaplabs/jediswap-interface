@@ -1,12 +1,13 @@
 import { useEffect } from 'react'
 import ReactGA from 'react-ga4'
 import { RouteComponentProps } from 'react-router-dom'
-import { useActiveStarknetReact } from '../../hooks'
 import { GOOGLE_ANALYTICS_CLIENT_ID_STORAGE_KEY } from './index'
+import { useAccount } from '@starknet-react/core'
 
 // fires a GA pageview every time the route changes
 export default function GoogleAnalyticsReporter({ location: { pathname, search } }: RouteComponentProps): null {
-  const { chainId } = useActiveStarknetReact()
+  const { account } = useAccount()
+  const chainId = account?.chainId
   useEffect(() => {
     // cd1 - custom dimension 1 - chainId
     ReactGA.set({ cd1: chainId ?? 0 })

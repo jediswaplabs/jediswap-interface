@@ -10,11 +10,13 @@ import { NetworkContextName, SUPPORTED_WALLETS } from '../constants'
 import { BraavosConnector } from '@web3-starknet-react/braavos-connector'
 import { InjectedConnector, useAccount, useConnectors, useBalance } from '@starknet-react/core'
 
-export function useActiveStarknetReact(): StarknetReactContextInterface<Web3Provider> & { chainId?: ChainId } {
-  const context = useStarknetReactCore<Web3Provider>()
-  const contextNetwork = useStarknetReactCore<Web3Provider>(NetworkContextName)
-  return context.active ? context : contextNetwork
-}
+// deprecating this hook because we don't require it anymore
+
+// export function useActiveStarknetReact(): StarknetReactContextInterface<Web3Provider> & { chainId?: ChainId } {
+//   const context = useStarknetReactCore<Web3Provider>()
+//   const contextNetwork = useStarknetReactCore<Web3Provider>(NetworkContextName)
+//   return context.active ? context : contextNetwork
+// }
 
 export function useEagerConnect() {
   const { activate, active } = useStarknetReactCore() // specifically using useStarknetReactCore because of what this hook does

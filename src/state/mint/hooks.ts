@@ -3,8 +3,6 @@ import { useCallback, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { PairState, usePair } from '../../data/Reserves'
 import { useTotalSupply } from '../../data/TotalSupply'
-
-import { useActiveStarknetReact } from '../../hooks'
 import useDebounce from '../../hooks/useDebounce'
 import { wrappedCurrency, wrappedCurrencyAmount } from '../../utils/wrappedCurrency'
 import { AppDispatch, AppState } from '../index'
@@ -35,8 +33,9 @@ export function useDerivedMintInfo(
   poolTokenPercentage?: Percent
   error?: string
 } {
-  const { chainId } = useActiveStarknetReact()
-  const { address } = useAccount()
+  const { account, address } = useAccount()
+  const chainId = account?.chainId
+
   const { independentField, typedValue, otherTypedValue } = useMintState()
 
   const dependentField = independentField === Field.CURRENCY_A ? Field.CURRENCY_B : Field.CURRENCY_A

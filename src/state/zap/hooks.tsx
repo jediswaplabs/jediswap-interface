@@ -2,7 +2,6 @@ import { Currency, CurrencyAmount, Token, ETHER, LPToken, TokenAmount, Trade } f
 import { ParsedQs } from 'qs'
 import { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useActiveStarknetReact } from '../../hooks'
 import { useCurrency } from '../../hooks/Tokens'
 import { useAddressNormalizer } from '../../hooks/useAddressNormalizer'
 import useParsedQueryString from '../../hooks/useParsedQueryString'
@@ -180,7 +179,8 @@ export function queryParametersToZapState(parsedQs: ParsedQs): ZapState {
 export function useZapDefaultsFromURLSearch():
   | { inputCurrencyId: string | undefined; outputCurrencyId: string | undefined }
   | undefined {
-  const { chainId } = useActiveStarknetReact()
+  const { account } = useAccount()
+  const chainId = account?.chainId
   const dispatch = useDispatch<AppDispatch>()
   const parsedQs = useParsedQueryString()
   const [result, setResult] = useState<

@@ -7,11 +7,10 @@ import { useTransactionAdder } from '../state/transactions/hooks'
 import { isAddress, shortenAddress } from '../utils'
 import { useRouterContract } from './useContract'
 import isZero from '../utils/isZero'
-import { useActiveStarknetReact } from './index'
 import useTransactionDeadline from './useTransactionDeadline'
 // import useENS from './useENS'
 import { useApprovalCallFromTrade } from './useApproveCall'
-import { useAccount } from '@starknet-react/core'
+import { useAccount, useStarknet } from '@starknet-react/core'
 
 export enum SwapCallbackState {
   INVALID,
@@ -47,8 +46,9 @@ function useSwapCallArguments(
   allowedSlippage: number = INITIAL_ALLOWED_SLIPPAGE, // in bips
   recipientAddressOrName: string | null // the ENS name or address of the recipient of the trade, or null if swap should be returned to sender
 ): SwapCall[] {
-  const { account, chainId, library } = useActiveStarknetReact()
-  const { address } = useAccount()
+  const { library } = useStarknet()
+  const { address, account } = useAccount()
+  const chainId = account?.chainId
 
   // const { address: recipientAddress } = useENS(recipientAddressOrName)
   const recipient = recipientAddressOrName === null ? address : recipientAddressOrName
@@ -99,7 +99,9 @@ export function useSwapCallback(
   allowedSlippage: number = INITIAL_ALLOWED_SLIPPAGE, // in bips
   recipientAddressOrName: string | null // the ENS name or address of the recipient of the trade, or null if swap should be returned to sender
 ): { state: SwapCallbackState; callback: null | (() => Promise<string>); error: string | null } {
-  const { account, chainId, library } = useActiveStarknetReact()
+  const { library } = useStarknet()
+  const { account } = useAccount()
+  const chainId = account?.chainId
 
   const approvalCallback = useApprovalCallFromTrade(trade, allowedSlippage)
   const swapCalls = useSwapCallArguments(trade, allowedSlippage, recipientAddressOrName)

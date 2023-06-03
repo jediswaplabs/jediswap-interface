@@ -2,8 +2,6 @@ import { useEffect, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Abi, number, FunctionAbi, validateAndParseAddress, hash, RawArgs, Contract } from 'starknet'
 import { BigNumber } from '@ethersproject/bignumber'
-
-import { useActiveStarknetReact } from '../../hooks'
 import { useBlockNumber } from '../application/hooks'
 import { AppDispatch, AppState } from '../index'
 import {
@@ -15,6 +13,7 @@ import {
   ListenerOptions
 } from './actions'
 import { computeCallDataProps } from './utils'
+import { useAccount } from '@starknet-react/core'
 
 export interface Result extends ReadonlyArray<any> {
   readonly [key: string]: any
@@ -52,7 +51,8 @@ export const NEVER_RELOAD: ListenerOptions = {
 
 // the lowest level call for subscribing to contract data
 function useCallsData(calls: (Call | undefined)[], methodAbi?: FunctionAbi, options?: ListenerOptions): CallResult[] {
-  const { chainId } = useActiveStarknetReact()
+  const { account } = useAccount()
+  const chainId = account?.chainId
   const callResults = useSelector<AppState, AppState['multicall']['callResults']>(state => state.multicall.callResults)
   const dispatch = useDispatch<AppDispatch>()
 
