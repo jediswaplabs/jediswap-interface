@@ -12,24 +12,23 @@ import { ZAP_IN_ADDRESS, ZAP_IN_ABI } from '../constants/contracts/zapInAddress'
 import { StarknetReactManagerReturn } from '@web3-starknet-react/core/dist/types'
 import { useStarknetReactManager } from '@web3-starknet-react/core/dist/manager'
 import { DEFAULT_CHAIN_ID } from '../constants'
-import { InjectedConnector, useAccount, useStarknet } from '@starknet-react/core'
+import { InjectedConnector, useAccount } from '@starknet-react/core'
 
 // returns null on errors
 function useContract(address: string | undefined, ABI: any, withSignerIfPossible = true): Contract | null {
-  const { library } = useStarknet()
   const { connector, account } = useAccount()
   const chainId = account?.chainId
   return useMemo(() => {
-    if (!address || !ABI || !library) return null
+    if (!address || !ABI || !account) return null
 
     try {
-      const contract = getContract(address, ABI, library, connector as InjectedConnector) //line 26
+      const contract = getContract(address, ABI, account, connector as InjectedConnector) //line 26
       return contract
     } catch (error) {
       console.error('Failed to get contract', error)
       return null
     }
-  }, [address, ABI, library, connector, chainId])
+  }, [address, ABI, account, connector, chainId])
 }
 
 export function useTokenContract(tokenAddress?: string, withSignerIfPossible?: boolean): Contract | null {

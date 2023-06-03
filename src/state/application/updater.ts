@@ -3,10 +3,9 @@ import useDebounce from '../../hooks/useDebounce'
 import useIsWindowVisible from '../../hooks/useIsWindowVisible'
 import { updateBlockNumber } from './actions'
 import { useDispatch } from 'react-redux'
-import { useAccount, useStarknet } from '@starknet-react/core'
+import { useAccount } from '@starknet-react/core'
 
 export default function Updater(): null {
-  const { library } = useStarknet()
   const { account } = useAccount()
   const chainId = account?.chainId
   const dispatch = useDispatch()
@@ -33,17 +32,17 @@ export default function Updater(): null {
 
   // attach/detach listeners
   useEffect(() => {
-    if (!library || !chainId || !windowVisible) return undefined
+    if (!account || !chainId || !windowVisible) return undefined
 
     setState({ chainId, blockNumber: null })
 
-    library
+    account
       .getBlock('latest')
       .then(block => blockNumberCallback(Number(block.block_number)))
       .catch(error => console.error(`Failed to get block number for chainId: ${chainId}`, error))
 
     const interval = setInterval(() => {
-      library
+      account
         .getBlock('latest')
         .then(block => blockNumberCallback(Number(block.block_number)))
         .catch(error => console.error(`Failed to get block number for chainId: ${chainId}`, error))
@@ -51,7 +50,7 @@ export default function Updater(): null {
     return () => {
       clearInterval(interval)
     }
-  }, [dispatch, chainId, library, blockNumberCallback, windowVisible])
+  }, [dispatch, chainId, account, blockNumberCallback, windowVisible])
 
   const debouncedState = useDebounce(state, 100)
 

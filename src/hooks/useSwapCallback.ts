@@ -10,7 +10,7 @@ import isZero from '../utils/isZero'
 import useTransactionDeadline from './useTransactionDeadline'
 // import useENS from './useENS'
 import { useApprovalCallFromTrade } from './useApproveCall'
-import { useAccount, useStarknet } from '@starknet-react/core'
+import { useAccount } from '@starknet-react/core'
 
 export enum SwapCallbackState {
   INVALID,
@@ -46,7 +46,6 @@ function useSwapCallArguments(
   allowedSlippage: number = INITIAL_ALLOWED_SLIPPAGE, // in bips
   recipientAddressOrName: string | null // the ENS name or address of the recipient of the trade, or null if swap should be returned to sender
 ): SwapCall[] {
-  const { library } = useStarknet()
   const { address, account } = useAccount()
   const chainId = account?.chainId
 
@@ -58,7 +57,7 @@ function useSwapCallArguments(
   const contract: Contract | null = useRouterContract()
 
   return useMemo(() => {
-    if (!trade || !recipient || !library || !account || !chainId || !deadline || !address) {
+    if (!trade || !recipient || !account || !chainId || !deadline || !address) {
       return []
     }
 
@@ -89,7 +88,7 @@ function useSwapCallArguments(
       )
     }
     return swapMethods.map(parameters => ({ parameters, contract }))
-  }, [account, allowedSlippage, chainId, address, contract, deadline, library, recipient, trade])
+  }, [account, allowedSlippage, chainId, address, contract, deadline, recipient, trade])
 }
 
 // returns a function that will execute a swap, if the parameters are all valid
@@ -99,7 +98,6 @@ export function useSwapCallback(
   allowedSlippage: number = INITIAL_ALLOWED_SLIPPAGE, // in bips
   recipientAddressOrName: string | null // the ENS name or address of the recipient of the trade, or null if swap should be returned to sender
 ): { state: SwapCallbackState; callback: null | (() => Promise<string>); error: string | null } {
-  const { library } = useStarknet()
   const { account } = useAccount()
   const chainId = account?.chainId
 
@@ -112,7 +110,7 @@ export function useSwapCallback(
   // const { address: recipientAddress } = useENS(recipientAddressOrName)
 
   return useMemo(() => {
-    if (!trade || !library || !account || !chainId) {
+    if (!trade || !account || !chainId) {
       return { state: SwapCallbackState.INVALID, callback: null, error: 'Missing dependencies' }
     }
     if (!recipient) {
@@ -256,5 +254,5 @@ export function useSwapCallback(
       },
       error: null
     }
-  }, [trade, library, account, chainId, recipient, recipientAddressOrName, swapCalls, approvalCallback, addTransaction])
+  }, [trade, account, chainId, recipient, recipientAddressOrName, swapCalls, approvalCallback, addTransaction])
 }

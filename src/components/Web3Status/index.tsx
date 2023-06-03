@@ -25,7 +25,7 @@ import { RowBetween } from '../Row'
 import WalletModal from '../WalletModal'
 import WrongNetwork from '../../assets/jedi/WrongNetwork.svg'
 import { hexToDecimalString } from 'starknet/dist/utils/number'
-import { InjectedConnector, useAccount, useStarknet } from '@starknet-react/core'
+import { InjectedConnector, useAccount } from '@starknet-react/core'
 
 const IconWrapper = styled.div<{ size?: number }>`
   ${({ theme }) => theme.flexColumnNoWrap};
@@ -195,7 +195,7 @@ function StatusIcon({ connector }: { connector: InjectedConnector }) {
 
 function Web3StatusInner({ starkID }: { starkID?: string }) {
   const { t } = useTranslation()
-  const { error } = useStarknet()
+  const { error } = useStarknetReact()
   const { address, connector } = useAccount()
 
   const allTransactions = useAllTransactions()
