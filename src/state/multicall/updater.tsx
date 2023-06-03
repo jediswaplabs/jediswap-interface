@@ -6,7 +6,6 @@ import { useMulticallContract } from '../../hooks/useContract'
 import useDebounce from '../../hooks/useDebounce'
 import chunkArray from '../../utils/chunkArray'
 import { CancelledError, retry, RetryableError } from '../../utils/retry'
-import { useBlockNumber } from '../application/hooks'
 import { AppDispatch, AppState } from '../index'
 import {
   Call,
@@ -16,7 +15,7 @@ import {
   updateMulticallResults
 } from './actions'
 import BN from 'bn.js'
-import { useAccount } from '@starknet-react/core'
+import { useAccount, useBlockNumber } from '@starknet-react/core'
 
 // chunk calls so we do not exceed the gas limit
 const CALL_CHUNK_SIZE = 500
@@ -228,7 +227,7 @@ export default function Updater(): null {
   const state = useSelector<AppState, AppState['multicall']>(state => state.multicall)
   // wait for listeners to settle before triggering updates
   const debouncedListeners = useDebounce(state.callListeners, 100)
-  const latestBlockNumber = useBlockNumber()
+  const { blockNumber: latestBlockNumber } = useBlockNumber()
   const { account } = useAccount()
   const chainId = account?.chainId
   const multicallContract = useMulticallContract()

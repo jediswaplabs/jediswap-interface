@@ -2,7 +2,6 @@ import { useEffect, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Abi, number, FunctionAbi, validateAndParseAddress, hash, RawArgs, Contract } from 'starknet'
 import { BigNumber } from '@ethersproject/bignumber'
-import { useBlockNumber } from '../application/hooks'
 import { AppDispatch, AppState } from '../index'
 import {
   addMulticallListeners,
@@ -13,7 +12,7 @@ import {
   ListenerOptions
 } from './actions'
 import { computeCallDataProps } from './utils'
-import { useAccount } from '@starknet-react/core'
+import { useAccount, useBlockNumber } from '@starknet-react/core'
 
 export interface Result extends ReadonlyArray<any> {
   readonly [key: string]: any
@@ -198,8 +197,7 @@ export function useSingleContractMultipleData(
 
   const results = useCallsData(calls, methodAbi, options)
 
-  const latestBlockNumber = useBlockNumber()
-
+  const { blockNumber: latestBlockNumber } = useBlockNumber()
   return useMemo(() => {
     return results.map(result => toCallState(result, latestBlockNumber))
   }, [results, latestBlockNumber])
@@ -239,7 +237,7 @@ export function useMultipleContractSingleData(
 
   const results = useCallsData(calls, methodAbi, options)
 
-  const latestBlockNumber = useBlockNumber()
+  const { blockNumber: latestBlockNumber } = useBlockNumber()
 
   return useMemo(() => {
     return results.map(result => toCallState(result, latestBlockNumber))
@@ -274,7 +272,7 @@ export function useSingleCallResult(
 
   const result = useCallsData(calls, methodAbi, options)[0]
 
-  const latestBlockNumber = useBlockNumber()
+  const { blockNumber: latestBlockNumber } = useBlockNumber()
 
   return useMemo(() => {
     return toCallState(result, latestBlockNumber)

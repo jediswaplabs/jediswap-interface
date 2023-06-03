@@ -4,13 +4,6 @@ import { AppDispatch, AppState } from '../index'
 import { addPopup, ApplicationModal, PopupContent, removePopup, setOpenModal } from './actions'
 import { useAccount } from '@starknet-react/core'
 
-export function useBlockNumber(): number | undefined {
-  const { account } = useAccount()
-  const chainId = account?.chainId
-
-  return useSelector((state: AppState) => state.application.blockNumber[chainId ?? -1])
-}
-
 export function useModalOpen(modal: ApplicationModal): boolean {
   const openModal = useSelector((state: AppState) => state.application.openModal)
   return openModal === modal

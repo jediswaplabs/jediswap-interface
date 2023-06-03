@@ -2,10 +2,9 @@ import React, { useState, useEffect } from 'react'
 import styled, { keyframes } from 'styled-components'
 import { TYPE, ExternalLink } from '../../theme'
 
-import { useBlockNumber } from '../../state/application/hooks'
 import { getStarkscanLink } from '../../utils'
 import { useBlockHash } from '../../hooks/useBlockHashCallback'
-import { useAccount } from '@starknet-react/core'
+import { useAccount, useBlockNumber } from '@starknet-react/core'
 
 const StyledPolling = styled.div`
   display: flex;
@@ -63,7 +62,7 @@ export default function Polling() {
   const { account } = useAccount()
   const chainId = account?.chainId
 
-  const blockNumber = useBlockNumber()
+  const { blockNumber } = useBlockNumber()
   const blockHash = useBlockHash(blockNumber)
 
   const [isMounted, setIsMounted] = useState(true)
