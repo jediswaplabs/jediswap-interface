@@ -45,7 +45,7 @@ import { AddTokenRow, AddTokenText } from '../Swap/styleds'
 import { useAddTokenToWallet } from '../../hooks/useAddTokenToWallet'
 import { ReactComponent as ArrowRight } from '../../assets/images/arrow-right-blue.svg'
 import Loader from '../../components/Loader'
-import { useAccount, useStarknet } from '@starknet-react/core'
+import { useAccount } from '@starknet-react/core'
 
 const BalanceText = styled.div`
   display: flex;
@@ -92,7 +92,6 @@ export default function AddLiquidity({
   },
   history
 }: RouteComponentProps<{ currencyIdA?: string; currencyIdB?: string }>) {
-  const { library } = useStarknet()
   const { address, account } = useAccount()
   const chainId = account?.chainId
   const theme = useContext(ThemeContext)
@@ -182,7 +181,7 @@ export default function AddLiquidity({
   const addTransaction = useTransactionAdder()
 
   async function onAdd() {
-    if (!chainId || !library || !account || !address) return
+    if (!chainId || !account || !address) return
 
     const approvalA = approvalACallback()
     const approvalB = approvalBCallback()

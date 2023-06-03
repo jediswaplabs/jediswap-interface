@@ -43,7 +43,7 @@ import { useApprovalCall } from '../../hooks/useApproveCall'
 import ModeSwitcher from './ModeSwitcher'
 import { InputWrapper, StyledMaxButton, StyledNumericalInput, StyledPercentSign } from './styleds'
 import PairPrice from '../../components/PairPrice'
-import { useAccount, useStarknet } from '@starknet-react/core'
+import { useAccount } from '@starknet-react/core'
 
 export default function RemoveLiquidity({
   history,
@@ -52,7 +52,6 @@ export default function RemoveLiquidity({
   }
 }: RouteComponentProps<{ currencyIdA: string; currencyIdB: string }>) {
   const [currencyA, currencyB] = [useCurrency(currencyIdA) ?? undefined, useCurrency(currencyIdB) ?? undefined]
-  const { library } = useStarknet()
   const { account } = useAccount()
   const chainId = account?.chainId
   const { address } = useAccount()
@@ -122,7 +121,7 @@ export default function RemoveLiquidity({
   // tx sending
   const addTransaction = useTransactionAdder()
   async function onRemove() {
-    if (!chainId || !library || !account || !deadline || !address) throw new Error('missing dependencies')
+    if (!chainId || !account || !deadline || !address) throw new Error('missing dependencies')
 
     if (!router) return
 

@@ -11,7 +11,7 @@ import useTransactionDeadline from './useTransactionDeadline'
 import { wrappedCurrency } from '../utils/wrappedCurrency'
 import { computeSlippageAdjustedLPAmount } from '../utils/prices'
 import { useApprovalCallFromTrade } from './useApproveCall'
-import { useAccount, useStarknet } from '@starknet-react/core'
+import { useAccount } from '@starknet-react/core'
 
 export enum ZapCallbackState {
   INVALID,
@@ -47,7 +47,6 @@ function useZapCallArguments(
   allowedSlippage: number = INITIAL_ALLOWED_SLIPPAGE, // in bips
   recipientAddressOrName: string | null // the ENS name or address of the recipient of the trade, or null if zap should be returned to sender
 ): ZapCall[] {
-  const { library } = useStarknet()
   const { address, account } = useAccount()
   const chainId = account?.chainId
 
@@ -59,7 +58,7 @@ function useZapCallArguments(
   const contract: Contract | null = useZapInContract()
 
   return useMemo(() => {
-    if (!trade || !recipient || !library || !account || !chainId || !deadline || !address) {
+    if (!trade || !recipient || !account || !chainId || !deadline || !address) {
       return []
     }
 
@@ -101,7 +100,6 @@ export function useZapCallback(
   allowedSlippage: number = INITIAL_ALLOWED_SLIPPAGE, // in bips
   recipientAddressOrName: string | null // the ENS name or address of the recipient of the trade, or null if zap should be returned to sender
 ): { state: ZapCallbackState; callback: null | (() => Promise<string>); error: string | null } {
-  const { library } = useStarknet()
   const { account } = useAccount()
   const chainId = account?.chainId
 
@@ -114,7 +112,7 @@ export function useZapCallback(
   // const { address: recipientAddress } = useENS(recipientAddressOrName)
 
   return useMemo(() => {
-    if (!trade || !lpAmountOut || !library || !account || !chainId) {
+    if (!trade || !lpAmountOut || !account || !chainId) {
       return { state: ZapCallbackState.INVALID, callback: null, error: 'Missing dependencies' }
     }
     if (!recipient) {
@@ -229,7 +227,6 @@ export function useZapCallback(
   }, [
     trade,
     lpAmountOut,
-    library,
     account,
     chainId,
     recipient,

@@ -4,7 +4,7 @@ import useInterval from '../../hooks/useInterval'
 import { useAddPopup } from '../application/hooks'
 import { AppDispatch, AppState } from '../index'
 import { checkedTransaction, updateTransaction, SerializableTransactionReceipt } from './actions'
-import { useAccount, useBlockNumber, useStarknet } from '@starknet-react/core'
+import { useAccount, useBlockNumber } from '@starknet-react/core'
 
 export function shouldCheck(
   lastBlockNumber: number,
@@ -28,7 +28,6 @@ export function shouldCheck(
 }
 
 export default function Updater(): null {
-  const { library } = useStarknet()
   const { account } = useAccount()
   const chainId = account?.chainId
 
@@ -43,12 +42,12 @@ export default function Updater(): null {
   const addPopup = useAddPopup()
 
   const checkTxStatusCallback = useCallback(() => {
-    if (!chainId || !library || !lastBlockNumber) return
+    if (!chainId || !account || !lastBlockNumber) return
 
     Object.keys(transactions)
       .filter(hash => shouldCheck(lastBlockNumber, transactions[hash]))
       .forEach(hash => {
-        library
+        account
           .getTransactionReceipt(hash)
           .then(receipt => {
             if (receipt) {
@@ -92,10 +91,10 @@ export default function Updater(): null {
             console.error(`failed to check transaction hash: ${hash}`, error)
           })
       })
-  }, [chainId, library, transactions, lastBlockNumber, dispatch, addPopup])
+  }, [chainId, account, transactions, lastBlockNumber, dispatch, addPopup])
 
-  // Check Tx Status every 15s after library is initialized
-  useInterval(checkTxStatusCallback, library ? 1000 * 15 : null)
+  // Check Tx Status every 15s after account is initialized
+  useInterval(checkTxStatusCallback, account ? 1000 * 15 : null)
 
   return null
 }
