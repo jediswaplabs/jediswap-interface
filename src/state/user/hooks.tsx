@@ -3,8 +3,6 @@ import flatMap from 'lodash.flatmap'
 import { useCallback, useMemo } from 'react'
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 import { BASES_TO_TRACK_LIQUIDITY_FOR, PINNED_PAIRS } from '../../constants'
-
-import { useActiveStarknetReact } from '../../hooks'
 import { useAllTokens } from '../../hooks/Tokens'
 import { AppDispatch, AppState } from '../index'
 import {
@@ -19,6 +17,7 @@ import {
   updateUserSlippageTolerance,
   toggleURLWarning
 } from './actions'
+import { useAccount } from '@starknet-react/core'
 
 function serializeToken(token: Token): SerializedToken {
   return {
@@ -134,7 +133,8 @@ export function useRemoveUserAddedToken(): (chainId: number, address: string) =>
 }
 
 export function useUserAddedTokens(): Token[] {
-  const { chainId } = useActiveStarknetReact()
+  const { account } = useAccount()
+  const chainId = account?.chainId
   const serializedTokensMap = useSelector<AppState, AppState['user']['tokens']>(({ user: { tokens } }) => tokens)
 
   return useMemo(() => {
@@ -183,7 +183,8 @@ export function getLiquidityToken([tokenA, tokenB]: [Token, Token]): Token {
  * Returns all the pairs of tokens that are tracked by the user for the current chain ID.
  */
 export function useTrackedTokenPairs(): [Token, Token][] {
-  const { chainId } = useActiveStarknetReact()
+  const { account } = useAccount()
+  const chainId = account?.chainId
   const tokens = useAllTokens()
   // pinned pairs
   const pinnedPairs = useMemo(() => (chainId ? PINNED_PAIRS[chainId] ?? [] : []), [chainId])

@@ -79,7 +79,7 @@
 //   args?: Args | undefined,
 //   options?: ListenerOptions
 // ): (Args | undefined)[] {
-//   const { library } = useActiveStarknetReact()
+//   const { library } = useStarknet()
 //   const blockNumber = useBlockNumber()
 //   const [calls, setCalls] = useState<(Args | undefined)[]>([])
 

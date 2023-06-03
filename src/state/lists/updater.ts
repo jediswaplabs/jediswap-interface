@@ -1,16 +1,16 @@
 import { getVersionUpgrade, minVersionBump, VersionUpgrade } from '@jediswap/token-lists'
 import { useCallback, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useActiveStarknetReact } from '../../hooks'
 import { useFetchListCallback } from '../../hooks/useFetchListCallback'
 import useInterval from '../../hooks/useInterval'
 import useIsWindowVisible from '../../hooks/useIsWindowVisible'
 import { addPopup } from '../application/actions'
 import { AppDispatch, AppState } from '../index'
 import { acceptListUpdate } from './actions'
+import { useStarknet } from '@starknet-react/core'
 
 export default function Updater(): null {
-  const { library } = useActiveStarknetReact()
+  const { library } = useStarknet()
   const dispatch = useDispatch<AppDispatch>()
   const lists = useSelector<AppState, AppState['lists']['byUrl']>(state => state.lists.byUrl)
 

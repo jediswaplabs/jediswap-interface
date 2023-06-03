@@ -7,12 +7,11 @@ import { useTransactionAdder } from '../state/transactions/hooks'
 import { isAddress, shortenAddress } from '../utils'
 import { useZapInContract } from './useContract'
 import isZero from '../utils/isZero'
-import { useActiveStarknetReact } from './index'
 import useTransactionDeadline from './useTransactionDeadline'
 import { wrappedCurrency } from '../utils/wrappedCurrency'
 import { computeSlippageAdjustedLPAmount } from '../utils/prices'
 import { useApprovalCallFromTrade } from './useApproveCall'
-import { useAccount } from '@starknet-react/core'
+import { useAccount, useStarknet } from '@starknet-react/core'
 
 export enum ZapCallbackState {
   INVALID,
@@ -48,8 +47,9 @@ function useZapCallArguments(
   allowedSlippage: number = INITIAL_ALLOWED_SLIPPAGE, // in bips
   recipientAddressOrName: string | null // the ENS name or address of the recipient of the trade, or null if zap should be returned to sender
 ): ZapCall[] {
-  const { account, chainId, library } = useActiveStarknetReact()
-  const { address } = useAccount()
+  const { library } = useStarknet()
+  const { address, account } = useAccount()
+  const chainId = account?.chainId
 
   // const { address: recipientAddress } = useENS(recipientAddressOrName)
   const recipient = recipientAddressOrName === null ? address : recipientAddressOrName
@@ -101,7 +101,9 @@ export function useZapCallback(
   allowedSlippage: number = INITIAL_ALLOWED_SLIPPAGE, // in bips
   recipientAddressOrName: string | null // the ENS name or address of the recipient of the trade, or null if zap should be returned to sender
 ): { state: ZapCallbackState; callback: null | (() => Promise<string>); error: string | null } {
-  const { account, chainId, library } = useActiveStarknetReact()
+  const { library } = useStarknet()
+  const { account } = useAccount()
+  const chainId = account?.chainId
 
   const approvalCallback = useApprovalCallFromTrade(trade, allowedSlippage, 'zap')
   const zapCalls = useZapCallArguments(trade, allowedSlippage, recipientAddressOrName)

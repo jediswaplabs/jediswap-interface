@@ -2,13 +2,13 @@ import React, { useRef } from 'react'
 import { BookOpen, Code, Info, MessageCircle, PieChart } from 'react-feather'
 import styled from 'styled-components'
 import { ReactComponent as MenuIcon } from '../../assets/images/menu.svg'
-import { useActiveStarknetReact } from '../../hooks'
 import { useOnClickOutside } from '../../hooks/useOnClickOutside'
 import { ApplicationModal } from '../../state/application/actions'
 import { useModalOpen, useToggleModal } from '../../state/application/hooks'
 
 import { ExternalLink } from '../../theme'
 import { ButtonPrimary } from '../Button'
+import { useAccount } from '@starknet-react/core'
 
 const StyledMenuIcon = styled(MenuIcon)`
   path {
@@ -88,7 +88,7 @@ const MenuItem = styled(ExternalLink)`
 const CODE_LINK = 'https://github.com/jediswaplabs/jediswap-interface'
 
 export default function Menu() {
-  const { connectedAddress } = useActiveStarknetReact()
+  const { address } = useAccount()
 
   const node = useRef<HTMLDivElement>()
   const open = useModalOpen(ApplicationModal.MENU)

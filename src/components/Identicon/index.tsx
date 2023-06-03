@@ -1,9 +1,8 @@
 import React, { useEffect, useRef } from 'react'
 
 import styled from 'styled-components'
-
-import { useActiveStarknetReact } from '../../hooks'
 import Jazzicon from 'jazzicon'
+import { useAccount } from '@starknet-react/core'
 
 const StyledIdenticonContainer = styled.div`
   height: 1rem;
@@ -15,14 +14,14 @@ const StyledIdenticonContainer = styled.div`
 export default function Identicon() {
   const ref = useRef<HTMLDivElement>()
 
-  const { connectedAddress } = useActiveStarknetReact()
+  const { address } = useAccount()
 
   useEffect(() => {
-    if (connectedAddress && ref.current) {
+    if (address && ref.current) {
       ref.current.innerHTML = ''
-      ref.current.appendChild(Jazzicon(16, parseInt(connectedAddress.slice(2, 10), 16)))
+      ref.current.appendChild(Jazzicon(16, parseInt(address.slice(2, 10), 16)))
     }
-  }, [connectedAddress])
+  }, [address])
 
   // https://github.com/DefinitelyTyped/DefinitelyTyped/issues/30451
   return <StyledIdenticonContainer ref={ref as any} />

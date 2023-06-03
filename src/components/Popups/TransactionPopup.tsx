@@ -2,7 +2,6 @@ import { Status } from 'starknet'
 import React, { useContext } from 'react'
 import { AlertCircle, CheckCircle } from 'react-feather'
 import styled, { ThemeContext } from 'styled-components'
-import { useActiveStarknetReact } from '../../hooks'
 import { TYPE } from '../../theme'
 import { ExternalLink } from '../../theme/components'
 import { getStarkscanLink } from '../../utils'
@@ -13,6 +12,7 @@ import TxConfirmedIcon from '../../assets/jedi/tx/confirmed.svg'
 import TxCompletedIcon from '../../assets/jedi/tx/completed.svg'
 import TxRejectedIcon from '../../assets/jedi/tx/rejected.svg'
 import { ExternalLink as LinkIcon } from 'react-feather'
+import { useAccount } from '@starknet-react/core'
 
 const RowNoFlex = styled(AutoRow)`
   flex-wrap: nowrap;
@@ -64,7 +64,8 @@ export default function TransactionPopup({
   status?: Status
   summary?: string
 }) {
-  const { chainId } = useActiveStarknetReact()
+  const { account } = useAccount()
+  const chainId = account?.chainId
 
   const theme = useContext(ThemeContext)
 

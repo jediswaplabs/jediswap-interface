@@ -3,8 +3,6 @@ import { useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { PairState, usePair } from '../../data/Reserves'
 import { useTotalSupply } from '../../data/TotalSupply'
-
-import { useActiveStarknetReact } from '../../hooks'
 import { wrappedCurrency } from '../../utils/wrappedCurrency'
 import { AppDispatch, AppState } from '../index'
 import { tryParseAmount } from '../swap/hooks'
@@ -29,8 +27,8 @@ export function useDerivedBurnInfo(
   }
   error?: string
 } {
-  const { chainId } = useActiveStarknetReact()
-  const { address } = useAccount()
+  const { address, account } = useAccount()
+  const chainId = account?.chainId
   const { independentField, typedValue } = useBurnState()
 
   // pair + totalsupply

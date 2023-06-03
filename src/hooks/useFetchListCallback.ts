@@ -8,7 +8,6 @@ import { AppDispatch } from '../state'
 import { fetchTokenList } from '../state/lists/actions'
 import getTokenList from '../utils/getTokenList'
 import resolveENSContentHash from '../utils/resolveENSContentHash'
-import { useActiveStarknetReact } from './index'
 
 export function useFetchListCallback(): (listUrl: string) => Promise<TokenList> {
   const dispatch = useDispatch<AppDispatch>()

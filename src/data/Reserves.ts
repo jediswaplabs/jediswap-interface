@@ -2,12 +2,12 @@ import { TokenAmount, Pair, Currency, JSBI, Token } from '@jediswap/sdk'
 import { useMemo } from 'react'
 import JediswapPairABI from '../constants/abis/Pair.json'
 import { Interface } from '@ethersproject/abi'
-import { useActiveStarknetReact } from '../hooks'
 
 import { wrappedCurrency } from '../utils/wrappedCurrency'
 import { Abi, validateAndParseAddress } from 'starknet'
 import { useMultipleContractSingleData } from '../state/multicall/hooks'
 import { useAllPairs } from '../state/pairs/hooks'
+import { useAccount } from '@starknet-react/core'
 
 export enum PairState {
   LOADING,
@@ -22,7 +22,8 @@ export interface LiquidityPairToken {
 }
 
 export function usePairs(currencies: [Currency | undefined, Currency | undefined][]): [PairState, Pair | null][] {
-  const { chainId } = useActiveStarknetReact()
+  const { account } = useAccount()
+  const chainId = account?.chainId
   const allPairs = useAllPairs()
 
   const tokens = useMemo(

@@ -1,8 +1,6 @@
 import { InvokeFunctionResponse } from 'starknet'
 import { useCallback, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-
-import { useActiveStarknetReact } from '../../hooks'
 import { AppDispatch, AppState } from '../index'
 import { addTransaction } from './actions'
 import { TransactionDetails } from './reducer'
@@ -13,8 +11,8 @@ export function useTransactionAdder(): (
   response: InvokeFunctionResponse,
   customData?: { summary?: string; approval?: { tokenAddress: string; spender: string }; claim?: { recipient: string } }
 ) => void {
-  const { chainId } = useActiveStarknetReact()
   const { account, address } = useAccount()
+  const chainId = account?.chainId
   const dispatch = useDispatch<AppDispatch>()
 
   return useCallback(
@@ -41,9 +39,8 @@ export function useTransactionAdder(): (
 
 // returns all the transactions for the current chain
 export function useAllTransactions(): { [txHash: string]: TransactionDetails } {
-  const { chainId } = useActiveStarknetReact()
-  const { address } = useAccount()
-
+  const { address, account } = useAccount()
+  const chainId = account?.chainId
   const state = useSelector<AppState, AppState['transactions']>(state => state.transactions)
 
   const allTxns = chainId ? state[chainId] ?? {} : {}

@@ -1,14 +1,15 @@
 import { BASES_TO_CHECK_TRADES_AGAINST } from './../constants/index'
 import { useMemo } from 'react'
-import { useActiveStarknetReact } from '.'
 import { Currency, CurrencyAmount, JSBI, LPToken, Pair, Token, TokenAmount, Trade } from '@jediswap/sdk'
 import { wrappedCurrency, wrappedCurrencyAmount } from '../utils/wrappedCurrency'
 import flatMap from 'lodash.flatmap'
 import { PairState, usePair, usePairs } from '../data/Reserves'
 import { useTotalSupply } from '../data/TotalSupply'
+import { useAccount } from '@starknet-react/core'
 
 export function useZapPairs(inputCurrency?: Currency, outputLpToken?: LPToken): [Pair[], boolean] {
-  const { chainId } = useActiveStarknetReact()
+  const { account } = useAccount()
+  const chainId = account?.chainId
 
   const bases: Token[] = useMemo(() => (chainId ? BASES_TO_CHECK_TRADES_AGAINST[chainId] : []), [chainId])
 
@@ -131,7 +132,8 @@ export function useLPOutAmount(
   lpTokenOut?: LPToken,
   trades?: ZapTrades | null
 ): [TokenAmount | undefined, Trade | null | undefined, boolean] {
-  const { chainId } = useActiveStarknetReact()
+  const { account } = useAccount()
+  const chainId = account?.chainId
 
   const tokenAmountIn = wrappedCurrencyAmount(currencyAmountIn, chainId)
 

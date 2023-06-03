@@ -17,7 +17,6 @@ import { RowBetween, RowFixed } from '../../components/Row'
 
 import CurrencyLogo from '../../components/CurrencyLogo'
 import { DEFAULT_CHAIN_ID, ROUTER_ADDRESS } from '../../constants'
-import { useActiveStarknetReact } from '../../hooks'
 import { useCurrency } from '../../hooks/Tokens'
 import { usePairContract } from '../../hooks/useContract'
 import useTransactionDeadline from '../../hooks/useTransactionDeadline'
@@ -44,7 +43,7 @@ import { useApprovalCall } from '../../hooks/useApproveCall'
 import ModeSwitcher from './ModeSwitcher'
 import { InputWrapper, StyledMaxButton, StyledNumericalInput, StyledPercentSign } from './styleds'
 import PairPrice from '../../components/PairPrice'
-import { useAccount } from '@starknet-react/core'
+import { useAccount, useStarknet } from '@starknet-react/core'
 
 export default function RemoveLiquidity({
   history,
@@ -53,7 +52,9 @@ export default function RemoveLiquidity({
   }
 }: RouteComponentProps<{ currencyIdA: string; currencyIdB: string }>) {
   const [currencyA, currencyB] = [useCurrency(currencyIdA) ?? undefined, useCurrency(currencyIdB) ?? undefined]
-  const { account, chainId, library } = useActiveStarknetReact()
+  const { library } = useStarknet()
+  const { account } = useAccount()
+  const chainId = account?.chainId
   const { address } = useAccount()
   const [tokenA, tokenB] = useMemo(() => [wrappedCurrency(currencyA, chainId), wrappedCurrency(currencyB, chainId)], [
     currencyA,

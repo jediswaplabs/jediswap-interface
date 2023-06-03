@@ -1,7 +1,6 @@
 import { Contract } from 'starknet'
 import { useMemo } from 'react'
 import { getContract } from '../utils'
-import { useActiveStarknetReact } from './index'
 
 import ERC20_ABI from '../constants/abis/erc20.json'
 import PAIR_ABI from '../constants/abis/Pair.json'
@@ -13,12 +12,13 @@ import { ZAP_IN_ADDRESS, ZAP_IN_ABI } from '../constants/contracts/zapInAddress'
 import { StarknetReactManagerReturn } from '@web3-starknet-react/core/dist/types'
 import { useStarknetReactManager } from '@web3-starknet-react/core/dist/manager'
 import { DEFAULT_CHAIN_ID } from '../constants'
-import { InjectedConnector, useAccount } from '@starknet-react/core'
+import { InjectedConnector, useAccount, useStarknet } from '@starknet-react/core'
 
 // returns null on errors
 function useContract(address: string | undefined, ABI: any, withSignerIfPossible = true): Contract | null {
-  const { library, chainId } = useActiveStarknetReact()
-  const { connector } = useAccount()
+  const { library } = useStarknet()
+  const { connector, account } = useAccount()
+  const chainId = account?.chainId
   return useMemo(() => {
     if (!address || !ABI || !library) return null
 
@@ -41,25 +41,29 @@ export function usePairContract(pairAddress?: string, withSignerIfPossible?: boo
 }
 //Change here
 export function useFactoryContract(): Contract | null {
-  const { chainId } = useActiveStarknetReact()
+  const { account } = useAccount()
+  const chainId = account?.chainId
 
   return useContract(FACTORY_ADDRESS[chainId ?? DEFAULT_CHAIN_ID], FACTORY_ABI, true)
 }
 //Change Here
 export function useRouterContract(): Contract | null {
-  const { chainId } = useActiveStarknetReact()
+  const { account } = useAccount()
+  const chainId = account?.chainId
 
   return useContract(ROUTER_ADDRESS[chainId ?? DEFAULT_CHAIN_ID], ROUTER_ABI, true)
 }
 
 export function useMulticallContract(): Contract | null {
-  const { chainId } = useActiveStarknetReact()
+  const { account } = useAccount()
+  const chainId = account?.chainId
 
   return useContract(MULTICALL_NETWORKS[chainId ?? DEFAULT_CHAIN_ID], MULTICALL_ABI, false)
 }
 //Change Here
 export function useZapInContract(): Contract | null {
-  const { chainId } = useActiveStarknetReact()
+  const { account } = useAccount()
+  const chainId = account?.chainId
 
   return useContract(ZAP_IN_ADDRESS[chainId ?? DEFAULT_CHAIN_ID], ZAP_IN_ABI, true)
 }

@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useActiveStarknetReact } from '../../hooks'
 import useInterval from '../../hooks/useInterval'
 import { useAddPopup, useBlockNumber } from '../application/hooks'
 import { AppDispatch, AppState } from '../index'
 import { checkedTransaction, updateTransaction, SerializableTransactionReceipt } from './actions'
+import { useAccount, useStarknet } from '@starknet-react/core'
 
 export function shouldCheck(
   lastBlockNumber: number,
@@ -28,7 +28,9 @@ export function shouldCheck(
 }
 
 export default function Updater(): null {
-  const { chainId, library } = useActiveStarknetReact()
+  const { library } = useStarknet()
+  const { account } = useAccount()
+  const chainId = account?.chainId
 
   const lastBlockNumber = useBlockNumber()
 

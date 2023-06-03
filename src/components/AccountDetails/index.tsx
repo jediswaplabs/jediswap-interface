@@ -1,7 +1,6 @@
 import React, { useCallback, useContext } from 'react'
 import { useDispatch } from 'react-redux'
 import styled, { ThemeContext } from 'styled-components'
-import { useActiveStarknetReact } from '../../hooks'
 import { AppDispatch } from '../../state'
 import { clearAllTransactions } from '../../state/transactions/actions'
 import { shortenAddress } from '../../utils'
@@ -270,7 +269,6 @@ export default function AccountDetails({
   openOptions
 }: AccountDetailsProps) {
   const { account, address, connector } = useAccount()
-  console.log('account', account?.chainId)
   const { disconnect } = useConnectors()
   const chainId = account?.chainId
   const theme = useContext(ThemeContext)

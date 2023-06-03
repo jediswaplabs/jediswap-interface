@@ -12,8 +12,8 @@ import { AutoColumn, ColumnCenter } from '../Column'
 import Circle from '../../assets/jedi/loadingCircle.svg'
 
 import { getStarkscanLink } from '../../utils'
-import { useActiveStarknetReact } from '../../hooks'
 import openInBrowser from '../../assets/jedi/openInBrowser.svg'
+import { useAccount } from '@starknet-react/core'
 
 const Wrapper = styled.div`
   width: 100%;
@@ -231,7 +231,8 @@ export default function TransactionConfirmationModal({
   pendingText,
   content
 }: ConfirmationModalProps) {
-  const { chainId } = useActiveStarknetReact()
+  const { account } = useAccount()
+  const chainId = account?.chainId
 
   if (!chainId) return null
 

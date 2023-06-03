@@ -11,10 +11,10 @@ import { TYPE } from '../../theme'
 import { Input as NumericalInput } from '../NumericalInput'
 import { ReactComponent as DropDown } from '../../assets/images/dropdown.svg'
 
-import { useActiveStarknetReact } from '../../hooks'
 import { useTranslation } from 'react-i18next'
 import { ColumnCenter } from '../Column'
 import { WrappedLPTokenInfo } from '../../state/lists/hooks'
+import { useAccount } from '@starknet-react/core'
 
 const InputRow = styled.div<{ selected: boolean }>`
   ${({ theme }) => theme.flexRowNoWrap}
@@ -190,7 +190,7 @@ CurrencyInputPanelProps) {
   const { t } = useTranslation()
 
   const [modalOpen, setModalOpen] = useState(false)
-  const { connectedAddress } = useActiveStarknetReact()
+  const { address } = useAccount()
   const theme = useContext(ThemeContext)
 
   const handleDismissSearch = useCallback(() => {
@@ -206,7 +206,7 @@ CurrencyInputPanelProps) {
               <TYPE.body color={theme.text2} fontWeight={500} fontSize={14}>
                 {label}
               </TYPE.body>
-              {connectedAddress && (
+              {address && (
                 <TYPE.body
                   onClick={onMax}
                   color={theme.text2}
@@ -283,7 +283,7 @@ CurrencyInputPanelProps) {
                 style={showMaxButton ? { paddingRight: '60px' } : { paddingRight: '12px' }}
                 disabled={disableInput}
               />
-              {connectedAddress && currency && showMaxButton && label !== 'To' && (
+              {address && currency && showMaxButton && label !== 'To' && (
                 <StyledBalanceMax onClick={onMax}>MAX</StyledBalanceMax>
               )}
             </>

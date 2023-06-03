@@ -15,7 +15,7 @@ import AccountDetails from '../AccountDetails'
 import Modal from '../Modal'
 import Option from './Option'
 import PendingView from './PendingView'
-import { InjectedConnector, useAccount, useConnectors } from '@starknet-react/core'
+import { InjectedConnector, useAccount, useConnectors, useStarknet } from '@starknet-react/core'
 
 const CloseIcon = styled.div`
   position: absolute;
@@ -130,6 +130,8 @@ export default function WalletModal({
   const { active, error } = useStarknetReact()
   const { account, connector } = useAccount()
   const { connect } = useConnectors()
+
+  // console.log('🚀 ~ file: index.tsx:134 ~ useStarknet():', useStarknet())
 
   // const connectStarknet = useStarknetConnector({ showModal: true })
 

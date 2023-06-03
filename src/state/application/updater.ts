@@ -1,12 +1,14 @@
 import { useCallback, useEffect, useState } from 'react'
-import { useActiveStarknetReact } from '../../hooks'
 import useDebounce from '../../hooks/useDebounce'
 import useIsWindowVisible from '../../hooks/useIsWindowVisible'
 import { updateBlockNumber } from './actions'
 import { useDispatch } from 'react-redux'
+import { useAccount, useStarknet } from '@starknet-react/core'
 
 export default function Updater(): null {
-  const { library, chainId } = useActiveStarknetReact()
+  const { library } = useStarknet()
+  const { account } = useAccount()
+  const chainId = account?.chainId
   const dispatch = useDispatch()
 
   const windowVisible = useIsWindowVisible()

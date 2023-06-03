@@ -1,8 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
 import { CheckSquare, AlertTriangle } from 'react-feather'
-
-import { useActiveStarknetReact } from '../../hooks'
 import { getStarkscanLink } from '../../utils'
 import { ExternalLink } from '../../theme'
 import { useAllTransactions } from '../../state/transactions/hooks'
@@ -10,6 +8,7 @@ import { RowFixed } from '../Row'
 import Loader from '../Loader'
 
 import { ExternalLink as LinkIcon } from 'react-feather'
+import { useAccount } from '@starknet-react/core'
 
 const TransactionWrapper = styled.div``
 
@@ -57,7 +56,8 @@ const IconWrapper = styled.div<{ pending: boolean; success?: boolean }>`
 `
 
 export default function Transaction({ hash }: { hash: string }) {
-  const { chainId } = useActiveStarknetReact()
+  const { account } = useAccount()
+  const chainId = account?.chainId
   const allTransactions = useAllTransactions()
 
   const tx = allTransactions?.[hash]

@@ -25,7 +25,6 @@ import TokenWarningModal from '../../components/TokenWarningModal'
 import ProgressSteps from '../../components/ProgressSteps'
 
 import { BETTER_TRADE_LINK_THRESHOLD, INITIAL_ALLOWED_SLIPPAGE } from '../../constants'
-import { useActiveStarknetReact } from '../../hooks'
 import { useCurrency } from '../../hooks/Tokens'
 import { ApprovalState, useApproveCallbackFromTrade } from '../../hooks/useApproveCallback'
 // import useENSAddress from '../../hooks/useENSAddress.ts'
@@ -101,8 +100,8 @@ export default function Swap() {
   //   setDismissTokenWarning(true)
   // }, [])
 
-  const { chainId } = useActiveStarknetReact()
-  const { address } = useAccount()
+  const { address, account } = useAccount()
+  const chainId = account?.chainId
 
   const theme = useContext(ThemeContext)
 
