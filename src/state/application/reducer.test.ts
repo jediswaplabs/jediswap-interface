@@ -1,7 +1,7 @@
-import { ChainId } from '@jediswap/sdk'
 import { createStore, Store } from 'redux'
 import { addPopup, ApplicationModal, removePopup, setOpenModal, updateBlockNumber } from './actions'
 import reducer, { ApplicationState } from './reducer'
+import { StarknetChainId } from 'starknet/dist/constants'
 
 describe('application reducer', () => {
   let store: Store<ApplicationState>
@@ -10,7 +10,7 @@ describe('application reducer', () => {
     store = createStore(reducer, {
       popupList: [],
       blockNumber: {
-        [ChainId.MAINNET]: 3
+        [StarknetChainId.MAINNET]: 3
       },
       openModal: null
     })
@@ -54,18 +54,18 @@ describe('application reducer', () => {
 
   describe('updateBlockNumber', () => {
     it('updates block number', () => {
-      store.dispatch(updateBlockNumber({ chainId: ChainId.MAINNET, blockNumber: 4 }))
-      expect(store.getState().blockNumber[ChainId.MAINNET]).toEqual(4)
+      store.dispatch(updateBlockNumber({ chainId: StarknetChainId.MAINNET, blockNumber: 4 }))
+      expect(store.getState().blockNumber[StarknetChainId.MAINNET]).toEqual(4)
     })
     it('no op if late', () => {
-      store.dispatch(updateBlockNumber({ chainId: ChainId.MAINNET, blockNumber: 2 }))
-      expect(store.getState().blockNumber[ChainId.MAINNET]).toEqual(3)
+      store.dispatch(updateBlockNumber({ chainId: StarknetChainId.MAINNET, blockNumber: 2 }))
+      expect(store.getState().blockNumber[StarknetChainId.MAINNET]).toEqual(3)
     })
     it('works with non-set chains', () => {
-      store.dispatch(updateBlockNumber({ chainId: ChainId.ROPSTEN, blockNumber: 2 }))
+      store.dispatch(updateBlockNumber({ chainId: StarknetChainId.TESTNET, blockNumber: 2 }))
       expect(store.getState().blockNumber).toEqual({
-        [ChainId.MAINNET]: 3,
-        [ChainId.ROPSTEN]: 2
+        [StarknetChainId.MAINNET]: 3,
+        [StarknetChainId.TESTNET]: 2
       })
     })
   })

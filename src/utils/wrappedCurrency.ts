@@ -1,5 +1,5 @@
 import { Currency, CurrencyAmount, ETHER, Token, TokenAmount, WETH } from '@jediswap/sdk'
-import { StarknetChainId } from '../constants'
+import { StarknetChainId } from 'starknet/dist/constants'
 
 export function wrappedCurrency(
   currency: Currency | undefined,

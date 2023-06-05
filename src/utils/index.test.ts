@@ -1,6 +1,6 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { AddressZero } from '@ethersproject/constants'
-import { TokenAmount, Token, ChainId, Percent, JSBI } from '@jediswap/sdk'
+import { TokenAmount, Token, Percent, JSBI } from '@jediswap/sdk'
 
 import {
   getVoyagerLink,
@@ -11,6 +11,7 @@ import {
   calculateGasMargin,
   basisPointsToPercent
 } from '.'
+import { StarknetChainId } from 'starknet/dist/constants'
 
 describe('utils', () => {
   describe('#getVoyagerLink', () => {
@@ -30,7 +31,9 @@ describe('utils', () => {
       expect(getVoyagerLink(3, 'abc', 'contract')).toEqual('https://ropsten.voyager.online/contract/abc')
     })
     it('enum', () => {
-      expect(getVoyagerLink(ChainId.RINKEBY, 'abc', 'contract')).toEqual('https://rinkeby.voyager.online/contract/abc')
+      expect(getVoyagerLink(StarknetChainId.TESTNET, 'abc', 'contract')).toEqual(
+        'https://rinkeby.voyager.online/contract/abc'
+      )
     })
   })
 
@@ -51,13 +54,15 @@ describe('utils', () => {
       expect(getStarkscanLink(3, 'abc', 'contract')).toEqual('https://testnet.starkscan.co/contract/abc')
     })
     it('enum', () => {
-      expect(getStarkscanLink(ChainId.GÖRLI, 'abc', 'contract')).toEqual('https://testnet.starkscan.co/contract/abc')
+      expect(getStarkscanLink(StarknetChainId.TESTNET, 'abc', 'contract')).toEqual(
+        'https://testnet.starkscan.co/contract/abc'
+      )
     })
   })
 
   describe('#calculateSlippageAmount', () => {
     it('bounds are correct', () => {
-      const tokenAmount = new TokenAmount(new Token(ChainId.MAINNET, AddressZero, 0), '100')
+      const tokenAmount = new TokenAmount(new Token(StarknetChainId.MAINNET, AddressZero, 0), '100')
       expect(() => calculateSlippageAmount(tokenAmount, -1)).toThrow()
       expect(calculateSlippageAmount(tokenAmount, 0).map(bound => bound.toString())).toEqual(['100', '100'])
       expect(calculateSlippageAmount(tokenAmount, 100).map(bound => bound.toString())).toEqual(['99', '101'])

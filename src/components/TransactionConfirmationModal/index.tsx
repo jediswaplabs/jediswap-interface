@@ -1,4 +1,4 @@
-import { ChainId } from '@jediswap/sdk'
+import { StarknetChainId } from 'starknet/dist/constants'
 import React, { useContext } from 'react'
 import styled, { ThemeContext } from 'styled-components'
 import Modal from '../Modal'
@@ -14,7 +14,6 @@ import Circle from '../../assets/jedi/loadingCircle.svg'
 import { getStarkscanLink } from '../../utils'
 import openInBrowser from '../../assets/jedi/openInBrowser.svg'
 import { useAccount } from '@starknet-react/core'
-import { StarknetChainId } from '../../constants'
 
 const Wrapper = styled.div`
   width: 100%;
