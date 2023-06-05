@@ -1,4 +1,4 @@
-import { validateAndParseAddress } from 'starknet'
+import { validateAndParseAddress, constants } from 'starknet'
 import { ChainId, JSBI, Percent, Token, WETH } from '@jediswap/sdk'
 
 // import { fortmatic, injected, portis, walletconnect, walletlink, argentX } from '../connectors'
@@ -8,6 +8,8 @@ import BRAAVOS_ICON from '../assets/svg/Braavos.svg'
 import { InjectedConnector } from '@starknet-react/core'
 
 export const DEFAULT_CHAIN_ID = 1
+
+export type StarknetChainId = constants.StarknetChainId
 
 export const ROUTER_ADDRESS: { [chainId in ChainId]: string } = {
   [ChainId.MAINNET]: validateAndParseAddress('0x41fd22b238fa21cfcf5dd45a8548974d8263b3a531a60388411c5e230f97023'),
