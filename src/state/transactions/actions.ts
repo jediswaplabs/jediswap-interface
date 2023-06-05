@@ -1,7 +1,6 @@
 import { createAction } from '@reduxjs/toolkit'
 import { BlockNumber, Status, constants } from 'starknet'
-import { StarknetChainId } from '../../constants'
-
+import { StarknetChainId } from 'starknet/dist/constants'
 export interface SerializableTransactionReceipt {
   transactionIndex?: number
   blockHash?: string

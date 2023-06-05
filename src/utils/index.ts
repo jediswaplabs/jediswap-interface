@@ -1,12 +1,12 @@
 import { BigNumberish } from 'starknet/dist/utils/number'
-import { validateAndParseAddress, Abi, Provider, uint256, Contract } from 'starknet'
-
+import { validateAndParseAddress, Abi, Provider, uint256, Contract, AccountInterface } from 'starknet'
 import { BigNumber } from '@ethersproject/bignumber'
-import { StarknetChainId, ZERO_ADDRESS } from '../constants'
+import { ZERO_ADDRESS } from '../constants'
 import { JSBI, Percent, Token, CurrencyAmount, Currency, ETHER } from '@jediswap/sdk'
 import { LPTokenAddressMap, TokenAddressMap } from '../state/lists/hooks'
 import isZero from './isZero'
 import { InjectedConnector } from '@starknet-react/core'
+import { StarknetChainId } from 'starknet/dist/constants'
 
 // returns the checksummed address if the address is valid, otherwise returns false
 export function isAddress(addr: string | null | undefined): string | false {
@@ -21,19 +21,13 @@ export function isAddress(addr: string | null | undefined): string | false {
 }
 
 const VOYAGER_PREFIXES: { [chainId in StarknetChainId]: string } = {
-  1: '',
-  3: 'ropsten.',
-  4: 'rinkeby.',
-  5: 'goerli.',
-  42: 'kovan.'
+  [StarknetChainId.MAINNET]: '',
+  [StarknetChainId.TESTNET]: 'goerli.'
 }
 
 const STARKSCAN_PREFIXES: { [chainId in StarknetChainId]: string } = {
-  1: '',
-  3: 'testnet.',
-  4: 'testnet.',
-  5: 'testnet.',
-  42: 'testnet.'
+  [StarknetChainId.MAINNET]: '',
+  [StarknetChainId.TESTNET]: 'testnet.'
 }
 
 export function getVoyagerLink(
@@ -120,7 +114,7 @@ export function calculateSlippageAmount(value: CurrencyAmount, slippage: number)
 export function getContract(
   address: string,
   ABI: any,
-  library: Provider,
+  library: AccountInterface,
   connector?: InjectedConnector,
   account?: string
 ): Contract {
@@ -144,11 +138,7 @@ export function escapeRegExp(string: string): string {
   return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') // $& means the whole matched string
 }
 
-export function isTokenOnList(
-  defaultTokens: TokenAddressMap | LPTokenAddressMap,
-  currency?: Currency,
-  chainId?: StarknetChainId
-): boolean {
+export function isTokenOnList(defaultTokens: TokenAddressMap | LPTokenAddressMap, currency?: Currency): boolean {
   if (currency === ETHER) return true
   return Boolean(currency instanceof Token && defaultTokens[currency.chainId]?.[currency.address])
 }

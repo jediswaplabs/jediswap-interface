@@ -4,6 +4,7 @@ import useIsWindowVisible from '../../hooks/useIsWindowVisible'
 import { updateBlockNumber } from './actions'
 import { useDispatch } from 'react-redux'
 import { useAccount } from '@starknet-react/core'
+import { StarknetChainId } from 'starknet/dist/constants'
 
 export default function Updater(): null {
   const { account } = useAccount()
@@ -12,7 +13,7 @@ export default function Updater(): null {
 
   const windowVisible = useIsWindowVisible()
 
-  const [state, setState] = useState<{ chainId: number | undefined; blockNumber: number | null }>({
+  const [state, setState] = useState<{ chainId: StarknetChainId | undefined; blockNumber: number | null }>({
     chainId,
     blockNumber: null
   })

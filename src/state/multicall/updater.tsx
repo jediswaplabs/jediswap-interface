@@ -16,6 +16,7 @@ import {
 } from './actions'
 import BN from 'bn.js'
 import { useAccount, useBlockNumber } from '@starknet-react/core'
+import { StarknetChainId } from 'starknet/dist/constants'
 
 // chunk calls so we do not exceed the gas limit
 const CALL_CHUNK_SIZE = 500
@@ -70,7 +71,7 @@ async function fetchChunk(
  */
 export function activeListeningKeys(
   allListeners: AppState['multicall']['callListeners'],
-  chainId?: number
+  chainId?: StarknetChainId
 ): { [callKey: string]: number } {
   if (!allListeners || !chainId) return {}
   const listeners = allListeners[chainId]
@@ -102,7 +103,7 @@ export function activeListeningKeys(
 export function outdatedListeningKeys(
   callResults: AppState['multicall']['callResults'],
   listeningKeys: { [callKey: string]: number },
-  chainId: number | undefined,
+  chainId: StarknetChainId | undefined,
   latestBlockNumber: number | undefined
 ): string[] {
   if (!chainId || !latestBlockNumber) return []

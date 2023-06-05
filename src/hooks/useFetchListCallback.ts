@@ -1,5 +1,4 @@
 import { nanoid } from '@reduxjs/toolkit'
-import { ChainId } from '@jediswap/sdk'
 import { TokenList } from '@jediswap/token-lists'
 import { useCallback } from 'react'
 import { useDispatch } from 'react-redux'

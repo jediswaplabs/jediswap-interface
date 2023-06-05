@@ -1,4 +1,3 @@
-import { ChainId, TokenAmount, JSBI } from '@jediswap/sdk'
 import React, { useEffect, useState } from 'react'
 // import { Text } from 'rebass'
 import { NavLink, withRouter } from 'react-router-dom'
@@ -30,7 +29,6 @@ import Modal from '../Modal'
 import usePrevious from '../../hooks/usePrevious'
 import { transparentize } from 'polished'
 import { useAccount, useNetwork } from '@starknet-react/core'
-import { StarknetChainId } from '../../constants'
 
 const HeaderFrame = styled.div`
   display: grid;
@@ -336,13 +334,6 @@ const StarkNetCard = styled.div`
   // text-align: center;
 `
 
-const NETWORK_LABELS: { [chainId in StarknetChainId]?: string } = {
-  [ChainId.MAINNET]: 'Mainnet',
-  [ChainId.RINKEBY]: 'Rinkeby',
-  [ChainId.ROPSTEN]: 'Ropsten',
-  [ChainId.GÖRLI]: 'Görli',
-  [ChainId.KOVAN]: 'Kovan'
-}
 interface window {
   starknet: any
 }
