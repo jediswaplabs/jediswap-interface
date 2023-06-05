@@ -123,8 +123,8 @@ function CurrencyRow({
   const selectedTokenList = useSelectedTokenList()
   const selectedLPTokenList = useSelectedLPTokenList()
 
-  const isTokenOnSelectedList = isTokenOnList(selectedTokenList, currency, chainId)
-  const isLPTokenOnSelectedList = isTokenOnList(selectedLPTokenList, currency, chainId)
+  const isTokenOnSelectedList = isTokenOnList(selectedTokenList, currency)
+  const isLPTokenOnSelectedList = isTokenOnList(selectedLPTokenList, currency)
 
   const isOnSelectedList = isTokenOnSelectedList || isLPTokenOnSelectedList
 

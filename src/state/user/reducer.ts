@@ -34,13 +34,13 @@ export interface UserState {
   userDeadline: number
 
   tokens: {
-    [chainId: number]: {
+    [chainId: string]: {
       [address: string]: SerializedToken
     }
   }
 
   pairs: {
-    [chainId: number]: {
+    [chainId: string]: {
       // keyed by token0Address:token1Address
       [key: string]: SerializedPair
     }

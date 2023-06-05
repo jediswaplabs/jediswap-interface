@@ -89,7 +89,7 @@ function useZapCallArguments(
       )
     }
     return zapMethods.map(parameters => ({ parameters, contract }))
-  }, [account, allowedSlippage, chainId, address, contract, deadline, library, recipient, trade])
+  }, [account, allowedSlippage, chainId, address, contract, deadline, account, recipient, trade])
 }
 
 // returns a function that will execute a zap, if the parameters are all valid

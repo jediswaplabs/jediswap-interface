@@ -4,14 +4,10 @@ import React, { useMemo, useEffect, useState } from 'react'
 // import { Activity } from 'react-feather'
 import { useTranslation } from 'react-i18next'
 import styled, { css } from 'styled-components'
-import CoinbaseWalletIcon from '../../assets/images/coinbaseWalletIcon.svg'
-import FortmaticIcon from '../../assets/images/fortmaticIcon.png'
-import PortisIcon from '../../assets/images/portisIcon.png'
-import WalletConnectIcon from '../../assets/images/walletConnectIcon.svg'
 import ArgentXIcon from '../../assets/images/argentx.png'
 import braavosIcon from '../../assets/svg/Braavos.svg'
 import { argentX, braavosWallet } from '../../connectors'
-import { NetworkContextName } from '../../constants'
+import { NetworkContextName, domainURL } from '../../constants'
 import { useWalletModalToggle } from '../../state/application/hooks'
 import { isTransactionRecent, useAllTransactions } from '../../state/transactions/hooks'
 import { TransactionDetails } from '../../state/transactions/reducer'
@@ -26,6 +22,7 @@ import WalletModal from '../WalletModal'
 import WrongNetwork from '../../assets/jedi/WrongNetwork.svg'
 import { hexToDecimalString } from 'starknet/dist/utils/number'
 import { InjectedConnector, useAccount } from '@starknet-react/core'
+import { StarknetChainId } from 'starknet/dist/constants'
 
 const IconWrapper = styled.div<{ size?: number }>`
   ${({ theme }) => theme.flexColumnNoWrap};
@@ -252,26 +249,15 @@ export default function Web3Status() {
   const [domain, setDomain] = useState<string>('')
 
   useEffect(() => {
-    if (chainId === 1) {
-      fetch('https://app.starknet.id/api/indexer/addr_to_domain?addr=' + hexToDecimalString(address ?? ''))
-        .then(response => response.json())
-        .then((data: DomainToAddrData) => {
-          setDomain(data.domain)
-        })
-        .catch(error => {
-          console.error(error)
-        })
-    }
-    if (chainId == 5) {
-      fetch('https://goerli.app.starknet.id/api/indexer/addr_to_domain?addr=' + hexToDecimalString(address ?? ''))
-        .then(response => response.json())
-        .then((data: DomainToAddrData) => {
-          setDomain(data.domain)
-        })
-        .catch(error => {
-          console.error(error)
-        })
-    }
+    const url = domainURL(chainId as StarknetChainId)
+    fetch(url + hexToDecimalString(address ?? ''))
+      .then(response => response.json())
+      .then((data: DomainToAddrData) => {
+        setDomain(data.domain)
+      })
+      .catch(error => {
+        console.error(error)
+      })
   }, [address, chainId])
 
   const allTransactions = useAllTransactions()

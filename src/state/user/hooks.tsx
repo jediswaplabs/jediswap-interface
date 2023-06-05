@@ -2,7 +2,7 @@ import { Pair, Token } from '@jediswap/sdk'
 import flatMap from 'lodash.flatmap'
 import { useCallback, useMemo } from 'react'
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
-import { BASES_TO_TRACK_LIQUIDITY_FOR, PINNED_PAIRS, StarknetChainId } from '../../constants'
+import { BASES_TO_TRACK_LIQUIDITY_FOR, PINNED_PAIRS } from '../../constants'
 import { useAllTokens } from '../../hooks/Tokens'
 import { AppDispatch, AppState } from '../index'
 import {
@@ -18,6 +18,7 @@ import {
   toggleURLWarning
 } from './actions'
 import { useAccount } from '@starknet-react/core'
+import { StarknetChainId } from 'starknet/dist/constants'
 
 function serializeToken(token: Token): SerializedToken {
   return {
@@ -122,10 +123,10 @@ export function useAddUserToken(): (token: Token) => void {
   )
 }
 
-export function useRemoveUserAddedToken(): (chainId: number, address: string) => void {
+export function useRemoveUserAddedToken(): (chainId: string, address: string) => void {
   const dispatch = useDispatch<AppDispatch>()
   return useCallback(
-    (chainId: number, address: string) => {
+    (chainId: string, address: string) => {
       dispatch(removeSerializedToken({ chainId, address }))
     },
     [dispatch]
@@ -139,7 +140,7 @@ export function useUserAddedTokens(): Token[] {
 
   return useMemo(() => {
     if (!chainId) return []
-    return Object.values(serializedTokensMap[chainId as StarknetChainId] ?? {}).map(deserializeToken)
+    return Object.values(serializedTokensMap[(chainId as unknown) as StarknetChainId] ?? {}).map(deserializeToken)
   }, [serializedTokensMap, chainId])
 }
 
