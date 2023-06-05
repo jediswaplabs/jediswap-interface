@@ -179,7 +179,7 @@ export default function Zap() {
             if (formattedToken == false) {
               return false
             }
-            return formattedToken in lpTokens
+            return lpTokens.includes(formattedToken)
           })
         )
       })
