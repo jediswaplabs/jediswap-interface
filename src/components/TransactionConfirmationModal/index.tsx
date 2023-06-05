@@ -14,6 +14,7 @@ import Circle from '../../assets/jedi/loadingCircle.svg'
 import { getStarkscanLink } from '../../utils'
 import openInBrowser from '../../assets/jedi/openInBrowser.svg'
 import { useAccount } from '@starknet-react/core'
+import { StarknetChainId } from '../../constants'
 
 const Wrapper = styled.div`
   width: 100%;
@@ -100,7 +101,7 @@ function TransactionSubmittedContent({
 }: {
   onDismiss: () => void
   hash: string | undefined
-  chainId: ChainId
+  chainId: StarknetChainId
 }) {
   const theme = useContext(ThemeContext)
 
