@@ -66,6 +66,7 @@ import { ReactComponent as ArrowRight } from '../../assets/images/arrow-right-bl
 import { useAddTokenToWallet } from '../../hooks/useAddTokenToWallet'
 import { wrappedCurrency } from '../../utils/wrappedCurrency'
 import AdvancedSwapDetailsDropdown from '../../components/swap/AdvancedSwapDetailsDropdown'
+import { useAccount } from '@starknet-react/core'
 
 const MintSection = styled.section`
   margin-top: 3rem;
@@ -101,6 +102,8 @@ export default function Swap() {
   // }, [])
 
   const { account, chainId, connectedAddress } = useActiveStarknetReact()
+  const { address } = useAccount()
+
   const theme = useContext(ThemeContext)
 
   // toggle wallet when disconnected
@@ -418,7 +421,7 @@ export default function Swap() {
             </Card>
           </AutoColumn>
           <BottomGrouping marginTop={'0px'}>
-            {!account ? (
+            {!address ? (
               <ButtonPrimary onClick={toggleWalletModal}>Connect Wallet</ButtonPrimary>
             ) : noRoute && userHasSpecifiedInputOutput ? (
               <RedGradientButton style={{ textAlign: 'center' }} disabled>

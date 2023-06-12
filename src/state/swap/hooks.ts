@@ -18,6 +18,7 @@ import useToggledVersion from '../../hooks/useToggledVersion'
 import { useUserSlippageTolerance } from '../user/hooks'
 import { computeSlippageAdjustedAmounts } from '../../utils/prices'
 import { useAddressNormalizer } from '../../hooks/useAddressNormalizer'
+import { useAccount } from '@starknet-react/core'
 
 export function useSwapState(): AppState['swap'] {
   return useSelector<AppState, AppState['swap']>(state => state.swap)
@@ -116,7 +117,7 @@ export function useDerivedSwapInfo(): {
   tradeLoading: boolean
 } {
   const { account, connectedAddress } = useActiveStarknetReact()
-
+  const { address: walletAddress } = useAccount()
   const {
     independentField,
     typedValue,
@@ -169,7 +170,7 @@ export function useDerivedSwapInfo(): {
   // const v1Trade = useV1Trade(isExactIn, currencies[Field.INPUT], currencies[Field.OUTPUT], parsedAmount)
 
   let inputError: string | undefined
-  if (!account) {
+  if (!walletAddress) {
     inputError = 'Connect Wallet'
   }
 

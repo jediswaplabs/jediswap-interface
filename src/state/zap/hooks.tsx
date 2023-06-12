@@ -20,6 +20,7 @@ import { useUserSlippageTolerance } from '../user/hooks'
 import { useCurrencyBalances } from '../wallet/hooks'
 import { Field, replaceZapState, selectCurrency, setRecipient, typeInput } from './actions'
 import { ZapState } from './reducer'
+import { useAccount } from '@starknet-react/core'
 
 export function useZapState(): AppState['zap'] {
   return useSelector<AppState, AppState['zap']>(state => state.zap)
@@ -76,7 +77,7 @@ export function useDerivedZapInfo(): {
   tradeLoading?: boolean
 } {
   const { account, connectedAddress } = useActiveStarknetReact()
-
+  const { address: walletAddress } = useAccount()
   const {
     independentField,
     typedValue,
@@ -116,7 +117,7 @@ export function useDerivedZapInfo(): {
 
   let inputError: string | undefined
 
-  if (!account) {
+  if (!walletAddress) {
     inputError = 'Connect Wallet'
   }
 

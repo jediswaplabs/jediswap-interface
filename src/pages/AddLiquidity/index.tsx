@@ -46,6 +46,7 @@ import { AddTokenRow, AddTokenText } from '../Swap/styleds'
 import { useAddTokenToWallet } from '../../hooks/useAddTokenToWallet'
 import { ReactComponent as ArrowRight } from '../../assets/images/arrow-right-blue.svg'
 import Loader from '../../components/Loader'
+import { useAccount } from '@starknet-react/core'
 
 const BalanceText = styled.div`
   display: flex;
@@ -93,6 +94,7 @@ export default function AddLiquidity({
   history
 }: RouteComponentProps<{ currencyIdA?: string; currencyIdB?: string }>) {
   const { account, chainId, library, connectedAddress } = useActiveStarknetReact()
+  const { address } = useAccount()
   const theme = useContext(ThemeContext)
 
   const currencyA = useCurrency(currencyIdA)
@@ -472,7 +474,7 @@ export default function AddLiquidity({
               </>
             )}
 
-            {!account ? (
+            {!address ? (
               <ButtonGradient onClick={toggleWalletModal}>Connect Wallet</ButtonGradient>
             ) : (
               <AutoColumn gap={'md'}>
