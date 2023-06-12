@@ -36,6 +36,7 @@ export function useDerivedMintInfo(
   const { account, address } = useAccount()
   const chainId = account?.chainId
 
+  const { address } = useAccount()
   const { independentField, typedValue, otherTypedValue } = useMintState()
 
   const dependentField = independentField === Field.CURRENCY_A ? Field.CURRENCY_B : Field.CURRENCY_A

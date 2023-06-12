@@ -1,5 +1,6 @@
 {
   "name": "@jediswap/interface",
+  "version": "1.0.11",
   "description": "Jediswap Interface",
   "homepage": ".",
   "private": true,
@@ -107,6 +108,7 @@
     "dev": "vite --open",
     "test": "vitest --ui",
     "build": "vite build",
+    "build-with-source-maps": "GENERATE_SOURCEMAPS=true vite build",
     "lint": "eslint --ext js,jsx,ts,tsx,json ./src",
     "lint:fix": "yarn lint --fix",
     "production-build": "vite build",
@@ -133,6 +135,7 @@
   },
   "license": "GPL-3.0-or-later",
   "dependencies": {
+    "@sentry/react": "^7.53.1",
     "@starknet-react/core": "^0.17.2",
     "events": "^3.3.0",
     "vite-plugin-svgr": "^2.2.0"

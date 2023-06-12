@@ -197,6 +197,8 @@ CurrencyInputPanelProps) {
     setModalOpen(false)
   }, [setModalOpen])
 
+  const displayMaxButton = address && currency && showMaxButton && label !== 'To'
+
   return (
     <InputPanel id={id}>
       <Container hideInput={hideInput}>
@@ -280,7 +282,7 @@ CurrencyInputPanelProps) {
                 onUserInput={val => {
                   onUserInput(val)
                 }}
-                style={showMaxButton ? { paddingRight: '60px' } : { paddingRight: '12px' }}
+                style={displayMaxButton ? { paddingRight: '60px' } : { paddingRight: '12px' }}
                 disabled={disableInput}
               />
               {address && currency && showMaxButton && label !== 'To' && (

@@ -19,6 +19,8 @@ import { InjectedConnector, useAccount, useConnectors, useBalance } from '@stark
 // }
 
 export function useEagerConnect() {
+  const { account, address, status } = useAccount()
+  // const { data } = useBalance({ address })
   const { activate, active } = useStarknetReactCore() // specifically using useStarknetReactCore because of what this hook does
   const [tried, setTried] = useState(false)
   const { connect } = useConnectors()
