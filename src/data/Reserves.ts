@@ -1,5 +1,5 @@
 import { TokenAmount, Pair, Currency, JSBI, Token } from '@jediswap/sdk'
-import { useMemo } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import JediswapPairABI from '../constants/abis/Pair.json'
 import { Interface } from '@ethersproject/abi'
 import { useActiveStarknetReact } from '../hooks'
@@ -8,6 +8,13 @@ import { wrappedCurrency } from '../utils/wrappedCurrency'
 import { Abi, validateAndParseAddress } from 'starknet'
 import { useMultipleContractSingleData } from '../state/multicall/hooks'
 import { useAllPairs } from '../state/pairs/hooks'
+import _ from 'lodash'
+import usePrevious from '../hooks/usePrevious'
+import { wrapToken } from '../utils/wrapToken'
+
+function createWorker() {
+  return new Worker(new URL('./PriceWorker.ts', import.meta.url), { type: 'module' })
+}
 
 export enum PairState {
   LOADING,
@@ -24,25 +31,43 @@ export interface LiquidityPairToken {
 export function usePairs(currencies: [Currency | undefined, Currency | undefined][]): [PairState, Pair | null][] {
   const { chainId } = useActiveStarknetReact()
   const allPairs = useAllPairs()
+  const [pairAddresses, setPairAddresses] = useState([])
+  const [tokens, setTokens] = useState(<any>[])
+  const prevCurrencies = usePrevious(currencies)
 
-  const tokens = useMemo(
-    () =>
-      currencies.map(([currencyA, currencyB]) => [
-        wrappedCurrency(currencyA, chainId),
-        wrappedCurrency(currencyB, chainId)
-      ]),
-    [chainId, currencies]
-  )
+  const tokens_initial = useMemo(() => {
+    const tokens = currencies.map(([currencyA, currencyB]) => [
+      wrappedCurrency(currencyA, chainId),
+      wrappedCurrency(currencyB, chainId)
+    ])
+    return tokens
+  }, [chainId, currencies])
 
-  const pairAddresses = useMemo(
-    () =>
-      tokens.map(([tokenA, tokenB]) => {
-        return tokenA && tokenB && !tokenA.equals(tokenB)
-          ? validateAndParseAddress(Pair.getAddress(tokenA, tokenB))
-          : undefined
-      }),
-    [tokens]
-  )
+  const lastWorker = useRef<Worker | null>(null)
+  useEffect(() => {
+    const worker = createWorker()
+    lastWorker.current = worker
+    worker.onerror = err => err
+    worker.onmessage = e => {
+      const { pairAddresses, tokens } = e.data
+      setPairAddresses(pairAddresses)
+      const tokensNew = tokens.map(([tokenA, tokenB]) => {
+        return [wrapToken(tokenA), wrapToken(tokenB)]
+      })
+      setTokens(tokensNew)
+    }
+    const cleanup = () => {
+      worker.terminate()
+    }
+    return cleanup
+  }, [])
+
+  useEffect(() => {
+    if (!_.isEqual(prevCurrencies, currencies) && lastWorker.current) {
+      lastWorker.current.postMessage({ tokens: tokens_initial, chainId })
+      setPairAddresses([])
+    }
+  }, [currencies, chainId, prevCurrencies, tokens_initial])
 
   const validatedPairAddress = useMemo(
     () => pairAddresses.map(addr => (addr && allPairs.includes(addr) ? addr : undefined)),
