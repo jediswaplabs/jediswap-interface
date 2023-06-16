@@ -13,7 +13,6 @@ import { WALLET_VIEWS } from '.'
 import { AutoColumn } from '../Column'
 import { ButtonOutlined } from '../Button'
 import { RowStart } from '../Row'
-import { InjectedConnector } from '@starknet-react/core'
 
 const PendingSection = styled.div`
   ${({ theme }) => theme.flexColumnNoWrap};
@@ -111,11 +110,11 @@ export default function PendingView({
   setWalletView,
   tryActivation
 }: {
-  connector?: InjectedConnector
+  connector?: AbstractConnector
   error?: any
   setPendingError: (error: boolean) => void
   setWalletView: (walletView: string) => void
-  tryActivation: (connector: InjectedConnector) => void
+  tryActivation: (connector: AbstractConnector) => void
 }) {
   const isArgentXProviderError = error instanceof NoArgentXProviderError
 

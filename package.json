@@ -137,7 +137,6 @@
   "license": "GPL-3.0-or-later",
   "dependencies": {
     "@sentry/react": "^7.53.1",
-    "@starknet-react/core": "^0.17.2",
     "events": "^3.3.0",
     "vite-plugin-svgr": "^2.2.0"
   }

@@ -5,10 +5,9 @@ import { useStarknetReact as useStarknetReactCore } from '@web3-starknet-react/c
 import { StarknetReactContextInterface } from '@web3-starknet-react/core/dist/types'
 import { useEffect, useState } from 'react'
 import { isMobile } from 'react-device-detect'
-import { argentX, braavosWallet } from '../connectors'
-import { NetworkContextName, SUPPORTED_WALLETS } from '../constants'
+import { argentX, braavosWallet, injectedConnector } from '../connectors'
+import { NetworkContextName } from '../constants'
 import { BraavosConnector } from '@web3-starknet-react/braavos-connector'
-import { InjectedConnector, useAccount, useConnectors, useBalance } from '@starknet-react/core'
 
 export function useActiveStarknetReact(): StarknetReactContextInterface<Web3Provider> & { chainId?: ChainId } {
   const context = useStarknetReactCore<Web3Provider>()
@@ -17,52 +16,40 @@ export function useActiveStarknetReact(): StarknetReactContextInterface<Web3Prov
 }
 
 export function useEagerConnect() {
-  const { account, address, status } = useAccount()
-  // const { data } = useBalance({ address })
   const { activate, active } = useStarknetReactCore() // specifically using useStarknetReactCore because of what this hook does
   const [tried, setTried] = useState(false)
-  const { connect, refresh } = useConnectors()
 
-  const injected = localStorage.getItem('auto-injected-wallet')
+  const injected = localStorage.getItem('auto-injected-wallet') as injectedConnector | undefined
 
-  let connector: InjectedConnector
+  let connector: ArgentXConnector | BraavosConnector | undefined
 
-  if (injected === 'argentX') {
+  if (injected === 'argentx') {
     connector = argentX
   } else if (injected === 'braavos') {
     connector = braavosWallet
   }
 
   useEffect(() => {
-    const interval = setInterval(refresh, 5000)
-    return () => clearInterval(interval)
-  }, [refresh])
+    setTimeout(() => {
+      if (!connector) return
 
-  useEffect(() => {
-    connect(connector)
-  }, [])
-
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     if (!connector) return
-
-  //     connector.isAuthorized().then(isAuthorized => {
-  //       if (isAuthorized && connector) {
-  //         activate(connector, undefined, true).catch(() => {
-  //           setTried(true)
-  //         })
-  //       } else {
-  //         if (isMobile && window.starknet && connector) {
-  //           activate(connector, undefined, true).catch(() => {
-  //             setTried(true)
-  //           })
-  //         } else {
-  //           setTried(true)
-  //         }
-  //       }
-  //     })
-  //   }, 100)
-  // }, [activate, connector]) // intentionally only running on mount (make sure it's only mounted once :))
+      connector.isAuthorized().then(isAuthorized => {
+        if (isAuthorized && connector) {
+          activate(connector, undefined, true).catch(() => {
+            setTried(true)
+          })
+        } else {
+          if (isMobile && window.starknet && connector) {
+            activate(connector, undefined, true).catch(() => {
+              setTried(true)
+            })
+          } else {
+            setTried(true)
+          }
+        }
+      })
+    }, 100)
+  }, [activate, connector]) // intentionally only running on mount (make sure it's only mounted once :))
 
   // if the connection worked, wait until we get confirmation of that to flip the flag
   useEffect(() => {

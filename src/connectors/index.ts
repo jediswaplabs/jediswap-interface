@@ -1,5 +1,4 @@
 import { ChainId } from '@jediswap/sdk'
-import { InjectedConnector } from '@starknet-react/core'
 import { ArgentXConnector } from '@web3-starknet-react/argentx-connector'
 import { BraavosConnector } from '@web3-starknet-react/braavos-connector'
 
@@ -28,21 +27,18 @@ export const isProductionEnvironment = () => {
 }
 
 // Starknet
-// export const argentX = new ArgentXConnector({
-//   supportedChainIds: [
-//     ...(isProductionEnvironment() ? [] : [ChainId.GÖRLI]),
-//     ...(isTestnetEnvironment() ? [] : [ChainId.MAINNET])
-//   ]
-// })
+export const argentX = new ArgentXConnector({
+  supportedChainIds: [
+    ...(isProductionEnvironment() ? [] : [ChainId.GÖRLI]),
+    ...(isTestnetEnvironment() ? [] : [ChainId.MAINNET])
+  ]
+})
 
-// export const braavosWallet = new BraavosConnector({
-//   supportedChainIds: [
-//     ...(isProductionEnvironment() ? [] : [ChainId.GÖRLI]),
-//     ...(isTestnetEnvironment() ? [] : [ChainId.MAINNET])
-//   ]
-// })
+export const braavosWallet = new BraavosConnector({
+  supportedChainIds: [
+    ...(isProductionEnvironment() ? [] : [ChainId.GÖRLI]),
+    ...(isTestnetEnvironment() ? [] : [ChainId.MAINNET])
+  ]
+})
 
-export const argentX = new InjectedConnector({ options: { id: 'argentX' } })
-export const braavosWallet = new InjectedConnector({ options: { id: 'braavos' } })
-
-export type injectedConnector = 'argentX' | 'braavos'
+export type injectedConnector = 'argentx' | 'braavos'

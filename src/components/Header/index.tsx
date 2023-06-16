@@ -30,7 +30,6 @@ import { Dots } from '../swap/styleds'
 import Modal from '../Modal'
 import usePrevious from '../../hooks/usePrevious'
 import { transparentize } from 'polished'
-import { useAccount, useNetwork } from '@starknet-react/core'
 
 const HeaderFrame = styled.div`
   display: grid;
@@ -348,8 +347,7 @@ interface window {
 }
 
 function Header({ history }: { history: any }) {
-  const { chain } = useNetwork()
-  const { address } = useAccount()
+  const { connectedAddress, chainId } = useActiveStarknetReact()
   const { t } = useTranslation()
   const [currentNetwork, setCurrentNetwork] = useState('SN_MAIN')
 
@@ -416,13 +414,15 @@ function Header({ history }: { history: any }) {
         {/* <StarkNetCard>Starknet</StarkNetCard> */}
         <HeaderElement>
           <HideSmall>
-            {chain?.name && <NetworkCard title={chain.name}>{chain.name}</NetworkCard>}
+            {chainId && NETWORK_LABELS[chainId] && (
+              <NetworkCard title={NETWORK_LABELS[chainId]}>Starknet-{NETWORK_LABELS[chainId]}</NetworkCard>
+            )}
             {/*<NetworkSelect onChange={changeNetwork}>*/}
             {/*  <option value="SN_MAIN">Starknet-Mainnet</option>*/}
             {/*  <option value="SN_GOERLI">Starknet-Görli</option>*/}
             {/*</NetworkSelect>*/}
           </HideSmall>
-          <AccountElement active={!!address} style={{ pointerEvents: 'auto' }}>
+          <AccountElement active={!!connectedAddress} style={{ pointerEvents: 'auto' }}>
             <Web3Status />
           </AccountElement>
         </HeaderElement>
