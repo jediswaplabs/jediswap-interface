@@ -1,6 +1,6 @@
 name: "Blank issue"
 description: Create a new blank issue.
-title: ""
+title: "Title"
 body:
   - type: textarea
     id: description
