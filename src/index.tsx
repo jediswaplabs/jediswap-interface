@@ -19,10 +19,8 @@ import UserUpdater from './state/user/updater'
 import ThemeProvider, { FixedGlobalStyle, ThemedGlobalStyle } from './theme'
 import getLibrary from './utils/getLibrary'
 import { StarknetReactProvider, createStarknetReactRoot } from '@web3-starknet-react/core'
-import { StarknetConfig } from '@starknet-react/core'
 
 import './components/analytics'
-import { argentX, braavosWallet } from './connectors'
 
 const StarknetProviderNetwork = createStarknetReactRoot(NetworkContextName)
 
@@ -52,17 +50,19 @@ function Updaters() {
 ReactDOM.render(
   <StrictMode>
     <FixedGlobalStyle />
-    <StarknetConfig connectors={[argentX, braavosWallet]}>
-      <Provider store={store}>
-        <Updaters />
-        <ThemeProvider>
-          <ThemedGlobalStyle />
-          <HashRouter>
-            <App />
-          </HashRouter>
-        </ThemeProvider>
-      </Provider>
-    </StarknetConfig>
+    <StarknetReactProvider getLibrary={getLibrary}>
+      <StarknetProviderNetwork getLibrary={getLibrary}>
+        <Provider store={store}>
+          <Updaters />
+          <ThemeProvider>
+            <ThemedGlobalStyle />
+            <HashRouter>
+              <App />
+            </HashRouter>
+          </ThemeProvider>
+        </Provider>
+      </StarknetProviderNetwork>
+    </StarknetReactProvider>
   </StrictMode>,
   document.getElementById('root')
 )

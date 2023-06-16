@@ -19,7 +19,6 @@ import { getLiquidityToken, useTrackedTokenPairs } from '../../state/user/hooks'
 import { Dots } from '../../components/swap/styleds'
 import { CardSection, DataCard, CardNoise, CardBGImage } from './styleds'
 import { useAllPairs } from '../../state/pairs/hooks'
-import { useAccount } from '@starknet-react/core'
 
 const PageWrapper = styled(AutoColumn)`
   max-width: 900px;
@@ -110,7 +109,6 @@ const ComingSoonSection = styled(Row)`
 export default function Pool() {
   const theme = useContext(ThemeContext)
   const { account, connectedAddress } = useActiveStarknetReact()
-  const { address } = useAccount()
 
   // fetch the user's balances of all tracked V2 LP tokens
   const trackedTokenPairs = useTrackedTokenPairs()
@@ -207,7 +205,7 @@ export default function Pool() {
               </ButtonRow>
             </TitleRow>
 
-            {!address ? (
+            {!account ? (
               <Card padding="40px">
                 <TYPE.mediumHeader color={theme.jediBlue} textAlign="center">
                   Connect to a wallet to view your liquidity

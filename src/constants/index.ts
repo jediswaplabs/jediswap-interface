@@ -6,7 +6,6 @@ import { AbstractConnector } from '@web3-starknet-react/abstract-connector'
 import { argentX, braavosWallet } from '../connectors'
 import ARGENTX_ICON from '../assets/images/argentx.png'
 import BRAAVOS_ICON from '../assets/svg/Braavos.svg'
-import { InjectedConnector } from '@starknet-react/core'
 
 export const DEFAULT_CHAIN_ID = 1
 
@@ -165,7 +164,7 @@ export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } 
 }
 
 export interface WalletInfo {
-  connector?: InjectedConnector
+  connector?: AbstractConnector
   name: string
   icon: string
   description: string
@@ -178,7 +177,7 @@ export interface WalletInfo {
 }
 
 export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
-  argentX: {
+  ArgentX: {
     connector: argentX,
     name: 'Argent-X',
     icon: ARGENTX_ICON,
@@ -187,7 +186,7 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
     color: '#FF875B',
     mobile: true
   },
-  braavos: {
+  Braavos: {
     connector: braavosWallet,
     name: 'Braavos',
     icon: BRAAVOS_ICON,
