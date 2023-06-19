@@ -62,7 +62,9 @@ export default function Polling() {
   const { account } = useAccount()
   const chainId = account?.chainId
 
-  const { blockNumber } = useBlockNumber()
+  const { data: blockNumber } = useBlockNumber({
+    refetchInterval: false
+  })
   const blockHash = useBlockHash(blockNumber)
 
   const [isMounted, setIsMounted] = useState(true)

@@ -228,7 +228,9 @@ export default function Updater(): null {
   const state = useSelector<AppState, AppState['multicall']>(state => state.multicall)
   // wait for listeners to settle before triggering updates
   const debouncedListeners = useDebounce(state.callListeners, 100)
-  const { blockNumber: latestBlockNumber } = useBlockNumber()
+  const { data: latestBlockNumber } = useBlockNumber({
+    refetchInterval: false
+  })
   const { account } = useAccount()
   const chainId = account?.chainId
   const multicallContract = useMulticallContract()

@@ -8,7 +8,8 @@ import ARGENTX_ICON from '../assets/images/argentx.png'
 import BRAAVOS_ICON from '../assets/svg/Braavos.svg'
 import { InjectedConnector } from '@starknet-react/core'
 
-export const DEFAULT_CHAIN_ID = 'MAINNET'
+export const DEFAULT_CHAIN_ID = StarknetChainId.MAINNET
+
 export const domainURL = (chainId: StarknetChainId) => {
   return chainId === StarknetChainId.MAINNET
     ? 'https://app.starknet.id/api/indexer/addr_to_domain?addr='

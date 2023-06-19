@@ -31,8 +31,9 @@ export default function Updater(): null {
   const { account } = useAccount()
   const chainId = account?.chainId
 
-  const { blockNumber: lastBlockNumber } = useBlockNumber()
-
+  const { data: lastBlockNumber } = useBlockNumber({
+    refetchInterval: false
+  })
   const dispatch = useDispatch<AppDispatch>()
   const state = useSelector<AppState, AppState['transactions']>(state => state.transactions)
 

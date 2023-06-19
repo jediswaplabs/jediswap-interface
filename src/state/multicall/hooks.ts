@@ -197,7 +197,9 @@ export function useSingleContractMultipleData(
 
   const results = useCallsData(calls, methodAbi, options)
 
-  const { blockNumber: latestBlockNumber } = useBlockNumber()
+  const { data: latestBlockNumber } = useBlockNumber({
+    refetchInterval: false
+  })
   return useMemo(() => {
     return results.map(result => toCallState(result, latestBlockNumber))
   }, [results, latestBlockNumber])
@@ -237,8 +239,9 @@ export function useMultipleContractSingleData(
 
   const results = useCallsData(calls, methodAbi, options)
 
-  const { blockNumber: latestBlockNumber } = useBlockNumber()
-
+  const { data: latestBlockNumber } = useBlockNumber({
+    refetchInterval: false
+  })
   return useMemo(() => {
     return results.map(result => toCallState(result, latestBlockNumber))
   }, [results, latestBlockNumber])
@@ -272,8 +275,9 @@ export function useSingleCallResult(
 
   const result = useCallsData(calls, methodAbi, options)[0]
 
-  const { blockNumber: latestBlockNumber } = useBlockNumber()
-
+  const { data: latestBlockNumber } = useBlockNumber({
+    refetchInterval: false
+  })
   return useMemo(() => {
     return toCallState(result, latestBlockNumber)
   }, [result, latestBlockNumber])
