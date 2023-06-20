@@ -1,8 +1,14 @@
 import { useCallback, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+// import { useActiveStarknetReact } from '../../hooks'
 import { AppDispatch, AppState } from '../index'
 import { addPopup, ApplicationModal, PopupContent, removePopup, setOpenModal } from './actions'
 import { useAccount } from '@starknet-react/core'
+
+export function useBlockNumber(): number | undefined {
+  const { account } = useAccount()
+  return useSelector((state: AppState) => state.application.blockNumber[account?.chainId ?? -1])
+}
 
 export function useModalOpen(modal: ApplicationModal): boolean {
   const openModal = useSelector((state: AppState) => state.application.openModal)
