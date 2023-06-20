@@ -15,8 +15,9 @@ import {
   updateMulticallResults
 } from './actions'
 import BN from 'bn.js'
-import { useAccount, useBlockNumber } from '@starknet-react/core'
+import { useAccount } from '@starknet-react/core'
 import { StarknetChainId } from 'starknet/dist/constants'
+import { useBlockNumber } from '../application/hooks'
 
 // chunk calls so we do not exceed the gas limit
 const CALL_CHUNK_SIZE = 500
@@ -228,9 +229,7 @@ export default function Updater(): null {
   const state = useSelector<AppState, AppState['multicall']>(state => state.multicall)
   // wait for listeners to settle before triggering updates
   const debouncedListeners = useDebounce(state.callListeners, 100)
-  const { data: latestBlockNumber } = useBlockNumber({
-    refetchInterval: false
-  })
+  const latestBlockNumber = useBlockNumber()
   const { account } = useAccount()
   const chainId = account?.chainId
   const multicallContract = useMulticallContract()
