@@ -17,6 +17,7 @@ import { ChainId } from '@jediswap/sdk'
 import { providers } from 'ethers'
 import { isAddress } from '../../utils'
 import { useAllPairs } from '../../state/pairs/hooks'
+import './style.css'
 
 export const StyledAppBody = styled(BodyWrapper)`
   padding: 0rem;
@@ -35,7 +36,6 @@ export default function Zap() {
 
   // Work-around: unfortunately account.chainId does not get updated when the user changes network
   // Solution: re-create the account object each time chainId or account changes
-  console.log('📜 LOG > Zap > account?.chainId:', snAccount?.chainId)
   useEffect(() => {
     if (!snAccount || !snLibrary || !connectedAddress) {
       setPassedAccount(undefined)
@@ -186,6 +186,33 @@ export default function Zap() {
     }
   }, [snChainId, lpTokens, setToTokens])
 
+  useEffect(() => {
+    setTimeout(() => {
+      // Get the parent element with the "wido-widget" class
+      const widget = document.querySelector('.wido-widget')
+
+      if (widget) {
+        const firstDiv = widget.querySelector('div')
+
+        if (firstDiv) {
+          firstDiv.style.border = '0'
+        }
+
+        // Get all buttons within the parent element that have the "color" attribute set to "accent"
+        const buttons = widget.querySelectorAll('button[color="accent"]')
+
+        // Iterate over each matching element
+        buttons.forEach(button => {
+          const buttonElement = button as HTMLButtonElement
+          buttonElement.style.background = 'rgba(196, 196, 196, 0.01)'
+          buttonElement.style.color = '#fff'
+          buttonElement.style.boxShadow =
+            'rgba(96, 68, 145, 0.3) 0px -63.1213px 52.3445px -49.2654px inset, rgba(202, 172, 255, 0.3) 0px 75.4377px 76.9772px -36.9491px inset, rgba(154, 146, 210, 0.3) 0px 3.07909px 13.8559px inset, rgba(227, 222, 255, 0.2) 0px 0.769772px 30.7909px inset'
+        })
+      }
+    }, 100)
+  }, [])
+
   return (
     <>
       <AutoColumn gap="14px" style={{ maxWidth: 470, padding: '2rem' }}>
@@ -215,7 +242,8 @@ export default function Zap() {
           toTokens={toTokens}
           theme={{
             ...darkTheme,
-            accent: theme.jediBlue,
+            // accent: theme.jediBlue,
+            module: 'rgba(0,0,0,0.0)',
             fontFamily: {
               font: "'DM Sans',sans-serif",
               variable: "'DM Sans',sans-serif"
