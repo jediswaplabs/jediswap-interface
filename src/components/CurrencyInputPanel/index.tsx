@@ -105,19 +105,12 @@ const Container = styled.div<{ hideInput: boolean }>`
 
 const StyledTokenName = styled.span<{ active?: boolean }>`
   ${({ active }) => (active ? 'margin: 0 4px 0 6px;' : 'margin: 0 7.5px 0 0;')}
-  /* margin: 5px; */
   font-size: ${({ active }) => (active ? '17px' : '12px')};
-  text-transform: uppercase;
   text-align: left;
   display: flex;
   align-items: center;
   white-space: nowrap;
  `
-
-// const LPWrapper = styled.div`
-// display: flex ;
-// flex-direction: co;
-// `
 
 const StyledBalanceMax = styled.button`
   position: absolute;
@@ -197,7 +190,7 @@ CurrencyInputPanelProps) {
     setModalOpen(false)
   }, [setModalOpen])
 
-  const displayMaxButton = connectedAddress && currency && showMaxButton && label !== 'To';
+  const displayMaxButton = connectedAddress && currency && showMaxButton && label !== 'To'
 
   return (
     <InputPanel id={id}>
@@ -285,9 +278,7 @@ CurrencyInputPanelProps) {
                 style={displayMaxButton ? { paddingRight: '60px' } : { paddingRight: '12px' }}
                 disabled={disableInput}
               />
-              {displayMaxButton && (
-                <StyledBalanceMax onClick={onMax}>MAX</StyledBalanceMax>
-              )}
+              {displayMaxButton && <StyledBalanceMax onClick={onMax}>MAX</StyledBalanceMax>}
             </>
           )}
         </InputRow>
