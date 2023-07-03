@@ -58,13 +58,15 @@ const IconWrapper = styled.div<{ pending: boolean; success?: boolean }>`
 export default function Transaction({ hash }: { hash: string }) {
   const { account } = useAccount()
   const chainId = account?.chainId
+
   const allTransactions = useAllTransactions()
 
   const tx = allTransactions?.[hash]
+
   const summary = tx?.summary
-  const rejected = tx?.receipt?.status === 'REJECTED'
-  const pending = !tx.receipt || tx.receipt.status === 'PENDING' || tx.receipt.status === 'RECEIVED'
-  const success = !pending && tx && tx.receipt?.status !== 'REJECTED'
+  const rejected = tx && tx?.receipt?.status === 'REJECTED'
+  const pending = tx && (!tx.receipt || tx?.receipt.status === 'PENDING' || tx?.receipt.status === 'RECEIVED')
+  const success = !pending && !rejected
 
   if (!chainId) return null
 
