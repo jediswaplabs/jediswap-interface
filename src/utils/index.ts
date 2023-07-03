@@ -56,7 +56,7 @@ export function getStarkscanLink(
   data: string,
   type: 'transaction' | 'block' | 'contract'
 ): string {
-  const prefix = `https://${STARKSCAN_PREFIXES[chainId] || STARKSCAN_PREFIXES[1]}starkscan.co`
+  const prefix = `https://${STARKSCAN_PREFIXES[chainId] || STARKSCAN_PREFIXES['0x534e5f4d41494e']}starkscan.co`
 
   switch (type) {
     case 'transaction': {
