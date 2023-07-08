@@ -320,6 +320,7 @@ export default function AccountDetails({
                   style={{ fontSize: '.875rem', color: '#9B9B9B' }}
                   onClick={() => {
                     connector?.deactivate()
+                    localStorage?.removeItem('auto-injected-wallet')
                   }}
                 >
                   Disconnect
