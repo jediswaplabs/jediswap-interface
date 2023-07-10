@@ -1226,10 +1226,10 @@
   resolved "https://registry.yarnpkg.com/@sideway/pinpoint/-/pinpoint-2.0.0.tgz#cff8ffadc372ad29fd3f78277aeb29e632cc70df"
   integrity sha512-RNiOoTPkptFtSVzQevY/yWtZwf/RxyVnPy/OcA9HBM3MlGDnBEYL5B41H0MTn0Uec8Hi+2qUtTfG2WWZBmMejQ==
 
-"@starknet-react/core@^0.17.2":
-  version "0.17.6"
-  resolved "https://registry.yarnpkg.com/@starknet-react/core/-/core-0.17.6.tgz#721f787795ed849132891bc50c0c4e68c7a66989"
-  integrity sha512-VJR7jx62FnYL5bGU3EUEBMp7Ym6eiY29QFjD5aljLagIsEn8SDAyNRxyKBNfHhx3/xi1q0cxuHp5r9EIOT1Yeg==
+"@starknet-react/core@^0.18.0":
+  version "0.18.0"
+  resolved "https://registry.yarnpkg.com/@starknet-react/core/-/core-0.18.0.tgz#cf02d47a0ab5daf16f8f5da3153a1c4aebc9f6df"
+  integrity sha512-UiVh80D/S0wRDERT3r38iR88CKR81pMs8cpAE92oapFZnyy4zxG3mdf+GSUcknsRNFKnCElMJorVG424jvLpiw==
   dependencies:
     "@tanstack/react-query" "^4.29.12"
     get-starknet-core "^2.1.0"
