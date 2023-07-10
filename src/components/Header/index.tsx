@@ -340,6 +340,7 @@ interface window {
 
 function Header({ history }: { history: any }) {
   const { chain } = useNetwork()
+  console.log('🚀 ~ file: index.tsx:343 ~ Header ~ chain:', chain)
   const { address } = useAccount()
   const { t } = useTranslation()
   const [currentNetwork, setCurrentNetwork] = useState('SN_MAIN')
