@@ -1,6 +1,5 @@
 import { validateAndParseAddress, constants } from 'starknet'
 import { JSBI, Percent, Token, WETH } from '@jediswap/sdk'
-import { StarknetChainId } from 'starknet/dist/constants'
 
 // import { fortmatic, injected, portis, walletconnect, walletlink, argentX } from '../connectors'
 import { argentX, braavosWallet, argentWebWallet } from '../connectors'
@@ -10,29 +9,39 @@ import BRAAVOS_ICON from '../assets/svg/Braavos.svg'
 import { InjectedConnector } from '@starknet-react/core'
 import { WebWalletConnector } from '@argent/starknet-react-webwallet-connector'
 
-export const DEFAULT_CHAIN_ID = StarknetChainId.MAINNET
+export const { StarknetChainId } = constants
 
-export const domainURL = (chainId: StarknetChainId) => {
+export type starknetChainId = typeof StarknetChainId[keyof typeof StarknetChainId]
+
+export const DEFAULT_CHAIN_ID: starknetChainId = StarknetChainId.MAINNET
+
+export const domainURL = (chainId: starknetChainId) => {
   return chainId === StarknetChainId.MAINNET
     ? 'https://app.starknet.id/api/indexer/addr_to_domain?addr='
     : 'https://goerli.app.starknet.id/api/indexer/addr_to_domain?addr='
 }
 
-export const ROUTER_ADDRESS: { [chainId in StarknetChainId]: string } = {
+export const ROUTER_ADDRESS: { [chainId in starknetChainId]: string } = {
   [StarknetChainId.MAINNET]: validateAndParseAddress(
     '0x41fd22b238fa21cfcf5dd45a8548974d8263b3a531a60388411c5e230f97023'
   ),
   [StarknetChainId.TESTNET]: validateAndParseAddress(
     '0x2bcc885342ebbcbcd170ae6cafa8a4bed22bb993479f49806e72d96af94c965'
+  ),
+  [StarknetChainId.TESTNET2]: validateAndParseAddress(
+    '0x2bcc885342ebbcbcd170ae6cafa8a4bed22bb993479f49806e72d96af94c965'
   )
 }
 
-export const ZAP_IN_ADDRESS: { [chainId in StarknetChainId]: string } = {
+export const ZAP_IN_ADDRESS: { [chainId in starknetChainId]: string } = {
   [StarknetChainId.MAINNET]: validateAndParseAddress(
     '0x29a303b928b9391ce797ec27d011d3937054bee783ca7831df792bae00c925c'
   ),
   [StarknetChainId.TESTNET]: validateAndParseAddress(
     '0x73e3ccd627283aed4fa3940aa2bdb4d2c702e8e44c99b6851c019222558310f'
+  ),
+  [StarknetChainId.TESTNET2]: validateAndParseAddress(
+    '0x2bcc885342ebbcbcd170ae6cafa8a4bed22bb993479f49806e72d96af94c965'
   )
 }
 
@@ -40,7 +49,7 @@ export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000000000000
 
 // a list of tokens by chain
 type ChainTokenList = {
-  readonly [chainId in StarknetChainId]: Token[]
+  readonly [chainId in starknetChainId]: Token[]
 }
 
 export const DAI = {
@@ -148,7 +157,8 @@ export const PROPOSAL_LENGTH_IN_DAYS = 7
 
 const WETH_ONLY: ChainTokenList = {
   [StarknetChainId.MAINNET]: [WETH[StarknetChainId.MAINNET]],
-  [StarknetChainId.TESTNET]: [WETH[StarknetChainId.TESTNET]]
+  [StarknetChainId.TESTNET]: [WETH[StarknetChainId.TESTNET]],
+  [StarknetChainId.TESTNET2]: [WETH[StarknetChainId.TESTNET2]]
 }
 
 // const TOKEN0_ONLY: ChainTokenList = {
@@ -182,7 +192,7 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
  * Some tokens can only be swapped via certain pairs, so we override the list of bases that are considered for these
  * tokens.
  */
-// export const CUSTOM_BASES: { [chainId in StarknetChainId]?: { [tokenAddress: string]: Token[] } } = {
+// export const CUSTOM_BASES: { [chainId in starknetChainId]?: { [tokenAddress: string]: Token[] } } = {
 //   [StarknetChainId.MAINNET]: {
 //     [AMPL.address]: [DAI, WETH[StarknetChainId.MAINNET]]
 //   }
@@ -246,7 +256,7 @@ export const BASES_TO_BUILD_ZAPPER_LIST_AGAINST: ChainTokenList = {
   ]
 }
 
-export const PINNED_PAIRS: { readonly [chainId in StarknetChainId]?: [Token, Token][] } = {
+export const PINNED_PAIRS: { readonly [chainId in starknetChainId]?: [Token, Token][] } = {
   [StarknetChainId.TESTNET]: [
     [WETH[StarknetChainId.TESTNET], DAI[StarknetChainId.TESTNET]],
     [WETH[StarknetChainId.TESTNET], USDC[StarknetChainId.TESTNET]]

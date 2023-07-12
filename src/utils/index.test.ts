@@ -11,27 +11,29 @@ import {
   calculateGasMargin,
   basisPointsToPercent
 } from '.'
-import { StarknetChainId } from 'starknet/dist/constants'
+import { StarknetChainId } from '../constants'
 
 describe('utils', () => {
   describe('#getVoyagerLink', () => {
     it('correct for tx', () => {
-      expect(getVoyagerLink(1, 'abc', 'transaction')).toEqual('https://voyager.online/tx/abc')
+      expect(getVoyagerLink(StarknetChainId.MAINNET, 'abc', 'transaction')).toEqual('https://voyager.online/tx/abc')
     })
     it('correct for contract', () => {
-      expect(getVoyagerLink(1, 'abc', 'contract')).toEqual('https://voyager.online/contract/abc')
+      expect(getVoyagerLink(StarknetChainId.MAINNET, 'abc', 'contract')).toEqual('https://voyager.online/contract/abc')
     })
     it('correct for block', () => {
-      expect(getVoyagerLink(1, 'abc', 'block')).toEqual('https://voyager.online/block/abc')
+      expect(getVoyagerLink(StarknetChainId.MAINNET, 'abc', 'block')).toEqual('https://voyager.online/block/abc')
     })
     it('unrecognized chain id defaults to mainnet', () => {
-      expect(getVoyagerLink(2, 'abc', 'contract')).toEqual('https://voyager.online/contract/abc')
+      expect(getVoyagerLink(StarknetChainId.TESTNET, 'abc', 'contract')).toEqual('https://voyager.online/contract/abc')
     })
     it('ropsten', () => {
-      expect(getVoyagerLink(3, 'abc', 'contract')).toEqual('https://ropsten.voyager.online/contract/abc')
+      expect(getVoyagerLink(StarknetChainId.TESTNET, 'abc', 'contract')).toEqual(
+        'https://ropsten.voyager.online/contract/abc'
+      )
     })
     it('enum', () => {
-      expect(getVoyagerLink(StarknetChainId.TESTNET, 'abc', 'contract')).toEqual(
+      expect(getVoyagerLink(StarknetChainId.TESTNET2, 'abc', 'contract')).toEqual(
         'https://rinkeby.voyager.online/contract/abc'
       )
     })
@@ -39,19 +41,21 @@ describe('utils', () => {
 
   describe('#getStarkscanLink', () => {
     it('correct for tx', () => {
-      expect(getStarkscanLink(1, 'abc', 'transaction')).toEqual('https://starkscan.co/tx/abc')
+      expect(getStarkscanLink(StarknetChainId.MAINNET, 'abc', 'transaction')).toEqual('https://starkscan.co/tx/abc')
     })
     it('correct for contract', () => {
-      expect(getStarkscanLink(1, 'abc', 'contract')).toEqual('https://starkscan.co/contract/abc')
+      expect(getStarkscanLink(StarknetChainId.MAINNET, 'abc', 'contract')).toEqual('https://starkscan.co/contract/abc')
     })
     it('correct for block', () => {
-      expect(getStarkscanLink(1, 'abc', 'block')).toEqual('https://starkscan.co/block/abc')
+      expect(getStarkscanLink(StarknetChainId.MAINNET, 'abc', 'block')).toEqual('https://starkscan.co/block/abc')
     })
     it('unrecognized chain id defaults to mainnet', () => {
-      expect(getStarkscanLink(2, 'abc', 'contract')).toEqual('https://starkscan.co/contract/abc')
+      expect(getStarkscanLink(StarknetChainId.TESTNET, 'abc', 'contract')).toEqual('https://starkscan.co/contract/abc')
     })
     it('goerli', () => {
-      expect(getStarkscanLink(3, 'abc', 'contract')).toEqual('https://testnet.starkscan.co/contract/abc')
+      expect(getStarkscanLink(StarknetChainId.TESTNET2, 'abc', 'contract')).toEqual(
+        'https://testnet.starkscan.co/contract/abc'
+      )
     })
     it('enum', () => {
       expect(getStarkscanLink(StarknetChainId.TESTNET, 'abc', 'contract')).toEqual(

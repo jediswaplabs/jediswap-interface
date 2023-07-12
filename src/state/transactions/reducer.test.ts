@@ -1,7 +1,7 @@
 import { createStore, Store } from 'redux'
 import { addTransaction, checkedTransaction, clearAllTransactions, updateTransaction } from './actions'
 import reducer, { initialState, TransactionState } from './reducer'
-import { StarknetChainId } from 'starknet/dist/constants'
+import { StarknetChainId } from '../../constants'
 
 describe('transaction reducer', () => {
   let store: Store<TransactionState>

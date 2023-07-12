@@ -1,12 +1,10 @@
-import { BigNumberish } from 'starknet/dist/utils/number'
-import { validateAndParseAddress, Abi, Provider, uint256, Contract, AccountInterface } from 'starknet'
+import { validateAndParseAddress, Abi, Provider, uint256, Contract, AccountInterface, number } from 'starknet'
 import { BigNumber } from '@ethersproject/bignumber'
-import { ZERO_ADDRESS } from '../constants'
+import { StarknetChainId, ZERO_ADDRESS, starknetChainId } from '../constants'
 import { JSBI, Percent, Token, CurrencyAmount, Currency, ETHER } from '@jediswap/sdk'
 import { LPTokenAddressMap, TokenAddressMap } from '../state/lists/hooks'
 import isZero from './isZero'
 import { InjectedConnector } from '@starknet-react/core'
-import { StarknetChainId } from 'starknet/dist/constants'
 
 // returns the checksummed address if the address is valid, otherwise returns false
 export function isAddress(addr: string | null | undefined): string | false {
@@ -20,18 +18,20 @@ export function isAddress(addr: string | null | undefined): string | false {
   }
 }
 
-const VOYAGER_PREFIXES: { [chainId in StarknetChainId]: string } = {
+const VOYAGER_PREFIXES: { [chainId in starknetChainId]: string } = {
   [StarknetChainId.MAINNET]: '',
-  [StarknetChainId.TESTNET]: 'goerli.'
+  [StarknetChainId.TESTNET]: 'goerli.',
+  [StarknetChainId.TESTNET2]: 'goerli.'
 }
 
-const STARKSCAN_PREFIXES: { [chainId in StarknetChainId]: string } = {
+const STARKSCAN_PREFIXES: { [chainId in starknetChainId]: string } = {
   [StarknetChainId.MAINNET]: '',
-  [StarknetChainId.TESTNET]: 'testnet.'
+  [StarknetChainId.TESTNET]: 'testnet.',
+  [StarknetChainId.TESTNET2]: 'testnet.'
 }
 
 export function getVoyagerLink(
-  chainId: StarknetChainId,
+  chainId: starknetChainId,
   data: string,
   type: 'transaction' | 'block' | 'contract'
 ): string {
@@ -52,7 +52,7 @@ export function getVoyagerLink(
 }
 
 export function getStarkscanLink(
-  chainId: StarknetChainId,
+  chainId: starknetChainId,
   data: string,
   type: 'transaction' | 'block' | 'contract'
 ): string {
@@ -143,6 +143,6 @@ export function isTokenOnList(defaultTokens: TokenAddressMap | LPTokenAddressMap
   return Boolean(currency instanceof Token && defaultTokens[currency.chainId]?.[currency.address])
 }
 
-export const parsedAmountToUint256Args = (amount: JSBI): { [k: string]: BigNumberish; type: 'struct' } => {
+export const parsedAmountToUint256Args = (amount: JSBI): { [k: string]: number.BigNumberish; type: 'struct' } => {
   return { type: 'struct', ...uint256.bnToUint256(amount.toString()) }
 }

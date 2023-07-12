@@ -1,6 +1,6 @@
 import { JSBI, Pair, Route, Token, TokenAmount, Trade, TradeType } from '@jediswap/sdk'
 import { computeTradePriceBreakdown } from './prices'
-import { StarknetChainId } from 'starknet/dist/constants'
+import { StarknetChainId } from '../constants'
 
 describe('prices', () => {
   const token1 = new Token(StarknetChainId.MAINNET, '0x0000000000000000000000000000000000000001', 18)

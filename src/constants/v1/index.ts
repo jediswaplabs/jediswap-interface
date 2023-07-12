@@ -1,11 +1,12 @@
 import { Interface } from '@ethersproject/abi'
 import V1_EXCHANGE_ABI from './v1_exchange.json'
 import V1_FACTORY_ABI from './v1_factory.json'
-import { StarknetChainId } from 'starknet/dist/constants'
+import { StarknetChainId, starknetChainId } from '..'
 
-const V1_FACTORY_ADDRESSES: { [chainId in StarknetChainId]: string } = {
+const V1_FACTORY_ADDRESSES: { [chainId in starknetChainId]: string } = {
   [StarknetChainId.MAINNET]: '0xc0a47dFe034B400B47bDaD5FecDa2621de6c4d95',
-  [StarknetChainId.TESTNET]: '0x6Ce570d02D73d4c384b46135E87f8C592A8c86dA'
+  [StarknetChainId.TESTNET]: '0x6Ce570d02D73d4c384b46135E87f8C592A8c86dA',
+  [StarknetChainId.TESTNET2]: '0x6Ce570d02D73d4c384b46135E87f8C592A8c86dA'
 }
 
 const V1_FACTORY_INTERFACE = new Interface(V1_FACTORY_ABI)

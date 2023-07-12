@@ -1,11 +1,10 @@
-import { BASES_TO_BUILD_ZAPPER_LIST_AGAINST } from './../../constants/index'
+import { BASES_TO_BUILD_ZAPPER_LIST_AGAINST, StarknetChainId, starknetChainId } from './../../constants/index'
 import { LPToken, Pair, Token } from '@jediswap/sdk'
 import { Tags, TokenInfo, TokenList } from '@jediswap/token-lists'
 import { useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { AppState } from '../index'
 import { useAllPairs } from '../pairs/hooks'
-import { StarknetChainId } from 'starknet/dist/constants'
 
 type TagDetails = Tags[keyof Tags]
 export interface TagInfo extends TagDetails {
@@ -89,7 +88,7 @@ export class WrappedLPTokenInfo extends LPToken {
   public readonly token1Info: WrappedTokenInfo
   public readonly tags: TagInfo[]
 
-  constructor(chainId: StarknetChainId, token0Info: WrappedTokenInfo, token1Info: WrappedTokenInfo, tags: TagInfo[]) {
+  constructor(chainId: starknetChainId, token0Info: WrappedTokenInfo, token1Info: WrappedTokenInfo, tags: TagInfo[]) {
     const token0 = new Token(
       token0Info.chainId,
       token0Info.address,
@@ -119,11 +118,11 @@ export class WrappedLPTokenInfo extends LPToken {
 }
 
 export type TokenAddressMap = Readonly<
-  { [chainId in StarknetChainId]: Readonly<{ [tokenAddress: string]: WrappedTokenInfo }> }
+  { [chainId in starknetChainId]: Readonly<{ [tokenAddress: string]: WrappedTokenInfo }> }
 >
 
 export type LPTokenAddressMap = Readonly<
-  { [chainId in StarknetChainId]: Readonly<{ [lpTokenAddress: string]: WrappedLPTokenInfo }> }
+  { [chainId in starknetChainId]: Readonly<{ [lpTokenAddress: string]: WrappedLPTokenInfo }> }
 >
 
 /**
@@ -131,6 +130,7 @@ export type LPTokenAddressMap = Readonly<
  */
 const EMPTY_LIST: TokenAddressMap = {
   [StarknetChainId.TESTNET]: {},
+  [StarknetChainId.TESTNET2]: {},
   [StarknetChainId.MAINNET]: {}
 }
 
@@ -139,6 +139,7 @@ const EMPTY_LIST: TokenAddressMap = {
  */
 const EMPTY_PAIR_LIST: LPTokenAddressMap = {
   [StarknetChainId.TESTNET]: {},
+  [StarknetChainId.TESTNET2]: {},
   [StarknetChainId.MAINNET]: {}
 }
 
