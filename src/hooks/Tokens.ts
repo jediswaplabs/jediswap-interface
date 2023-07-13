@@ -11,9 +11,8 @@ import { useSingleCallResult } from '../state/multicall/hooks'
 import { NEVER_RELOAD } from '../state/multicall/hooks'
 import { DEFAULT_CHAIN_ID } from '../constants'
 import { useAccount } from '@starknet-react/core'
-export function useAllTokens(): { [address: string]: Token } {
-  const { account } = useAccount()
-  const chainId = account?.chainId
+import { StarknetChainId } from 'starknet/dist/constants'
+export function useAllTokens(chainId: StarknetChainId): { [address: string]: Token } {
   const userAddedTokens = useUserAddedTokens()
   const allTokens = useSelectedTokenList()
 

@@ -186,7 +186,7 @@ export function getLiquidityToken([tokenA, tokenB]: [Token, Token]): Token {
 export function useTrackedTokenPairs(): [Token, Token][] {
   const { account } = useAccount()
   const chainId = account?.chainId
-  const tokens = useAllTokens()
+  const tokens = useAllTokens(chainId as StarknetChainId)
   // pinned pairs
   const pinnedPairs = useMemo(() => (chainId ? PINNED_PAIRS[chainId] ?? [] : []), [chainId])
 
