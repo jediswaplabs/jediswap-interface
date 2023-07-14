@@ -2,12 +2,8 @@ import React, { Suspense, useEffect } from 'react'
 import { Route, Switch } from 'react-router-dom'
 import styled from 'styled-components'
 import Header from '../components/Header'
-import Polling from '../components/Header/Polling'
-import URLWarning from '../components/Header/URLWarning'
 import Popups from '../components/Popups'
 import Web3ReactManager from '../components/Web3ReactManager'
-import { ApplicationModal } from '../state/application/actions'
-import { useModalOpen, useToggleModal } from '../state/application/hooks'
 import DarkModeQueryParamReader from '../theme/DarkModeQueryParamReader'
 
 import Swap from './Swap'
@@ -15,20 +11,20 @@ import { RedirectPathToSwapOnly, RedirectToSwap } from './Swap/redirects'
 
 import Pool from './Pool'
 
-import AddLiquidity from './AddLiquidity'
 import RemoveLiquidity from './RemoveLiquidity'
 import {
   RedirectDuplicateTokenIds,
   RedirectOldAddLiquidityPathStructure,
   RedirectToAddLiquidity
 } from './AddLiquidity/redirects'
-import { RedirectOldRemoveLiquidityPathStructure } from './RemoveLiquidity/redirects'
 
 import Zap from './Zap'
 import ComingSoon from './ComingSoon'
+import Maintenance from './Maintenance'
 import Footer from '../components/Footer'
 import useFetchAllPairsCallback from '../hooks/useFetchAllPairs'
 import { MainnetWarningModal } from '../components/MainnetWarningModal'
+import { isProductionEnvironment, isStagingEnvironment } from '../connectors'
 
 const AppWrapper = styled.div`
   display: flex;
@@ -66,12 +62,6 @@ const Marginer = styled.div`
   margin-top: 5rem;
 `
 
-// function TopLevelModals() {
-//   const open = useModalOpen(ApplicationModal.ADDRESS_CLAIM)
-//   const toggle = useToggleModal(ApplicationModal.ADDRESS_CLAIM)
-//   return <AddressClaimModal isOpen={open} onDismiss={toggle} />
-// }
-
 export default function App() {
   const fetchAllPairs = useFetchAllPairsCallback()
 
@@ -81,10 +71,8 @@ export default function App() {
 
   return (
     <Suspense fallback={null}>
-      {/* <Route component={GoogleAnalyticsReporter} /> */}
       <Route component={DarkModeQueryParamReader} />
       <AppWrapper>
-        {/* <URLWarning /> */}
         <HeaderWrapper>
           <Header />
         </HeaderWrapper>
@@ -92,7 +80,6 @@ export default function App() {
           <Popups />
           <MainnetWarningModal />
 
-          {/* <TopLevelModals /> */}
           <Web3ReactManager>
             <Switch>
               <Route exact strict path="/swap" component={Swap} />
@@ -104,22 +91,19 @@ export default function App() {
               <Route exact path="/create" component={RedirectToAddLiquidity} />
               <Route exact path="/create/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />
               <Route exact path="/create/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
-              <Route exact path="/zap" component={Zap} />
+              <Route
+                exact
+                path="/zap"
+                render={props =>
+                  isProductionEnvironment() || isStagingEnvironment() ? (
+                    <Maintenance {...props} pageTitle={'ZAP'} />
+                  ) : (
+                    <Zap />
+                  )
+                }
+              />
               <Route exact path="/stake" component={ComingSoon} />
               <Route exact strict path="/remove/:currencyIdA/:currencyIdB" component={RemoveLiquidity} />
-
-              {/* <Route exact strict path="/claim" component={OpenClaimAddressModalAndRedirectToSwap} />
-              <Route exact strict path="/send" component={RedirectPathToSwapOnly} />
-              <Route exact strict path="/remove/:tokens" component={RedirectOldRemoveLiquidityPathStructure} />
-              <Route exact strict path="/find" component={PoolFinder} />
-              <Route exact strict path="/uni" component={Earn} />
-              <Route exact strict path="/vote" component={Vote} />
-              <Route exact strict path="/remove/v1/:address" component={RemoveV1Exchange} />
-              
-              <Route exact strict path="/migrate/v1" component={MigrateV1} />
-              <Route exact strict path="/migrate/v1/:address" component={MigrateV1Exchange} />
-              <Route exact strict path="/uni/:currencyIdA/:currencyIdB" component={Manage} />
-              <Route exact strict path="/vote/:id" component={VotePage} /> */}
               <Route component={RedirectPathToSwapOnly} />
             </Switch>
           </Web3ReactManager>

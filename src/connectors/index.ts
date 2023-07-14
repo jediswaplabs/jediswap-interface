@@ -15,6 +15,17 @@ export const isTestnetEnvironment = () => {
   return host === 'app.testnet.jediswap.xyz'
 }
 
+export const isStagingEnvironment = () => {
+  if (!location) {
+    return false
+  }
+  if (String(location) === '//') {
+    return false
+  }
+  const host = new URL(String(location))?.host || ''
+  return host === 'app.staging.jediswap.xyz'
+}
+
 export const isProductionEnvironment = () => {
   if (!location) {
     return false
