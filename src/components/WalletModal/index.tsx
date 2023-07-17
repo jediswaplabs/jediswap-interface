@@ -16,6 +16,7 @@ import Modal from '../Modal'
 import Option from './Option'
 import PendingView from './PendingView'
 import { InjectedConnector, useAccount, useConnectors } from '@starknet-react/core'
+import { getStarknet } from 'get-starknet-core'
 
 const CloseIcon = styled.div`
   position: absolute;
@@ -130,11 +131,15 @@ export default function WalletModal({
   const { active, error } = useStarknetReact()
   const { account, connector } = useAccount()
   const { connect } = useConnectors()
+  const { getAvailableWallets } = getStarknet()
+
   // const connectStarknet = useStarknetConnector({ showModal: true })
 
   const [walletView, setWalletView] = useState(WALLET_VIEWS.ACCOUNT)
 
   const [pendingWallet, setPendingWallet] = useState<InjectedConnector | undefined>()
+
+  const [availableWallets, setAvailableWallets] = useState<any>()
 
   const [pendingError, setPendingError] = useState<any>()
 
@@ -142,6 +147,16 @@ export default function WalletModal({
   const toggleWalletModal = useWalletModalToggle()
 
   const previousAccount = usePrevious(account)
+
+  useEffect(() => {
+    //check all available wallets from browser
+    const getWallets = async () => {
+      const available_wallets = await getAvailableWallets()
+      setAvailableWallets(available_wallets)
+    }
+
+    getWallets()
+  }, [])
 
   // close on connection, when logged out before
   useEffect(() => {
@@ -168,32 +183,38 @@ export default function WalletModal({
   }, [setWalletView, active, error, connector, walletModalOpen, activePrevious, connectorPrevious])
 
   const tryActivation = async (connector: InjectedConnector | undefined) => {
-    // log selected wallet
-    ReactGA.event({
-      category: 'Wallet',
-      action: 'Change Wallet',
-      label: (connector && SUPPORTED_WALLETS[connector.id()].name) || ''
-    })
-    setPendingWallet(connector) // set wallet for pending view
-    setWalletView(WALLET_VIEWS.PENDING)
-    try {
-      if (connector) {
-        connect(connector)
-        toggleWalletModal()
-        if (connector.id() === 'argentX') {
-          localStorage.setItem('auto-injected-wallet', 'argentX')
-        } else if (connector.id() === 'braavos') {
-          localStorage.setItem('auto-injected-wallet', 'braavos')
-        } else {
-          localStorage.removeItem('auto-injected-wallet')
+    //check if selected wallet is installed
+    const checkIfWalletExists = availableWallets.find(wallet => wallet.id === connector?.id())
+    if (checkIfWalletExists) {
+      // log selected wallet
+      ReactGA.event({
+        category: 'Wallet',
+        action: 'Change Wallet',
+        label: (connector && SUPPORTED_WALLETS[connector.id()].name) || ''
+      })
+      setPendingWallet(connector) // set wallet for pending view
+      setWalletView(WALLET_VIEWS.PENDING)
+      try {
+        if (connector) {
+          connect(connector)
+          toggleWalletModal()
+          if (connector.id() === 'argentX') {
+            localStorage.setItem('auto-injected-wallet', 'argentX')
+          } else if (connector.id() === 'braavos') {
+            localStorage.setItem('auto-injected-wallet', 'braavos')
+          } else {
+            localStorage.removeItem('auto-injected-wallet')
+          }
+          setWalletView(WALLET_VIEWS.ACCOUNT)
         }
-        setWalletView(WALLET_VIEWS.ACCOUNT)
+      } catch (error) {
+        // Store the error in a variable
+        const errorValue = error
+        setPendingError(errorValue)
       }
-    } catch (error) {
-      // Store the error in a variable
-      const errorValue = error
-      // Now you can use the errorValue variable to handle the error or log it
-      console.log('Error:', errorValue)
+    } else {
+      setWalletView(WALLET_VIEWS.PENDING)
+      setPendingError(connector?.id())
     }
   }
 

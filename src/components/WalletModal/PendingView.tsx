@@ -116,9 +116,9 @@ export default function PendingView({
   setWalletView: (walletView: string) => void
   tryActivation: (connector: InjectedConnector) => void
 }) {
-  const isArgentXProviderError = error instanceof NoArgentXProviderError
+  const isArgentXProviderError = error === 'argentX'
 
-  const isBraavosProviderError = error instanceof NoBraavosProviderError
+  const isBraavosProviderError = error === 'braavos'
 
   const isStarknetProviderError = isArgentXProviderError || isBraavosProviderError
 
@@ -181,7 +181,7 @@ export default function PendingView({
 }
 
 interface ProviderErrorProps {
-  error: NoArgentXProviderError | NoBraavosProviderError
+  error: string
   onClick: () => void
 }
 
@@ -195,7 +195,7 @@ const ProviderError: FC<ProviderErrorProps> = ({ error, onClick }) => {
 
   const downloadBraavos = () => window.open(braavosUrl, '_blank')
 
-  const isArgentXError = error instanceof NoArgentXProviderError
+  const isArgentXError = error === 'argentX'
 
   return (
     <StarknetErrorGroup>
