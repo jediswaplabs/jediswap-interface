@@ -1,6 +1,7 @@
 import { InjectedConnector } from '@starknet-react/core'
 import { ArgentXConnector } from '@web3-starknet-react/argentx-connector'
 import { BraavosConnector } from '@web3-starknet-react/braavos-connector'
+import { StarknetChainId } from 'starknet/dist/constants'
 
 export const NETWORK_CHAIN_ID: number = parseInt(process.env.REACT_APP_CHAIN_ID ?? '5')
 
@@ -37,20 +38,13 @@ export const isProductionEnvironment = () => {
   return host === 'app.jediswap.xyz'
 }
 
-// Starknet
-// export const argentX = new ArgentXConnector({
-//   supportedChainIds: [
-//     ...(isProductionEnvironment() ? [] : [ChainId.TESTNET]),
-//     ...(isTestnetEnvironment() ? [] : [ChainId.MAINNET])
-//   ]
-// })
+export const isProductionChainId = (id: string) => {
+  return id === StarknetChainId.MAINNET
+}
 
-// export const braavosWallet = new BraavosConnector({
-//   supportedChainIds: [
-//     ...(isProductionEnvironment() ? [] : [ChainId.TESTNET]),
-//     ...(isTestnetEnvironment() ? [] : [ChainId.MAINNET])
-//   ]
-// })
+export const isTestnetChainId = (id: string) => {
+  return id === StarknetChainId.TESTNET
+}
 
 export const argentX = new InjectedConnector({ options: { id: 'argentX' } })
 export const braavosWallet = new InjectedConnector({ options: { id: 'braavos' } })

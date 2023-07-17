@@ -5,7 +5,7 @@ import ReactGA from 'react-ga4'
 import styled from 'styled-components'
 import MetamaskIcon from '../../assets/images/metamask.png'
 import { ReactComponent as Close } from '../../assets/images/x.svg'
-import { argentX, braavosWallet, isProductionEnvironment, isTestnetEnvironment } from '../../connectors'
+import { isProductionChainId, isProductionEnvironment, isTestnetChainId, isTestnetEnvironment } from '../../connectors'
 import { SUPPORTED_WALLETS } from '../../constants'
 import usePrevious from '../../hooks/usePrevious'
 import { ApplicationModal } from '../../state/application/actions'
@@ -17,6 +17,7 @@ import Option from './Option'
 import PendingView from './PendingView'
 import { InjectedConnector, useAccount, useConnectors } from '@starknet-react/core'
 import { getStarknet } from 'get-starknet-core'
+import { StarknetChainId } from 'starknet/dist/constants'
 
 const CloseIcon = styled.div`
   position: absolute;
@@ -129,9 +130,11 @@ export default function WalletModal({
 }) {
   // important that these are destructed from the account-specific web3-react context
   const { active, error } = useStarknetReact()
-  const { account, connector } = useAccount()
+  const { account, connector, status } = useAccount()
   const { connect } = useConnectors()
   const { getAvailableWallets } = getStarknet()
+
+  const chainId = account?.chainId
 
   // const connectStarknet = useStarknetConnector({ showModal: true })
 
@@ -143,10 +146,24 @@ export default function WalletModal({
 
   const [pendingError, setPendingError] = useState<any>()
 
+  const [chainError, setChainError] = useState<any>()
+
   const walletModalOpen = useModalOpen(ApplicationModal.WALLET)
+
   const toggleWalletModal = useWalletModalToggle()
 
   const previousAccount = usePrevious(account)
+
+  useEffect(() => {
+    if (status === 'connected' && chainId) {
+      if (
+        (isProductionEnvironment() && !isProductionChainId(chainId)) ||
+        (isTestnetEnvironment() && !isTestnetChainId(chainId)) ||
+        (chainId && !Object.values(StarknetChainId).includes(chainId))
+      )
+        setChainError(true)
+    }
+  }, [status])
 
   useEffect(() => {
     //check all available wallets from browser
@@ -244,15 +261,15 @@ export default function WalletModal({
   }
 
   function getModalContent() {
-    if (error) {
+    if (error || chainError) {
       return (
         <UpperSection>
           <CloseIcon onClick={toggleWalletModal}>
             <CloseColor />
           </CloseIcon>
-          <HeaderRow>{error instanceof UnsupportedChainIdError ? 'Wrong Network' : 'Error connecting'}</HeaderRow>
+          <HeaderRow>{chainError ? 'Wrong Network' : 'Error connecting'}</HeaderRow>
           <ContentWrapper>
-            {error instanceof UnsupportedChainIdError ? (
+            {chainError ? (
               <h5>
                 Please connect to the{' '}
                 {isTestnetEnvironment()

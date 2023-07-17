@@ -24,7 +24,15 @@ import Maintenance from './Maintenance'
 import Footer from '../components/Footer'
 import useFetchAllPairsCallback from '../hooks/useFetchAllPairs'
 import { MainnetWarningModal } from '../components/MainnetWarningModal'
-import { isProductionEnvironment, isStagingEnvironment } from '../connectors'
+import {
+  isProductionChainId,
+  isProductionEnvironment,
+  isStagingEnvironment,
+  isTestnetChainId,
+  isTestnetEnvironment
+} from '../connectors'
+import { useAccount, useConnectors } from '@starknet-react/core'
+import { StarknetChainId } from 'starknet/dist/constants'
 
 const AppWrapper = styled.div`
   display: flex;
@@ -64,10 +72,26 @@ const Marginer = styled.div`
 
 export default function App() {
   const fetchAllPairs = useFetchAllPairsCallback()
+  const { status, account } = useAccount()
+  const { disconnect } = useConnectors()
+  const chainId = account?.chainId
 
   useEffect(() => {
     fetchAllPairs()
   }, [fetchAllPairs])
+
+  useEffect(() => {
+    //Ensure that environment and chainId are compatible with one another.
+    if (status === 'connected' && chainId) {
+      if (
+        (isProductionEnvironment() && !isProductionChainId(chainId)) ||
+        (isTestnetEnvironment() && !isTestnetChainId(chainId)) ||
+        !Object.values(StarknetChainId).includes(chainId)
+      ) {
+        disconnect()
+      }
+    }
+  }, [status])
 
   return (
     <Suspense fallback={null}>

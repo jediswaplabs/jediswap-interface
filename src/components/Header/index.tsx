@@ -339,9 +339,8 @@ interface window {
 }
 
 function Header({ history }: { history: any }) {
+  const { address, status } = useAccount()
   const { chain } = useNetwork()
-  console.log('🚀 ~ file: index.tsx:343 ~ Header ~ chain:', chain)
-  const { address } = useAccount()
   const { t } = useTranslation()
   const [currentNetwork, setCurrentNetwork] = useState('SN_MAIN')
 
@@ -408,7 +407,7 @@ function Header({ history }: { history: any }) {
         {/* <StarkNetCard>Starknet</StarkNetCard> */}
         <HeaderElement>
           <HideSmall>
-            {chain?.name && <NetworkCard title={chain.name}>{chain.name}</NetworkCard>}
+            {status === 'connected' && chain?.name && <NetworkCard title={chain.name}>{chain.name}</NetworkCard>}
             {/*<NetworkSelect onChange={changeNetwork}>*/}
             {/*  <option value="SN_MAIN">Starknet-Mainnet</option>*/}
             {/*  <option value="SN_GOERLI">Starknet-Görli</option>*/}
