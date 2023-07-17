@@ -23,6 +23,7 @@ import AutoSizer from 'react-virtualized-auto-sizer'
 import { wrappedCurrency } from '../../utils/wrappedCurrency'
 import { DEFAULT_CHAIN_ID } from '../../constants'
 import { useAccount } from '@starknet-react/core'
+import { StarknetChainId } from 'starknet/dist/constants'
 
 interface CurrencySearchProps {
   isOpen: boolean
@@ -52,7 +53,7 @@ export function CurrencySearch({
   const fixedList = useRef<FixedSizeList>()
   const [searchQuery, setSearchQuery] = useState<string>('')
   const [invertSearchOrder, setInvertSearchOrder] = useState<boolean>(false)
-  const allTokens = useAllTokens()
+  const allTokens = useAllTokens(chainId as StarknetChainId)
   const jediLPTokens = useJediLPTokens()
 
   // if they input an address, use it

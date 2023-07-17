@@ -81,7 +81,7 @@ function parseStringFromArgs(data: any, isHexNumber?: boolean): string | undefin
 export function useToken(tokenAddress?: string): Token | undefined | null {
   const { account } = useAccount()
   const chainId = account?.chainId
-  const currencyTokens = useAllTokens()
+  const currencyTokens = useAllTokens(chainId as StarknetChainId)
   const lpTokens = useJediLPTokens()
 
   const tokens = { ...currencyTokens, ...lpTokens }

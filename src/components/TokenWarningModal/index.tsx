@@ -12,6 +12,7 @@ import { AutoColumn } from '../Column'
 import { AlertTriangle } from 'react-feather'
 import { ButtonError } from '../Button'
 import { useAccount } from '@starknet-react/core'
+import { StarknetChainId } from 'starknet/dist/constants'
 
 const Wrapper = styled.div<{ error: boolean }>`
   background: ${({ theme }) => transparentize(0.6, theme.bg3)};
@@ -44,7 +45,7 @@ function TokenWarningCard({ token }: TokenWarningCardProps) {
   const tokenSymbol = token?.symbol?.toLowerCase() ?? ''
   const tokenName = token?.name?.toLowerCase() ?? ''
 
-  const allTokens = useAllTokens()
+  const allTokens = useAllTokens(chainId as StarknetChainId)
 
   const duplicateNameOrSymbol = useMemo(() => {
     if (!token || !chainId) return false
