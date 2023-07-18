@@ -1,11 +1,10 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { SwapPoolTabs } from '../../components/NavigationTabs'
 import { BodyWrapper } from '../AppBody'
-
 import { Backdrop, HeaderRow } from '../Swap/styleds'
 import { useActiveStarknetReact } from '../../hooks'
 import { useWalletModalToggle } from '../../state/application/hooks'
-import { darkTheme, WidoWidget, isStarknetChain } from 'wido-widget'
+import { darkTheme, WidoWidget, isStarknetChain, Transaction } from 'wido-widget'
 import styled, { ThemeContext } from 'styled-components'
 import { useWeb3React } from '@web3-react/core'
 import { InjectedConnector } from '@web3-react/injected-connector'
@@ -18,6 +17,8 @@ import { providers } from 'ethers'
 import { isAddress } from '../../utils'
 import { useAllPairs } from '../../state/pairs/hooks'
 import './style.css'
+import { useTransactionAdder } from '../../state/transactions/hooks'
+import { currencyAmountToPreciseFloat, formatTransactionAmount } from '../../utils/formatNumber'
 
 export const StyledAppBody = styled(BodyWrapper)`
   padding: 0rem;
@@ -25,7 +26,6 @@ export const StyledAppBody = styled(BodyWrapper)`
 export const injected = new InjectedConnector({})
 
 export default function Zap() {
-  const theme = useContext(ThemeContext)
   /**
    * Starknet wallet connection
    */
@@ -33,6 +33,8 @@ export default function Zap() {
   const toggleWalletModal = useWalletModalToggle() // toggle wallet when disconnected
 
   const [passedAccount, setPassedAccount] = useState(snAccount ?? undefined)
+
+  const addTransaction = useTransactionAdder()
 
   // Work-around: unfortunately account.chainId does not get updated when the user changes network
   // Solution: re-create the account object each time chainId or account changes
@@ -74,6 +76,17 @@ export default function Zap() {
     },
     [toggleWalletModal, handleMetamask]
   )
+
+  const handleZap = (hash: string, tx: Transaction) => {
+    if (hash && tx.info) {
+      const inputAmount = formatTransactionAmount(currencyAmountToPreciseFloat(tx.info?.trade?.inputAmount))
+      const outputAmount = formatTransactionAmount(currencyAmountToPreciseFloat(tx.info?.trade?.outputAmount))
+      const inputSymbol = tx.info?.trade?.fromToken?.tokenInfo?.symbol
+      const outputSymbol = tx.info?.trade?.toToken?.tokenInfo?.symbol
+      const summary = `Zap ${inputAmount} ${inputSymbol} for ${outputAmount} ${outputSymbol}`
+      addTransaction({ transaction_hash: hash }, { summary })
+    }
+  }
 
   const [fromTokens, setFromTokens] = useState<{ chainId: number; address: string }[]>([])
   const [toTokens, setToTokens] = useState<{ chainId: number; address: string }[]>([])
@@ -240,9 +253,9 @@ export default function Zap() {
           snAccount={passedAccount}
           fromTokens={fromTokens}
           toTokens={toTokens}
+          onTxSubmit={handleZap}
           theme={{
             ...darkTheme,
-            // accent: theme.jediBlue,
             module: 'rgba(0,0,0,0.0)',
             fontFamily: {
               font: "'DM Sans',sans-serif",
