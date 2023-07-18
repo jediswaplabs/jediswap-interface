@@ -4,7 +4,7 @@ An open source interface for Jediswap -- a protocol for decentralized exchange o
 
 - Website: [jediswap.xyz](https://www.jediswap.xyz/)
 - Interface: [app.jediswap.xyz](https://app.jediswap.xyz/)
-- Docs: [bip.so/@meshfinance](https://bip.so/@meshfinance/public)
+- Docs: [docs.jediswap.xyz](https://docs.jediswap.xyz)
 - Tech Docs: [bip.so/@meshfinance](https://bip.so/meshfinance/integration-docs-12236c/public)
 - Twitter: [@JediSwap](https://twitter.com/JediSwap)
 - Discord: [Jediswap](https://discord.com/invite/jediswap)
