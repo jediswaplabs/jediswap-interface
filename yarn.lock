@@ -9396,10 +9396,10 @@ widest-line@^3.1.0:
   dependencies:
     string-width "^4.0.0"
 
-wido-widget@1.4.0:
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/wido-widget/-/wido-widget-1.4.0.tgz#40a52bec54380a62865f5f33d0756df4d3f1e358"
-  integrity sha512-WEM0aIc5d3HAy3zTpk4kqx/lxL8BwaDulmSq3iQyxT4CI03oZb7qjuBnD3Wo/kHuP8CK5H9tguQGm2hb3KpkGg==
+wido-widget@1.5.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/wido-widget/-/wido-widget-1.5.0.tgz#113b4616a8a2b48d9581aa46dec44c11f7105c83"
+  integrity sha512-qZzeIrZcjIpcflhnpyXMu9fJrG5A3CMVqzCUxLmBtK0DTfkVOIaiMMq+J0rmZxzGDdbFTOyaCPoyuETzp2Sbaw==
   dependencies:
     "@argent/get-starknet" "^5.2.0"
     "@babel/runtime" ">=7.17.0"

@@ -141,6 +141,6 @@
     "@sentry/react": "^7.53.1",
     "events": "^3.3.0",
     "vite-plugin-svgr": "^2.2.0",
-    "wido-widget": "1.4.0"
+    "wido-widget": "1.5.0"
   }
 }
