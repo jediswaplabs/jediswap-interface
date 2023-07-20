@@ -278,7 +278,7 @@ export function useSwapDefaultsFromURLSearch():
   | { inputCurrencyId: string | undefined; outputCurrencyId: string | undefined }
   | undefined {
   const { account } = useAccount()
-  const chainId = account?.chainId
+  const chainId = account?.chainId || account?.provider?.chainId
   const dispatch = useDispatch<AppDispatch>()
   const parsedQs = useParsedQueryString()
   const [result, setResult] = useState<

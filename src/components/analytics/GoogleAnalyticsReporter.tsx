@@ -7,7 +7,7 @@ import { useAccount } from '@starknet-react/core'
 // fires a GA pageview every time the route changes
 export default function GoogleAnalyticsReporter({ location: { pathname, search } }: RouteComponentProps): null {
   const { account } = useAccount()
-  const chainId = account?.chainId
+  const chainId = account?.chainId || account?.provider?.chainId
   useEffect(() => {
     // cd1 - custom dimension 1 - chainId
     ReactGA.set({ cd1: chainId ?? 0 })

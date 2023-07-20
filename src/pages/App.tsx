@@ -74,7 +74,7 @@ export default function App() {
   const fetchAllPairs = useFetchAllPairsCallback()
   const { status, account } = useAccount()
   const { disconnect } = useConnectors()
-  const chainId = account?.chainId
+  const chainId = account?.chainId || account?.provider?.chainId
 
   useEffect(() => {
     fetchAllPairs()

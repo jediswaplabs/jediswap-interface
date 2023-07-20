@@ -23,7 +23,7 @@ export interface LiquidityPairToken {
 
 export function usePairs(currencies: [Currency | undefined, Currency | undefined][]): [PairState, Pair | null][] {
   const { account } = useAccount()
-  const chainId = account?.chainId
+  const chainId = account?.chainId || account?.provider?.chainId
   const allPairs = useAllPairs()
 
   const tokens = useMemo(

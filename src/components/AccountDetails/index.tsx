@@ -270,7 +270,7 @@ export default function AccountDetails({
 }: AccountDetailsProps) {
   const { account, address, connector } = useAccount()
   const { disconnect } = useConnectors()
-  const chainId = account?.chainId
+  const chainId = account?.chainId || account?.provider?.chainId
   const theme = useContext(ThemeContext)
   const dispatch = useDispatch<AppDispatch>()
 

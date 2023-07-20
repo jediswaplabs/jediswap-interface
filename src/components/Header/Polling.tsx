@@ -60,7 +60,7 @@ const Spinner = styled.div`
 
 export default function Polling() {
   const { account } = useAccount()
-  const chainId = account?.chainId
+  const chainId = account?.chainId || account?.provider?.chainId
 
   const { data: blockNumber } = useBlockNumber({
     refetchInterval: false

@@ -135,7 +135,7 @@ export function useRemoveUserAddedToken(): (chainId: string, address: string) =>
 
 export function useUserAddedTokens(): Token[] {
   const { account } = useAccount()
-  const chainId = account?.chainId
+  const chainId = account?.chainId || account?.provider?.chainId
   const serializedTokensMap = useSelector<AppState, AppState['user']['tokens']>(({ user: { tokens } }) => tokens)
 
   return useMemo(() => {
@@ -185,7 +185,7 @@ export function getLiquidityToken([tokenA, tokenB]: [Token, Token]): Token {
  */
 export function useTrackedTokenPairs(): [Token, Token][] {
   const { account } = useAccount()
-  const chainId = account?.chainId
+  const chainId = account?.chainId || account?.provider?.chainId
   const tokens = useAllTokens(chainId as StarknetChainId)
   // pinned pairs
   const pinnedPairs = useMemo(() => (chainId ? PINNED_PAIRS[chainId] ?? [] : []), [chainId])

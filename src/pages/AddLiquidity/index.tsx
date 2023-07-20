@@ -93,7 +93,7 @@ export default function AddLiquidity({
   history
 }: RouteComponentProps<{ currencyIdA?: string; currencyIdB?: string }>) {
   const { address, account } = useAccount()
-  const chainId = account?.chainId
+  const chainId = account?.chainId || account?.provider?.chainId
   const theme = useContext(ThemeContext)
 
   const currencyA = useCurrency(currencyIdA)

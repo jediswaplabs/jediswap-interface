@@ -7,7 +7,9 @@ import { useAccount } from '@starknet-react/core'
 
 export function useBlockNumber(): number | undefined {
   const { account } = useAccount()
-  return useSelector((state: AppState) => state.application.blockNumber[account?.chainId ?? -1])
+  return useSelector(
+    (state: AppState) => state.application.blockNumber[(account?.chainId || account?.provider?.chainId) ?? -1]
+  )
 }
 
 export function useModalOpen(modal: ApplicationModal): boolean {

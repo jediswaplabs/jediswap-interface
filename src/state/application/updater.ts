@@ -8,7 +8,7 @@ import { StarknetChainId } from 'starknet/dist/constants'
 
 export default function Updater(): null {
   const { account } = useAccount()
-  const chainId = account?.chainId
+  const chainId = account?.chainId || account?.provider?.chainId
   const dispatch = useDispatch()
 
   const windowVisible = useIsWindowVisible()

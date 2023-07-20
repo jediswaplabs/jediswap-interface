@@ -134,7 +134,7 @@ export default function WalletModal({
   const { connect } = useConnectors()
   const { getAvailableWallets } = getStarknet()
 
-  const chainId = account?.chainId
+  const chainId = account?.chainId || account?.provider?.chainId
 
   // const connectStarknet = useStarknetConnector({ showModal: true })
 
@@ -201,38 +201,38 @@ export default function WalletModal({
 
   const tryActivation = async (connector: InjectedConnector | undefined) => {
     //check if selected wallet is installed
-    const checkIfWalletExists = availableWallets.find(wallet => wallet.id === connector?.id())
-    if (checkIfWalletExists) {
-      // log selected wallet
-      ReactGA.event({
-        category: 'Wallet',
-        action: 'Change Wallet',
-        label: (connector && SUPPORTED_WALLETS[connector.id()].name) || ''
-      })
-      setPendingWallet(connector) // set wallet for pending view
-      setWalletView(WALLET_VIEWS.PENDING)
-      try {
-        if (connector) {
-          connect(connector)
-          toggleWalletModal()
-          if (connector.id() === 'argentX') {
-            localStorage.setItem('auto-injected-wallet', 'argentX')
-          } else if (connector.id() === 'braavos') {
-            localStorage.setItem('auto-injected-wallet', 'braavos')
-          } else {
-            localStorage.removeItem('auto-injected-wallet')
-          }
-          setWalletView(WALLET_VIEWS.ACCOUNT)
+    // const checkIfWalletExists = availableWallets.find(wallet => wallet.id === connector?.id())
+    // if (checkIfWalletExists) {
+    // log selected wallet
+    ReactGA.event({
+      category: 'Wallet',
+      action: 'Change Wallet',
+      label: (connector && SUPPORTED_WALLETS[connector.id()].name) || ''
+    })
+    setPendingWallet(connector) // set wallet for pending view
+    setWalletView(WALLET_VIEWS.PENDING)
+    try {
+      if (connector) {
+        connect(connector)
+        toggleWalletModal()
+        if (connector.id() === 'argentX') {
+          localStorage.setItem('auto-injected-wallet', 'argentX')
+        } else if (connector.id() === 'braavos') {
+          localStorage.setItem('auto-injected-wallet', 'braavos')
+        } else {
+          localStorage.removeItem('auto-injected-wallet')
         }
-      } catch (error) {
-        // Store the error in a variable
-        const errorValue = error
-        setPendingError(errorValue)
+        setWalletView(WALLET_VIEWS.ACCOUNT)
       }
-    } else {
-      setWalletView(WALLET_VIEWS.PENDING)
-      setPendingError(connector?.id())
+    } catch (error) {
+      // Store the error in a variable
+      const errorValue = error
+      setPendingError(errorValue)
     }
+    // } else {
+    //   setWalletView(WALLET_VIEWS.PENDING)
+    //   setPendingError(connector?.id())
+    // }
   }
 
   // get wallets user can switch too, depending on device/browser

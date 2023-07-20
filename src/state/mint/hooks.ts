@@ -34,7 +34,7 @@ export function useDerivedMintInfo(
   error?: string
 } {
   const { account, address } = useAccount()
-  const chainId = account?.chainId
+  const chainId = account?.chainId || account?.provider?.chainId
 
   const { independentField, typedValue, otherTypedValue } = useMintState()
 

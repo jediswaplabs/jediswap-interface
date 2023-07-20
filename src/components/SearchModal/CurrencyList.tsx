@@ -117,7 +117,7 @@ function CurrencyRow({
   style: CSSProperties
 }) {
   const { address, account } = useAccount()
-  const chainId = account?.chainId
+  const chainId = account?.chainId || account?.provider?.chainId
 
   const key = currencyKey(currency)
   const selectedTokenList = useSelectedTokenList()

@@ -28,7 +28,7 @@ export function useDerivedBurnInfo(
   error?: string
 } {
   const { address, account } = useAccount()
-  const chainId = account?.chainId
+  const chainId = account?.chainId || account?.provider?.chainId
   const { independentField, typedValue } = useBurnState()
 
   // pair + totalsupply

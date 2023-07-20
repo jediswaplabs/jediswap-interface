@@ -31,6 +31,7 @@ export function useEagerConnect() {
   } else if (injected === 'braavos') {
     connector = braavosWallet
   }
+  console.log('🚀 ~ file: index.ts:34 ~ useEagerConnect ~ connector:', connector)
 
   useEffect(() => {
     if (connector) {

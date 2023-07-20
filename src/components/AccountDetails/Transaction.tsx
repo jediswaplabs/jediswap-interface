@@ -57,7 +57,7 @@ const IconWrapper = styled.div<{ pending: boolean; success?: boolean }>`
 
 export default function Transaction({ hash }: { hash: string }) {
   const { account } = useAccount()
-  const chainId = account?.chainId
+  const chainId = account?.chainId || account?.provider?.chainId
 
   const allTransactions = useAllTransactions()
 

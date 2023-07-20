@@ -9,7 +9,7 @@ import { useAccount } from '@starknet-react/core'
 
 export function useZapPairs(inputCurrency?: Currency, outputLpToken?: LPToken): [Pair[], boolean] {
   const { account } = useAccount()
-  const chainId = account?.chainId
+  const chainId = account?.chainId || account?.provider?.chainId
 
   const bases: Token[] = useMemo(() => (chainId ? BASES_TO_CHECK_TRADES_AGAINST[chainId] : []), [chainId])
 
@@ -133,7 +133,7 @@ export function useLPOutAmount(
   trades?: ZapTrades | null
 ): [TokenAmount | undefined, Trade | null | undefined, boolean] {
   const { account } = useAccount()
-  const chainId = account?.chainId
+  const chainId = account?.chainId || account?.provider?.chainId
 
   const tokenAmountIn = wrappedCurrencyAmount(currencyAmountIn, chainId)
 

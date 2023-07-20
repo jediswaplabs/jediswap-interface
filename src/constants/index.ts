@@ -3,10 +3,11 @@ import { JSBI, Percent, Token, WETH } from '@jediswap/sdk'
 import { StarknetChainId } from 'starknet/dist/constants'
 
 // import { fortmatic, injected, portis, walletconnect, walletlink, argentX } from '../connectors'
-import { argentX, braavosWallet } from '../connectors'
+import { argentX, braavosWallet, argentWebWallet } from '../connectors'
 import ARGENTX_ICON from '../assets/images/argentx.png'
 import BRAAVOS_ICON from '../assets/svg/Braavos.svg'
 import { InjectedConnector } from '@starknet-react/core'
+import { WebWalletConnector } from '@argent/starknet-react-webwallet-connector'
 
 export const DEFAULT_CHAIN_ID = StarknetChainId.MAINNET
 
@@ -210,7 +211,7 @@ export const PINNED_PAIRS: { readonly [chainId in StarknetChainId]?: [Token, Tok
 }
 
 export interface WalletInfo {
-  connector?: InjectedConnector
+  connector?: InjectedConnector | WebWalletConnector
   name: string
   icon: string
   description: string
@@ -226,6 +227,15 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
   argentX: {
     connector: argentX,
     name: 'Argent-X',
+    icon: ARGENTX_ICON,
+    description: 'Starknet Browser Wallet',
+    href: null,
+    color: '#FF875B',
+    mobile: true
+  },
+  argentWebWallet: {
+    connector: argentWebWallet,
+    name: 'Argent Web Wallet',
     icon: ARGENTX_ICON,
     description: 'Starknet Browser Wallet',
     href: null,

@@ -36,7 +36,7 @@ export function useAllTokens(chainId: StarknetChainId): { [address: string]: Tok
 export function useJediLPTokens(): { [address: string]: LPToken } {
   const allLPTokens = useSelectedLPTokenList()
   const { account } = useAccount()
-  const chainId = account?.chainId
+  const chainId = account?.chainId || account?.provider?.chainId
 
   return useMemo(() => {
     return allLPTokens[chainId ?? DEFAULT_CHAIN_ID]
@@ -80,7 +80,7 @@ function parseStringFromArgs(data: any, isHexNumber?: boolean): string | undefin
 // otherwise returns the token
 export function useToken(tokenAddress?: string): Token | undefined | null {
   const { account } = useAccount()
-  const chainId = account?.chainId
+  const chainId = account?.chainId || account?.provider?.chainId
   const currencyTokens = useAllTokens(chainId as StarknetChainId)
   const lpTokens = useJediLPTokens()
 

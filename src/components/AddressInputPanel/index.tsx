@@ -79,7 +79,7 @@ export default function AddressInputPanel({
   onChange: (value: string) => void
 }) {
   const { account } = useAccount()
-  const chainId = account?.chainId
+  const chainId = account?.chainId || account?.provider?.chainId
   const theme = useContext(ThemeContext)
 
   // const { address, loading, name } = useENS(value)

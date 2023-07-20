@@ -65,7 +65,7 @@ export default function TransactionPopup({
   summary?: string
 }) {
   const { account } = useAccount()
-  const chainId = account?.chainId
+  const chainId = account?.chainId || account?.provider?.chainId
 
   const theme = useContext(ThemeContext)
 

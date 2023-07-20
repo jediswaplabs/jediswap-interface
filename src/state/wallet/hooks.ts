@@ -55,7 +55,7 @@ import { StarknetChainId } from 'starknet/dist/constants'
 
 export function useToken0Balance(uncheckedAddress?: string): CurrencyAmount | undefined {
   const { account } = useAccount()
-  const chainId = account?.chainId
+  const chainId = account?.chainId || account?.provider?.chainId
 
   const tokenContract = useTokenContract(WETH[chainId ?? DEFAULT_CHAIN_ID]?.address)
 
@@ -165,7 +165,7 @@ export function useCurrencyBalance(account?: string, currency?: Currency): Curre
 // mimics useAllBalances
 export function useAllTokenBalances(): { [tokenAddress: string]: TokenAmount | undefined } {
   const { address, account } = useAccount()
-  const chainId = account?.chainId
+  const chainId = account?.chainId || account?.provider?.chainId
   const allTokens = useAllTokens(chainId as StarknetChainId)
   const allTokensArray = useMemo(() => Object.values(allTokens ?? {}), [allTokens])
   const balances = useTokenBalances(address ?? undefined, allTokensArray)

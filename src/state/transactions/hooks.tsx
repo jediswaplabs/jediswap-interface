@@ -12,7 +12,7 @@ export function useTransactionAdder(): (
   customData?: { summary?: string; approval?: { tokenAddress: string; spender: string }; claim?: { recipient: string } }
 ) => void {
   const { account, address } = useAccount()
-  const chainId = account?.chainId
+  const chainId = account?.chainId || account?.provider?.chainId
   const dispatch = useDispatch<AppDispatch>()
 
   return useCallback(
@@ -40,7 +40,7 @@ export function useTransactionAdder(): (
 // returns all the transactions for the current chain
 export function useAllTransactions(): { [txHash: string]: TransactionDetails } {
   const { address, account } = useAccount()
-  const chainId = account?.chainId
+  const chainId = account?.chainId || account?.provider?.chainId
   const state = useSelector<AppState, AppState['transactions']>(state => state.transactions)
 
   const allTxns = chainId ? state[chainId] ?? {} : {}

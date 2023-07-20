@@ -232,7 +232,7 @@ export default function TransactionConfirmationModal({
   content
 }: ConfirmationModalProps) {
   const { account } = useAccount()
-  const chainId = account?.chainId
+  const chainId = account?.chainId || account?.provider?.chainId
 
   if (!chainId) return null
 

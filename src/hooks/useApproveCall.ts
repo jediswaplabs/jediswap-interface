@@ -10,7 +10,7 @@ import { useAccount } from '@starknet-react/core'
 
 export function useApprovalCall(amountToApprove?: CurrencyAmount, spender?: string): () => Call | null {
   const { account } = useAccount()
-  const chainId = account?.chainId
+  const chainId = account?.chainId || account?.provider?.chainId
   const token: Token | undefined =
     amountToApprove instanceof TokenAmount
       ? amountToApprove.token
@@ -56,7 +56,7 @@ export function useApprovalCall(amountToApprove?: CurrencyAmount, spender?: stri
 export function useApprovalCallFromTrade(trade?: Trade, allowedSlippage = 0, tradeType: TradeType = 'swap') {
   const inputField = tradeType === 'swap' ? SwapField.INPUT : ZapField.INPUT
   const { account } = useAccount()
-  const chainId = account?.chainId
+  const chainId = account?.chainId || account?.provider?.chainId
 
   const amountToApprove = useMemo(
     () => (trade ? computeSlippageAdjustedAmounts(trade, allowedSlippage)[inputField] : undefined),

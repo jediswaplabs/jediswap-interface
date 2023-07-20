@@ -101,7 +101,7 @@ export default function Swap() {
   // }, [])
 
   const { address, account } = useAccount()
-  const chainId = account?.chainId
+  const chainId = account?.chainId || account?.provider?.chainId
 
   const theme = useContext(ThemeContext)
 
