@@ -22,7 +22,6 @@ import { PaddedColumn, SearchInput, Separator } from './styleds'
 import AutoSizer from 'react-virtualized-auto-sizer'
 import { wrappedCurrency } from '../../utils/wrappedCurrency'
 import { DEFAULT_CHAIN_ID } from '../../constants'
-import { useAccount } from '@starknet-react/core'
 import { StarknetChainId } from 'starknet/dist/constants'
 import { useAccountDetails } from '../../hooks'
 

@@ -9,7 +9,6 @@ import { RowBetween, RowFixed } from '../Row'
 import { FixedHeightRow, HoverCard } from './index'
 import DoubleCurrencyLogo from '../DoubleLogo'
 import { ThemeContext } from 'styled-components'
-import { useAccount } from '@starknet-react/core'
 import { useAccountDetails } from '../../hooks'
 
 interface PositionCardProps extends RouteComponentProps<Record<string, string | undefined>> {

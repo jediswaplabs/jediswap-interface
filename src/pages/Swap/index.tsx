@@ -65,7 +65,7 @@ import { ReactComponent as ArrowRight } from '../../assets/images/arrow-right-bl
 import { useAddTokenToWallet } from '../../hooks/useAddTokenToWallet'
 import { wrappedCurrency } from '../../utils/wrappedCurrency'
 import AdvancedSwapDetailsDropdown from '../../components/swap/AdvancedSwapDetailsDropdown'
-import { useAccount } from '@starknet-react/core'
+
 import { useAccountDetails } from '../../hooks'
 
 const MintSection = styled.section`
@@ -101,8 +101,7 @@ export default function Swap() {
   //   setDismissTokenWarning(true)
   // }, [])
 
-  const { address } = useAccount()
-  const { account, chainId } = useAccountDetails()
+  const { address, chainId } = useAccountDetails()
 
   const theme = useContext(ThemeContext)
 

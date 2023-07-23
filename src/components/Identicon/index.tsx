@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react'
 
 import styled from 'styled-components'
 import Jazzicon from 'jazzicon'
-import { useAccount } from '@starknet-react/core'
+import { useAccountDetails } from '../../hooks'
 
 const StyledIdenticonContainer = styled.div`
   height: 1rem;
@@ -14,7 +14,7 @@ const StyledIdenticonContainer = styled.div`
 export default function Identicon() {
   const ref = useRef<HTMLDivElement>()
 
-  const { address } = useAccount()
+  const { address } = useAccountDetails()
 
   useEffect(() => {
     if (address && ref.current) {

@@ -5,7 +5,6 @@ import { useMemo } from 'react'
 import { BASES_TO_CHECK_TRADES_AGAINST } from '../constants'
 import { PairState, usePairs } from '../data/Reserves'
 import { wrappedCurrency } from '../utils/wrappedCurrency'
-import { useAccount } from '@starknet-react/core'
 import { useAccountDetails } from '.'
 
 function useAllCommonPairs(currencyA?: Currency, currencyB?: Currency): [Pair[], boolean] {

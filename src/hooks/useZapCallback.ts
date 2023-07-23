@@ -11,7 +11,7 @@ import useTransactionDeadline from './useTransactionDeadline'
 import { wrappedCurrency } from '../utils/wrappedCurrency'
 import { computeSlippageAdjustedLPAmount } from '../utils/prices'
 import { useApprovalCallFromTrade } from './useApproveCall'
-import { useAccount } from '@starknet-react/core'
+
 import { useAccountDetails } from '.'
 
 export enum ZapCallbackState {
@@ -48,8 +48,7 @@ function useZapCallArguments(
   allowedSlippage: number = INITIAL_ALLOWED_SLIPPAGE, // in bips
   recipientAddressOrName: string | null // the ENS name or address of the recipient of the trade, or null if zap should be returned to sender
 ): ZapCall[] {
-  const { address } = useAccount()
-  const { account, chainId } = useAccountDetails()
+  const { address, account, chainId } = useAccountDetails()
 
   // const { address: recipientAddress } = useENS(recipientAddressOrName)
   const recipient = recipientAddressOrName === null ? address : recipientAddressOrName

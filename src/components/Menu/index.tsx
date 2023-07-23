@@ -8,7 +8,6 @@ import { useModalOpen, useToggleModal } from '../../state/application/hooks'
 
 import { ExternalLink } from '../../theme'
 import { ButtonPrimary } from '../Button'
-import { useAccount } from '@starknet-react/core'
 
 const StyledMenuIcon = styled(MenuIcon)`
   path {
@@ -88,8 +87,6 @@ const MenuItem = styled(ExternalLink)`
 const CODE_LINK = 'https://github.com/jediswaplabs/jediswap-interface'
 
 export default function Menu() {
-  const { address } = useAccount()
-
   const node = useRef<HTMLDivElement>()
   const open = useModalOpen(ApplicationModal.MENU)
   const toggle = useToggleModal(ApplicationModal.MENU)

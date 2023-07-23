@@ -14,7 +14,7 @@ import { ReactComponent as DropDown } from '../../assets/images/dropdown.svg'
 import { useTranslation } from 'react-i18next'
 import { ColumnCenter } from '../Column'
 import { WrappedLPTokenInfo } from '../../state/lists/hooks'
-import { useAccount } from '@starknet-react/core'
+import { useAccountDetails } from '../../hooks'
 
 const InputRow = styled.div<{ selected: boolean }>`
   ${({ theme }) => theme.flexRowNoWrap}
@@ -183,7 +183,7 @@ CurrencyInputPanelProps) {
   const { t } = useTranslation()
 
   const [modalOpen, setModalOpen] = useState(false)
-  const { address } = useAccount()
+  const { address } = useAccountDetails()
   const theme = useContext(ThemeContext)
 
   const handleDismissSearch = useCallback(() => {

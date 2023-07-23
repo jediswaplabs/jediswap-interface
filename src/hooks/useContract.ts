@@ -12,12 +12,12 @@ import { ZAP_IN_ADDRESS, ZAP_IN_ABI } from '../constants/contracts/zapInAddress'
 import { StarknetReactManagerReturn } from '@web3-starknet-react/core/dist/types'
 import { useStarknetReactManager } from '@web3-starknet-react/core/dist/manager'
 import { DEFAULT_CHAIN_ID } from '../constants'
-import { InjectedConnector, useAccount } from '@starknet-react/core'
+import { InjectedConnector } from '@starknet-react/core'
 import { useAccountDetails } from '.'
 
 // returns null on errors
 function useContract(address: string | undefined, ABI: any, withSignerIfPossible = true): Contract | null {
-  const { connector } = useAccount()
+  const { connector } = useAccountDetails()
   const { account, chainId } = useAccountDetails()
   return useMemo(() => {
     if (!address || !ABI || !account) return null

@@ -4,7 +4,7 @@ import { TYPE, ExternalLink } from '../../theme'
 
 import { getStarkscanLink } from '../../utils'
 import { useBlockHash } from '../../hooks/useBlockHashCallback'
-import { useAccount, useBlockNumber } from '@starknet-react/core'
+import { useBlockNumber } from '@starknet-react/core'
 import { useAccountDetails } from '../../hooks'
 
 const StyledPolling = styled.div`

@@ -8,7 +8,6 @@ import { ArrowUpCircle } from 'react-feather'
 import Circle from '../../assets/images/blue-loader.svg'
 import { getStarkscanLink } from '../../utils'
 import { ExternalLink } from '../../theme/components'
-import { useAccount } from '@starknet-react/core'
 import { useAccountDetails } from '../../hooks'
 
 const ConfirmOrLoadingWrapper = styled.div`

@@ -12,7 +12,6 @@ import TxConfirmedIcon from '../../assets/jedi/tx/confirmed.svg'
 import TxCompletedIcon from '../../assets/jedi/tx/completed.svg'
 import TxRejectedIcon from '../../assets/jedi/tx/rejected.svg'
 import { ExternalLink as LinkIcon } from 'react-feather'
-import { useAccount } from '@starknet-react/core'
 import { useAccountDetails } from '../../hooks'
 
 const RowNoFlex = styled(AutoRow)`

@@ -7,7 +7,6 @@ import { wrappedCurrency } from '../utils/wrappedCurrency'
 import { Abi, validateAndParseAddress } from 'starknet'
 import { useMultipleContractSingleData } from '../state/multicall/hooks'
 import { useAllPairs } from '../state/pairs/hooks'
-import { useAccount } from '@starknet-react/core'
 import { useAccountDetails } from '../hooks'
 
 export enum PairState {

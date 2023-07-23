@@ -10,7 +10,6 @@ import { useTokenContract } from './useContract'
 import { useSingleCallResult } from '../state/multicall/hooks'
 import { NEVER_RELOAD } from '../state/multicall/hooks'
 import { DEFAULT_CHAIN_ID } from '../constants'
-import { useAccount } from '@starknet-react/core'
 import { StarknetChainId } from 'starknet/dist/constants'
 import { useAccountDetails } from '.'
 export function useAllTokens(chainId: StarknetChainId): { [address: string]: Token } {

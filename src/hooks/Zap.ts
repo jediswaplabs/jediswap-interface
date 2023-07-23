@@ -5,7 +5,7 @@ import { wrappedCurrency, wrappedCurrencyAmount } from '../utils/wrappedCurrency
 import flatMap from 'lodash.flatmap'
 import { PairState, usePair, usePairs } from '../data/Reserves'
 import { useTotalSupply } from '../data/TotalSupply'
-import { useAccount } from '@starknet-react/core'
+
 import { useAccountDetails } from '.'
 
 export function useZapPairs(inputCurrency?: Currency, outputLpToken?: LPToken): [Pair[], boolean] {

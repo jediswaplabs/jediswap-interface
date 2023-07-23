@@ -15,7 +15,7 @@ import AccountDetails from '../AccountDetails'
 import Modal from '../Modal'
 import Option from './Option'
 import PendingView from './PendingView'
-import { InjectedConnector, useAccount, useConnectors } from '@starknet-react/core'
+import { InjectedConnector, useConnectors } from '@starknet-react/core'
 import { getStarknet } from 'get-starknet-core'
 import { StarknetChainId } from 'starknet/dist/constants'
 import { useAccountDetails } from '../../hooks'
@@ -131,7 +131,7 @@ export default function WalletModal({
 }) {
   // important that these are destructed from the account-specific web3-react context
   const { active, error } = useStarknetReact()
-  const { connector, status } = useAccount()
+  const { connector, status } = useAccountDetails()
   const { connect } = useConnectors()
   const { getAvailableWallets } = getStarknet()
 

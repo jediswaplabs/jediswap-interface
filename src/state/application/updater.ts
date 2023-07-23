@@ -3,7 +3,7 @@ import useDebounce from '../../hooks/useDebounce'
 import useIsWindowVisible from '../../hooks/useIsWindowVisible'
 import { updateBlockNumber } from './actions'
 import { useDispatch } from 'react-redux'
-import { useAccount } from '@starknet-react/core'
+
 import { StarknetChainId } from 'starknet/dist/constants'
 import { useAccountDetails } from '../../hooks'
 

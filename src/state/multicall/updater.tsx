@@ -15,7 +15,7 @@ import {
   updateMulticallResults
 } from './actions'
 import BN from 'bn.js'
-import { useAccount } from '@starknet-react/core'
+
 import { StarknetChainId } from 'starknet/dist/constants'
 import { useBlockNumber } from '../application/hooks'
 import { useAccountDetails } from '../../hooks'

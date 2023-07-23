@@ -6,7 +6,6 @@ import { Field as SwapField } from '../state/swap/actions'
 import { Field as ZapField } from '../state/zap/actions'
 import { computeSlippageAdjustedAmounts } from '../utils/prices'
 import { TradeType } from './useApproveCallback'
-import { useAccount } from '@starknet-react/core'
 import { useAccountDetails } from '.'
 
 export function useApprovalCall(amountToApprove?: CurrencyAmount, spender?: string): () => Call | null {

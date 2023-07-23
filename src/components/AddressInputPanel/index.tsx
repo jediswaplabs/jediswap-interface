@@ -7,7 +7,6 @@ import { RowBetween } from '../Row'
 import { getStarkscanLink } from '../../utils'
 // import { normalizeAccount } from '@web3-starknet-react/core/dist/normalizers'
 import { useAddressNormalizer } from '../../hooks/useAddressNormalizer'
-import { useAccount } from '@starknet-react/core'
 import { useAccountDetails } from '../../hooks'
 
 const InputPanel = styled.div`

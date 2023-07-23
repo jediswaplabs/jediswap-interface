@@ -17,7 +17,8 @@ import { getLiquidityToken, useTrackedTokenPairs } from '../../state/user/hooks'
 import { Dots } from '../../components/swap/styleds'
 import { CardSection, DataCard, CardNoise, CardBGImage } from './styleds'
 import { useAllPairs } from '../../state/pairs/hooks'
-import { useAccount } from '@starknet-react/core'
+
+import { useAccountDetails } from '../../hooks'
 
 const PageWrapper = styled(AutoColumn)`
   max-width: 900px;
@@ -107,7 +108,7 @@ const ComingSoonSection = styled(Row)`
 
 export default function Pool() {
   const theme = useContext(ThemeContext)
-  const { address } = useAccount()
+  const { address } = useAccountDetails()
 
   // fetch the user's balances of all tracked V2 LP tokens
   const trackedTokenPairs = useTrackedTokenPairs()

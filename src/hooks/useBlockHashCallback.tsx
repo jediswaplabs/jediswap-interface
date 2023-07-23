@@ -1,5 +1,5 @@
 import { useCallback, useState, useEffect } from 'react'
-import { useAccount, useBlock } from '@starknet-react/core'
+import { useBlock } from '@starknet-react/core'
 
 export function useBlockHash(blockNumber: number | undefined): string | undefined {
   const [blockHash, setBlockHash] = useState<string | undefined>(undefined)

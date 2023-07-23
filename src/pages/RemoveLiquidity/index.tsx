@@ -43,7 +43,7 @@ import { useApprovalCall } from '../../hooks/useApproveCall'
 import ModeSwitcher from './ModeSwitcher'
 import { InputWrapper, StyledMaxButton, StyledNumericalInput, StyledPercentSign } from './styleds'
 import PairPrice from '../../components/PairPrice'
-import { useAccount } from '@starknet-react/core'
+
 import { useAccountDetails } from '../../hooks'
 
 export default function RemoveLiquidity({
@@ -53,8 +53,7 @@ export default function RemoveLiquidity({
   }
 }: RouteComponentProps<{ currencyIdA: string; currencyIdB: string }>) {
   const [currencyA, currencyB] = [useCurrency(currencyIdA) ?? undefined, useCurrency(currencyIdB) ?? undefined]
-  const { account, chainId } = useAccountDetails()
-  const { address } = useAccount()
+  const { address, account, chainId } = useAccountDetails()
   const [tokenA, tokenB] = useMemo(() => [wrappedCurrency(currencyA, chainId), wrappedCurrency(currencyB, chainId)], [
     currencyA,
     currencyB,

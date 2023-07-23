@@ -73,9 +73,8 @@ const Marginer = styled.div`
 
 export default function App() {
   const fetchAllPairs = useFetchAllPairsCallback()
-  const { status } = useAccount()
   const { disconnect } = useConnectors()
-  const { account, chainId } = useAccountDetails()
+  const { status, chainId } = useAccountDetails()
 
   useEffect(() => {
     fetchAllPairs()

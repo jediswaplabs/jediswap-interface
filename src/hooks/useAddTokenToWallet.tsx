@@ -1,10 +1,10 @@
 import { ArgentXConnector } from '@web3-starknet-react/argentx-connector'
 import { BraavosConnector } from '@web3-starknet-react/braavos-connector'
 import { useCallback } from 'react'
-import { useAccount } from '@starknet-react/core'
+import { useAccountDetails } from '.'
 
 export function useAddTokenToWallet(): (tokenAddress: string) => void {
-  const { connector } = useAccount()
+  const { connector } = useAccountDetails()
   return useCallback(
     async (tokenAddress: string) => {
       if (connector) {

@@ -21,7 +21,7 @@ import { RowBetween } from '../Row'
 import WalletModal from '../WalletModal'
 import WrongNetwork from '../../assets/jedi/WrongNetwork.svg'
 import { hexToDecimalString } from 'starknet/dist/utils/number'
-import { InjectedConnector, useAccount } from '@starknet-react/core'
+import { InjectedConnector } from '@starknet-react/core'
 import { StarknetChainId } from 'starknet/dist/constants'
 import { useAccountDetails } from '../../hooks'
 
@@ -194,7 +194,7 @@ function StatusIcon({ connector }: { connector: InjectedConnector }) {
 function Web3StatusInner({ starkID }: { starkID?: string }) {
   const { t } = useTranslation()
   const { error } = useStarknetReact()
-  const { address, connector } = useAccount()
+  const { address, connector } = useAccountDetails()
   // console.log('🚀 ~ file: index.tsx:198 ~ Web3StatusInner ~ provider:', provider.get)
 
   const allTransactions = useAllTransactions()
@@ -242,8 +242,7 @@ function Web3StatusInner({ starkID }: { starkID?: string }) {
 }
 
 export default function Web3Status() {
-  const { address } = useAccount()
-  const { account, chainId } = useAccountDetails()
+  const { address, chainId } = useAccountDetails()
   const contextNetwork = useStarknetReact(NetworkContextName)
 
   type DomainToAddrData = { domain: string; domain_expiry: number }

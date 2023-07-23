@@ -7,7 +7,7 @@ import { isMobile } from 'react-device-detect'
 import { argentX, braavosWallet } from '../connectors'
 import { NetworkContextName, SUPPORTED_WALLETS } from '../constants'
 import { BraavosConnector } from '@web3-starknet-react/braavos-connector'
-import { InjectedConnector, useAccount, useConnectors, useBalance } from '@starknet-react/core'
+import { InjectedConnector, useConnectors, useAccount } from '@starknet-react/core'
 
 // deprecating this hook because we don't require it anymore
 
@@ -18,9 +18,10 @@ import { InjectedConnector, useAccount, useConnectors, useBalance } from '@stark
 // }
 
 export const useAccountDetails = () => {
-  const { account } = useAccount()
+  const { account, address, connector, status } = useAccount()
+  const chainId = account?.chainId || account?.provider?.chainId
   return useMemo(() => {
-    return { account, chainId: account?.chainId || account?.provider?.chainId }
+    return { address, connector, account, chainId, status }
   }, [account])
 }
 
@@ -83,7 +84,7 @@ export function useEagerConnect() {
  */
 export function useInactiveListener(suppress = false) {
   const { active, error, activate } = useStarknetReactCore() // specifically using useStarknetReact because of what this hook does
-  const { connector } = useAccount()
+  const { connector } = useAccountDetails()
   const { connect } = useConnectors()
 
   useEffect(() => {

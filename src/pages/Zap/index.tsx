@@ -37,11 +37,11 @@ import confirmPriceImpactWithoutFee from '../../components/swap/confirmPriceImpa
 import ConfirmZapModal from '../../components/Zap/ConfirmZapModal'
 import { ReactComponent as ArrowRight } from '../../assets/images/arrow-right-blue.svg'
 import { useAddTokenToWallet } from '../../hooks/useAddTokenToWallet'
-import { useAccount } from '@starknet-react/core'
+import { useAccountDetails } from '../../hooks'
 
 export default function Zap() {
   const loadedUrlParams = useZapDefaultsFromURLSearch()
-  const { address } = useAccount()
+  const { address } = useAccountDetails()
   const toggleWalletModal = useWalletModalToggle()
 
   const [allowedSlippage] = useUserSlippageTolerance()

@@ -25,7 +25,6 @@ import { ButtonEmpty } from '../Button'
 import { ArgentXConnector } from '@web3-starknet-react/argentx-connector'
 import { useAddTokenToWallet } from '../../hooks/useAddTokenToWallet'
 import DoubleCurrencyLogo from '../DoubleLogo'
-import { useAccount } from '@starknet-react/core'
 import { useAccountDetails } from '../../hooks'
 
 function currencyKey(currency: Currency): string {
@@ -117,7 +116,7 @@ function CurrencyRow({
   otherSelected: boolean
   style: CSSProperties
 }) {
-  const { address } = useAccount()
+  const { address } = useAccountDetails()
   const { account, chainId } = useAccountDetails()
 
   const key = currencyKey(currency)

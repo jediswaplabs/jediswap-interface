@@ -8,7 +8,7 @@ import { useAddressNormalizer } from '../../hooks/useAddressNormalizer'
 import { useTokenContract } from '../../hooks/useContract'
 import { useMultipleContractSingleData, useSingleCallResult } from '../multicall/hooks'
 import { DEFAULT_CHAIN_ID } from '../../constants'
-import { useAccount } from '@starknet-react/core'
+
 import { StarknetChainId } from 'starknet/dist/constants'
 import { useAccountDetails } from '../../hooks'
 
@@ -164,8 +164,7 @@ export function useCurrencyBalance(account?: string, currency?: Currency): Curre
 
 // mimics useAllBalances
 export function useAllTokenBalances(): { [tokenAddress: string]: TokenAmount | undefined } {
-  const { address } = useAccount()
-  const { account, chainId } = useAccountDetails()
+  const { address, chainId } = useAccountDetails()
   const allTokens = useAllTokens(chainId as StarknetChainId)
   const allTokensArray = useMemo(() => Object.values(allTokens ?? {}), [allTokens])
   const balances = useTokenBalances(address ?? undefined, allTokensArray)

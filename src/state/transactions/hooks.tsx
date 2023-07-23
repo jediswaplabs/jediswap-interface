@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, AppState } from '../index'
 import { addTransaction } from './actions'
 import { TransactionDetails } from './reducer'
-import { useAccount } from '@starknet-react/core'
+
 import { useAccountDetails } from '../../hooks'
 
 // helper that can take a ethers library transaction response and add it to the list of transactions
@@ -12,8 +12,7 @@ export function useTransactionAdder(): (
   response: InvokeFunctionResponse,
   customData?: { summary?: string; approval?: { tokenAddress: string; spender: string }; claim?: { recipient: string } }
 ) => void {
-  const { address } = useAccount()
-  const { account, chainId } = useAccountDetails()
+  const { account, chainId, address } = useAccountDetails()
   const dispatch = useDispatch<AppDispatch>()
 
   return useCallback(
@@ -40,8 +39,7 @@ export function useTransactionAdder(): (
 
 // returns all the transactions for the current chain
 export function useAllTransactions(): { [txHash: string]: TransactionDetails } {
-  const { address } = useAccount()
-  const { account, chainId } = useAccountDetails()
+  const { address, chainId } = useAccountDetails()
   const state = useSelector<AppState, AppState['transactions']>(state => state.transactions)
 
   const allTxns = chainId ? state[chainId] ?? {} : {}

@@ -9,7 +9,6 @@ import { Field } from '../state/swap/actions'
 import { useTransactionAdder, useHasPendingApproval } from '../state/transactions/hooks'
 import { computeSlippageAdjustedAmounts } from '../utils/prices'
 import { useTokenContract } from './useContract'
-import { useAccount } from '@starknet-react/core'
 import { useAccountDetails } from '.'
 
 export enum ApprovalState {
@@ -24,7 +23,7 @@ export function useApproveCallback(
   amountToApprove?: CurrencyAmount,
   spender?: string
 ): [ApprovalState, () => Promise<void>] {
-  const { address } = useAccount()
+  const { address } = useAccountDetails()
   const { account, chainId } = useAccountDetails()
   const token: Token | undefined =
     amountToApprove instanceof TokenAmount

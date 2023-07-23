@@ -7,7 +7,7 @@ import useIsWindowVisible from '../../hooks/useIsWindowVisible'
 import { addPopup } from '../application/actions'
 import { AppDispatch, AppState } from '../index'
 import { acceptListUpdate } from './actions'
-import { useAccount } from '@starknet-react/core'
+
 import { useAccountDetails } from '../../hooks'
 
 export default function Updater(): null {

@@ -28,7 +28,8 @@ import { Dots } from '../swap/styleds'
 import Modal from '../Modal'
 import usePrevious from '../../hooks/usePrevious'
 import { transparentize } from 'polished'
-import { useAccount, useNetwork } from '@starknet-react/core'
+import { useNetwork } from '@starknet-react/core'
+import { useAccountDetails } from '../../hooks'
 
 const HeaderFrame = styled.div`
   display: grid;
@@ -339,7 +340,7 @@ interface window {
 }
 
 function Header({ history }: { history: any }) {
-  const { address, status } = useAccount()
+  const { address, status } = useAccountDetails()
   const { chain } = useNetwork()
   const { t } = useTranslation()
   const [currentNetwork, setCurrentNetwork] = useState('SN_MAIN')

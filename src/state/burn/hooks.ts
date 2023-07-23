@@ -8,7 +8,7 @@ import { AppDispatch, AppState } from '../index'
 import { tryParseAmount } from '../swap/hooks'
 import { useTokenBalances } from '../wallet/hooks'
 import { Field, typeInput } from './actions'
-import { useAccount } from '@starknet-react/core'
+
 import { useAccountDetails } from '../../hooks'
 
 export function useBurnState(): AppState['burn'] {
@@ -28,8 +28,7 @@ export function useDerivedBurnInfo(
   }
   error?: string
 } {
-  const { address } = useAccount()
-  const { account, chainId } = useAccountDetails()
+  const { address, chainId } = useAccountDetails()
   const { independentField, typedValue } = useBurnState()
 
   // pair + totalsupply

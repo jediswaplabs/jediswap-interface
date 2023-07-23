@@ -16,7 +16,7 @@ import useToggledVersion from '../../hooks/useToggledVersion'
 import { useUserSlippageTolerance } from '../user/hooks'
 import { computeSlippageAdjustedAmounts } from '../../utils/prices'
 import { useAddressNormalizer } from '../../hooks/useAddressNormalizer'
-import { useAccount } from '@starknet-react/core'
+
 import { useAccountDetails } from '../../hooks'
 
 export function useSwapState(): AppState['swap'] {
@@ -115,7 +115,7 @@ export function useDerivedSwapInfo(): {
   inputError?: string
   tradeLoading: boolean
 } {
-  const { address: connectedAddress } = useAccount()
+  const { address: connectedAddress } = useAccountDetails()
   const {
     independentField,
     typedValue,
