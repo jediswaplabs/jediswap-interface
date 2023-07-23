@@ -10,6 +10,7 @@ import { FixedHeightRow, HoverCard } from './index'
 import DoubleCurrencyLogo from '../DoubleLogo'
 import { ThemeContext } from 'styled-components'
 import { useAccount } from '@starknet-react/core'
+import { useAccountDetails } from '../../hooks'
 
 interface PositionCardProps extends RouteComponentProps<Record<string, string | undefined>> {
   token: Token
@@ -18,9 +19,7 @@ interface PositionCardProps extends RouteComponentProps<Record<string, string | 
 
 function V1PositionCard({ token, V1LiquidityBalance }: PositionCardProps) {
   const theme = useContext(ThemeContext)
-
-  const { account } = useAccount()
-  const chainId = account?.chainId || account?.provider?.chainId
+  const { account, chainId } = useAccountDetails()
 
   return (
     <HoverCard>

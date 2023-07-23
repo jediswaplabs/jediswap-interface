@@ -40,7 +40,7 @@
     "@vitest/ui": "^0.17.1",
     "@web3-starknet-react/argentx-connector": "^2.2.3",
     "@web3-starknet-react/braavos-connector": "^2.2.3",
-    "@web3-starknet-react/core": "^2.2.1",
+    "@web3-starknet-react/core": "^2.2.2",
     "@web3-starknet-react/types": "^2.2.1",
     "ajv": "^6.12.3",
     "bn.js": "^5.2.0",
@@ -137,7 +137,7 @@
   "dependencies": {
     "@argent/starknet-react-webwallet-connector": "^6.4.2",
     "@sentry/react": "^7.53.1",
-    "@starknet-react/core": "^1.0.3",
+    "@starknet-react/core": "^0.18.0",
     "events": "^3.3.0",
     "get-starknet-core": "2.1.0",
     "vite-plugin-svgr": "^2.2.0"

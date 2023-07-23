@@ -66,6 +66,7 @@ import { useAddTokenToWallet } from '../../hooks/useAddTokenToWallet'
 import { wrappedCurrency } from '../../utils/wrappedCurrency'
 import AdvancedSwapDetailsDropdown from '../../components/swap/AdvancedSwapDetailsDropdown'
 import { useAccount } from '@starknet-react/core'
+import { useAccountDetails } from '../../hooks'
 
 const MintSection = styled.section`
   margin-top: 3rem;
@@ -100,8 +101,8 @@ export default function Swap() {
   //   setDismissTokenWarning(true)
   // }, [])
 
-  const { address, account } = useAccount()
-  const chainId = account?.chainId || account?.provider?.chainId
+  const { address } = useAccount()
+  const { account, chainId } = useAccountDetails()
 
   const theme = useContext(ThemeContext)
 

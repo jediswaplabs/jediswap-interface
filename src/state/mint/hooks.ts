@@ -10,6 +10,7 @@ import { tryParseAmount } from '../swap/hooks'
 import { useCurrencyBalances } from '../wallet/hooks'
 import { Field, typeInput } from './actions'
 import { useAccount } from '@starknet-react/core'
+import { useAccountDetails } from '../../hooks'
 
 const ZERO = JSBI.BigInt(0)
 
@@ -33,8 +34,8 @@ export function useDerivedMintInfo(
   poolTokenPercentage?: Percent
   error?: string
 } {
-  const { account, address } = useAccount()
-  const chainId = account?.chainId || account?.provider?.chainId
+  const { address } = useAccount()
+  const { account, chainId } = useAccountDetails()
 
   const { independentField, typedValue, otherTypedValue } = useMintState()
 

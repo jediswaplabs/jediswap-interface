@@ -9,6 +9,7 @@ import { tryParseAmount } from '../swap/hooks'
 import { useTokenBalances } from '../wallet/hooks'
 import { Field, typeInput } from './actions'
 import { useAccount } from '@starknet-react/core'
+import { useAccountDetails } from '../../hooks'
 
 export function useBurnState(): AppState['burn'] {
   return useSelector<AppState, AppState['burn']>(state => state.burn)
@@ -27,8 +28,8 @@ export function useDerivedBurnInfo(
   }
   error?: string
 } {
-  const { address, account } = useAccount()
-  const chainId = account?.chainId || account?.provider?.chainId
+  const { address } = useAccount()
+  const { account, chainId } = useAccountDetails()
   const { independentField, typedValue } = useBurnState()
 
   // pair + totalsupply

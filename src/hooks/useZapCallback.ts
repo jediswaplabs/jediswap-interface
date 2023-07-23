@@ -12,6 +12,7 @@ import { wrappedCurrency } from '../utils/wrappedCurrency'
 import { computeSlippageAdjustedLPAmount } from '../utils/prices'
 import { useApprovalCallFromTrade } from './useApproveCall'
 import { useAccount } from '@starknet-react/core'
+import { useAccountDetails } from '.'
 
 export enum ZapCallbackState {
   INVALID,
@@ -47,8 +48,8 @@ function useZapCallArguments(
   allowedSlippage: number = INITIAL_ALLOWED_SLIPPAGE, // in bips
   recipientAddressOrName: string | null // the ENS name or address of the recipient of the trade, or null if zap should be returned to sender
 ): ZapCall[] {
-  const { address, account } = useAccount()
-  const chainId = account?.chainId || account?.provider?.chainId
+  const { address } = useAccount()
+  const { account, chainId } = useAccountDetails()
 
   // const { address: recipientAddress } = useENS(recipientAddressOrName)
   const recipient = recipientAddressOrName === null ? address : recipientAddressOrName
@@ -100,8 +101,7 @@ export function useZapCallback(
   allowedSlippage: number = INITIAL_ALLOWED_SLIPPAGE, // in bips
   recipientAddressOrName: string | null // the ENS name or address of the recipient of the trade, or null if zap should be returned to sender
 ): { state: ZapCallbackState; callback: null | (() => Promise<string>); error: string | null } {
-  const { account } = useAccount()
-  const chainId = account?.chainId || account?.provider?.chainId
+  const { account, chainId } = useAccountDetails()
 
   const approvalCallback = useApprovalCallFromTrade(trade, allowedSlippage, 'zap')
   const zapCalls = useZapCallArguments(trade, allowedSlippage, recipientAddressOrName)
@@ -217,7 +217,6 @@ export function useZapCallback(
               // otherwise, the error was unexpected and we need to convey that
               console.error(`Zap failed`, error, methodName, args, value)
 
-              console.log(error?.code)
               throw new Error(`Zap failed: ${error.message}`)
             }
           })

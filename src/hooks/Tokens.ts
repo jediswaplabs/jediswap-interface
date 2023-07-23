@@ -12,6 +12,7 @@ import { NEVER_RELOAD } from '../state/multicall/hooks'
 import { DEFAULT_CHAIN_ID } from '../constants'
 import { useAccount } from '@starknet-react/core'
 import { StarknetChainId } from 'starknet/dist/constants'
+import { useAccountDetails } from '.'
 export function useAllTokens(chainId: StarknetChainId): { [address: string]: Token } {
   const userAddedTokens = useUserAddedTokens()
   const allTokens = useSelectedTokenList()
@@ -35,8 +36,8 @@ export function useAllTokens(chainId: StarknetChainId): { [address: string]: Tok
 
 export function useJediLPTokens(): { [address: string]: LPToken } {
   const allLPTokens = useSelectedLPTokenList()
-  const { account } = useAccount()
-  const chainId = account?.chainId || account?.provider?.chainId
+
+  const { account, chainId } = useAccountDetails()
 
   return useMemo(() => {
     return allLPTokens[chainId ?? DEFAULT_CHAIN_ID]
@@ -79,8 +80,7 @@ function parseStringFromArgs(data: any, isHexNumber?: boolean): string | undefin
 // null if loading
 // otherwise returns the token
 export function useToken(tokenAddress?: string): Token | undefined | null {
-  const { account } = useAccount()
-  const chainId = account?.chainId || account?.provider?.chainId
+  const { account, chainId } = useAccountDetails()
   const currencyTokens = useAllTokens(chainId as StarknetChainId)
   const lpTokens = useJediLPTokens()
 

@@ -2,7 +2,7 @@ import { ArgentXConnector } from '@web3-starknet-react/argentx-connector'
 import { Provider as Web3Provider } from 'starknet'
 import { useStarknetReact as useStarknetReactCore } from '@web3-starknet-react/core'
 import { StarknetReactContextInterface } from '@web3-starknet-react/core/dist/types'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { isMobile } from 'react-device-detect'
 import { argentX, braavosWallet } from '../connectors'
 import { NetworkContextName, SUPPORTED_WALLETS } from '../constants'
@@ -16,6 +16,13 @@ import { InjectedConnector, useAccount, useConnectors, useBalance } from '@stark
 //   const contextNetwork = useStarknetReactCore<Web3Provider>(NetworkContextName)
 //   return context.active ? context : contextNetwork
 // }
+
+export const useAccountDetails = () => {
+  const { account } = useAccount()
+  return useMemo(() => {
+    return { account, chainId: account?.chainId || account?.provider?.chainId }
+  }, [account])
+}
 
 export function useEagerConnect() {
   const { activate, active } = useStarknetReactCore() // specifically using useStarknetReactCore because of what this hook does
@@ -31,7 +38,6 @@ export function useEagerConnect() {
   } else if (injected === 'braavos') {
     connector = braavosWallet
   }
-  console.log('🚀 ~ file: index.ts:34 ~ useEagerConnect ~ connector:', connector)
 
   useEffect(() => {
     if (connector) {

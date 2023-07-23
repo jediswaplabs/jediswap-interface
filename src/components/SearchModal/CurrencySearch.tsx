@@ -24,6 +24,7 @@ import { wrappedCurrency } from '../../utils/wrappedCurrency'
 import { DEFAULT_CHAIN_ID } from '../../constants'
 import { useAccount } from '@starknet-react/core'
 import { StarknetChainId } from 'starknet/dist/constants'
+import { useAccountDetails } from '../../hooks'
 
 interface CurrencySearchProps {
   isOpen: boolean
@@ -47,8 +48,7 @@ export function CurrencySearch({
   showLPTokens = false
 }: CurrencySearchProps) {
   const { t } = useTranslation()
-  const { account } = useAccount()
-  const chainId = account?.chainId || account?.provider?.chainId
+  const { account, chainId } = useAccountDetails()
 
   const fixedList = useRef<FixedSizeList>()
   const [searchQuery, setSearchQuery] = useState<string>('')

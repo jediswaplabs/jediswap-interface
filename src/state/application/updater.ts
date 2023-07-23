@@ -5,10 +5,10 @@ import { updateBlockNumber } from './actions'
 import { useDispatch } from 'react-redux'
 import { useAccount } from '@starknet-react/core'
 import { StarknetChainId } from 'starknet/dist/constants'
+import { useAccountDetails } from '../../hooks'
 
 export default function Updater(): null {
-  const { account } = useAccount()
-  const chainId = account?.chainId || account?.provider?.chainId
+  const { account, chainId } = useAccountDetails()
   const dispatch = useDispatch()
 
   const windowVisible = useIsWindowVisible()

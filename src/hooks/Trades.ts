@@ -6,10 +6,10 @@ import { BASES_TO_CHECK_TRADES_AGAINST } from '../constants'
 import { PairState, usePairs } from '../data/Reserves'
 import { wrappedCurrency } from '../utils/wrappedCurrency'
 import { useAccount } from '@starknet-react/core'
+import { useAccountDetails } from '.'
 
 function useAllCommonPairs(currencyA?: Currency, currencyB?: Currency): [Pair[], boolean] {
-  const { account } = useAccount()
-  const chainId = account?.chainId || account?.provider?.chainId
+  const { account, chainId } = useAccountDetails()
 
   const bases: Token[] = useMemo(() => (chainId ? BASES_TO_CHECK_TRADES_AGAINST[chainId] : []), [chainId])
 

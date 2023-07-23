@@ -13,6 +13,7 @@ import {
 } from './actions'
 import { computeCallDataProps } from './utils'
 import { useAccount, useBlockNumber } from '@starknet-react/core'
+import { useAccountDetails } from '../../hooks'
 
 export interface Result extends ReadonlyArray<any> {
   readonly [key: string]: any
@@ -50,8 +51,7 @@ export const NEVER_RELOAD: ListenerOptions = {
 
 // the lowest level call for subscribing to contract data
 function useCallsData(calls: (Call | undefined)[], methodAbi?: FunctionAbi, options?: ListenerOptions): CallResult[] {
-  const { account } = useAccount()
-  const chainId = account?.chainId || account?.provider?.chainId
+  const { account, chainId } = useAccountDetails()
   const callResults = useSelector<AppState, AppState['multicall']['callResults']>(state => state.multicall.callResults)
   const dispatch = useDispatch<AppDispatch>()
 

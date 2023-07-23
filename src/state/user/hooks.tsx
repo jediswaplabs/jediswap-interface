@@ -17,8 +17,8 @@ import {
   updateUserSlippageTolerance,
   toggleURLWarning
 } from './actions'
-import { useAccount } from '@starknet-react/core'
 import { StarknetChainId } from 'starknet/dist/constants'
+import { useAccountDetails } from '../../hooks'
 
 function serializeToken(token: Token): SerializedToken {
   return {
@@ -134,8 +134,7 @@ export function useRemoveUserAddedToken(): (chainId: string, address: string) =>
 }
 
 export function useUserAddedTokens(): Token[] {
-  const { account } = useAccount()
-  const chainId = account?.chainId || account?.provider?.chainId
+  const { chainId } = useAccountDetails()
   const serializedTokensMap = useSelector<AppState, AppState['user']['tokens']>(({ user: { tokens } }) => tokens)
 
   return useMemo(() => {
@@ -184,8 +183,7 @@ export function getLiquidityToken([tokenA, tokenB]: [Token, Token]): Token {
  * Returns all the pairs of tokens that are tracked by the user for the current chain ID.
  */
 export function useTrackedTokenPairs(): [Token, Token][] {
-  const { account } = useAccount()
-  const chainId = account?.chainId || account?.provider?.chainId
+  const { chainId } = useAccountDetails()
   const tokens = useAllTokens(chainId as StarknetChainId)
   // pinned pairs
   const pinnedPairs = useMemo(() => (chainId ? PINNED_PAIRS[chainId] ?? [] : []), [chainId])

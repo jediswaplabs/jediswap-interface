@@ -4,9 +4,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, AppState } from '../index'
 import { addPopup, ApplicationModal, PopupContent, removePopup, setOpenModal } from './actions'
 import { useAccount } from '@starknet-react/core'
+import { useAccountDetails } from '../../hooks'
 
 export function useBlockNumber(): number | undefined {
-  const { account } = useAccount()
+  const { account } = useAccountDetails()
   return useSelector(
     (state: AppState) => state.application.blockNumber[(account?.chainId || account?.provider?.chainId) ?? -1]
   )

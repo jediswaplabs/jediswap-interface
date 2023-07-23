@@ -20,6 +20,7 @@ import { useCurrencyBalances } from '../wallet/hooks'
 import { Field, replaceZapState, selectCurrency, setRecipient, typeInput } from './actions'
 import { ZapState } from './reducer'
 import { useAccount } from '@starknet-react/core'
+import { useAccountDetails } from '../../hooks'
 
 export function useZapState(): AppState['zap'] {
   return useSelector<AppState, AppState['zap']>(state => state.zap)
@@ -179,8 +180,7 @@ export function queryParametersToZapState(parsedQs: ParsedQs): ZapState {
 export function useZapDefaultsFromURLSearch():
   | { inputCurrencyId: string | undefined; outputCurrencyId: string | undefined }
   | undefined {
-  const { account } = useAccount()
-  const chainId = account?.chainId || account?.provider?.chainId
+  const { chainId } = useAccountDetails()
   const dispatch = useDispatch<AppDispatch>()
   const parsedQs = useParsedQueryString()
   const [result, setResult] = useState<

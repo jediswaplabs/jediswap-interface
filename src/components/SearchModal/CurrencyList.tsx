@@ -26,6 +26,7 @@ import { ArgentXConnector } from '@web3-starknet-react/argentx-connector'
 import { useAddTokenToWallet } from '../../hooks/useAddTokenToWallet'
 import DoubleCurrencyLogo from '../DoubleLogo'
 import { useAccount } from '@starknet-react/core'
+import { useAccountDetails } from '../../hooks'
 
 function currencyKey(currency: Currency): string {
   return currency instanceof Token ? currency.address : currency === ETHER ? 'ETHER' : ''
@@ -116,8 +117,8 @@ function CurrencyRow({
   otherSelected: boolean
   style: CSSProperties
 }) {
-  const { address, account } = useAccount()
-  const chainId = account?.chainId || account?.provider?.chainId
+  const { address } = useAccount()
+  const { account, chainId } = useAccountDetails()
 
   const key = currencyKey(currency)
   const selectedTokenList = useSelectedTokenList()

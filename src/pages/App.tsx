@@ -33,6 +33,7 @@ import {
 } from '../connectors'
 import { useAccount, useConnectors } from '@starknet-react/core'
 import { StarknetChainId } from 'starknet/dist/constants'
+import { useAccountDetails } from '../hooks'
 
 const AppWrapper = styled.div`
   display: flex;
@@ -72,9 +73,9 @@ const Marginer = styled.div`
 
 export default function App() {
   const fetchAllPairs = useFetchAllPairsCallback()
-  const { status, account } = useAccount()
+  const { status } = useAccount()
   const { disconnect } = useConnectors()
-  const chainId = account?.chainId || account?.provider?.chainId
+  const { account, chainId } = useAccountDetails()
 
   useEffect(() => {
     fetchAllPairs()

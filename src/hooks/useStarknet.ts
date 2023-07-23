@@ -133,7 +133,7 @@
 // export function useStarknetInvoke(contract: Contract | undefined, method: string | undefined): StarknetInvoke {
 //   const addTransaction = useTransactionAdder()
 
-//   const { account } = useActiveStarknetReact()
+//    = useActiveStarknetReact()
 
 //   const [invoke, setInvoke] = useState<InvokeFunc | undefined>(undefined)
 

@@ -5,6 +5,7 @@ import { TYPE, ExternalLink } from '../../theme'
 import { getStarkscanLink } from '../../utils'
 import { useBlockHash } from '../../hooks/useBlockHashCallback'
 import { useAccount, useBlockNumber } from '@starknet-react/core'
+import { useAccountDetails } from '../../hooks'
 
 const StyledPolling = styled.div`
   display: flex;
@@ -59,8 +60,7 @@ const Spinner = styled.div`
 `
 
 export default function Polling() {
-  const { account } = useAccount()
-  const chainId = account?.chainId || account?.provider?.chainId
+  const { account, chainId } = useAccountDetails()
 
   const { data: blockNumber } = useBlockNumber({
     refetchInterval: false

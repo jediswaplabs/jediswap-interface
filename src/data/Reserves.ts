@@ -8,6 +8,7 @@ import { Abi, validateAndParseAddress } from 'starknet'
 import { useMultipleContractSingleData } from '../state/multicall/hooks'
 import { useAllPairs } from '../state/pairs/hooks'
 import { useAccount } from '@starknet-react/core'
+import { useAccountDetails } from '../hooks'
 
 export enum PairState {
   LOADING,
@@ -22,8 +23,7 @@ export interface LiquidityPairToken {
 }
 
 export function usePairs(currencies: [Currency | undefined, Currency | undefined][]): [PairState, Pair | null][] {
-  const { account } = useAccount()
-  const chainId = account?.chainId || account?.provider?.chainId
+  const { account, chainId } = useAccountDetails()
   const allPairs = useAllPairs()
 
   const tokens = useMemo(

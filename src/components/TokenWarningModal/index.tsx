@@ -13,6 +13,7 @@ import { AlertTriangle } from 'react-feather'
 import { ButtonError } from '../Button'
 import { useAccount } from '@starknet-react/core'
 import { StarknetChainId } from 'starknet/dist/constants'
+import { useAccountDetails } from '../../hooks'
 
 const Wrapper = styled.div<{ error: boolean }>`
   background: ${({ theme }) => transparentize(0.6, theme.bg3)};
@@ -39,8 +40,7 @@ interface TokenWarningCardProps {
 }
 
 function TokenWarningCard({ token }: TokenWarningCardProps) {
-  const { account } = useAccount()
-  const chainId = account?.chainId || account?.provider?.chainId
+  const { account, chainId } = useAccountDetails()
 
   const tokenSymbol = token?.symbol?.toLowerCase() ?? ''
   const tokenName = token?.name?.toLowerCase() ?? ''

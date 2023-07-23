@@ -8,6 +8,7 @@ import { getStarkscanLink } from '../../utils'
 // import { normalizeAccount } from '@web3-starknet-react/core/dist/normalizers'
 import { useAddressNormalizer } from '../../hooks/useAddressNormalizer'
 import { useAccount } from '@starknet-react/core'
+import { useAccountDetails } from '../../hooks'
 
 const InputPanel = styled.div`
   ${({ theme }) => theme.flexColumnNoWrap}
@@ -78,8 +79,7 @@ export default function AddressInputPanel({
   // triggers whenever the typed value changes
   onChange: (value: string) => void
 }) {
-  const { account } = useAccount()
-  const chainId = account?.chainId || account?.provider?.chainId
+  const { account, chainId } = useAccountDetails()
   const theme = useContext(ThemeContext)
 
   // const { address, loading, name } = useENS(value)

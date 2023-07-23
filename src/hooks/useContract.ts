@@ -13,11 +13,12 @@ import { StarknetReactManagerReturn } from '@web3-starknet-react/core/dist/types
 import { useStarknetReactManager } from '@web3-starknet-react/core/dist/manager'
 import { DEFAULT_CHAIN_ID } from '../constants'
 import { InjectedConnector, useAccount } from '@starknet-react/core'
+import { useAccountDetails } from '.'
 
 // returns null on errors
 function useContract(address: string | undefined, ABI: any, withSignerIfPossible = true): Contract | null {
-  const { connector, account } = useAccount()
-  const chainId = account?.chainId || account?.provider?.chainId
+  const { connector } = useAccount()
+  const { account, chainId } = useAccountDetails()
   return useMemo(() => {
     if (!address || !ABI || !account) return null
 
@@ -40,29 +41,25 @@ export function usePairContract(pairAddress?: string, withSignerIfPossible?: boo
 }
 //Change here
 export function useFactoryContract(): Contract | null {
-  const { account } = useAccount()
-  const chainId = account?.chainId || account?.provider?.chainId
+  const { account, chainId } = useAccountDetails()
 
   return useContract(FACTORY_ADDRESS[chainId ?? DEFAULT_CHAIN_ID], FACTORY_ABI, true)
 }
 //Change Here
 export function useRouterContract(): Contract | null {
-  const { account } = useAccount()
-  const chainId = account?.chainId || account?.provider?.chainId
+  const { account, chainId } = useAccountDetails()
 
   return useContract(ROUTER_ADDRESS[chainId ?? DEFAULT_CHAIN_ID], ROUTER_ABI, true)
 }
 
 export function useMulticallContract(): Contract | null {
-  const { account } = useAccount()
-  const chainId = account?.chainId || account?.provider?.chainId
+  const { account, chainId } = useAccountDetails()
 
   return useContract(MULTICALL_NETWORKS[chainId ?? DEFAULT_CHAIN_ID], MULTICALL_ABI, false)
 }
 //Change Here
 export function useZapInContract(): Contract | null {
-  const { account } = useAccount()
-  const chainId = account?.chainId || account?.provider?.chainId
+  const { account, chainId } = useAccountDetails()
 
   return useContract(ZAP_IN_ADDRESS[chainId ?? DEFAULT_CHAIN_ID], ZAP_IN_ABI, true)
 }

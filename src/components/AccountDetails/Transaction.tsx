@@ -8,7 +8,7 @@ import { RowFixed } from '../Row'
 import Loader from '../Loader'
 
 import { ExternalLink as LinkIcon } from 'react-feather'
-import { useAccount } from '@starknet-react/core'
+import { useAccountDetails } from '../../hooks'
 
 const TransactionWrapper = styled.div``
 
@@ -56,8 +56,7 @@ const IconWrapper = styled.div<{ pending: boolean; success?: boolean }>`
 `
 
 export default function Transaction({ hash }: { hash: string }) {
-  const { account } = useAccount()
-  const chainId = account?.chainId || account?.provider?.chainId
+  const { chainId } = useAccountDetails()
 
   const allTransactions = useAllTransactions()
 

@@ -20,6 +20,7 @@ import { ExternalLink as LinkIcon } from 'react-feather'
 import { ExternalLink, LinkStyledButton, TYPE } from '../../theme'
 import { AutoColumn } from '../Column'
 import { useAccount, useConnectors } from '@starknet-react/core'
+import { useAccountDetails } from '../../hooks'
 
 const HeaderRow = styled.div`
   ${({ theme }) => theme.flexRowNoWrap};
@@ -268,9 +269,9 @@ export default function AccountDetails({
   ENSName,
   openOptions
 }: AccountDetailsProps) {
-  const { account, address, connector } = useAccount()
+  const { address, connector } = useAccount()
   const { disconnect } = useConnectors()
-  const chainId = account?.chainId || account?.provider?.chainId
+  const { account, chainId } = useAccountDetails()
   const theme = useContext(ThemeContext)
   const dispatch = useDispatch<AppDispatch>()
 

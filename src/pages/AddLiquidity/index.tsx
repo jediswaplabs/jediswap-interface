@@ -46,6 +46,7 @@ import { useAddTokenToWallet } from '../../hooks/useAddTokenToWallet'
 import { ReactComponent as ArrowRight } from '../../assets/images/arrow-right-blue.svg'
 import Loader from '../../components/Loader'
 import { useAccount } from '@starknet-react/core'
+import { useAccountDetails } from '../../hooks'
 
 const BalanceText = styled.div`
   display: flex;
@@ -92,8 +93,8 @@ export default function AddLiquidity({
   },
   history
 }: RouteComponentProps<{ currencyIdA?: string; currencyIdB?: string }>) {
-  const { address, account } = useAccount()
-  const chainId = account?.chainId || account?.provider?.chainId
+  const { address } = useAccount()
+  const { account, chainId } = useAccountDetails()
   const theme = useContext(ThemeContext)
 
   const currencyA = useCurrency(currencyIdA)

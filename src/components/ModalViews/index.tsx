@@ -9,6 +9,7 @@ import Circle from '../../assets/images/blue-loader.svg'
 import { getStarkscanLink } from '../../utils'
 import { ExternalLink } from '../../theme/components'
 import { useAccount } from '@starknet-react/core'
+import { useAccountDetails } from '../../hooks'
 
 const ConfirmOrLoadingWrapper = styled.div`
   width: 100%;
@@ -47,8 +48,7 @@ export function SubmittedView({
   hash: string | undefined
 }) {
   const theme = useContext(ThemeContext)
-  const { account } = useAccount()
-  const chainId = account?.chainId || account?.provider?.chainId
+  const { account, chainId } = useAccountDetails()
 
   return (
     <ConfirmOrLoadingWrapper>

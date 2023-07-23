@@ -14,6 +14,7 @@ import Circle from '../../assets/jedi/loadingCircle.svg'
 import { getStarkscanLink } from '../../utils'
 import openInBrowser from '../../assets/jedi/openInBrowser.svg'
 import { useAccount } from '@starknet-react/core'
+import { useAccountDetails } from '../../hooks'
 
 const Wrapper = styled.div`
   width: 100%;
@@ -231,8 +232,7 @@ export default function TransactionConfirmationModal({
   pendingText,
   content
 }: ConfirmationModalProps) {
-  const { account } = useAccount()
-  const chainId = account?.chainId || account?.provider?.chainId
+  const { account, chainId } = useAccountDetails()
 
   if (!chainId) return null
 

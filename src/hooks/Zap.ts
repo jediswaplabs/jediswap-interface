@@ -6,10 +6,10 @@ import flatMap from 'lodash.flatmap'
 import { PairState, usePair, usePairs } from '../data/Reserves'
 import { useTotalSupply } from '../data/TotalSupply'
 import { useAccount } from '@starknet-react/core'
+import { useAccountDetails } from '.'
 
 export function useZapPairs(inputCurrency?: Currency, outputLpToken?: LPToken): [Pair[], boolean] {
-  const { account } = useAccount()
-  const chainId = account?.chainId || account?.provider?.chainId
+  const { account, chainId } = useAccountDetails()
 
   const bases: Token[] = useMemo(() => (chainId ? BASES_TO_CHECK_TRADES_AGAINST[chainId] : []), [chainId])
 
@@ -132,8 +132,7 @@ export function useLPOutAmount(
   lpTokenOut?: LPToken,
   trades?: ZapTrades | null
 ): [TokenAmount | undefined, Trade | null | undefined, boolean] {
-  const { account } = useAccount()
-  const chainId = account?.chainId || account?.provider?.chainId
+  const { account, chainId } = useAccountDetails()
 
   const tokenAmountIn = wrappedCurrencyAmount(currencyAmountIn, chainId)
 

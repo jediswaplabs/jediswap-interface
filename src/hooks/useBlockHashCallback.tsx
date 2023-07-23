@@ -2,7 +2,6 @@ import { useCallback, useState, useEffect } from 'react'
 import { useAccount, useBlock } from '@starknet-react/core'
 
 export function useBlockHash(blockNumber: number | undefined): string | undefined {
-  const { account } = useAccount()
   const [blockHash, setBlockHash] = useState<string | undefined>(undefined)
   const { data } = useBlock({
     refetchInterval: false,

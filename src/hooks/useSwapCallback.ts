@@ -11,6 +11,7 @@ import useTransactionDeadline from './useTransactionDeadline'
 // import useENS from './useENS'
 import { useApprovalCallFromTrade } from './useApproveCall'
 import { useAccount } from '@starknet-react/core'
+import { useAccountDetails } from '.'
 
 export enum SwapCallbackState {
   INVALID,
@@ -46,8 +47,8 @@ function useSwapCallArguments(
   allowedSlippage: number = INITIAL_ALLOWED_SLIPPAGE, // in bips
   recipientAddressOrName: string | null // the ENS name or address of the recipient of the trade, or null if swap should be returned to sender
 ): SwapCall[] {
-  const { address, account } = useAccount()
-  const chainId = account?.chainId || account?.provider?.chainId
+  const { address } = useAccount()
+  const { account, chainId } = useAccountDetails()
 
   // const { address: recipientAddress } = useENS(recipientAddressOrName)
   const recipient = recipientAddressOrName === null ? address : recipientAddressOrName
@@ -98,8 +99,7 @@ export function useSwapCallback(
   allowedSlippage: number = INITIAL_ALLOWED_SLIPPAGE, // in bips
   recipientAddressOrName: string | null // the ENS name or address of the recipient of the trade, or null if swap should be returned to sender
 ): { state: SwapCallbackState; callback: null | (() => Promise<string>); error: string | null } {
-  const { account } = useAccount()
-  const chainId = account?.chainId || account?.provider?.chainId
+  const { account, chainId } = useAccountDetails()
 
   const approvalCallback = useApprovalCallFromTrade(trade, allowedSlippage)
   const swapCalls = useSwapCallArguments(trade, allowedSlippage, recipientAddressOrName)

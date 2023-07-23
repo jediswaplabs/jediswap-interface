@@ -5,6 +5,7 @@ import { useAddPopup } from '../application/hooks'
 import { AppDispatch, AppState } from '../index'
 import { checkedTransaction, updateTransaction, SerializableTransactionReceipt } from './actions'
 import { useAccount, useBlockNumber } from '@starknet-react/core'
+import { useAccountDetails } from '../../hooks'
 
 export function shouldCheck(
   lastBlockNumber: number,
@@ -28,8 +29,7 @@ export function shouldCheck(
 }
 
 export default function Updater(): null {
-  const { account } = useAccount()
-  const chainId = account?.chainId || account?.provider?.chainId
+  const { account, chainId } = useAccountDetails()
 
   const { data: lastBlockNumber } = useBlockNumber({
     refetchInterval: false

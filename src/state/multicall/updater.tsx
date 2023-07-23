@@ -18,6 +18,7 @@ import BN from 'bn.js'
 import { useAccount } from '@starknet-react/core'
 import { StarknetChainId } from 'starknet/dist/constants'
 import { useBlockNumber } from '../application/hooks'
+import { useAccountDetails } from '../../hooks'
 
 // chunk calls so we do not exceed the gas limit
 const CALL_CHUNK_SIZE = 500
@@ -230,8 +231,7 @@ export default function Updater(): null {
   // wait for listeners to settle before triggering updates
   const debouncedListeners = useDebounce(state.callListeners, 100)
   const latestBlockNumber = useBlockNumber()
-  const { account } = useAccount()
-  const chainId = account?.chainId || account?.provider?.chainId
+  const { account, chainId } = useAccountDetails()
   const multicallContract = useMulticallContract()
   const cancellations = useRef<{ blockNumber: number; cancellations: (() => void)[] }>()
 
