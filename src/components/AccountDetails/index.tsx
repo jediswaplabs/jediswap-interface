@@ -14,7 +14,6 @@ import { getStarkscanLink } from '../../utils'
 import argentXIcon from '../../assets/images/argentx.png'
 import braavosIcon from '../../assets/svg/Braavos.svg'
 // import { fortmatic, injected, portis, walletconnect, walletlink } from '../../connectors'
-import { argentX, braavosWallet } from '../../connectors'
 import { ButtonSecondary } from '../Button'
 import { ExternalLink as LinkIcon } from 'react-feather'
 import { ExternalLink, LinkStyledButton, TYPE } from '../../theme'
@@ -271,6 +270,7 @@ export default function AccountDetails({
 }: AccountDetailsProps) {
   const { disconnect } = useConnectors()
   const { account, chainId, address, connector } = useAccountDetails()
+  const connectorType = connector?.id()
   const theme = useContext(ThemeContext)
   const dispatch = useDispatch<AppDispatch>()
 
@@ -279,7 +279,7 @@ export default function AccountDetails({
   }
 
   function getStatusIcon() {
-    if (connector === argentX) {
+    if (connectorType === 'argentX' || connectorType === 'argentWebWallet') {
       return (
         <IconWrapper size={32}>
           <img src={argentXIcon} alt="argentX" />
@@ -287,7 +287,7 @@ export default function AccountDetails({
       )
     }
 
-    if (connector === braavosWallet) {
+    if (connectorType === 'braavos') {
       return (
         <IconWrapper size={42}>
           <img src={braavosIcon} alt="myBraavos" />
@@ -313,7 +313,7 @@ export default function AccountDetails({
           </AccountGroupingRow>
           <AccountGroupingRow>
             {formatConnectorName()}
-            {(connector === argentX || connector === braavosWallet) && (
+            {(connectorType === 'argentX' || connectorType === 'braavos' || connectorType === 'argentWebWallet') && (
               <ButtonBorderWrapper>
                 <WalletAction style={{ fontSize: '.875rem', color: '#9B9B9B' }} onClick={disconnect}>
                   Disconnect

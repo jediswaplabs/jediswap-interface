@@ -6,7 +6,6 @@ import { useTranslation } from 'react-i18next'
 import styled, { css } from 'styled-components'
 import ArgentXIcon from '../../assets/images/argentx.png'
 import braavosIcon from '../../assets/svg/Braavos.svg'
-import { argentX, braavosWallet } from '../../connectors'
 import { NetworkContextName, domainURL } from '../../constants'
 import { useWalletModalToggle } from '../../state/application/hooks'
 import { isTransactionRecent, useAllTransactions } from '../../state/transactions/hooks'
@@ -173,7 +172,7 @@ function StatusIcon({ connector }: { connector: InjectedConnector }) {
   //     </IconWrapper>
   //   )
   // }
-  if (connector === argentX) {
+  if (connector.id() === 'argentX' || connector.id() === 'argentWebWallet') {
     return (
       <IconWrapper size={20}>
         <img src={ArgentXIcon} alt="ArgentX" />
@@ -181,7 +180,7 @@ function StatusIcon({ connector }: { connector: InjectedConnector }) {
     )
   }
 
-  if (connector === braavosWallet) {
+  if (connector.id() === 'braavos') {
     return (
       <IconWrapper size={20}>
         <img src={braavosIcon} alt="myBraavos" />
