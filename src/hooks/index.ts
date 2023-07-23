@@ -26,7 +26,7 @@ export const useAccountDetails = () => {
 }
 
 export function useEagerConnect() {
-  const { activate, active } = useStarknetReactCore() // specifically using useStarknetReactCore because of what this hook does
+  const { active } = useStarknetReactCore() // specifically using useStarknetReactCore because of what this hook does
   const [tried, setTried] = useState(false)
   const { connect } = useConnectors()
 

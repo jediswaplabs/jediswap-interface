@@ -10,8 +10,6 @@ import Logo from '../../assets/jedi/logo.png'
 // import LogoDark from '../../assets/svg/logo_white.svg'
 // import { useDarkModeManager } from '../../state/user/hooks'
 // import { useETHBalances } from '../../state/wallet/hooks'
-import { CardNoise } from './styled'
-import { CountUp } from 'use-count-up'
 import { ExternalLink, TYPE } from '../../theme'
 // import { ExternalLink } from '../../theme'
 
@@ -22,14 +20,9 @@ import { YellowCard } from '../Card'
 import Row from '../Row'
 // import { RowFixed } from '../Row'
 import Web3Status from '../Web3Status'
-import { useToggleSelfClaimModal, useShowClaimPopup } from '../../state/application/hooks'
-import { useUserHasSubmittedClaim } from '../../state/transactions/hooks'
-import { Dots } from '../swap/styleds'
-import Modal from '../Modal'
-import usePrevious from '../../hooks/usePrevious'
 import { transparentize } from 'polished'
-import { useNetwork } from '@starknet-react/core'
 import { useAccountDetails } from '../../hooks'
+import { StarknetChainId } from 'starknet/dist/constants'
 
 const HeaderFrame = styled.div`
   display: grid;
@@ -340,10 +333,9 @@ interface window {
 }
 
 function Header({ history }: { history: any }) {
-  const { address, status } = useAccountDetails()
-  const { chain } = useNetwork()
+  const { address, status, chainId } = useAccountDetails()
   const { t } = useTranslation()
-  const [currentNetwork, setCurrentNetwork] = useState('SN_MAIN')
+  const isNetworkMainnet = chainId === StarknetChainId.MAINNET
 
   // async function changeNetwork(e) {
   //   e.preventDefault()
@@ -408,7 +400,13 @@ function Header({ history }: { history: any }) {
         {/* <StarkNetCard>Starknet</StarkNetCard> */}
         <HeaderElement>
           <HideSmall>
-            {status === 'connected' && chain?.name && <NetworkCard title={chain.name}>{chain.name}</NetworkCard>}
+            {status === 'connected' ? (
+              isNetworkMainnet ? (
+                <NetworkCard title={'Starknet Mainnet'}>{'Starknet Mainnet'}</NetworkCard>
+              ) : (
+                <NetworkCard title={'Starknet Görli'}>{'Starknet Görli'}</NetworkCard>
+              )
+            ) : null}
             {/*<NetworkSelect onChange={changeNetwork}>*/}
             {/*  <option value="SN_MAIN">Starknet-Mainnet</option>*/}
             {/*  <option value="SN_GOERLI">Starknet-Görli</option>*/}
