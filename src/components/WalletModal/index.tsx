@@ -131,11 +131,10 @@ export default function WalletModal({
 }) {
   // important that these are destructed from the account-specific web3-react context
   const { active, error } = useStarknetReact()
-  const { connector, status } = useAccountDetails()
-  const { connect, connectors } = useConnectors()
+  const { connect } = useConnectors()
   const { getAvailableWallets } = getStarknet()
 
-  const { account, chainId } = useAccountDetails()
+  const { account, chainId, connector, status } = useAccountDetails()
 
   // const connectStarknet = useStarknetConnector({ showModal: true })
 
