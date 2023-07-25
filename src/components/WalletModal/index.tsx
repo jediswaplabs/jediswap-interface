@@ -6,7 +6,7 @@ import styled from 'styled-components'
 import MetamaskIcon from '../../assets/images/metamask.png'
 import { ReactComponent as Close } from '../../assets/images/x.svg'
 import { isProductionChainId, isProductionEnvironment, isTestnetChainId, isTestnetEnvironment } from '../../connectors'
-import { SUPPORTED_WALLETS } from '../../constants'
+import { SUPPORTED_WALLETS, WalletInfo } from '../../constants'
 import usePrevious from '../../hooks/usePrevious'
 import { ApplicationModal } from '../../state/application/actions'
 import { useModalOpen, useWalletModalToggle } from '../../state/application/hooks'
@@ -141,7 +141,7 @@ export default function WalletModal({
 
   const [walletView, setWalletView] = useState(WALLET_VIEWS.ACCOUNT)
 
-  const [pendingWallet, setPendingWallet] = useState<InjectedConnector | undefined>()
+  const [pendingWallet, setPendingWallet] = useState<WalletInfo>()
 
   const [availableWallets, setAvailableWallets] = useState<any>()
 
@@ -200,40 +200,42 @@ export default function WalletModal({
     }
   }, [setWalletView, active, error, connector, walletModalOpen, activePrevious, connectorPrevious])
 
-  const tryActivation = async (connector: InjectedConnector | undefined) => {
+  const tryActivation = async (option: WalletInfo) => {
+    if (!option) return
+    const { connector, id } = option
     //check if selected wallet is installed
-    // const checkIfWalletExists = availableWallets.find(wallet => wallet.id === connector?.id())
-    // if (checkIfWalletExists) {
-    // log selected wallet
-    ReactGA.event({
-      category: 'Wallet',
-      action: 'Change Wallet',
-      label: (connector && SUPPORTED_WALLETS[connector.id()].name) || ''
-    })
-    setPendingWallet(connector) // set wallet for pending view
-    setWalletView(WALLET_VIEWS.PENDING)
-    try {
-      if (connector) {
-        connect(connector)
-        toggleWalletModal()
-        if (connector.id() === 'argentX') {
-          localStorage.setItem('auto-injected-wallet', 'argentX')
-        } else if (connector.id() === 'braavos') {
-          localStorage.setItem('auto-injected-wallet', 'braavos')
-        } else {
-          localStorage.removeItem('auto-injected-wallet')
+    const checkIfWalletExists = availableWallets.find(wallet => wallet.id === connector?.id())
+    if (checkIfWalletExists || id === 'argentWebWallet') {
+      // log selected wallet
+      ReactGA.event({
+        category: 'Wallet',
+        action: 'Change Wallet',
+        label: (connector && SUPPORTED_WALLETS[connector.id()].name) || ''
+      })
+      setPendingWallet(option) // set wallet for pending view
+      setWalletView(WALLET_VIEWS.PENDING)
+      try {
+        if (connector) {
+          connect(connector)
+          toggleWalletModal()
+          if (connector.id() === 'argentX') {
+            localStorage.setItem('auto-injected-wallet', 'argentX')
+          } else if (connector.id() === 'braavos') {
+            localStorage.setItem('auto-injected-wallet', 'braavos')
+          } else {
+            localStorage.removeItem('auto-injected-wallet')
+          }
+          setWalletView(WALLET_VIEWS.ACCOUNT)
         }
-        setWalletView(WALLET_VIEWS.ACCOUNT)
+      } catch (error) {
+        // Store the error in a variable
+        const errorValue = error
+        setPendingError(errorValue)
       }
-    } catch (error) {
-      // Store the error in a variable
-      const errorValue = error
-      setPendingError(errorValue)
+    } else {
+      setWalletView(WALLET_VIEWS.PENDING)
+      setPendingError(connector?.id())
     }
-    // } else {
-    //   setWalletView(WALLET_VIEWS.PENDING)
-    //   setPendingError(connector?.id())
-    // }
   }
 
   // get wallets user can switch too, depending on device/browser
@@ -244,9 +246,7 @@ export default function WalletModal({
         <Option
           id={`connect-${key}`}
           onClick={() => {
-            option.connector === connector
-              ? setWalletView(WALLET_VIEWS.ACCOUNT)
-              : !option.href && tryActivation(option.connector)
+            option.connector === connector ? setWalletView(WALLET_VIEWS.ACCOUNT) : !option.href && tryActivation(option)
           }}
           key={key}
           active={option.connector === connector}

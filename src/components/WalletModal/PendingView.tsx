@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import styled from 'styled-components'
 import Option from './Option'
-import { SUPPORTED_WALLETS } from '../../constants'
+import { SUPPORTED_WALLETS, WalletInfo } from '../../constants'
 // import { injected } from '../../connectors'
 import { darken } from 'polished'
 import Loader from '../Loader'
@@ -110,11 +110,11 @@ export default function PendingView({
   setWalletView,
   tryActivation
 }: {
-  connector?: InjectedConnector
+  connector?: WalletInfo
   error?: any
   setPendingError: (error: boolean) => void
   setWalletView: (walletView: string) => void
-  tryActivation: (connector: InjectedConnector) => void
+  tryActivation: (option: WalletInfo) => void
 }) {
   const isArgentXProviderError = error === 'argentX'
 

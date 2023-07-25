@@ -221,6 +221,7 @@ export interface WalletInfo {
   mobile?: true
   mobileOnly?: true
   size?: number
+  id: string
 }
 
 export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
@@ -231,7 +232,8 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
     description: 'Starknet Browser Wallet',
     href: null,
     color: '#FF875B',
-    mobile: true
+    mobile: true,
+    id: 'argentX'
   },
   argentWebWallet: {
     connector: argentWebWallet,
@@ -240,7 +242,8 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
     description: 'Starknet Browser Wallet',
     href: null,
     color: '#FF875B',
-    mobile: true
+    mobile: true,
+    id: 'argentWebWallet'
   },
   braavos: {
     connector: braavosWallet,
@@ -250,7 +253,8 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
     href: null,
     color: '#E0B137',
     size: 30,
-    mobile: true
+    mobile: true,
+    id: 'braavos'
   }
 
   // INJECTED: {
