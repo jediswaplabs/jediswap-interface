@@ -50,7 +50,7 @@ export const isTestnetChainId = (id: string) => {
 export const argentX = new InjectedConnector({ options: { id: 'argentX' } })
 export const braavosWallet = new InjectedConnector({ options: { id: 'braavos' } })
 export const argentWebWallet = new WebWalletConnector({
-  url: 'https://web.argent.xyz'
+  url: isTestnetEnvironment() ? 'https://web.hydrogen.argent47.net/' : 'https://web.argent.xyz/'
 })
 
 export type injectedConnector = 'argentX' | 'braavos'
