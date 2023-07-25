@@ -24,6 +24,7 @@ import { StarknetReactProvider, createStarknetReactRoot } from '@web3-starknet-r
 import './components/analytics'
 import { WebWalletConnector } from '@argent/starknet-react-webwallet-connector'
 import { isTestnetEnvironment } from './connectors'
+console.log(isTestnetEnvironment(), 'this is testnet')
 const connectors = [
   new InjectedConnector({ options: { id: 'argentX' } }),
   new InjectedConnector({ options: { id: 'braavos' } }),

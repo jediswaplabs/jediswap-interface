@@ -200,6 +200,7 @@ export default function WalletModal({
   }, [setWalletView, active, error, connector, walletModalOpen, activePrevious, connectorPrevious])
 
   const tryActivation = async (option: WalletInfo) => {
+    console.log('🚀 ~ file: index.tsx:203 ~ tryActivation ~ option:', option)
     if (!option) return
     const { connector, id } = option
     //check if selected wallet is installed
