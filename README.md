@@ -17,5 +17,16 @@ repository.
 
 ## Contributions
 
+## Testing and Development
+
+1. To install all the dependencies, run the the following command:
+```
+yarn
+```
+2. To run the application in your local, run the following command:
+```
+yarn dev
+```
+
 **Please open all pull requests against the `main` branch.**
 CI checks will run against all PRs.
