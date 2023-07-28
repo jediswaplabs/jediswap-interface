@@ -1,4 +1,3 @@
-import { AbstractConnector } from '@web3-starknet-react/abstract-connector'
 import { UnsupportedChainIdError, useStarknetReact } from '@web3-starknet-react/core'
 import React, { useEffect, useState } from 'react'
 import { isMobile } from 'react-device-detect'
@@ -6,17 +5,20 @@ import ReactGA from 'react-ga4'
 import styled from 'styled-components'
 import MetamaskIcon from '../../assets/images/metamask.png'
 import { ReactComponent as Close } from '../../assets/images/x.svg'
-import { argentX, braavosWallet, isProductionEnvironment, isTestnetEnvironment } from '../../connectors'
-import { SUPPORTED_WALLETS } from '../../constants'
+import { isProductionChainId, isProductionEnvironment, isTestnetChainId, isTestnetEnvironment } from '../../connectors'
+import { SUPPORTED_WALLETS, WalletInfo } from '../../constants'
 import usePrevious from '../../hooks/usePrevious'
 import { ApplicationModal } from '../../state/application/actions'
 import { useModalOpen, useWalletModalToggle } from '../../state/application/hooks'
 import { ExternalLink } from '../../theme'
 import AccountDetails from '../AccountDetails'
-
 import Modal from '../Modal'
 import Option from './Option'
 import PendingView from './PendingView'
+import { useConnectors } from '@starknet-react/core'
+import { getStarknet } from 'get-starknet-core'
+import { StarknetChainId } from 'starknet/dist/constants'
+import { useAccountDetails } from '../../hooks'
 
 const CloseIcon = styled.div`
   position: absolute;
@@ -128,20 +130,51 @@ export default function WalletModal({
   ENSName?: string
 }) {
   // important that these are destructed from the account-specific web3-react context
-  const { active, connectedAddress, account, connector, activate, error, deactivate } = useStarknetReact()
+  const { active, error } = useStarknetReact()
+  const { connect } = useConnectors()
+  const { getAvailableWallets } = getStarknet()
+
+  const { account, chainId, connector, status } = useAccountDetails()
 
   // const connectStarknet = useStarknetConnector({ showModal: true })
 
   const [walletView, setWalletView] = useState(WALLET_VIEWS.ACCOUNT)
 
-  const [pendingWallet, setPendingWallet] = useState<AbstractConnector | undefined>()
+  const [pendingWallet, setPendingWallet] = useState<WalletInfo>()
+
+  const [availableWallets, setAvailableWallets] = useState<any>()
 
   const [pendingError, setPendingError] = useState<any>()
 
+  const [chainError, setChainError] = useState<boolean>(false)
+
   const walletModalOpen = useModalOpen(ApplicationModal.WALLET)
+
   const toggleWalletModal = useWalletModalToggle()
 
   const previousAccount = usePrevious(account)
+
+  useEffect(() => {
+    if (status === 'connected' && chainId) {
+      if (
+        (isProductionEnvironment() && !isProductionChainId(chainId)) ||
+        (isTestnetEnvironment() && !isTestnetChainId(chainId)) ||
+        !Object.values(StarknetChainId).includes(chainId)
+      ) {
+        setChainError(true)
+      }
+    }
+  }, [status])
+
+  useEffect(() => {
+    //check all available wallets from browser
+    const getWallets = async () => {
+      const available_wallets = await getAvailableWallets()
+      setAvailableWallets(available_wallets)
+    }
+
+    getWallets()
+  }, [])
 
   // close on connection, when logged out before
   useEffect(() => {
@@ -167,119 +200,77 @@ export default function WalletModal({
     }
   }, [setWalletView, active, error, connector, walletModalOpen, activePrevious, connectorPrevious])
 
-  const tryActivation = async (connector: AbstractConnector | undefined) => {
-    let name = ''
-    Object.keys(SUPPORTED_WALLETS).map(key => {
-      if (connector === SUPPORTED_WALLETS[key].connector) {
-        return (name = SUPPORTED_WALLETS[key].name)
-      }
-      return true
-    })
-    // log selected wallet
-    ReactGA.event({
-      category: 'Wallet',
-      action: 'Change Wallet',
-      label: name
-    })
-    setPendingWallet(connector) // set wallet for pending view
-    setWalletView(WALLET_VIEWS.PENDING)
-
-    connector &&
-      activate(
-        connector,
-        error => {
-          console.debug('Error activating connector', name, error)
-        },
-        true
-      )
-        .then(() => {
-          if (connector === argentX) {
-            localStorage.setItem('auto-injected-wallet', 'argentx')
-          } else if (connector === braavosWallet) {
+  const tryActivation = async (option: WalletInfo) => {
+    if (!option) return
+    const { connector, id } = option
+    //check if selected wallet is installed
+    const checkIfWalletExists = availableWallets.find(wallet => wallet.id === connector?.id())
+    if (checkIfWalletExists || id === 'argentWebWallet') {
+      // log selected wallet
+      ReactGA.event({
+        category: 'Wallet',
+        action: 'Change Wallet',
+        label: (connector && SUPPORTED_WALLETS[connector.id()].name) || ''
+      })
+      setPendingWallet(option) // set wallet for pending view
+      setWalletView(WALLET_VIEWS.PENDING)
+      try {
+        if (connector) {
+          connect(connector)
+          toggleWalletModal()
+          if (connector.id() === 'argentX') {
+            localStorage.setItem('auto-injected-wallet', 'argentX')
+          } else if (connector.id() === 'braavos') {
             localStorage.setItem('auto-injected-wallet', 'braavos')
           } else {
             localStorage.removeItem('auto-injected-wallet')
           }
-        })
-        .catch(error => {
-          if (error instanceof UnsupportedChainIdError) {
-            activate(connector) // a little janky...can't use setError because the connector isn't set
-          } else {
-            console.error(error)
-            setPendingError(error)
-          }
-        })
+          setWalletView(WALLET_VIEWS.ACCOUNT)
+        }
+      } catch (error) {
+        // Store the error in a variable
+        const errorValue = error
+        setPendingError(errorValue)
+      }
+    } else {
+      setWalletView(WALLET_VIEWS.PENDING)
+      setPendingError(connector?.id())
+    }
   }
 
   // get wallets user can switch too, depending on device/browser
   function getOptions() {
     return Object.keys(SUPPORTED_WALLETS).map(key => {
       const option = SUPPORTED_WALLETS[key]
-      // check for mobile options
-      // if (isMobile) {
-      //   //disable portis on mobile for now
-      //   // if (option.connector === portis) {
-      //   //   return null
-      //   // }
-      //
-      //   if (!window.starknet && option.mobile) {
-      //     return (
-      //       <Option
-      //         id={`connect-${key}`}
-      //         onClick={() => {
-      //           option.connector === connector
-      //             ? setWalletView(WALLET_VIEWS.ACCOUNT)
-      //             : !option.href && tryActivation(option.connector)
-      //         }}
-      //         key={key}
-      //         active={option.connector === connector}
-      //         color={option.color}
-      //         link={option.href}
-      //         header={option.name}
-      //         subheader={null} //use option.descriptio to bring back multi-line
-      //         icon={option.icon}
-      //         size={option.size ?? null}
-      //       />
-      //     )
-      //   }
-      //   return null
-      // }
-
-      // return rest of options
       return (
-        // !isMobile &&
-        // !option.mobileOnly && (
         <Option
           id={`connect-${key}`}
           onClick={() => {
-            option.connector === connector
-              ? setWalletView(WALLET_VIEWS.ACCOUNT)
-              : !option.href && tryActivation(option.connector)
+            option.connector === connector ? setWalletView(WALLET_VIEWS.ACCOUNT) : !option.href && tryActivation(option)
           }}
           key={key}
+          subheader={key === 'argentWebWallet' && 'Powered by Argent'}
           active={option.connector === connector}
           color={option.color}
           link={option.href}
           header={option.name}
-          subheader={null} //use option.descriptio to bring back multi-line
           icon={option.icon}
           size={option.size ?? null}
         />
-        // )
       )
     })
   }
 
   function getModalContent() {
-    if (error) {
+    if (error || chainError) {
       return (
         <UpperSection>
           <CloseIcon onClick={toggleWalletModal}>
             <CloseColor />
           </CloseIcon>
-          <HeaderRow>{error instanceof UnsupportedChainIdError ? 'Wrong Network' : 'Error connecting'}</HeaderRow>
+          <HeaderRow>{chainError ? 'Wrong Network' : 'Error connecting'}</HeaderRow>
           <ContentWrapper>
-            {error instanceof UnsupportedChainIdError ? (
+            {chainError ? (
               <h5>
                 Please connect to the{' '}
                 {isTestnetEnvironment()

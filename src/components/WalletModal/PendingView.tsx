@@ -1,8 +1,7 @@
-import { AbstractConnector } from '@web3-starknet-react/abstract-connector'
 import React, { FC } from 'react'
 import styled from 'styled-components'
 import Option from './Option'
-import { SUPPORTED_WALLETS } from '../../constants'
+import { SUPPORTED_WALLETS, WalletInfo } from '../../constants'
 // import { injected } from '../../connectors'
 import { darken } from 'polished'
 import Loader from '../Loader'
@@ -13,6 +12,7 @@ import { WALLET_VIEWS } from '.'
 import { AutoColumn } from '../Column'
 import { ButtonOutlined } from '../Button'
 import { RowStart } from '../Row'
+import { InjectedConnector } from '@starknet-react/core'
 
 const PendingSection = styled.div`
   ${({ theme }) => theme.flexColumnNoWrap};
@@ -110,15 +110,15 @@ export default function PendingView({
   setWalletView,
   tryActivation
 }: {
-  connector?: AbstractConnector
+  connector?: WalletInfo
   error?: any
   setPendingError: (error: boolean) => void
   setWalletView: (walletView: string) => void
-  tryActivation: (connector: AbstractConnector) => void
+  tryActivation: (option: WalletInfo) => void
 }) {
-  const isArgentXProviderError = error instanceof NoArgentXProviderError
+  const isArgentXProviderError = error === 'argentX'
 
-  const isBraavosProviderError = error instanceof NoBraavosProviderError
+  const isBraavosProviderError = error === 'braavos'
 
   const isStarknetProviderError = isArgentXProviderError || isBraavosProviderError
 
@@ -181,7 +181,7 @@ export default function PendingView({
 }
 
 interface ProviderErrorProps {
-  error: NoArgentXProviderError | NoBraavosProviderError
+  error: string
   onClick: () => void
 }
 
@@ -195,7 +195,7 @@ const ProviderError: FC<ProviderErrorProps> = ({ error, onClick }) => {
 
   const downloadBraavos = () => window.open(braavosUrl, '_blank')
 
-  const isArgentXError = error instanceof NoArgentXProviderError
+  const isArgentXError = error === 'argentX'
 
   return (
     <StarknetErrorGroup>

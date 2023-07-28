@@ -1,6 +1,4 @@
 import React, { useContext } from 'react'
-import { useActiveStarknetReact } from '../../hooks'
-
 import { AutoColumn, ColumnCenter } from '../Column'
 import styled, { ThemeContext } from 'styled-components'
 import { RowBetween } from '../Row'
@@ -10,6 +8,7 @@ import { ArrowUpCircle } from 'react-feather'
 import Circle from '../../assets/images/blue-loader.svg'
 import { getStarkscanLink } from '../../utils'
 import { ExternalLink } from '../../theme/components'
+import { useAccountDetails } from '../../hooks'
 
 const ConfirmOrLoadingWrapper = styled.div`
   width: 100%;
@@ -48,7 +47,7 @@ export function SubmittedView({
   hash: string | undefined
 }) {
   const theme = useContext(ThemeContext)
-  const { chainId } = useActiveStarknetReact()
+  const { account, chainId } = useAccountDetails()
 
   return (
     <ConfirmOrLoadingWrapper>

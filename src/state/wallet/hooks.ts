@@ -3,12 +3,14 @@ import { Abi, uint256 } from 'starknet'
 import { Currency, CurrencyAmount, ETHER, JSBI, Token, TokenAmount, WETH } from '@jediswap/sdk'
 import ERC20_ABI from '../../constants/abis/erc20.json'
 import { useAllTokens } from '../../hooks/Tokens'
-import { useActiveStarknetReact } from '../../hooks'
 import { isAddress } from '../../utils'
 import { useAddressNormalizer } from '../../hooks/useAddressNormalizer'
 import { useTokenContract } from '../../hooks/useContract'
 import { useMultipleContractSingleData, useSingleCallResult } from '../multicall/hooks'
 import { DEFAULT_CHAIN_ID } from '../../constants'
+
+import { StarknetChainId } from 'starknet/dist/constants'
+import { useAccountDetails } from '../../hooks'
 
 /**
  * Returns a map of the given addresses to their eventually consistent ETH balances.
@@ -53,9 +55,9 @@ import { DEFAULT_CHAIN_ID } from '../../constants'
  */
 
 export function useToken0Balance(uncheckedAddress?: string): CurrencyAmount | undefined {
-  const { chainId } = useActiveStarknetReact()
+  const { account, chainId } = useAccountDetails()
 
-  const tokenContract = useTokenContract(WETH[chainId ?? DEFAULT_CHAIN_ID].address)
+  const tokenContract = useTokenContract(WETH[chainId ?? DEFAULT_CHAIN_ID]?.address)
 
   const address = useAddressNormalizer(uncheckedAddress)
 
@@ -162,9 +164,9 @@ export function useCurrencyBalance(account?: string, currency?: Currency): Curre
 
 // mimics useAllBalances
 export function useAllTokenBalances(): { [tokenAddress: string]: TokenAmount | undefined } {
-  const { account, connectedAddress } = useActiveStarknetReact()
-  const allTokens = useAllTokens()
+  const { address, chainId } = useAccountDetails()
+  const allTokens = useAllTokens(chainId as StarknetChainId)
   const allTokensArray = useMemo(() => Object.values(allTokens ?? {}), [allTokens])
-  const balances = useTokenBalances(connectedAddress ?? undefined, allTokensArray)
+  const balances = useTokenBalances(address ?? undefined, allTokensArray)
   return balances ?? {}
 }

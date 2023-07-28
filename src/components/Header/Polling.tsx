@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react'
 import styled, { keyframes } from 'styled-components'
 import { TYPE, ExternalLink } from '../../theme'
 
-import { useBlockNumber } from '../../state/application/hooks'
 import { getStarkscanLink } from '../../utils'
-import { useActiveStarknetReact } from '../../hooks'
 import { useBlockHash } from '../../hooks/useBlockHashCallback'
+import { useBlockNumber } from '@starknet-react/core'
+import { useAccountDetails } from '../../hooks'
 
 const StyledPolling = styled.div`
   display: flex;
@@ -60,9 +60,11 @@ const Spinner = styled.div`
 `
 
 export default function Polling() {
-  const { chainId, library } = useActiveStarknetReact()
+  const { account, chainId } = useAccountDetails()
 
-  const blockNumber = useBlockNumber()
+  const { data: blockNumber } = useBlockNumber({
+    refetchInterval: false
+  })
   const blockHash = useBlockHash(blockNumber)
 
   const [isMounted, setIsMounted] = useState(true)

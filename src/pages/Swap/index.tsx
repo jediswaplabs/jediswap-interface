@@ -25,7 +25,6 @@ import TokenWarningModal from '../../components/TokenWarningModal'
 import ProgressSteps from '../../components/ProgressSteps'
 
 import { BETTER_TRADE_LINK_THRESHOLD, INITIAL_ALLOWED_SLIPPAGE } from '../../constants'
-import { useActiveStarknetReact } from '../../hooks'
 import { useCurrency } from '../../hooks/Tokens'
 import { ApprovalState, useApproveCallbackFromTrade } from '../../hooks/useApproveCallback'
 // import useENSAddress from '../../hooks/useENSAddress.ts'
@@ -67,6 +66,8 @@ import { useAddTokenToWallet } from '../../hooks/useAddTokenToWallet'
 import { wrappedCurrency } from '../../utils/wrappedCurrency'
 import AdvancedSwapDetailsDropdown from '../../components/swap/AdvancedSwapDetailsDropdown'
 
+import { useAccountDetails } from '../../hooks'
+
 const MintSection = styled.section`
   margin-top: 3rem;
   max-width: 470px;
@@ -100,7 +101,8 @@ export default function Swap() {
   //   setDismissTokenWarning(true)
   // }, [])
 
-  const { account, chainId, connectedAddress } = useActiveStarknetReact()
+  const { address, chainId } = useAccountDetails()
+
   const theme = useContext(ThemeContext)
 
   // toggle wallet when disconnected
@@ -210,11 +212,7 @@ export default function Swap() {
         ReactGA.event({
           category: 'Swap',
           action:
-            recipient === null
-              ? 'Swap w/o Send'
-              : recipient === connectedAddress
-              ? 'Swap w/o Send + recipient'
-              : 'Swap w/ Send',
+            recipient === null ? 'Swap w/o Send' : recipient === address ? 'Swap w/o Send + recipient' : 'Swap w/ Send',
           label: [trade?.inputAmount?.currency?.symbol, trade?.outputAmount?.currency?.symbol, Version.v2].join('/')
         })
       })
@@ -234,7 +232,7 @@ export default function Swap() {
     tradeToConfirm,
     showConfirm,
     recipient,
-    connectedAddress,
+    address,
     trade?.inputAmount?.currency?.symbol,
     trade?.outputAmount?.currency?.symbol
   ])
@@ -320,7 +318,7 @@ export default function Swap() {
           </div>
           <HeaderRow>
             <BalanceText>Swap From</BalanceText>
-            {connectedAddress && currencies[Field.INPUT] ? (
+            {address && currencies[Field.INPUT] ? (
               <BalanceText>Balance: {currencyBalances.INPUT?.toSignificant(6) ?? <Loader />}</BalanceText>
             ) : null}
           </HeaderRow>
@@ -363,7 +361,7 @@ export default function Swap() {
               }
             >
               <BalanceText>Swap To (est.)</BalanceText>
-              {connectedAddress && currencies[Field.OUTPUT] ? (
+              {address && currencies[Field.OUTPUT] ? (
                 <BalanceText>Balance: {currencyBalances.OUTPUT?.toSignificant(6) ?? <Loader />}</BalanceText>
               ) : null}
             </HeaderRow>
@@ -418,7 +416,7 @@ export default function Swap() {
             </Card>
           </AutoColumn>
           <BottomGrouping marginTop={'0px'}>
-            {!account ? (
+            {!address ? (
               <ButtonPrimary onClick={toggleWalletModal}>Connect Wallet</ButtonPrimary>
             ) : noRoute && userHasSpecifiedInputOutput ? (
               <RedGradientButton style={{ textAlign: 'center' }} disabled>

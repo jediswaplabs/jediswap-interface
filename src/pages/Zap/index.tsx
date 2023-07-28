@@ -11,7 +11,6 @@ import { AutoRow, RowBetween, RowCentered } from '../../components/Row'
 import { ArrowWrapper, BottomGrouping } from '../../components/swap/styleds'
 import { AddTokenRow, AddTokenText, Icon, IconWrapper } from '../Swap/styleds'
 import SwapWidget from '../../assets/jedi/SwapWidget.svg'
-import { useActiveStarknetReact } from '../../hooks'
 import { ButtonConfirmed, ButtonError, ButtonPrimary, RedGradientButton } from '../../components/Button'
 import { useWalletModalToggle } from '../../state/application/hooks'
 import { useUserSlippageTolerance } from '../../state/user/hooks'
@@ -38,12 +37,11 @@ import confirmPriceImpactWithoutFee from '../../components/swap/confirmPriceImpa
 import ConfirmZapModal from '../../components/Zap/ConfirmZapModal'
 import { ReactComponent as ArrowRight } from '../../assets/images/arrow-right-blue.svg'
 import { useAddTokenToWallet } from '../../hooks/useAddTokenToWallet'
+import { useAccountDetails } from '../../hooks'
 
 export default function Zap() {
   const loadedUrlParams = useZapDefaultsFromURLSearch()
-
-  const { account, connectedAddress } = useActiveStarknetReact()
-
+  const { address } = useAccountDetails()
   const toggleWalletModal = useWalletModalToggle()
 
   const [allowedSlippage] = useUserSlippageTolerance()
@@ -258,7 +256,7 @@ export default function Zap() {
 
           <HeaderRow>
             <BalanceText>From</BalanceText>
-            {connectedAddress && currencies[Field.INPUT] ? (
+            {address && currencies[Field.INPUT] ? (
               <BalanceText>Balance: {currencyBalances.INPUT?.toSignificant(6) ?? <Loader />}</BalanceText>
             ) : null}
           </HeaderRow>
@@ -287,7 +285,7 @@ export default function Zap() {
               }}
             >
               <BalanceText>To LP (estimated)</BalanceText>
-              {connectedAddress && currencies[Field.OUTPUT] ? (
+              {address && currencies[Field.OUTPUT] ? (
                 <BalanceText style={{ display: 'flex' }}>
                   Balance: {currencyBalances.OUTPUT?.toSignificant(6) ?? <Loader />}
                 </BalanceText>
@@ -308,7 +306,7 @@ export default function Zap() {
           </AutoColumn>
 
           <BottomGrouping marginTop="50px">
-            {!account ? (
+            {!address ? (
               <ButtonPrimary fontSize={20} onClick={toggleWalletModal}>
                 Connect Wallet
               </ButtonPrimary>

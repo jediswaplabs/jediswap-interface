@@ -18,7 +18,6 @@ import Row, { AutoRow, RowBetween, RowFixed, RowFlat } from '../../components/Ro
 
 import { DEFAULT_CHAIN_ID, ROUTER_ADDRESS } from '../../constants'
 import { PairState } from '../../data/Reserves'
-import { useActiveStarknetReact } from '../../hooks'
 import { useCurrency } from '../../hooks/Tokens'
 import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
 import useTransactionDeadline from '../../hooks/useTransactionDeadline'
@@ -46,6 +45,8 @@ import { AddTokenRow, AddTokenText } from '../Swap/styleds'
 import { useAddTokenToWallet } from '../../hooks/useAddTokenToWallet'
 import { ReactComponent as ArrowRight } from '../../assets/images/arrow-right-blue.svg'
 import Loader from '../../components/Loader'
+
+import { useAccountDetails } from '../../hooks'
 
 const BalanceText = styled.div`
   display: flex;
@@ -92,7 +93,7 @@ export default function AddLiquidity({
   },
   history
 }: RouteComponentProps<{ currencyIdA?: string; currencyIdB?: string }>) {
-  const { account, chainId, library, connectedAddress } = useActiveStarknetReact()
+  const { address, account, chainId } = useAccountDetails()
   const theme = useContext(ThemeContext)
 
   const currencyA = useCurrency(currencyIdA)
@@ -180,7 +181,7 @@ export default function AddLiquidity({
   const addTransaction = useTransactionAdder()
 
   async function onAdd() {
-    if (!chainId || !library || !account || !connectedAddress) return
+    if (!chainId || !account || !address) return
 
     const approvalA = approvalACallback()
     const approvalB = approvalBCallback()
@@ -223,7 +224,7 @@ export default function AddLiquidity({
       amountBDesired: parsedAmountToUint256Args(parsedAmountB.raw),
       amountAMin: parsedAmountToUint256Args(amountsMin[Field.CURRENCY_A]),
       amountBMin: parsedAmountToUint256Args(amountsMin[Field.CURRENCY_B]),
-      to: connectedAddress,
+      to: address,
       deadline: deadline.toHexString()
     }
 
@@ -409,7 +410,7 @@ export default function AddLiquidity({
 
             <AutoColumn gap="16px">
               <AutoRow justify="flex-end">
-                {connectedAddress && currencies[Field.CURRENCY_A] ? (
+                {address && currencies[Field.CURRENCY_A] ? (
                   <BalanceText>Balance: {currencyBalances.CURRENCY_A?.toSignificant(6) ?? <Loader />}</BalanceText>
                 ) : null}
               </AutoRow>
@@ -432,7 +433,7 @@ export default function AddLiquidity({
 
             <AutoColumn gap="16px">
               <AutoRow justify="flex-end">
-                {connectedAddress && currencies[Field.CURRENCY_B] ? (
+                {address && currencies[Field.CURRENCY_B] ? (
                   <BalanceText>Balance: {currencyBalances.CURRENCY_B?.toSignificant(6) ?? <Loader />}</BalanceText>
                 ) : null}
               </AutoRow>
@@ -472,7 +473,7 @@ export default function AddLiquidity({
               </>
             )}
 
-            {!account ? (
+            {!address ? (
               <ButtonGradient onClick={toggleWalletModal}>Connect Wallet</ButtonGradient>
             ) : (
               <AutoColumn gap={'md'}>

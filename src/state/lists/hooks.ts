@@ -1,10 +1,11 @@
 import { BASES_TO_BUILD_ZAPPER_LIST_AGAINST } from './../../constants/index'
-import { ChainId, LPToken, Pair, Token } from '@jediswap/sdk'
+import { LPToken, Pair, Token } from '@jediswap/sdk'
 import { Tags, TokenInfo, TokenList } from '@jediswap/token-lists'
 import { useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { AppState } from '../index'
 import { useAllPairs } from '../pairs/hooks'
+import { StarknetChainId } from 'starknet/dist/constants'
 
 type TagDetails = Tags[keyof Tags]
 export interface TagInfo extends TagDetails {
@@ -88,7 +89,7 @@ export class WrappedLPTokenInfo extends LPToken {
   public readonly token1Info: WrappedTokenInfo
   public readonly tags: TagInfo[]
 
-  constructor(chainId: ChainId, token0Info: WrappedTokenInfo, token1Info: WrappedTokenInfo, tags: TagInfo[]) {
+  constructor(chainId: StarknetChainId, token0Info: WrappedTokenInfo, token1Info: WrappedTokenInfo, tags: TagInfo[]) {
     const token0 = new Token(
       token0Info.chainId,
       token0Info.address,
@@ -117,32 +118,28 @@ export class WrappedLPTokenInfo extends LPToken {
   }
 }
 
-export type TokenAddressMap = Readonly<{ [chainId in ChainId]: Readonly<{ [tokenAddress: string]: WrappedTokenInfo }> }>
+export type TokenAddressMap = Readonly<
+  { [chainId in StarknetChainId]: Readonly<{ [tokenAddress: string]: WrappedTokenInfo }> }
+>
 
 export type LPTokenAddressMap = Readonly<
-  { [chainId in ChainId]: Readonly<{ [lpTokenAddress: string]: WrappedLPTokenInfo }> }
+  { [chainId in StarknetChainId]: Readonly<{ [lpTokenAddress: string]: WrappedLPTokenInfo }> }
 >
 
 /**
  * An empty result, useful as a default.
  */
 const EMPTY_LIST: TokenAddressMap = {
-  [ChainId.KOVAN]: {},
-  [ChainId.RINKEBY]: {},
-  [ChainId.ROPSTEN]: {},
-  [ChainId.GÖRLI]: {},
-  [ChainId.MAINNET]: {}
+  [StarknetChainId.TESTNET]: {},
+  [StarknetChainId.MAINNET]: {}
 }
 
 /**
  * An empty Pair result, useful as a default.
  */
 const EMPTY_PAIR_LIST: LPTokenAddressMap = {
-  [ChainId.KOVAN]: {},
-  [ChainId.RINKEBY]: {},
-  [ChainId.ROPSTEN]: {},
-  [ChainId.GÖRLI]: {},
-  [ChainId.MAINNET]: {}
+  [StarknetChainId.TESTNET]: {},
+  [StarknetChainId.MAINNET]: {}
 }
 
 const listCache: WeakMap<TokenList, TokenAddressMap> | null =

@@ -1,4 +1,4 @@
-import { ChainId } from '@jediswap/sdk'
+import { StarknetChainId } from 'starknet/dist/constants'
 import React, { useContext } from 'react'
 import styled, { ThemeContext } from 'styled-components'
 import Modal from '../Modal'
@@ -12,8 +12,8 @@ import { AutoColumn, ColumnCenter } from '../Column'
 import Circle from '../../assets/jedi/loadingCircle.svg'
 
 import { getStarkscanLink } from '../../utils'
-import { useActiveStarknetReact } from '../../hooks'
 import openInBrowser from '../../assets/jedi/openInBrowser.svg'
+import { useAccountDetails } from '../../hooks'
 
 const Wrapper = styled.div`
   width: 100%;
@@ -100,7 +100,7 @@ function TransactionSubmittedContent({
 }: {
   onDismiss: () => void
   hash: string | undefined
-  chainId: ChainId
+  chainId: StarknetChainId
 }) {
   const theme = useContext(ThemeContext)
 
@@ -231,7 +231,7 @@ export default function TransactionConfirmationModal({
   pendingText,
   content
 }: ConfirmationModalProps) {
-  const { chainId } = useActiveStarknetReact()
+  const { account, chainId } = useAccountDetails()
 
   if (!chainId) return null
 

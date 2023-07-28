@@ -2,7 +2,6 @@ import { Token } from '@jediswap/sdk'
 import { transparentize } from 'polished'
 import React, { useCallback, useMemo, useState } from 'react'
 import styled from 'styled-components'
-import { useActiveStarknetReact } from '../../hooks'
 import { useAllTokens } from '../../hooks/Tokens'
 import { ExternalLink, TYPE } from '../../theme'
 import { getStarkscanLink, shortenAddress } from '../../utils'
@@ -12,6 +11,8 @@ import { AutoRow, RowBetween } from '../Row'
 import { AutoColumn } from '../Column'
 import { AlertTriangle } from 'react-feather'
 import { ButtonError } from '../Button'
+import { StarknetChainId } from 'starknet/dist/constants'
+import { useAccountDetails } from '../../hooks'
 
 const Wrapper = styled.div<{ error: boolean }>`
   background: ${({ theme }) => transparentize(0.6, theme.bg3)};
@@ -38,12 +39,12 @@ interface TokenWarningCardProps {
 }
 
 function TokenWarningCard({ token }: TokenWarningCardProps) {
-  const { chainId } = useActiveStarknetReact()
+  const { account, chainId } = useAccountDetails()
 
   const tokenSymbol = token?.symbol?.toLowerCase() ?? ''
   const tokenName = token?.name?.toLowerCase() ?? ''
 
-  const allTokens = useAllTokens()
+  const allTokens = useAllTokens(chainId as StarknetChainId)
 
   const duplicateNameOrSymbol = useMemo(() => {
     if (!token || !chainId) return false

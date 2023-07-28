@@ -2,12 +2,10 @@ import { Contract, FunctionAbi, number, hash, uint256 } from 'starknet'
 import { toBN } from 'starknet/dist/utils/number'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useActiveStarknetReact } from '../../hooks'
 import { useMulticallContract } from '../../hooks/useContract'
 import useDebounce from '../../hooks/useDebounce'
 import chunkArray from '../../utils/chunkArray'
 import { CancelledError, retry, RetryableError } from '../../utils/retry'
-import { useBlockNumber } from '../application/hooks'
 import { AppDispatch, AppState } from '../index'
 import {
   Call,
@@ -17,6 +15,10 @@ import {
   updateMulticallResults
 } from './actions'
 import BN from 'bn.js'
+
+import { StarknetChainId } from 'starknet/dist/constants'
+import { useBlockNumber } from '../application/hooks'
+import { useAccountDetails } from '../../hooks'
 
 // chunk calls so we do not exceed the gas limit
 const CALL_CHUNK_SIZE = 500
@@ -71,7 +73,7 @@ async function fetchChunk(
  */
 export function activeListeningKeys(
   allListeners: AppState['multicall']['callListeners'],
-  chainId?: number
+  chainId?: StarknetChainId
 ): { [callKey: string]: number } {
   if (!allListeners || !chainId) return {}
   const listeners = allListeners[chainId]
@@ -103,7 +105,7 @@ export function activeListeningKeys(
 export function outdatedListeningKeys(
   callResults: AppState['multicall']['callResults'],
   listeningKeys: { [callKey: string]: number },
-  chainId: number | undefined,
+  chainId: StarknetChainId | undefined,
   latestBlockNumber: number | undefined
 ): string[] {
   if (!chainId || !latestBlockNumber) return []
@@ -229,7 +231,7 @@ export default function Updater(): null {
   // wait for listeners to settle before triggering updates
   const debouncedListeners = useDebounce(state.callListeners, 100)
   const latestBlockNumber = useBlockNumber()
-  const { chainId } = useActiveStarknetReact()
+  const { account, chainId } = useAccountDetails()
   const multicallContract = useMulticallContract()
   const cancellations = useRef<{ blockNumber: number; cancellations: (() => void)[] }>()
 

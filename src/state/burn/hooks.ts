@@ -3,13 +3,13 @@ import { useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { PairState, usePair } from '../../data/Reserves'
 import { useTotalSupply } from '../../data/TotalSupply'
-
-import { useActiveStarknetReact } from '../../hooks'
 import { wrappedCurrency } from '../../utils/wrappedCurrency'
 import { AppDispatch, AppState } from '../index'
 import { tryParseAmount } from '../swap/hooks'
 import { useTokenBalances } from '../wallet/hooks'
 import { Field, typeInput } from './actions'
+
+import { useAccountDetails } from '../../hooks'
 
 export function useBurnState(): AppState['burn'] {
   return useSelector<AppState, AppState['burn']>(state => state.burn)
@@ -28,14 +28,13 @@ export function useDerivedBurnInfo(
   }
   error?: string
 } {
-  const { account, chainId, connectedAddress } = useActiveStarknetReact()
-
+  const { address, chainId } = useAccountDetails()
   const { independentField, typedValue } = useBurnState()
 
   // pair + totalsupply
   const [pairState, pair] = usePair(currencyA, currencyB)
   // balances
-  const relevantTokenBalances = useTokenBalances(connectedAddress ?? undefined, [pair?.liquidityToken])
+  const relevantTokenBalances = useTokenBalances(address ?? undefined, [pair?.liquidityToken])
   const userLiquidity: undefined | TokenAmount = relevantTokenBalances?.[pair?.liquidityToken?.address ?? '']
 
   const [tokenA, tokenB] = [wrappedCurrency(currencyA, chainId), wrappedCurrency(currencyB, chainId)]
@@ -117,7 +116,7 @@ export function useDerivedBurnInfo(
   }
 
   let error: string | undefined
-  if (!account) {
+  if (!address) {
     error = 'Connect Wallet'
   }
 

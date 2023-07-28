@@ -4,8 +4,6 @@ import { Currency, CurrencyAmount, ETHER, JSBI, Token, TokenAmount, Trade } from
 import { ParsedQs } from 'qs'
 import { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-// import { useV1Trade } from '../../data/V1'
-import { useActiveStarknetReact } from '../../hooks'
 import { useCurrency } from '../../hooks/Tokens'
 import { useTradeExactIn, useTradeExactOut } from '../../hooks/Trades'
 import useParsedQueryString from '../../hooks/useParsedQueryString'
@@ -18,6 +16,8 @@ import useToggledVersion from '../../hooks/useToggledVersion'
 import { useUserSlippageTolerance } from '../user/hooks'
 import { computeSlippageAdjustedAmounts } from '../../utils/prices'
 import { useAddressNormalizer } from '../../hooks/useAddressNormalizer'
+
+import { useAccountDetails } from '../../hooks'
 
 export function useSwapState(): AppState['swap'] {
   return useSelector<AppState, AppState['swap']>(state => state.swap)
@@ -115,8 +115,7 @@ export function useDerivedSwapInfo(): {
   inputError?: string
   tradeLoading: boolean
 } {
-  const { account, connectedAddress } = useActiveStarknetReact()
-
+  const { address: connectedAddress } = useAccountDetails()
   const {
     independentField,
     typedValue,
@@ -169,7 +168,7 @@ export function useDerivedSwapInfo(): {
   // const v1Trade = useV1Trade(isExactIn, currencies[Field.INPUT], currencies[Field.OUTPUT], parsedAmount)
 
   let inputError: string | undefined
-  if (!account) {
+  if (!connectedAddress) {
     inputError = 'Connect Wallet'
   }
 
@@ -279,7 +278,7 @@ export function queryParametersToSwapState(parsedQs: ParsedQs): SwapState {
 export function useSwapDefaultsFromURLSearch():
   | { inputCurrencyId: string | undefined; outputCurrencyId: string | undefined }
   | undefined {
-  const { chainId } = useActiveStarknetReact()
+  const { account, chainId } = useAccountDetails()
   const dispatch = useDispatch<AppDispatch>()
   const parsedQs = useParsedQueryString()
   const [result, setResult] = useState<

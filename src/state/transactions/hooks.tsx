@@ -1,18 +1,18 @@
 import { InvokeFunctionResponse } from 'starknet'
 import { useCallback, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-
-import { useActiveStarknetReact } from '../../hooks'
 import { AppDispatch, AppState } from '../index'
 import { addTransaction } from './actions'
 import { TransactionDetails } from './reducer'
+
+import { useAccountDetails } from '../../hooks'
 
 // helper that can take a ethers library transaction response and add it to the list of transactions
 export function useTransactionAdder(): (
   response: InvokeFunctionResponse,
   customData?: { summary?: string; approval?: { tokenAddress: string; spender: string }; claim?: { recipient: string } }
 ) => void {
-  const { chainId, account, connectedAddress } = useActiveStarknetReact()
+  const { account, chainId, address } = useAccountDetails()
   const dispatch = useDispatch<AppDispatch>()
 
   return useCallback(
@@ -24,28 +24,27 @@ export function useTransactionAdder(): (
         claim
       }: { summary?: string; claim?: { recipient: string }; approval?: { tokenAddress: string; spender: string } } = {}
     ) => {
-      if (!account || !connectedAddress) return
+      if (!account || !address) return
       if (!chainId) return
 
       const hash = response.transaction_hash
       if (!hash) {
         throw Error('No transaction hash found.')
       }
-      dispatch(addTransaction({ hash, from: connectedAddress, chainId, approval, summary, claim }))
+      dispatch(addTransaction({ hash, from: address, chainId, approval, summary, claim }))
     },
-    [account, connectedAddress, chainId, dispatch]
+    [account, address, chainId, dispatch]
   )
 }
 
 // returns all the transactions for the current chain
 export function useAllTransactions(): { [txHash: string]: TransactionDetails } {
-  const { chainId, connectedAddress } = useActiveStarknetReact()
-
+  const { address, chainId } = useAccountDetails()
   const state = useSelector<AppState, AppState['transactions']>(state => state.transactions)
 
   const allTxns = chainId ? state[chainId] ?? {} : {}
 
-  return Object.fromEntries(Object.entries(allTxns).filter(([_, tx]) => tx.from === connectedAddress))
+  return Object.fromEntries(Object.entries(allTxns).filter(([_, tx]) => tx.from === address))
 }
 
 export function useIsTransactionPending(transactionHash?: string): boolean {

@@ -5,8 +5,6 @@ import { ChevronDown, ChevronUp } from 'react-feather'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { useTotalSupply } from '../../data/TotalSupply'
-
-import { useActiveStarknetReact } from '../../hooks'
 import { useTokenBalance } from '../../state/wallet/hooks'
 import { DMSansText } from '../../theme'
 import { currencyId } from '../../utils/currencyId'
@@ -24,6 +22,7 @@ import DoubleCurrencyLogo from '../DoubleLogo'
 import { RowBetween, RowFixed } from '../Row'
 import { Dots } from '../swap/styleds'
 import { Separator } from '../../pages/Pool/styleds'
+import { useAccountDetails } from '../../hooks'
 
 export const FixedHeightRow = styled(RowBetween)`
   height: 24px;
@@ -96,14 +95,14 @@ interface PositionCardProps {
 }
 
 export function MinimalPositionCard({ pair, showUnwrapped = false, border }: PositionCardProps) {
-  const { connectedAddress } = useActiveStarknetReact()
+  const { address } = useAccountDetails()
 
   const currency0 = showUnwrapped ? pair.token0 : unwrappedToken(pair.token0)
   const currency1 = showUnwrapped ? pair.token1 : unwrappedToken(pair.token1)
 
   const [showMore, setShowMore] = useState(false)
 
-  const userPoolBalance = useTokenBalance(connectedAddress ?? undefined, pair.liquidityToken)
+  const userPoolBalance = useTokenBalance(address ?? undefined, pair.liquidityToken)
   const totalPoolTokens = useTotalSupply(pair.liquidityToken)
 
   const poolTokenPercentage =
@@ -208,14 +207,14 @@ export function MinimalPositionCard({ pair, showUnwrapped = false, border }: Pos
 }
 
 export default function FullPositionCard({ pair, border }: PositionCardProps) {
-  const { connectedAddress } = useActiveStarknetReact()
+  const { address } = useAccountDetails()
 
   const currency0 = unwrappedToken(pair.token0)
   const currency1 = unwrappedToken(pair.token1)
 
   const [showMore, setShowMore] = useState(false)
 
-  const userPoolBalance = useTokenBalance(connectedAddress ?? undefined, pair.liquidityToken)
+  const userPoolBalance = useTokenBalance(address ?? undefined, pair.liquidityToken)
   const totalPoolTokens = useTotalSupply(pair.liquidityToken)
 
   const poolTokenPercentage =

@@ -1,14 +1,14 @@
 import { useCallback, useState, useEffect } from 'react'
-import { useActiveStarknetReact } from '.'
+import { useBlock } from '@starknet-react/core'
 
 export function useBlockHash(blockNumber: number | undefined): string | undefined {
-  const { library } = useActiveStarknetReact()
   const [blockHash, setBlockHash] = useState<string | undefined>(undefined)
-
+  const { data } = useBlock({
+    refetchInterval: false,
+    blockIdentifier: 'latest'
+  })
   const blockhashCallback = useCallback(async () => {
-    const block = await library?.getBlock(blockNumber)
-
-    setBlockHash(block?.block_hash)
+    setBlockHash(data?.block_hash)
   }, [blockNumber])
 
   useEffect(() => {

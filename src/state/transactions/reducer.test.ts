@@ -1,7 +1,7 @@
-import { ChainId } from '@jediswap/sdk'
 import { createStore, Store } from 'redux'
 import { addTransaction, checkedTransaction, clearAllTransactions, updateTransaction } from './actions'
 import reducer, { initialState, TransactionState } from './reducer'
+import { StarknetChainId } from 'starknet/dist/constants'
 
 describe('transaction reducer', () => {
   let store: Store<TransactionState>
@@ -15,7 +15,7 @@ describe('transaction reducer', () => {
       const beforeTime = new Date().getTime()
       store.dispatch(
         addTransaction({
-          chainId: ChainId.MAINNET,
+          chainId: StarknetChainId.MAINNET,
           summary: 'hello world',
           hash: '0x0',
           approval: { tokenAddress: 'abc', spender: 'def' },
@@ -23,9 +23,9 @@ describe('transaction reducer', () => {
         })
       )
       const txs = store.getState()
-      expect(txs[ChainId.MAINNET]).toBeTruthy()
-      expect(txs[ChainId.MAINNET]?.['0x0']).toBeTruthy()
-      const tx = txs[ChainId.MAINNET]?.['0x0']
+      expect(txs[StarknetChainId.MAINNET]).toBeTruthy()
+      expect(txs[StarknetChainId.MAINNET]?.['0x0']).toBeTruthy()
+      const tx = txs[StarknetChainId.MAINNET]?.['0x0']
       expect(tx).toBeTruthy()
       expect(tx?.hash).toEqual('0x0')
       expect(tx?.summary).toEqual('hello world')
@@ -39,7 +39,7 @@ describe('transaction reducer', () => {
     it('no op if not valid transaction', () => {
       store.dispatch(
         updateTransaction({
-          chainId: ChainId.GÖRLI,
+          chainId: StarknetChainId.TESTNET,
           hash: '0x0',
           receipt: {
             status: 'ACCEPTED_ON_L2',
@@ -56,7 +56,7 @@ describe('transaction reducer', () => {
       store.dispatch(
         addTransaction({
           hash: '0x0',
-          chainId: ChainId.RINKEBY,
+          chainId: StarknetChainId.TESTNET,
           approval: { spender: '0x0', tokenAddress: '0x0' },
           summary: 'hello world',
           from: '0x0'
@@ -65,7 +65,7 @@ describe('transaction reducer', () => {
       const beforeTime = new Date().getTime()
       store.dispatch(
         updateTransaction({
-          chainId: ChainId.RINKEBY,
+          chainId: StarknetChainId.TESTNET,
           hash: '0x0',
           receipt: {
             status: 'ACCEPTED_ON_L2',
@@ -76,7 +76,7 @@ describe('transaction reducer', () => {
           }
         })
       )
-      const tx = store.getState()[ChainId.RINKEBY]?.['0x0']
+      const tx = store.getState()[StarknetChainId.TESTNET]?.['0x0']
       expect(tx?.summary).toEqual('hello world')
       // expect(tx?.confirmedTime).toBeGreaterThanOrEqual(beforeTime)
       expect(tx?.receipt).toEqual({
@@ -93,7 +93,7 @@ describe('transaction reducer', () => {
     it('no op if not valid transaction', () => {
       store.dispatch(
         checkedTransaction({
-          chainId: ChainId.RINKEBY,
+          chainId: StarknetChainId.TESTNET,
           hash: '0x0',
           blockNumber: 1
         })
@@ -104,7 +104,7 @@ describe('transaction reducer', () => {
       store.dispatch(
         addTransaction({
           hash: '0x0',
-          chainId: ChainId.RINKEBY,
+          chainId: StarknetChainId.TESTNET,
           approval: { spender: '0x0', tokenAddress: '0x0' },
           summary: 'hello world',
           from: '0x0'
@@ -112,19 +112,19 @@ describe('transaction reducer', () => {
       )
       store.dispatch(
         checkedTransaction({
-          chainId: ChainId.RINKEBY,
+          chainId: StarknetChainId.TESTNET,
           hash: '0x0',
           blockNumber: 1
         })
       )
-      const tx = store.getState()[ChainId.RINKEBY]?.['0x0']
+      const tx = store.getState()[StarknetChainId.TESTNET]?.['0x0']
       expect(tx?.lastCheckedBlockNumber).toEqual(1)
     })
     it('never decreases', () => {
       store.dispatch(
         addTransaction({
           hash: '0x0',
-          chainId: ChainId.RINKEBY,
+          chainId: StarknetChainId.TESTNET,
           approval: { spender: '0x0', tokenAddress: '0x0' },
           summary: 'hello world',
           from: '0x0'
@@ -132,19 +132,19 @@ describe('transaction reducer', () => {
       )
       store.dispatch(
         checkedTransaction({
-          chainId: ChainId.RINKEBY,
+          chainId: StarknetChainId.TESTNET,
           hash: '0x0',
           blockNumber: 3
         })
       )
       store.dispatch(
         checkedTransaction({
-          chainId: ChainId.RINKEBY,
+          chainId: StarknetChainId.TESTNET,
           hash: '0x0',
           blockNumber: 1
         })
       )
-      const tx = store.getState()[ChainId.RINKEBY]?.['0x0']
+      const tx = store.getState()[StarknetChainId.TESTNET]?.['0x0']
       expect(tx?.lastCheckedBlockNumber).toEqual(3)
     })
   })
@@ -153,7 +153,7 @@ describe('transaction reducer', () => {
     it('removes all transactions for the chain', () => {
       store.dispatch(
         addTransaction({
-          chainId: ChainId.MAINNET,
+          chainId: StarknetChainId.MAINNET,
           summary: 'hello world',
           hash: '0x0',
           approval: { tokenAddress: 'abc', spender: 'def' },
@@ -162,7 +162,7 @@ describe('transaction reducer', () => {
       )
       store.dispatch(
         addTransaction({
-          chainId: ChainId.RINKEBY,
+          chainId: StarknetChainId.TESTNET,
           summary: 'hello world',
           hash: '0x1',
           approval: { tokenAddress: 'abc', spender: 'def' },
@@ -170,14 +170,14 @@ describe('transaction reducer', () => {
         })
       )
       expect(Object.keys(store.getState())).toHaveLength(2)
-      expect(Object.keys(store.getState())).toEqual([String(ChainId.MAINNET), String(ChainId.RINKEBY)])
-      expect(Object.keys(store.getState()[ChainId.MAINNET] ?? {})).toEqual(['0x0'])
-      expect(Object.keys(store.getState()[ChainId.RINKEBY] ?? {})).toEqual(['0x1'])
-      store.dispatch(clearAllTransactions({ chainId: ChainId.MAINNET }))
+      expect(Object.keys(store.getState())).toEqual([String(StarknetChainId.MAINNET), String(StarknetChainId.TESTNET)])
+      expect(Object.keys(store.getState()[StarknetChainId.MAINNET] ?? {})).toEqual(['0x0'])
+      expect(Object.keys(store.getState()[StarknetChainId.TESTNET] ?? {})).toEqual(['0x1'])
+      store.dispatch(clearAllTransactions({ chainId: StarknetChainId.MAINNET }))
       expect(Object.keys(store.getState())).toHaveLength(2)
-      expect(Object.keys(store.getState())).toEqual([String(ChainId.MAINNET), String(ChainId.RINKEBY)])
-      expect(Object.keys(store.getState()[ChainId.MAINNET] ?? {})).toEqual([])
-      expect(Object.keys(store.getState()[ChainId.RINKEBY] ?? {})).toEqual(['0x1'])
+      expect(Object.keys(store.getState())).toEqual([String(StarknetChainId.MAINNET), String(StarknetChainId.TESTNET)])
+      expect(Object.keys(store.getState()[StarknetChainId.MAINNET] ?? {})).toEqual([])
+      expect(Object.keys(store.getState()[StarknetChainId.TESTNET] ?? {})).toEqual(['0x1'])
     })
   })
 })

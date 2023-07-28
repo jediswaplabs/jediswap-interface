@@ -11,10 +11,10 @@ import { TYPE } from '../../theme'
 import { Input as NumericalInput } from '../NumericalInput'
 import { ReactComponent as DropDown } from '../../assets/images/dropdown.svg'
 
-import { useActiveStarknetReact } from '../../hooks'
 import { useTranslation } from 'react-i18next'
 import { ColumnCenter } from '../Column'
 import { WrappedLPTokenInfo } from '../../state/lists/hooks'
+import { useAccountDetails } from '../../hooks'
 
 const InputRow = styled.div<{ selected: boolean }>`
   ${({ theme }) => theme.flexRowNoWrap}
@@ -183,14 +183,14 @@ CurrencyInputPanelProps) {
   const { t } = useTranslation()
 
   const [modalOpen, setModalOpen] = useState(false)
-  const { connectedAddress } = useActiveStarknetReact()
+  const { address } = useAccountDetails()
   const theme = useContext(ThemeContext)
 
   const handleDismissSearch = useCallback(() => {
     setModalOpen(false)
   }, [setModalOpen])
 
-  const displayMaxButton = connectedAddress && currency && showMaxButton && label !== 'To'
+  const displayMaxButton = address && currency && showMaxButton && label !== 'To'
 
   return (
     <InputPanel id={id}>
@@ -201,7 +201,7 @@ CurrencyInputPanelProps) {
               <TYPE.body color={theme.text2} fontWeight={500} fontSize={14}>
                 {label}
               </TYPE.body>
-              {connectedAddress && (
+              {address && (
                 <TYPE.body
                   onClick={onMax}
                   color={theme.text2}

@@ -9,7 +9,7 @@ import { Field } from '../state/swap/actions'
 import { useTransactionAdder, useHasPendingApproval } from '../state/transactions/hooks'
 import { computeSlippageAdjustedAmounts } from '../utils/prices'
 import { useTokenContract } from './useContract'
-import { useActiveStarknetReact } from './index'
+import { useAccountDetails } from '.'
 
 export enum ApprovalState {
   UNKNOWN,
@@ -23,7 +23,8 @@ export function useApproveCallback(
   amountToApprove?: CurrencyAmount,
   spender?: string
 ): [ApprovalState, () => Promise<void>] {
-  const { connectedAddress, chainId, library } = useActiveStarknetReact()
+  const { address } = useAccountDetails()
+  const { account, chainId } = useAccountDetails()
   const token: Token | undefined =
     amountToApprove instanceof TokenAmount
       ? amountToApprove.token
@@ -31,7 +32,7 @@ export function useApproveCallback(
       ? WETH[chainId ?? DEFAULT_CHAIN_ID]
       : undefined
 
-  const currentAllowance = useTokenAllowance(token, connectedAddress ?? undefined, spender)
+  const currentAllowance = useTokenAllowance(token, address ?? undefined, spender)
   const pendingApproval = useHasPendingApproval(token?.address, spender)
 
   // check the current approval status
@@ -112,7 +113,7 @@ export type TradeType = 'swap' | 'zap'
 
 // wraps useApproveCallback in the context of a swap
 export function useApproveCallbackFromTrade(trade?: Trade, allowedSlippage = 0, tradeType: TradeType = 'swap') {
-  const { chainId } = useActiveStarknetReact()
+  const { account, chainId } = useAccountDetails()
 
   const amountToApprove = useMemo(
     () => (trade ? computeSlippageAdjustedAmounts(trade, allowedSlippage)[Field.INPUT] : undefined),

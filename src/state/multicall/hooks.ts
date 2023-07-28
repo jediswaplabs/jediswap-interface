@@ -2,9 +2,6 @@ import { useEffect, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Abi, number, FunctionAbi, validateAndParseAddress, hash, RawArgs, Contract } from 'starknet'
 import { BigNumber } from '@ethersproject/bignumber'
-
-import { useActiveStarknetReact } from '../../hooks'
-import { useBlockNumber } from '../application/hooks'
 import { AppDispatch, AppState } from '../index'
 import {
   addMulticallListeners,
@@ -15,6 +12,8 @@ import {
   ListenerOptions
 } from './actions'
 import { computeCallDataProps } from './utils'
+import { useAccount, useBlockNumber } from '@starknet-react/core'
+import { useAccountDetails } from '../../hooks'
 
 export interface Result extends ReadonlyArray<any> {
   readonly [key: string]: any
@@ -52,7 +51,7 @@ export const NEVER_RELOAD: ListenerOptions = {
 
 // the lowest level call for subscribing to contract data
 function useCallsData(calls: (Call | undefined)[], methodAbi?: FunctionAbi, options?: ListenerOptions): CallResult[] {
-  const { chainId } = useActiveStarknetReact()
+  const { account, chainId } = useAccountDetails()
   const callResults = useSelector<AppState, AppState['multicall']['callResults']>(state => state.multicall.callResults)
   const dispatch = useDispatch<AppDispatch>()
 
@@ -198,8 +197,9 @@ export function useSingleContractMultipleData(
 
   const results = useCallsData(calls, methodAbi, options)
 
-  const latestBlockNumber = useBlockNumber()
-
+  const { data: latestBlockNumber } = useBlockNumber({
+    refetchInterval: false
+  })
   return useMemo(() => {
     return results.map(result => toCallState(result, latestBlockNumber))
   }, [results, latestBlockNumber])
@@ -239,8 +239,9 @@ export function useMultipleContractSingleData(
 
   const results = useCallsData(calls, methodAbi, options)
 
-  const latestBlockNumber = useBlockNumber()
-
+  const { data: latestBlockNumber } = useBlockNumber({
+    refetchInterval: false
+  })
   return useMemo(() => {
     return results.map(result => toCallState(result, latestBlockNumber))
   }, [results, latestBlockNumber])
@@ -274,8 +275,9 @@ export function useSingleCallResult(
 
   const result = useCallsData(calls, methodAbi, options)[0]
 
-  const latestBlockNumber = useBlockNumber()
-
+  const { data: latestBlockNumber } = useBlockNumber({
+    refetchInterval: false
+  })
   return useMemo(() => {
     return toCallState(result, latestBlockNumber)
   }, [result, latestBlockNumber])

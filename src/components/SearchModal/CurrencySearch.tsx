@@ -4,7 +4,6 @@ import ReactGA from 'react-ga4'
 import { useTranslation } from 'react-i18next'
 import { FixedSizeList } from 'react-window'
 import { Text } from 'rebass'
-import { useActiveStarknetReact } from '../../hooks'
 import { useAllTokens, useJediLPTokens, useToken } from '../../hooks/Tokens'
 import { useSelectedListInfo } from '../../state/lists/hooks'
 import { CloseIcon, LinkStyledButton, TYPE } from '../../theme'
@@ -23,6 +22,8 @@ import { PaddedColumn, SearchInput, Separator } from './styleds'
 import AutoSizer from 'react-virtualized-auto-sizer'
 import { wrappedCurrency } from '../../utils/wrappedCurrency'
 import { DEFAULT_CHAIN_ID } from '../../constants'
+import { StarknetChainId } from 'starknet/dist/constants'
+import { useAccountDetails } from '../../hooks'
 
 interface CurrencySearchProps {
   isOpen: boolean
@@ -46,12 +47,12 @@ export function CurrencySearch({
   showLPTokens = false
 }: CurrencySearchProps) {
   const { t } = useTranslation()
-  const { chainId } = useActiveStarknetReact()
+  const { account, chainId } = useAccountDetails()
 
   const fixedList = useRef<FixedSizeList>()
   const [searchQuery, setSearchQuery] = useState<string>('')
   const [invertSearchOrder, setInvertSearchOrder] = useState<boolean>(false)
-  const allTokens = useAllTokens()
+  const allTokens = useAllTokens(chainId as StarknetChainId)
   const jediLPTokens = useJediLPTokens()
 
   // if they input an address, use it
