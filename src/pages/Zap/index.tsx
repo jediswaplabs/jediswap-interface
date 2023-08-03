@@ -212,17 +212,6 @@ export default function Zap() {
         if (firstDiv) {
           firstDiv.style.border = '0'
         }
-
-        // Get all buttons within the parent element that have the "color" attribute set to "accent"
-        const buttons = widget.querySelectorAll('button[color="accent"], button[color="interactive"]')
-
-        buttons.forEach(button => {
-          const buttonElement = button as HTMLButtonElement
-          buttonElement.style.background = 'rgba(196, 196, 196, 0.01)'
-          buttonElement.style.color = '#fff'
-          buttonElement.style.boxShadow =
-            'rgba(96, 68, 145, 0.3) 0px -63.1213px 52.3445px -49.2654px inset, rgba(202, 172, 255, 0.3) 0px 75.4377px 76.9772px -36.9491px inset, rgba(154, 146, 210, 0.3) 0px 3.07909px 13.8559px inset, rgba(227, 222, 255, 0.2) 0px 0.769772px 30.7909px inset'
-        })
       }
     }, 100)
   }, [])

@@ -7,7 +7,8 @@
 }
 
 [color='accent'],
-[color='accentSoft'] {
+[color='accentSoft'],
+[color='interactive'] {
   color: #fff !important;
   background-color: rgba(196, 196, 196, 0.01) !important;
   box-shadow: rgba(96, 68, 145, 0.3) 0px -63.1213px 52.3445px -49.2654px inset,
