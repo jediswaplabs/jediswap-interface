@@ -95,7 +95,7 @@ export default function App() {
                 <Route exact path="/create/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />
                 <Route exact path="/create/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
                 <Route exact path="/zap" component={Zap} />
-                <Route exact path="/bridge" component={Bridge} />
+                {/* <Route exact path="/bridge" component={Bridge} /> */}
                 <Route exact path="/stake" component={ComingSoon} />
                 <Route exact strict path="/remove/:currencyIdA/:currencyIdB" component={RemoveLiquidity} />
                 <Route component={RedirectPathToSwapOnly} />

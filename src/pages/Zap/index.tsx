@@ -78,11 +78,13 @@ export default function Zap() {
   )
 
   const handleZap = (hash: string, tx: Transaction) => {
-    if (hash && tx.info) {
-      const inputAmount = formatTransactionAmount(currencyAmountToPreciseFloat(tx.info?.trade?.inputAmount))
-      const outputAmount = formatTransactionAmount(currencyAmountToPreciseFloat(tx.info?.trade?.outputAmount))
-      const inputSymbol = tx.info?.trade?.fromToken?.tokenInfo?.symbol
-      const outputSymbol = tx.info?.trade?.toToken?.tokenInfo?.symbol
+    if (!tx) return
+    const txInfo = tx?.info?.trade
+    if (hash && txInfo && txInfo?.toToken?.tokenInfo?.chainId === txInfo?.fromToken?.tokenInfo?.chainId) {
+      const inputAmount = formatTransactionAmount(currencyAmountToPreciseFloat(txInfo?.inputAmount))
+      const outputAmount = formatTransactionAmount(currencyAmountToPreciseFloat(txInfo?.outputAmount))
+      const inputSymbol = txInfo?.fromToken?.tokenInfo?.symbol
+      const outputSymbol = txInfo?.toToken?.tokenInfo?.symbol
       const summary = `Zap ${inputAmount} ${inputSymbol} for ${outputAmount} ${outputSymbol}`
       addTransaction({ transaction_hash: hash }, { summary })
     }
