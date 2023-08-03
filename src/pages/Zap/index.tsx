@@ -214,9 +214,8 @@ export default function Zap() {
         }
 
         // Get all buttons within the parent element that have the "color" attribute set to "accent"
-        const buttons = widget.querySelectorAll('button[color="accent"]')
+        const buttons = widget.querySelectorAll('button[color="accent"], button[color="interactive"]')
 
-        // Iterate over each matching element
         buttons.forEach(button => {
           const buttonElement = button as HTMLButtonElement
           buttonElement.style.background = 'rgba(196, 196, 196, 0.01)'
