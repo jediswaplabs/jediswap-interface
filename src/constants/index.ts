@@ -236,16 +236,16 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
     mobile: true,
     id: 'argentX'
   },
-  // argentWebWallet: {
-  //   connector: argentWebWallet,
-  //   name: 'Continue with email',
-  //   icon: EMAIL_ICON,
-  //   description: 'Starknet Browser Wallet',
-  //   href: null,
-  //   color: '#FF875B',
-  //   mobile: true,
-  //   id: 'argentWebWallet'
-  // },
+  argentWebWallet: {
+    connector: argentWebWallet,
+    name: 'Continue with email',
+    icon: EMAIL_ICON,
+    description: 'Starknet Browser Wallet',
+    href: null,
+    color: '#FF875B',
+    mobile: true,
+    id: 'argentWebWallet'
+  },
   braavos: {
     connector: braavosWallet,
     name: 'Braavos',
