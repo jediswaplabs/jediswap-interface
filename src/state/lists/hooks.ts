@@ -216,8 +216,7 @@ export function listToLPTokenMap(list: TokenList, allPairs: string[]): LPTokenAd
 
       if (tokenMap[tokenInfo.chainId][tokenInfo.address] !== undefined) throw Error('Duplicate tokens.')
 
-      const filteredLpTokens =
-        allPairs?.length && lpTokens.filter(Boolean).filter(lpToken => allPairs.includes(lpToken.address))
+      const filteredLpTokens = lpTokens.filter(Boolean).filter(lpToken => allPairs.includes(lpToken.address))
 
       const internalMap = filteredLpTokens.reduce(
         (lpTokenMap, lpToken) => {
@@ -268,7 +267,7 @@ export function useLPTokenList(url: string | undefined): LPTokenAddressMap {
   return useMemo(() => {
     if (!url) return EMPTY_PAIR_LIST
     const current = lists[url]?.current
-    if (!current) return EMPTY_PAIR_LIST
+    if (!current || !allPairs.length) return EMPTY_PAIR_LIST
     try {
       return listToLPTokenMap(current, allPairs)
     } catch (error) {
