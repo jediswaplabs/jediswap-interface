@@ -1,4 +1,3 @@
-import { ChainId, TokenAmount, JSBI } from '@jediswap/sdk'
 import React, { useEffect, useState } from 'react'
 // import { Text } from 'rebass'
 import { NavLink, withRouter } from 'react-router-dom'
@@ -9,11 +8,8 @@ import styled from 'styled-components'
 
 import Logo from '../../assets/jedi/logo.png'
 // import LogoDark from '../../assets/svg/logo_white.svg'
-import { useActiveStarknetReact } from '../../hooks'
 // import { useDarkModeManager } from '../../state/user/hooks'
 // import { useETHBalances } from '../../state/wallet/hooks'
-import { CardNoise } from './styled'
-import { CountUp } from 'use-count-up'
 import { ExternalLink, TYPE } from '../../theme'
 // import { ExternalLink } from '../../theme'
 
@@ -24,12 +20,9 @@ import { YellowCard } from '../Card'
 import Row from '../Row'
 // import { RowFixed } from '../Row'
 import Web3Status from '../Web3Status'
-import { useToggleSelfClaimModal, useShowClaimPopup } from '../../state/application/hooks'
-import { useUserHasSubmittedClaim } from '../../state/transactions/hooks'
-import { Dots } from '../swap/styleds'
-import Modal from '../Modal'
-import usePrevious from '../../hooks/usePrevious'
 import { transparentize } from 'polished'
+import { useAccountDetails } from '../../hooks'
+import { StarknetChainId } from 'starknet/dist/constants'
 
 const HeaderFrame = styled.div`
   display: grid;
@@ -335,21 +328,14 @@ const StarkNetCard = styled.div`
   // text-align: center;
 `
 
-const NETWORK_LABELS: { [chainId in ChainId]?: string } = {
-  [ChainId.MAINNET]: 'Mainnet',
-  [ChainId.RINKEBY]: 'Rinkeby',
-  [ChainId.ROPSTEN]: 'Ropsten',
-  [ChainId.GÖRLI]: 'Görli',
-  [ChainId.KOVAN]: 'Kovan'
-}
 interface window {
   starknet: any
 }
 
 function Header({ history }: { history: any }) {
-  const { connectedAddress, chainId } = useActiveStarknetReact()
+  const { address, status, chainId } = useAccountDetails()
   const { t } = useTranslation()
-  const [currentNetwork, setCurrentNetwork] = useState('SN_MAIN')
+  const isNetworkMainnet = chainId === StarknetChainId.MAINNET
 
   // async function changeNetwork(e) {
   //   e.preventDefault()
@@ -421,15 +407,19 @@ function Header({ history }: { history: any }) {
         {/* <StarkNetCard>Starknet</StarkNetCard> */}
         <HeaderElement>
           <HideSmall>
-            {chainId && NETWORK_LABELS[chainId] && (
-              <NetworkCard title={NETWORK_LABELS[chainId]}>Starknet-{NETWORK_LABELS[chainId]}</NetworkCard>
-            )}
+            {status === 'connected' ? (
+              isNetworkMainnet ? (
+                <NetworkCard title={'Starknet Mainnet'}>{'Starknet Mainnet'}</NetworkCard>
+              ) : (
+                <NetworkCard title={'Starknet Görli'}>{'Starknet Görli'}</NetworkCard>
+              )
+            ) : null}
             {/*<NetworkSelect onChange={changeNetwork}>*/}
             {/*  <option value="SN_MAIN">Starknet-Mainnet</option>*/}
             {/*  <option value="SN_GOERLI">Starknet-Görli</option>*/}
             {/*</NetworkSelect>*/}
           </HideSmall>
-          <AccountElement active={!!connectedAddress} style={{ pointerEvents: 'auto' }}>
+          <AccountElement active={!!address} style={{ pointerEvents: 'auto' }}>
             <Web3Status />
           </AccountElement>
         </HeaderElement>

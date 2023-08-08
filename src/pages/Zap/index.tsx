@@ -2,7 +2,6 @@ import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { SwapPoolTabs } from '../../components/NavigationTabs'
 import { BodyWrapper } from '../AppBody'
 import { Backdrop, HeaderRow } from '../Swap/styleds'
-import { useActiveStarknetReact } from '../../hooks'
 import { useWalletModalToggle } from '../../state/application/hooks'
 import { darkTheme, WidoWidget, isStarknetChain, Transaction } from 'wido-widget'
 import styled, { ThemeContext } from 'styled-components'
@@ -12,7 +11,6 @@ import { AutoColumn } from '../../components/Column'
 import ZapIcon from '../../assets/jedi/zap.svg'
 import { Header, HeaderInfo } from './styleds'
 import { getSupportedTokens } from 'wido'
-import { ChainId } from '@jediswap/sdk'
 import { providers } from 'ethers'
 import { isAddress } from '../../utils'
 import { useAllPairs } from '../../state/pairs/hooks'
@@ -20,6 +18,8 @@ import './style.css'
 import { useTransactionAdder } from '../../state/transactions/hooks'
 import { currencyAmountToPreciseFloat, formatTransactionAmount } from '../../utils/formatNumber'
 import { useJediLPTokens } from '../../hooks/Tokens'
+import { useAccountDetails } from '../../hooks'
+import { StarknetChainId } from 'starknet/dist/constants'
 
 export const StyledAppBody = styled(BodyWrapper)`
   padding: 0rem;
@@ -30,7 +30,8 @@ export default function Zap() {
   /**
    * Starknet wallet connection
    */
-  const { chainId: snChainId, account: snAccount, connectedAddress, library: snLibrary } = useActiveStarknetReact()
+  const { chainId: snChainId, account: snAccount, address: connectedAddress } = useAccountDetails()
+  console.log('🚀 ~ file: index.tsx:33 ~ Zap ~ snAccount:')
   const toggleWalletModal = useWalletModalToggle() // toggle wallet when disconnected
 
   const [passedAccount, setPassedAccount] = useState(snAccount ?? undefined)
@@ -40,13 +41,13 @@ export default function Zap() {
   // Work-around: unfortunately account.chainId does not get updated when the user changes network
   // Solution: re-create the account object each time chainId or account changes
   useEffect(() => {
-    if (!snAccount || !snLibrary || !connectedAddress) {
+    if (!snAccount || !connectedAddress) {
       setPassedAccount(undefined)
     } else {
       setPassedAccount(snAccount)
       // setPassedAccount(new Account(library, connectedAddress, account.signer))
     }
-  }, [snLibrary, snAccount, snChainId, connectedAddress, setPassedAccount])
+  }, [snAccount, snChainId, connectedAddress, setPassedAccount])
 
   /**
    * Ethereum wallet connection
@@ -97,7 +98,7 @@ export default function Zap() {
   const lpTokensArr = Object.keys(lpTokens)
 
   useEffect(() => {
-    if (!snChainId || snChainId === ChainId.MAINNET) {
+    if (!snChainId || snChainId === StarknetChainId.MAINNET) {
       setFromTokens([
         {
           chainId: 15366,

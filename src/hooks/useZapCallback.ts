@@ -7,11 +7,12 @@ import { useTransactionAdder } from '../state/transactions/hooks'
 import { isAddress, shortenAddress } from '../utils'
 import { useZapInContract } from './useContract'
 import isZero from '../utils/isZero'
-import { useActiveStarknetReact } from './index'
 import useTransactionDeadline from './useTransactionDeadline'
 import { wrappedCurrency } from '../utils/wrappedCurrency'
 import { computeSlippageAdjustedLPAmount } from '../utils/prices'
 import { useApprovalCallFromTrade } from './useApproveCall'
+
+import { useAccountDetails } from '.'
 
 export enum ZapCallbackState {
   INVALID,
@@ -47,17 +48,17 @@ function useZapCallArguments(
   allowedSlippage: number = INITIAL_ALLOWED_SLIPPAGE, // in bips
   recipientAddressOrName: string | null // the ENS name or address of the recipient of the trade, or null if zap should be returned to sender
 ): ZapCall[] {
-  const { account, chainId, library, connectedAddress } = useActiveStarknetReact()
+  const { address, account, chainId } = useAccountDetails()
 
   // const { address: recipientAddress } = useENS(recipientAddressOrName)
-  const recipient = recipientAddressOrName === null ? connectedAddress : recipientAddressOrName
+  const recipient = recipientAddressOrName === null ? address : recipientAddressOrName
 
   const deadline = useTransactionDeadline()
 
   const contract: Contract | null = useZapInContract()
 
   return useMemo(() => {
-    if (!trade || !recipient || !library || !account || !chainId || !deadline || !connectedAddress) {
+    if (!trade || !recipient || !account || !chainId || !deadline || !address) {
       return []
     }
 
@@ -88,7 +89,7 @@ function useZapCallArguments(
       )
     }
     return zapMethods.map(parameters => ({ parameters, contract }))
-  }, [account, allowedSlippage, chainId, connectedAddress, contract, deadline, library, recipient, trade])
+  }, [account, allowedSlippage, chainId, address, contract, deadline, account, recipient, trade])
 }
 
 // returns a function that will execute a zap, if the parameters are all valid
@@ -99,7 +100,7 @@ export function useZapCallback(
   allowedSlippage: number = INITIAL_ALLOWED_SLIPPAGE, // in bips
   recipientAddressOrName: string | null // the ENS name or address of the recipient of the trade, or null if zap should be returned to sender
 ): { state: ZapCallbackState; callback: null | (() => Promise<string>); error: string | null } {
-  const { account, chainId, library } = useActiveStarknetReact()
+  const { account, chainId } = useAccountDetails()
 
   const approvalCallback = useApprovalCallFromTrade(trade, allowedSlippage, 'zap')
   const zapCalls = useZapCallArguments(trade, allowedSlippage, recipientAddressOrName)
@@ -110,7 +111,7 @@ export function useZapCallback(
   // const { address: recipientAddress } = useENS(recipientAddressOrName)
 
   return useMemo(() => {
-    if (!trade || !lpAmountOut || !library || !account || !chainId) {
+    if (!trade || !lpAmountOut || !account || !chainId) {
       return { state: ZapCallbackState.INVALID, callback: null, error: 'Missing dependencies' }
     }
     if (!recipient) {
@@ -215,7 +216,6 @@ export function useZapCallback(
               // otherwise, the error was unexpected and we need to convey that
               console.error(`Zap failed`, error, methodName, args, value)
 
-              console.log(error?.code)
               throw new Error(`Zap failed: ${error.message}`)
             }
           })
@@ -225,7 +225,6 @@ export function useZapCallback(
   }, [
     trade,
     lpAmountOut,
-    library,
     account,
     chainId,
     recipient,

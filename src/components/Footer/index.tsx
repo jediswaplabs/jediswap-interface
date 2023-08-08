@@ -36,7 +36,7 @@ export default function Footer() {
           <ClickableExternalLink href="https://github.com/jediswaplabs">
             <img src={GithubIcon} alt="Github" />
           </ClickableExternalLink>
-          <ClickableExternalLink href=" https://bip.so/@meshfinance/public">
+          <ClickableExternalLink href="https://docs.jediswap.xyz">
             <img src={DocIcon} alt="'Docs" />
           </ClickableExternalLink>
         </RowStart>

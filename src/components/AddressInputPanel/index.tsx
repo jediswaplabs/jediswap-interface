@@ -1,13 +1,13 @@
 import React, { useContext, useCallback } from 'react'
 import styled, { ThemeContext } from 'styled-components'
 // import useENS from '../../hooks/useENS'
-import { useActiveStarknetReact } from '../../hooks'
 import { ExternalLink, TYPE } from '../../theme'
 import { AutoColumn } from '../Column'
 import { RowBetween } from '../Row'
 import { getStarkscanLink } from '../../utils'
 // import { normalizeAccount } from '@web3-starknet-react/core/dist/normalizers'
 import { useAddressNormalizer } from '../../hooks/useAddressNormalizer'
+import { useAccountDetails } from '../../hooks'
 
 const InputPanel = styled.div`
   ${({ theme }) => theme.flexColumnNoWrap}
@@ -78,7 +78,7 @@ export default function AddressInputPanel({
   // triggers whenever the typed value changes
   onChange: (value: string) => void
 }) {
-  const { chainId } = useActiveStarknetReact()
+  const { account, chainId } = useAccountDetails()
   const theme = useContext(ThemeContext)
 
   // const { address, loading, name } = useENS(value)

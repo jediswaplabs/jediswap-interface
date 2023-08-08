@@ -1,12 +1,12 @@
 import { BigNumberish } from 'starknet/dist/utils/number'
-import { AbstractConnector } from '@web3-starknet-react/abstract-connector'
-import { validateAndParseAddress, Abi, Provider, uint256, Contract } from 'starknet'
-
+import { validateAndParseAddress, Abi, Provider, uint256, Contract, AccountInterface } from 'starknet'
 import { BigNumber } from '@ethersproject/bignumber'
 import { ZERO_ADDRESS } from '../constants'
-import { ChainId, JSBI, Percent, Token, CurrencyAmount, Currency, ETHER } from '@jediswap/sdk'
+import { JSBI, Percent, Token, CurrencyAmount, Currency, ETHER } from '@jediswap/sdk'
 import { LPTokenAddressMap, TokenAddressMap } from '../state/lists/hooks'
 import isZero from './isZero'
+import { InjectedConnector } from '@starknet-react/core'
+import { StarknetChainId } from 'starknet/dist/constants'
 
 // returns the checksummed address if the address is valid, otherwise returns false
 export function isAddress(addr: string | null | undefined): string | false {
@@ -20,23 +20,21 @@ export function isAddress(addr: string | null | undefined): string | false {
   }
 }
 
-const VOYAGER_PREFIXES: { [chainId in ChainId]: string } = {
-  1: '',
-  3: 'ropsten.',
-  4: 'rinkeby.',
-  5: 'goerli.',
-  42: 'kovan.'
+const VOYAGER_PREFIXES: { [chainId in StarknetChainId]: string } = {
+  [StarknetChainId.MAINNET]: '',
+  [StarknetChainId.TESTNET]: 'goerli.'
 }
 
-const STARKSCAN_PREFIXES: { [chainId in ChainId]: string } = {
-  1: '',
-  3: 'testnet.',
-  4: 'testnet.',
-  5: 'testnet.',
-  42: 'testnet.'
+const STARKSCAN_PREFIXES: { [chainId in StarknetChainId]: string } = {
+  [StarknetChainId.MAINNET]: '',
+  [StarknetChainId.TESTNET]: 'testnet.'
 }
 
-export function getVoyagerLink(chainId: ChainId, data: string, type: 'transaction' | 'block' | 'contract'): string {
+export function getVoyagerLink(
+  chainId: StarknetChainId,
+  data: string,
+  type: 'transaction' | 'block' | 'contract'
+): string {
   const prefix = `https://${VOYAGER_PREFIXES[chainId] || VOYAGER_PREFIXES[1]}voyager.online`
 
   switch (type) {
@@ -53,8 +51,12 @@ export function getVoyagerLink(chainId: ChainId, data: string, type: 'transactio
   }
 }
 
-export function getStarkscanLink(chainId: ChainId, data: string, type: 'transaction' | 'block' | 'contract'): string {
-  const prefix = `https://${STARKSCAN_PREFIXES[chainId] || STARKSCAN_PREFIXES[1]}starkscan.co`
+export function getStarkscanLink(
+  chainId: StarknetChainId,
+  data: string,
+  type: 'transaction' | 'block' | 'contract'
+): string {
+  const prefix = `https://${STARKSCAN_PREFIXES[chainId] || STARKSCAN_PREFIXES['0x534e5f4d41494e']}starkscan.co`
 
   switch (type) {
     case 'transaction': {
@@ -112,8 +114,8 @@ export function calculateSlippageAmount(value: CurrencyAmount, slippage: number)
 export function getContract(
   address: string,
   ABI: any,
-  library: Provider,
-  connector?: AbstractConnector,
+  library: AccountInterface,
+  connector?: InjectedConnector,
   account?: string
 ): Contract {
   const parsedAddress = isAddress(address)
@@ -136,11 +138,7 @@ export function escapeRegExp(string: string): string {
   return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') // $& means the whole matched string
 }
 
-export function isTokenOnList(
-  defaultTokens: TokenAddressMap | LPTokenAddressMap,
-  currency?: Currency,
-  chainId?: ChainId
-): boolean {
+export function isTokenOnList(defaultTokens: TokenAddressMap | LPTokenAddressMap, currency?: Currency): boolean {
   if (currency === ETHER) return true
   return Boolean(currency instanceof Token && defaultTokens[currency.chainId]?.[currency.address])
 }

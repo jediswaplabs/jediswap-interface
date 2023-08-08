@@ -3,14 +3,14 @@ import { useCallback, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { PairState, usePair } from '../../data/Reserves'
 import { useTotalSupply } from '../../data/TotalSupply'
-
-import { useActiveStarknetReact } from '../../hooks'
 import useDebounce from '../../hooks/useDebounce'
 import { wrappedCurrency, wrappedCurrencyAmount } from '../../utils/wrappedCurrency'
 import { AppDispatch, AppState } from '../index'
 import { tryParseAmount } from '../swap/hooks'
 import { useCurrencyBalances } from '../wallet/hooks'
 import { Field, typeInput } from './actions'
+
+import { useAccountDetails } from '../../hooks'
 
 const ZERO = JSBI.BigInt(0)
 
@@ -34,7 +34,7 @@ export function useDerivedMintInfo(
   poolTokenPercentage?: Percent
   error?: string
 } {
-  const { account, chainId, connectedAddress } = useActiveStarknetReact()
+  const { address, chainId } = useAccountDetails()
 
   const { independentField, typedValue, otherTypedValue } = useMintState()
 
@@ -56,7 +56,7 @@ export function useDerivedMintInfo(
     pairState === PairState.NOT_EXISTS || Boolean(totalSupply && JSBI.equal(totalSupply.raw, ZERO))
 
   // balances
-  const balances = useCurrencyBalances(connectedAddress ?? undefined, [
+  const balances = useCurrencyBalances(address ?? undefined, [
     currencies[Field.CURRENCY_A],
     currencies[Field.CURRENCY_B]
   ])
@@ -133,7 +133,7 @@ export function useDerivedMintInfo(
   }, [liquidityMinted, totalSupply])
 
   let error: string | undefined
-  if (!account) {
+  if (!address) {
     error = 'Connect Wallet'
   }
 

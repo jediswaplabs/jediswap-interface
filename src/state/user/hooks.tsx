@@ -1,10 +1,8 @@
-import { ChainId, Pair, Token } from '@jediswap/sdk'
+import { Pair, Token } from '@jediswap/sdk'
 import flatMap from 'lodash.flatmap'
 import { useCallback, useMemo } from 'react'
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 import { BASES_TO_TRACK_LIQUIDITY_FOR, PINNED_PAIRS } from '../../constants'
-
-import { useActiveStarknetReact } from '../../hooks'
 import { useAllTokens } from '../../hooks/Tokens'
 import { AppDispatch, AppState } from '../index'
 import {
@@ -19,6 +17,8 @@ import {
   updateUserSlippageTolerance,
   toggleURLWarning
 } from './actions'
+import { StarknetChainId } from 'starknet/dist/constants'
+import { useAccountDetails } from '../../hooks'
 
 function serializeToken(token: Token): SerializedToken {
   return {
@@ -123,10 +123,10 @@ export function useAddUserToken(): (token: Token) => void {
   )
 }
 
-export function useRemoveUserAddedToken(): (chainId: number, address: string) => void {
+export function useRemoveUserAddedToken(): (chainId: string, address: string) => void {
   const dispatch = useDispatch<AppDispatch>()
   return useCallback(
-    (chainId: number, address: string) => {
+    (chainId: string, address: string) => {
       dispatch(removeSerializedToken({ chainId, address }))
     },
     [dispatch]
@@ -134,12 +134,12 @@ export function useRemoveUserAddedToken(): (chainId: number, address: string) =>
 }
 
 export function useUserAddedTokens(): Token[] {
-  const { chainId } = useActiveStarknetReact()
+  const { chainId } = useAccountDetails()
   const serializedTokensMap = useSelector<AppState, AppState['user']['tokens']>(({ user: { tokens } }) => tokens)
 
   return useMemo(() => {
     if (!chainId) return []
-    return Object.values((serializedTokensMap && serializedTokensMap[chainId as ChainId]) ?? {}).map(deserializeToken)
+    return Object.values(serializedTokensMap[(chainId as unknown) as StarknetChainId] ?? {}).map(deserializeToken)
   }, [serializedTokensMap, chainId])
 }
 
@@ -183,8 +183,8 @@ export function getLiquidityToken([tokenA, tokenB]: [Token, Token]): Token {
  * Returns all the pairs of tokens that are tracked by the user for the current chain ID.
  */
 export function useTrackedTokenPairs(): [Token, Token][] {
-  const { chainId } = useActiveStarknetReact()
-  const tokens = useAllTokens()
+  const { chainId } = useAccountDetails()
+  const tokens = useAllTokens(chainId as StarknetChainId)
   // pinned pairs
   const pinnedPairs = useMemo(() => (chainId ? PINNED_PAIRS[chainId] ?? [] : []), [chainId])
 

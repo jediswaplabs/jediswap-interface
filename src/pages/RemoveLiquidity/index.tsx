@@ -17,7 +17,6 @@ import { RowBetween, RowFixed } from '../../components/Row'
 
 import CurrencyLogo from '../../components/CurrencyLogo'
 import { DEFAULT_CHAIN_ID, ROUTER_ADDRESS } from '../../constants'
-import { useActiveStarknetReact } from '../../hooks'
 import { useCurrency } from '../../hooks/Tokens'
 import { usePairContract } from '../../hooks/useContract'
 import useTransactionDeadline from '../../hooks/useTransactionDeadline'
@@ -45,6 +44,8 @@ import ModeSwitcher from './ModeSwitcher'
 import { InputWrapper, StyledMaxButton, StyledNumericalInput, StyledPercentSign } from './styleds'
 import PairPrice from '../../components/PairPrice'
 
+import { useAccountDetails } from '../../hooks'
+
 export default function RemoveLiquidity({
   history,
   match: {
@@ -52,7 +53,7 @@ export default function RemoveLiquidity({
   }
 }: RouteComponentProps<{ currencyIdA: string; currencyIdB: string }>) {
   const [currencyA, currencyB] = [useCurrency(currencyIdA) ?? undefined, useCurrency(currencyIdB) ?? undefined]
-  const { account, chainId, library, connectedAddress } = useActiveStarknetReact()
+  const { address, account, chainId } = useAccountDetails()
   const [tokenA, tokenB] = useMemo(() => [wrappedCurrency(currencyA, chainId), wrappedCurrency(currencyB, chainId)], [
     currencyA,
     currencyB,
@@ -119,7 +120,7 @@ export default function RemoveLiquidity({
   // tx sending
   const addTransaction = useTransactionAdder()
   async function onRemove() {
-    if (!chainId || !library || !account || !deadline || !connectedAddress) throw new Error('missing dependencies')
+    if (!chainId || !account || !deadline || !address) throw new Error('missing dependencies')
 
     if (!router) return
 
@@ -153,7 +154,7 @@ export default function RemoveLiquidity({
       liquidity: parsedAmountToUint256Args(liquidityAmount.raw),
       amountAMin: parsedAmountToUint256Args(amountsMin[Field.CURRENCY_A]),
       amountBMin: parsedAmountToUint256Args(amountsMin[Field.CURRENCY_B]),
-      to: connectedAddress,
+      to: address,
       deadline: deadline.toHexString()
     }
 
@@ -506,7 +507,7 @@ export default function RemoveLiquidity({
               </DMSansText.body>
             )}
             <div style={{ position: 'relative' }}>
-              {!account ? (
+              {!address ? (
                 <ButtonLight onClick={toggleWalletModal}>Connect Wallet</ButtonLight>
               ) : (
                 <RowBetween>

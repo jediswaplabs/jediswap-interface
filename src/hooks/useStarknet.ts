@@ -79,7 +79,7 @@
 //   args?: Args | undefined,
 //   options?: ListenerOptions
 // ): (Args | undefined)[] {
-//   const { library } = useActiveStarknetReact()
+//   const { library } = useStarknet()
 //   const blockNumber = useBlockNumber()
 //   const [calls, setCalls] = useState<(Args | undefined)[]>([])
 
@@ -133,7 +133,7 @@
 // export function useStarknetInvoke(contract: Contract | undefined, method: string | undefined): StarknetInvoke {
 //   const addTransaction = useTransactionAdder()
 
-//   const { account } = useActiveStarknetReact()
+//    = useActiveStarknetReact()
 
 //   const [invoke, setInvoke] = useState<InvokeFunc | undefined>(undefined)
 

@@ -1,18 +1,12 @@
-import { AbstractConnector } from '@web3-starknet-react/abstract-connector'
 import { UnsupportedChainIdError, useStarknetReact } from '@web3-starknet-react/core'
 import { darken, lighten } from 'polished'
 import React, { useMemo, useEffect, useState } from 'react'
 // import { Activity } from 'react-feather'
 import { useTranslation } from 'react-i18next'
 import styled, { css } from 'styled-components'
-import CoinbaseWalletIcon from '../../assets/images/coinbaseWalletIcon.svg'
-import FortmaticIcon from '../../assets/images/fortmaticIcon.png'
-import PortisIcon from '../../assets/images/portisIcon.png'
-import WalletConnectIcon from '../../assets/images/walletConnectIcon.svg'
 import ArgentXIcon from '../../assets/images/argentx.png'
 import braavosIcon from '../../assets/svg/Braavos.svg'
-import { argentX, braavosWallet } from '../../connectors'
-import { NetworkContextName } from '../../constants'
+import { NetworkContextName, domainURL } from '../../constants'
 import { useWalletModalToggle } from '../../state/application/hooks'
 import { isTransactionRecent, useAllTransactions } from '../../state/transactions/hooks'
 import { TransactionDetails } from '../../state/transactions/reducer'
@@ -25,8 +19,10 @@ import Loader from '../Loader'
 import { RowBetween } from '../Row'
 import WalletModal from '../WalletModal'
 import WrongNetwork from '../../assets/jedi/WrongNetwork.svg'
-import { useActiveStarknetReact } from '../../hooks'
 import { hexToDecimalString } from 'starknet/dist/utils/number'
+import { InjectedConnector } from '@starknet-react/core'
+import { StarknetChainId } from 'starknet/dist/constants'
+import { useAccountDetails } from '../../hooks'
 
 const IconWrapper = styled.div<{ size?: number }>`
   ${({ theme }) => theme.flexColumnNoWrap};
@@ -148,7 +144,7 @@ const SOCK = (
 )
 
 // eslint-disable-next-line react/prop-types
-function StatusIcon({ connector }: { connector: AbstractConnector }) {
+function StatusIcon({ connector }: { connector: InjectedConnector }) {
   // if (connector === injected) {
   //   return <Identicon />
   // } else if (connector === walletconnect) {
@@ -176,7 +172,7 @@ function StatusIcon({ connector }: { connector: AbstractConnector }) {
   //     </IconWrapper>
   //   )
   // }
-  if (connector === argentX) {
+  if (connector.id() === 'argentX' || connector.id() === 'argentWebWallet') {
     return (
       <IconWrapper size={20}>
         <img src={ArgentXIcon} alt="ArgentX" />
@@ -184,7 +180,7 @@ function StatusIcon({ connector }: { connector: AbstractConnector }) {
     )
   }
 
-  if (connector === braavosWallet) {
+  if (connector.id() === 'braavos') {
     return (
       <IconWrapper size={20}>
         <img src={braavosIcon} alt="myBraavos" />
@@ -196,7 +192,9 @@ function StatusIcon({ connector }: { connector: AbstractConnector }) {
 
 function Web3StatusInner({ starkID }: { starkID?: string }) {
   const { t } = useTranslation()
-  const { connectedAddress, connector, error } = useActiveStarknetReact()
+  const { error } = useStarknetReact()
+  const { address, connector } = useAccountDetails()
+  // console.log('🚀 ~ file: index.tsx:198 ~ Web3StatusInner ~ provider:', provider.get)
 
   const allTransactions = useAllTransactions()
 
@@ -213,7 +211,7 @@ function Web3StatusInner({ starkID }: { starkID?: string }) {
   // const hasSocks = useHasSocks()
   const toggleWalletModal = useWalletModalToggle()
 
-  if (connectedAddress) {
+  if (address) {
     return (
       <Web3StatusConnected id="web3-status-connected" onClick={toggleWalletModal} pending={hasPendingTransactions}>
         {!hasPendingTransactions && connector && <StatusIcon connector={connector} />}
@@ -222,7 +220,7 @@ function Web3StatusInner({ starkID }: { starkID?: string }) {
             <Text>{pending?.length} Pending</Text> <Loader stroke="white" />
           </RowBetween>
         ) : (
-          <Text>{starkID ? starkID : shortenAddress(connectedAddress)}</Text>
+          <Text>{starkID ? starkID : shortenAddress(address)}</Text>
         )}
       </Web3StatusConnected>
     )
@@ -243,7 +241,7 @@ function Web3StatusInner({ starkID }: { starkID?: string }) {
 }
 
 export default function Web3Status() {
-  const { active, connectedAddress, chainId } = useStarknetReact()
+  const { address, chainId } = useAccountDetails()
   const contextNetwork = useStarknetReact(NetworkContextName)
 
   type DomainToAddrData = { domain: string; domain_expiry: number }
@@ -251,29 +249,16 @@ export default function Web3Status() {
   const [domain, setDomain] = useState<string>('')
 
   useEffect(() => {
-    if (chainId == 1) {
-      fetch('https://app.starknet.id/api/indexer/addr_to_domain?addr=' + hexToDecimalString(connectedAddress ?? ''))
-        .then(response => response.json())
-        .then((data: DomainToAddrData) => {
-          setDomain(data.domain)
-        })
-        .catch(error => {
-          console.error(error)
-        })
-    }
-    if (chainId == 5) {
-      fetch(
-        'https://goerli.app.starknet.id/api/indexer/addr_to_domain?addr=' + hexToDecimalString(connectedAddress ?? '')
-      )
-        .then(response => response.json())
-        .then((data: DomainToAddrData) => {
-          setDomain(data.domain)
-        })
-        .catch(error => {
-          console.error(error)
-        })
-    }
-  }, [connectedAddress, chainId])
+    const url = domainURL(chainId as StarknetChainId)
+    fetch(url + hexToDecimalString(address ?? ''))
+      .then(response => response.json())
+      .then((data: DomainToAddrData) => {
+        setDomain(data.domain)
+      })
+      .catch(error => {
+        console.error(error)
+      })
+  }, [address, chainId])
 
   const allTransactions = useAllTransactions()
 

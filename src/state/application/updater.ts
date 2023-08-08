@@ -1,17 +1,19 @@
 import { useCallback, useEffect, useState } from 'react'
-import { useActiveStarknetReact } from '../../hooks'
 import useDebounce from '../../hooks/useDebounce'
 import useIsWindowVisible from '../../hooks/useIsWindowVisible'
 import { updateBlockNumber } from './actions'
 import { useDispatch } from 'react-redux'
 
+import { StarknetChainId } from 'starknet/dist/constants'
+import { useAccountDetails } from '../../hooks'
+
 export default function Updater(): null {
-  const { library, chainId } = useActiveStarknetReact()
+  const { account, chainId } = useAccountDetails()
   const dispatch = useDispatch()
 
   const windowVisible = useIsWindowVisible()
 
-  const [state, setState] = useState<{ chainId: number | undefined; blockNumber: number | null }>({
+  const [state, setState] = useState<{ chainId: StarknetChainId | undefined; blockNumber: number | null }>({
     chainId,
     blockNumber: null
   })
@@ -31,17 +33,17 @@ export default function Updater(): null {
 
   // attach/detach listeners
   useEffect(() => {
-    if (!library || !chainId || !windowVisible) return undefined
+    if (!account || !chainId || !windowVisible) return undefined
 
     setState({ chainId, blockNumber: null })
 
-    library
+    account
       .getBlock('latest')
       .then(block => blockNumberCallback(Number(block.block_number)))
       .catch(error => console.error(`Failed to get block number for chainId: ${chainId}`, error))
 
     const interval = setInterval(() => {
-      library
+      account
         .getBlock('latest')
         .then(block => blockNumberCallback(Number(block.block_number)))
         .catch(error => console.error(`Failed to get block number for chainId: ${chainId}`, error))
@@ -49,7 +51,7 @@ export default function Updater(): null {
     return () => {
       clearInterval(interval)
     }
-  }, [dispatch, chainId, library, blockNumberCallback, windowVisible])
+  }, [dispatch, chainId, account, blockNumberCallback, windowVisible])
 
   const debouncedState = useDebounce(state, 100)
 

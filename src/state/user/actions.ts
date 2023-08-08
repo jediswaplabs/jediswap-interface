@@ -1,7 +1,7 @@
 import { createAction } from '@reduxjs/toolkit'
 
 export interface SerializedToken {
-  chainId: number
+  chainId: string
   address: string
   decimals: number
   symbol?: string
@@ -21,9 +21,9 @@ export const updateUserSlippageTolerance = createAction<{ userSlippageTolerance:
 )
 export const updateUserDeadline = createAction<{ userDeadline: number }>('user/updateUserDeadline')
 export const addSerializedToken = createAction<{ serializedToken: SerializedToken }>('user/addSerializedToken')
-export const removeSerializedToken = createAction<{ chainId: number; address: string }>('user/removeSerializedToken')
+export const removeSerializedToken = createAction<{ chainId: string; address: string }>('user/removeSerializedToken')
 export const addSerializedPair = createAction<{ serializedPair: SerializedPair }>('user/addSerializedPair')
-export const removeSerializedPair = createAction<{ chainId: number; tokenAAddress: string; tokenBAddress: string }>(
+export const removeSerializedPair = createAction<{ chainId: string; tokenAAddress: string; tokenBAddress: string }>(
   'user/removeSerializedPair'
 )
 export const toggleURLWarning = createAction<void>('app/toggleURLWarning')

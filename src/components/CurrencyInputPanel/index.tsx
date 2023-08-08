@@ -11,10 +11,10 @@ import { TYPE } from '../../theme'
 import { Input as NumericalInput } from '../NumericalInput'
 import { ReactComponent as DropDown } from '../../assets/images/dropdown.svg'
 
-import { useActiveStarknetReact } from '../../hooks'
 import { useTranslation } from 'react-i18next'
 import { ColumnCenter } from '../Column'
 import { WrappedLPTokenInfo } from '../../state/lists/hooks'
+import { useAccountDetails } from '../../hooks'
 
 const InputRow = styled.div<{ selected: boolean }>`
   ${({ theme }) => theme.flexRowNoWrap}
@@ -105,19 +105,12 @@ const Container = styled.div<{ hideInput: boolean }>`
 
 const StyledTokenName = styled.span<{ active?: boolean }>`
   ${({ active }) => (active ? 'margin: 0 4px 0 6px;' : 'margin: 0 7.5px 0 0;')}
-  /* margin: 5px; */
   font-size: ${({ active }) => (active ? '17px' : '12px')};
-  text-transform: uppercase;
   text-align: left;
   display: flex;
   align-items: center;
   white-space: nowrap;
  `
-
-// const LPWrapper = styled.div`
-// display: flex ;
-// flex-direction: co;
-// `
 
 const StyledBalanceMax = styled.button`
   position: absolute;
@@ -190,14 +183,14 @@ CurrencyInputPanelProps) {
   const { t } = useTranslation()
 
   const [modalOpen, setModalOpen] = useState(false)
-  const { connectedAddress } = useActiveStarknetReact()
+  const { address } = useAccountDetails()
   const theme = useContext(ThemeContext)
 
   const handleDismissSearch = useCallback(() => {
     setModalOpen(false)
   }, [setModalOpen])
 
-  const displayMaxButton = connectedAddress && currency && showMaxButton && label !== 'To';
+  const displayMaxButton = address && currency && showMaxButton && label !== 'To'
 
   return (
     <InputPanel id={id}>
@@ -208,7 +201,7 @@ CurrencyInputPanelProps) {
               <TYPE.body color={theme.text2} fontWeight={500} fontSize={14}>
                 {label}
               </TYPE.body>
-              {connectedAddress && (
+              {address && (
                 <TYPE.body
                   onClick={onMax}
                   color={theme.text2}
@@ -285,9 +278,7 @@ CurrencyInputPanelProps) {
                 style={displayMaxButton ? { paddingRight: '60px' } : { paddingRight: '12px' }}
                 disabled={disableInput}
               />
-              {displayMaxButton && (
-                <StyledBalanceMax onClick={onMax}>MAX</StyledBalanceMax>
-              )}
+              {displayMaxButton && <StyledBalanceMax onClick={onMax}>MAX</StyledBalanceMax>}
             </>
           )}
         </InputRow>

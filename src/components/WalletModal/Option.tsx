@@ -74,6 +74,7 @@ const SubHeader = styled.div`
   color: ${({ theme }) => theme.jediWhite};
   margin-top: 10px;
   font-size: 12px;
+  text-align: left;
   font-family: 'DM Sans', sans-serif;
 `
 

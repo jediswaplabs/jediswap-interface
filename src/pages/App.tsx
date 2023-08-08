@@ -25,8 +25,16 @@ import Footer from '../components/Footer'
 import useFetchAllPairsCallback from '../hooks/useFetchAllPairs'
 import { MainnetWarningModal } from '../components/MainnetWarningModal'
 import { Web3ReactProvider } from '@web3-react/core'
-import Bridge from './Bridge'
-import { isProductionEnvironment, isStagingEnvironment } from '../connectors'
+import {
+  isProductionChainId,
+  isProductionEnvironment,
+  isStagingEnvironment,
+  isTestnetChainId,
+  isTestnetEnvironment
+} from '../connectors'
+import { useAccount, useConnectors } from '@starknet-react/core'
+import { StarknetChainId } from 'starknet/dist/constants'
+import { useAccountDetails } from '../hooks'
 
 const AppWrapper = styled.div`
   display: flex;
@@ -66,10 +74,25 @@ const Marginer = styled.div`
 
 export default function App() {
   const fetchAllPairs = useFetchAllPairsCallback()
+  const { disconnect } = useConnectors()
+  const { status, chainId } = useAccountDetails()
 
   useEffect(() => {
     fetchAllPairs()
   }, [fetchAllPairs])
+
+  useEffect(() => {
+    //Ensure that environment and chainId are compatible with one another.
+    if (status === 'connected' && chainId) {
+      if (
+        (isProductionEnvironment() && !isProductionChainId(chainId)) ||
+        (isTestnetEnvironment() && !isTestnetChainId(chainId)) ||
+        !Object.values(StarknetChainId).includes(chainId)
+      ) {
+        disconnect()
+      }
+    }
+  }, [status])
 
   return (
     <Suspense fallback={null}>

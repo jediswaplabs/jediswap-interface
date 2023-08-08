@@ -94,6 +94,10 @@ const MenuGradientWrapper = styled.span`
   top: 2.75rem;
   right: 0.5rem;
   z-index: 100;
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    right: -2rem;
+  `};
 `
 
 const MenuFlyout = styled.span`

@@ -3,7 +3,6 @@ import React, { CSSProperties, MutableRefObject, useCallback, useEffect, useMemo
 import { FixedSizeList } from 'react-window'
 import { Text } from 'rebass'
 import styled from 'styled-components'
-import { useActiveStarknetReact } from '../../hooks'
 import {
   useSelectedLPTokenList,
   useSelectedTokenList,
@@ -26,6 +25,7 @@ import { ButtonEmpty } from '../Button'
 import { ArgentXConnector } from '@web3-starknet-react/argentx-connector'
 import { useAddTokenToWallet } from '../../hooks/useAddTokenToWallet'
 import DoubleCurrencyLogo from '../DoubleLogo'
+import { useAccountDetails } from '../../hooks'
 
 function currencyKey(currency: Currency): string {
   return currency instanceof Token ? currency.address : currency === ETHER ? 'ETHER' : ''
@@ -116,18 +116,20 @@ function CurrencyRow({
   otherSelected: boolean
   style: CSSProperties
 }) {
-  const { connectedAddress, chainId, connector } = useActiveStarknetReact()
+  const { address } = useAccountDetails()
+  const { account, chainId } = useAccountDetails()
+
   const key = currencyKey(currency)
   const selectedTokenList = useSelectedTokenList()
   const selectedLPTokenList = useSelectedLPTokenList()
 
-  const isTokenOnSelectedList = isTokenOnList(selectedTokenList, currency, chainId)
-  const isLPTokenOnSelectedList = isTokenOnList(selectedLPTokenList, currency, chainId)
+  const isTokenOnSelectedList = isTokenOnList(selectedTokenList, currency)
+  const isLPTokenOnSelectedList = isTokenOnList(selectedLPTokenList, currency)
 
   const isOnSelectedList = isTokenOnSelectedList || isLPTokenOnSelectedList
 
   const customAdded = useIsUserAddedToken(currency)
-  const balance = useCurrencyBalance(connectedAddress ?? undefined, currency)
+  const balance = useCurrencyBalance(address ?? undefined, currency)
 
   const removeToken = useRemoveUserAddedToken()
   const addToken = useAddUserToken()
@@ -203,7 +205,7 @@ function CurrencyRow({
       </Column>
       <TokenTags currency={currency} />
       <RowFixed style={{ justifySelf: 'flex-end' }}>
-        {balance ? <Balance balance={balance} /> : connectedAddress ? <Loader /> : null}
+        {balance ? <Balance balance={balance} /> : address ? <Loader /> : null}
       </RowFixed>
     </MenuItem>
   )
