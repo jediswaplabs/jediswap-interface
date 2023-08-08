@@ -19,6 +19,7 @@ import { useAllPairs } from '../../state/pairs/hooks'
 import './style.css'
 import { useTransactionAdder } from '../../state/transactions/hooks'
 import { currencyAmountToPreciseFloat, formatTransactionAmount } from '../../utils/formatNumber'
+import { useJediLPTokens } from '../../hooks/Tokens'
 
 export const StyledAppBody = styled(BodyWrapper)`
   padding: 0rem;
@@ -92,7 +93,8 @@ export default function Zap() {
 
   const [fromTokens, setFromTokens] = useState<{ chainId: number; address: string }[]>([])
   const [toTokens, setToTokens] = useState<{ chainId: number; address: string }[]>([])
-  const lpTokens = useAllPairs()
+  const lpTokens = useJediLPTokens()
+  const lpTokensArr = Object.keys(lpTokens)
 
   useEffect(() => {
     if (!snChainId || snChainId === ChainId.MAINNET) {
@@ -155,7 +157,7 @@ export default function Zap() {
             if (formattedToken == false) {
               return false
             }
-            return lpTokens.includes(formattedToken)
+            return lpTokensArr.includes(formattedToken)
           })
         )
       })
@@ -194,7 +196,7 @@ export default function Zap() {
             if (formattedToken == false) {
               return false
             }
-            return lpTokens.includes(formattedToken)
+            return lpTokensArr.includes(formattedToken)
           })
         )
       })

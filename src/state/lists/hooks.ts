@@ -219,7 +219,8 @@ export function listToLPTokenMap(list: TokenList, allPairs: string[]): LPTokenAd
 
       if (tokenMap[tokenInfo.chainId][tokenInfo.address] !== undefined) throw Error('Duplicate tokens.')
 
-      const filteredLpTokens = lpTokens.filter(Boolean).filter(lpToken => allPairs.includes(lpToken.address))
+      const filteredLpTokens =
+        allPairs?.length && lpTokens.filter(Boolean).filter(lpToken => allPairs.includes(lpToken.address))
 
       const internalMap = filteredLpTokens.reduce(
         (lpTokenMap, lpToken) => {
