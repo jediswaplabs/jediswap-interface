@@ -40,7 +40,7 @@ export default function Footer() {
             <img src={DocIcon} alt="'Docs" />
           </ClickableExternalLink>
         </RowStart>
-        {/* <Polling /> */}
+        <Polling />
       </RowBetween>
     </FooterWrapper>
   )
