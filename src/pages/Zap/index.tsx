@@ -31,7 +31,6 @@ export default function Zap() {
    * Starknet wallet connection
    */
   const { chainId: snChainId, account: snAccount, address: connectedAddress } = useAccountDetails()
-  console.log('🚀 ~ file: index.tsx:33 ~ Zap ~ snAccount:')
   const toggleWalletModal = useWalletModalToggle() // toggle wallet when disconnected
 
   const [passedAccount, setPassedAccount] = useState(snAccount ?? undefined)
@@ -202,7 +201,7 @@ export default function Zap() {
         )
       })
     }
-  }, [snChainId, lpTokens, setToTokens])
+  }, [snChainId, lpTokens])
 
   useEffect(() => {
     setTimeout(() => {
