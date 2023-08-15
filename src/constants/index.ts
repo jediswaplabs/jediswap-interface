@@ -212,9 +212,9 @@ export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
     ...WETH_ONLY[StarknetChainId.TESTNET],
     DAI[StarknetChainId.TESTNET],
     USDC[StarknetChainId.TESTNET],
-    USDT[StarknetChainId.TESTNET],
-    WBTC[StarknetChainId.TESTNET],
-    wstETH[StarknetChainId.TESTNET]
+    USDT[StarknetChainId.TESTNET]
+    // WBTC[StarknetChainId.TESTNET],
+    // wstETH[StarknetChainId.TESTNET]
   ],
   [StarknetChainId.MAINNET]: [
     ...WETH_ONLY[StarknetChainId.MAINNET],
@@ -232,9 +232,9 @@ export const BASES_TO_BUILD_ZAPPER_LIST_AGAINST: ChainTokenList = {
     ...WETH_ONLY[StarknetChainId.TESTNET],
     DAI[StarknetChainId.TESTNET],
     USDC[StarknetChainId.TESTNET],
-    USDT[StarknetChainId.TESTNET],
-    WBTC[StarknetChainId.TESTNET],
-    wstETH[StarknetChainId.TESTNET]
+    USDT[StarknetChainId.TESTNET]
+    // WBTC[StarknetChainId.TESTNET],
+    // wstETH[StarknetChainId.TESTNET]
   ],
   [StarknetChainId.MAINNET]: [
     ...WETH_ONLY[StarknetChainId.MAINNET],
