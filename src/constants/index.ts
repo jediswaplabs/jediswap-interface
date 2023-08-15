@@ -99,6 +99,44 @@ export const USDT = {
   )
 }
 
+export const WBTC = {
+  [StarknetChainId.TESTNET]: new Token(
+    StarknetChainId.TESTNET,
+    '0x12D537dC323c439DC65c976FAD242D5610D27cFb5f31689A0A319B8be7F3D56',
+    8,
+    'WBTC',
+    'Wrapped BTC',
+    'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599/logo.png'
+  ),
+  [StarknetChainId.MAINNET]: new Token(
+    StarknetChainId.MAINNET,
+    '0x03fe2B97c1Fd336e750087d68B9B867997Fd64a2661fF3CA5a7C771641E8e7Ac',
+    8,
+    'WBTC',
+    'Wrapped BTC',
+    'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599/logo.png'
+  )
+}
+
+export const wstETH = {
+  [StarknetChainId.TESTNET]: new Token(
+    StarknetChainId.TESTNET,
+    '0x12D537dC323c439DC65c976FAD242D5610D27cFb5f31689A0A319B8be7F3D56',
+    18,
+    'USDT',
+    'Tether USD',
+    'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png'
+  ),
+  [StarknetChainId.MAINNET]: new Token(
+    StarknetChainId.MAINNET,
+    '0x042b8F0484674Ca266ac5D08E4ac6A3fE65bd3129795def2dCA5c34ecc5f96d2',
+    18,
+    'wstETH',
+    'Wrapped stETH',
+    'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x5A98FcBEA516Cf06857215779Fd812CA3beF1B32/logo.png'
+  )
+}
+
 // export const USDT = new Token(StarknetChainId.MAINNET, '0xdAC17F958D2ee523a2206206994597C13D831ec7', 6, 'USDT', 'Tether USD')
 // export const COMP = new Token(StarknetChainId.MAINNET, '0xc00e94Cb662C3520282E6f5717214004A7f26888', 18, 'COMP', 'Compound')
 // export const MKR = new Token(StarknetChainId.MAINNET, '0x9f8F72aA9304c8B593d555F12eF6589cC3A579A2', 18, 'MKR', 'Maker')
@@ -174,13 +212,17 @@ export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
     ...WETH_ONLY[StarknetChainId.TESTNET],
     DAI[StarknetChainId.TESTNET],
     USDC[StarknetChainId.TESTNET],
-    USDT[StarknetChainId.TESTNET]
+    USDT[StarknetChainId.TESTNET],
+    WBTC[StarknetChainId.TESTNET],
+    wstETH[StarknetChainId.TESTNET]
   ],
   [StarknetChainId.MAINNET]: [
     ...WETH_ONLY[StarknetChainId.MAINNET],
     DAI[StarknetChainId.MAINNET],
     USDC[StarknetChainId.MAINNET],
-    USDT[StarknetChainId.MAINNET]
+    USDT[StarknetChainId.MAINNET],
+    WBTC[StarknetChainId.MAINNET],
+    wstETH[StarknetChainId.MAINNET]
   ]
 }
 
@@ -190,13 +232,17 @@ export const BASES_TO_BUILD_ZAPPER_LIST_AGAINST: ChainTokenList = {
     ...WETH_ONLY[StarknetChainId.TESTNET],
     DAI[StarknetChainId.TESTNET],
     USDC[StarknetChainId.TESTNET],
-    USDT[StarknetChainId.TESTNET]
+    USDT[StarknetChainId.TESTNET],
+    WBTC[StarknetChainId.TESTNET],
+    wstETH[StarknetChainId.TESTNET]
   ],
   [StarknetChainId.MAINNET]: [
     ...WETH_ONLY[StarknetChainId.MAINNET],
     DAI[StarknetChainId.MAINNET],
     USDC[StarknetChainId.MAINNET],
-    USDT[StarknetChainId.MAINNET]
+    USDT[StarknetChainId.MAINNET],
+    WBTC[StarknetChainId.MAINNET],
+    wstETH[StarknetChainId.MAINNET]
   ]
 }
 
