@@ -172,6 +172,7 @@ export default function Zap() {
         <Backdrop bottom={'0px'} left={'-45px'} curveLeft />
         <SwapPoolTabs active={'zap'} />
         <WidoWidget
+          partner="0x18aa467E40E1deFB1956708830A343c1D01d3D7C"
           title="Bridge"
           className="wido-widget"
           width="100%"
