@@ -20,6 +20,7 @@ import { ExternalLink, LinkStyledButton, TYPE } from '../../theme'
 import { AutoColumn } from '../Column'
 import { useConnectors } from '@starknet-react/core'
 import { useAccountDetails } from '../../hooks'
+import { webWalletUrl } from '../../connectors'
 
 const HeaderRow = styled.div`
   ${({ theme }) => theme.flexRowNoWrap};
@@ -275,7 +276,14 @@ export default function AccountDetails({
   const dispatch = useDispatch<AppDispatch>()
 
   function formatConnectorName() {
-    return <WalletName>{connector && `Connected with ${SUPPORTED_WALLETS[connector.id()].name}`}</WalletName>
+    return (
+      <WalletName>
+        {connector &&
+          `Connected with ${
+            connectorType === 'argentWebWallet' ? 'Web Wallet' : SUPPORTED_WALLETS[connector.id()].name
+          }`}
+      </WalletName>
+    )
   }
 
   function getStatusIcon() {
@@ -341,6 +349,11 @@ export default function AccountDetails({
                               {getStatusIcon()}
                               <p> {address && shortenAddress(address)}</p>
                             </div>
+                            {connectorType === 'argentWebWallet' && (
+                              <AddressLink hasENS={!!ENSName} isENS={false} href={webWalletUrl}>
+                                <LinkIcon size={20} style={{ color: '#50D5FF' }} />
+                              </AddressLink>
+                            )}
                           </>
                         )}
                       </AccountControl>
