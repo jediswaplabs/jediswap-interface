@@ -203,38 +203,47 @@ export default function WalletModal({
   const tryActivation = async (option: WalletInfo) => {
     if (!option) return
     const { connector, id } = option
+    if (id === 'argentWebWallet') {
+      handleWalletConnect(connector, option)
+      return
+    }
+
     //check if selected wallet is installed
     const checkIfWalletExists = availableWallets.find(wallet => wallet.id === connector?.id())
-    if (checkIfWalletExists || id === 'argentWebWallet') {
-      // log selected wallet
-      ReactGA.event({
-        category: 'Wallet',
-        action: 'Change Wallet',
-        label: (connector && SUPPORTED_WALLETS[connector.id()].name) || ''
-      })
-      setPendingWallet(option) // set wallet for pending view
-      setWalletView(WALLET_VIEWS.PENDING)
-      try {
-        if (connector) {
-          connect(connector)
-          toggleWalletModal()
-          if (connector.id() === 'argentX') {
-            localStorage.setItem('auto-injected-wallet', 'argentX')
-          } else if (connector.id() === 'braavos') {
-            localStorage.setItem('auto-injected-wallet', 'braavos')
-          } else {
-            localStorage.removeItem('auto-injected-wallet')
-          }
-          setWalletView(WALLET_VIEWS.ACCOUNT)
-        }
-      } catch (error) {
-        // Store the error in a variable
-        const errorValue = error
-        setPendingError(errorValue)
-      }
+    if (checkIfWalletExists) {
+      handleWalletConnect(connector, option)
     } else {
       setWalletView(WALLET_VIEWS.PENDING)
       setPendingError(connector?.id())
+    }
+  }
+
+  const handleWalletConnect = (connector, option: WalletInfo) => {
+    // log selected wallet
+    ReactGA.event({
+      category: 'Wallet',
+      action: 'Change Wallet',
+      label: (connector && SUPPORTED_WALLETS[connector.id()].name) || ''
+    })
+    setPendingWallet(option) // set wallet for pending view
+    setWalletView(WALLET_VIEWS.PENDING)
+    try {
+      if (connector) {
+        connect(connector)
+        toggleWalletModal()
+        if (connector.id() === 'argentX') {
+          localStorage.setItem('auto-injected-wallet', 'argentX')
+        } else if (connector.id() === 'braavos') {
+          localStorage.setItem('auto-injected-wallet', 'braavos')
+        } else {
+          localStorage.removeItem('auto-injected-wallet')
+        }
+        setWalletView(WALLET_VIEWS.ACCOUNT)
+      }
+    } catch (error) {
+      // Store the error in a variable
+      const errorValue = error
+      setPendingError(errorValue)
     }
   }
 
