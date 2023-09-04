@@ -33,7 +33,6 @@ import WrongNetwork from "../../assets/jedi/WrongNetwork.svg";
 import { number } from "starknet";
 import { InjectedConnector, useAccount } from "@starknet-react/core";
 import { useAccountDetails } from "../../hooks";
-import { StarknetChainId } from "starknet/dist/constants";
 
 const IconWrapper = styled.div<{ size?: number }>`
   ${({ theme }) => theme.flexColumnNoWrap};
