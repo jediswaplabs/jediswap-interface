@@ -79,8 +79,10 @@ jobs:
           node-version: 16
           cache: 'yarn'
 
-      - name: Install dependencies
-        run: yarn install --immutable
+      - name: Install Dependencies
+        run: |
+          export NODE_OPTIONS=--max_old_space_size=4096
+          yarn install --immutable
 
       - name: Build Project for Sentry
         run: yarn build-with-source-maps
