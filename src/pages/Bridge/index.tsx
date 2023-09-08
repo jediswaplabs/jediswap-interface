@@ -1,52 +1,45 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { SwapPoolTabs } from '../../components/NavigationTabs'
 import { BodyWrapper } from '../AppBody'
+
 import { Backdrop, HeaderRow } from '../Swap/styleds'
+import { useActiveStarknetReact } from '../../hooks'
 import { useWalletModalToggle } from '../../state/application/hooks'
-import { darkTheme, WidoWidget, isStarknetChain, Transaction } from 'wido-widget'
+import { darkTheme, WidoWidget, isStarknetChain } from 'wido-widget'
 import styled, { ThemeContext } from 'styled-components'
 import { useWeb3React } from '@web3-react/core'
-import { InjectedConnector } from '@web3-react/injected-connector'
 import { AutoColumn } from '../../components/Column'
-import ZapIcon from '../../assets/jedi/zap.svg'
-import { Header, HeaderInfo } from './styleds'
-import { getSupportedTokens } from 'wido'
+import { HeaderNote, Header, HeaderInfo } from '../Zap/styleds'
+import { Token, getSupportedTokens } from 'wido'
+import { ChainId } from '@jediswap/sdk'
+import { injected } from '../Zap'
 import { providers } from 'ethers'
-import { isAddress } from '../../utils'
-import { useAllPairs } from '../../state/pairs/hooks'
-import './style.css'
-import { useTransactionAdder } from '../../state/transactions/hooks'
-import { currencyAmountToPreciseFloat, formatTransactionAmount } from '../../utils/formatNumber'
-import { useJediLPTokens } from '../../hooks/Tokens'
-import { useAccountDetails } from '../../hooks'
-import { StarknetChainId } from 'starknet/dist/constants'
 
 export const StyledAppBody = styled(BodyWrapper)`
   padding: 0rem;
 `
-export const injected = new InjectedConnector({})
-
 export default function Zap() {
+  const theme = useContext(ThemeContext)
+
   /**
    * Starknet wallet connection
    */
-  const { chainId: snChainId, account: snAccount, address: connectedAddress } = useAccountDetails()
+  const { chainId: snChainId, account: snAccount, connectedAddress, library: snLibrary } = useActiveStarknetReact()
   const toggleWalletModal = useWalletModalToggle() // toggle wallet when disconnected
 
   const [passedAccount, setPassedAccount] = useState(snAccount ?? undefined)
 
-  const addTransaction = useTransactionAdder()
-
   // Work-around: unfortunately account.chainId does not get updated when the user changes network
   // Solution: re-create the account object each time chainId or account changes
+  console.log('📜 LOG > Bridge > account?.chainId:', snAccount?.chainId)
   useEffect(() => {
-    if (!snAccount || !connectedAddress) {
+    if (!snAccount || !snLibrary || !connectedAddress) {
       setPassedAccount(undefined)
     } else {
       setPassedAccount(snAccount)
       // setPassedAccount(new Account(library, connectedAddress, account.signer))
     }
-  }, [snAccount, snChainId, connectedAddress, setPassedAccount])
+  }, [snLibrary, snAccount, snChainId, connectedAddress, setPassedAccount])
 
   /**
    * Ethereum wallet connection
@@ -78,52 +71,12 @@ export default function Zap() {
     [toggleWalletModal, handleMetamask]
   )
 
-  const handleZap = (hash: string, tx: Transaction) => {
-    if (!tx) return
-    const txInfo = tx?.info?.trade
-    if (hash && txInfo && txInfo?.toToken?.tokenInfo?.chainId === txInfo?.fromToken?.tokenInfo?.chainId) {
-      const inputAmount = formatTransactionAmount(currencyAmountToPreciseFloat(txInfo?.inputAmount))
-      const outputAmount = formatTransactionAmount(currencyAmountToPreciseFloat(txInfo?.outputAmount))
-      const inputSymbol = txInfo?.fromToken?.tokenInfo?.symbol
-      const outputSymbol = txInfo?.toToken?.tokenInfo?.symbol
-      const summary = `Zap ${inputAmount} ${inputSymbol} for ${outputAmount} ${outputSymbol}`
-      addTransaction({ transaction_hash: hash }, { summary })
-    }
-  }
-
   const [fromTokens, setFromTokens] = useState<{ chainId: number; address: string }[]>([])
   const [toTokens, setToTokens] = useState<{ chainId: number; address: string }[]>([])
-  const lpTokens = useJediLPTokens()
-  const lpTokensArr = Object.keys(lpTokens)
 
   useEffect(() => {
-    if (!snChainId || snChainId === StarknetChainId.MAINNET) {
+    if (!snChainId || snChainId === ChainId.MAINNET) {
       setFromTokens([
-        {
-          chainId: 15366,
-          address: '0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7'
-          // name: 'Ether',
-        },
-        {
-          chainId: 15366,
-          address: '0x53c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8'
-          // name: 'USD Coin',
-        },
-        {
-          chainId: 15366,
-          address: '0xda114221cb83fa859dbdb4c44beeaa0bb37c7537ad5ae66fe5e0efd20e6eb3'
-          // name: 'Dai Stablecoin',
-        },
-        {
-          chainId: 15366,
-          address: '0x3fe2b97c1fd336e750087d68b9b867997fd64a2661ff3ca5a7c771641e8e7ac'
-          // name: 'Wrapped BTC',
-        },
-        {
-          chainId: 15366,
-          address: '0x68f5c6a61780768455de69077e07e89787839bf8166decfbf92b645209c0fb8'
-          // name: 'Tether USD'
-        },
         {
           chainId: 1,
           address: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'
@@ -150,19 +103,36 @@ export default function Zap() {
           // name: 'USD Coin'
         }
       ])
-      getSupportedTokens({ chainId: [15366], protocol: ['jediswap.xyz'] }).then(tokens => {
-        setToTokens(
-          tokens.filter(token => {
-            const formattedToken = isAddress(token.address)
-            if (formattedToken == false) {
-              return false
-            }
-            return lpTokensArr.includes(formattedToken)
-          })
-        )
-      })
+      setToTokens([
+        {
+          chainId: 15366,
+          address: '0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7'
+          // name: 'Ether',
+        },
+        {
+          chainId: 15366,
+          address: '0x53c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8'
+          // name: 'USD Coin',
+        },
+        {
+          chainId: 15366,
+          address: '0xda114221cb83fa859dbdb4c44beeaa0bb37c7537ad5ae66fe5e0efd20e6eb3'
+          // name: 'Dai Stablecoin',
+        },
+        {
+          chainId: 15366,
+          address: '0x3fe2b97c1fd336e750087d68b9b867997fd64a2661ff3ca5a7c771641e8e7ac'
+          // name: 'Wrapped BTC',
+        },
+        {
+          chainId: 15366,
+          address: '0x68f5c6a61780768455de69077e07e89787839bf8166decfbf92b645209c0fb8'
+          // name: 'Tether USD'
+        }
+      ])
     } else {
-      setFromTokens([
+      getSupportedTokens({ chainId: [5] }).then(setFromTokens)
+      setToTokens([
         {
           chainId: 15367,
           address: '0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7'
@@ -182,54 +152,18 @@ export default function Zap() {
           chainId: 15367,
           address: '0x12d537dc323c439dc65c976fad242d5610d27cfb5f31689a0a319b8be7f3d56'
           // "name": "Wrapped BTC",
-        },
-        {
-          address: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
-          chainId: 5
-          // name: 'ETH',
         }
       ])
-      getSupportedTokens({ chainId: [15367], protocol: ['jediswap.xyz'] }).then(tokens => {
-        setToTokens(
-          tokens.filter(token => {
-            const formattedToken = isAddress(token.address)
-            if (formattedToken == false) {
-              return false
-            }
-            return lpTokensArr.includes(formattedToken)
-          })
-        )
-      })
     }
-  }, [snChainId, lpTokens])
-
-  useEffect(() => {
-    setTimeout(() => {
-      // Get the parent element with the "wido-widget" class
-      const widget = document.querySelector('.wido-widget')
-
-      if (widget) {
-        const firstDiv = widget.querySelector('div')
-
-        if (firstDiv) {
-          firstDiv.style.border = '0'
-        }
-      }
-    }, 100)
-  }, [])
+  }, [snChainId, setFromTokens])
 
   return (
     <>
       <AutoColumn gap="14px" style={{ maxWidth: 470, padding: '2rem' }}>
         <HeaderRow>
-          <Header>
-            ZAP <img src={ZapIcon} />
-          </Header>
+          <Header>Bridge</Header>
         </HeaderRow>
-        <HeaderInfo fontSize={16}>
-          Zap helps you convert any of your tokens into LP tokens with 1-click. Thanks to Wido, it also supports tokens
-          on Ethereum!
-        </HeaderInfo>
+        <HeaderInfo fontSize={16}>Bridge your assets over to Starknet.</HeaderInfo>
       </AutoColumn>
       <StyledAppBody>
         <Backdrop top={'0'} left={'503px'} curveRight />
@@ -239,6 +173,7 @@ export default function Zap() {
         <SwapPoolTabs active={'zap'} />
         <WidoWidget
           partner="0x18aa467E40E1deFB1956708830A343c1D01d3D7C"
+          title="Bridge"
           className="wido-widget"
           width="100%"
           onConnectWalletClick={handleConnectWalletClick}
@@ -246,10 +181,9 @@ export default function Zap() {
           snAccount={passedAccount}
           fromTokens={fromTokens}
           toTokens={toTokens}
-          onTxSubmit={handleZap}
           theme={{
             ...darkTheme,
-            module: 'rgba(0,0,0,0.0)',
+            accent: theme.jediBlue,
             fontFamily: {
               font: "'DM Sans',sans-serif",
               variable: "'DM Sans',sans-serif"
