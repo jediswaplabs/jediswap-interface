@@ -83,7 +83,7 @@ jobs:
         run: yarn install --immutable
 
       - name: Build Project for Sentry
-        run: node --max-old-space-size=4096 yarn build-with-source-maps
+        run: yarn build-with-source-maps
         env:
           CI: false
           RELEASE_TYPE: 'PRODUCTION'
