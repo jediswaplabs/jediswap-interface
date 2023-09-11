@@ -46,7 +46,7 @@ export const isProductionChainId = (id: string) => {
 };
 
 export const isTestnetChainId = (id: string) => {
-  return id === StarknetChainId.TESTNET;
+  return id === StarknetChainId.TESTNET || StarknetChainId.TESTNET2;
 };
 
 export const webWalletUrl = isTestnetEnvironment()
