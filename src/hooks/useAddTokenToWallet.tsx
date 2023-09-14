@@ -1,14 +1,14 @@
-import { ArgentXConnector } from '@web3-starknet-react/argentx-connector'
-import { BraavosConnector } from '@web3-starknet-react/braavos-connector'
 import { useCallback } from 'react'
 import { useAccountDetails } from '.'
 
 export function useAddTokenToWallet(): (tokenAddress: string) => void {
   const { connector } = useAccountDetails()
+  const connectorType = connector?.id()
   return useCallback(
     async (tokenAddress: string) => {
       if (connector) {
-        if (connector instanceof ArgentXConnector) {
+        console.log("🚀 ~ file: useAddTokenToWallet.tsx:11 ~ connector:", connector)
+        if (connectorType === 'argentX') {
           try {
             await window.starknet?.request({
               type: 'wallet_watchAsset',
@@ -22,7 +22,7 @@ export function useAddTokenToWallet(): (tokenAddress: string) => void {
           } catch (error) {
             console.log(error)
           }
-        } else if (connector instanceof BraavosConnector) {
+        } else if (connectorType === 'braavos') {
           const wallet = [window.starknet, window.starknet_braavos].find(obj => obj?.id === 'braavos')
 
           try {

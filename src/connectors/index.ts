@@ -1,7 +1,5 @@
 import { WebWalletConnector } from '@argent/starknet-react-webwallet-connector'
 import { InjectedConnector } from '@starknet-react/core'
-import { ArgentXConnector } from '@web3-starknet-react/argentx-connector'
-import { BraavosConnector } from '@web3-starknet-react/braavos-connector'
 import { StarknetChainId } from 'starknet/dist/constants'
 
 export const NETWORK_CHAIN_ID: number = parseInt(process.env.REACT_APP_CHAIN_ID ?? '5')
