@@ -1,4 +1,3 @@
-import { UnsupportedChainIdError, useStarknetReact } from '@web3-starknet-react/core'
 import React, { useEffect, useState } from 'react'
 import { isMobile } from 'react-device-detect'
 import ReactGA from 'react-ga4'
@@ -130,7 +129,6 @@ export default function WalletModal({
   ENSName?: string
 }) {
   // important that these are destructed from the account-specific web3-react context
-  const { active, error } = useStarknetReact()
   const { connect } = useConnectors()
   const { getAvailableWallets } = getStarknet()
 
@@ -192,13 +190,12 @@ export default function WalletModal({
   }, [walletModalOpen])
 
   // close modal when a connection is successful
-  const activePrevious = usePrevious(active)
   const connectorPrevious = usePrevious(connector)
   useEffect(() => {
-    if (walletModalOpen && ((active && !activePrevious) || (connector && connector !== connectorPrevious && !error))) {
+    if (walletModalOpen && connector && connector !== connectorPrevious) {
       setWalletView(WALLET_VIEWS.ACCOUNT)
     }
-  }, [setWalletView, active, error, connector, walletModalOpen, activePrevious, connectorPrevious])
+  }, [setWalletView, connector, walletModalOpen, connectorPrevious])
 
   const tryActivation = async (option: WalletInfo) => {
     if (!option) return
@@ -271,7 +268,7 @@ export default function WalletModal({
   }
 
   function getModalContent() {
-    if (error || chainError) {
+    if (chainError) {
       return (
         <UpperSection>
           <CloseIcon onClick={toggleWalletModal}>

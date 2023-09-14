@@ -9,8 +9,6 @@ import { MULTICALL_NETWORKS, MULTICALL_ABI } from '../constants/contracts/multic
 import { FACTORY_ADDRESS, FACTORY_ABI } from '../constants/contracts/factoryAddress'
 import { ROUTER_ADDRESS, ROUTER_ABI } from '../constants/contracts/routerAddress'
 import { ZAP_IN_ADDRESS, ZAP_IN_ABI } from '../constants/contracts/zapInAddress'
-import { StarknetReactManagerReturn } from '@web3-starknet-react/core/dist/types'
-import { useStarknetReactManager } from '@web3-starknet-react/core/dist/manager'
 import { DEFAULT_CHAIN_ID } from '../constants'
 import { InjectedConnector } from '@starknet-react/core'
 import { useAccountDetails } from '.'

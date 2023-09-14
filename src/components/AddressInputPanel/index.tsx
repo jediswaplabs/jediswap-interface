@@ -5,7 +5,6 @@ import { ExternalLink, TYPE } from '../../theme'
 import { AutoColumn } from '../Column'
 import { RowBetween } from '../Row'
 import { getStarkscanLink } from '../../utils'
-// import { normalizeAccount } from '@web3-starknet-react/core/dist/normalizers'
 import { useAddressNormalizer } from '../../hooks/useAddressNormalizer'
 import { useAccountDetails } from '../../hooks'
 

@@ -1,4 +1,3 @@
-import { UnsupportedChainIdError, useStarknetReact } from '@web3-starknet-react/core'
 import { darken, lighten } from 'polished'
 import React, { useMemo, useEffect, useState } from 'react'
 // import { Activity } from 'react-feather'
@@ -6,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 import styled, { css } from 'styled-components'
 import ArgentXIcon from '../../assets/images/argentx.png'
 import braavosIcon from '../../assets/svg/Braavos.svg'
-import { NetworkContextName, domainURL } from '../../constants'
+import { domainURL } from '../../constants'
 import { useWalletModalToggle } from '../../state/application/hooks'
 import { isTransactionRecent, useAllTransactions } from '../../state/transactions/hooks'
 import { TransactionDetails } from '../../state/transactions/reducer'
@@ -23,6 +22,7 @@ import { hexToDecimalString } from 'starknet/dist/utils/number'
 import { InjectedConnector } from '@starknet-react/core'
 import { StarknetChainId } from 'starknet/dist/constants'
 import { useAccountDetails } from '../../hooks'
+import { isProductionChainId, isProductionEnvironment, isTestnetChainId, isTestnetEnvironment } from '../../connectors'
 
 const IconWrapper = styled.div<{ size?: number }>`
   ${({ theme }) => theme.flexColumnNoWrap};
@@ -192,9 +192,8 @@ function StatusIcon({ connector }: { connector: InjectedConnector }) {
 
 function Web3StatusInner({ starkID }: { starkID?: string }) {
   const { t } = useTranslation()
-  const { error } = useStarknetReact()
-  const { address, connector } = useAccountDetails()
-  // console.log('🚀 ~ file: index.tsx:198 ~ Web3StatusInner ~ provider:', provider.get)
+  const { address, connector, status, chainId } = useAccountDetails()
+  const [chainError, setChainError] = useState<boolean>(false)
 
   const allTransactions = useAllTransactions()
 
@@ -208,8 +207,19 @@ function Web3StatusInner({ starkID }: { starkID?: string }) {
     .map(tx => tx.hash)
 
   const hasPendingTransactions = !!pending.length
-  // const hasSocks = useHasSocks()
   const toggleWalletModal = useWalletModalToggle()
+
+  useEffect(() => {
+    if (status === 'connected' && chainId) {
+      if (
+        (isProductionEnvironment() && !isProductionChainId(chainId)) ||
+        (isTestnetEnvironment() && !isTestnetChainId(chainId)) ||
+        !Object.values(StarknetChainId).includes(chainId)
+      ) {
+        setChainError(true)
+      }
+    }
+  }, [status])
 
   if (address) {
     return (
@@ -224,11 +234,11 @@ function Web3StatusInner({ starkID }: { starkID?: string }) {
         )}
       </Web3StatusConnected>
     )
-  } else if (error) {
+  } else if (chainError) {
     return (
       <Web3StatusError onClick={toggleWalletModal}>
         <NetworkIcon src={WrongNetwork} />
-        <Text>{error instanceof UnsupportedChainIdError ? 'Wrong Network' : 'Error'}</Text>
+        <Text>{chainError ? 'Wrong Network' : 'Error'}</Text>
       </Web3StatusError>
     )
   } else {
@@ -242,7 +252,6 @@ function Web3StatusInner({ starkID }: { starkID?: string }) {
 
 export default function Web3Status() {
   const { address, chainId } = useAccountDetails()
-  const contextNetwork = useStarknetReact(NetworkContextName)
 
   type DomainToAddrData = { domain: string; domain_expiry: number }
 

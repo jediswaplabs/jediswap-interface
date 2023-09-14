@@ -1,12 +1,5 @@
-import { ArgentXConnector } from '@web3-starknet-react/argentx-connector'
-import { Provider as Web3Provider } from 'starknet'
-import { useStarknetReact as useStarknetReactCore } from '@web3-starknet-react/core'
-import { StarknetReactContextInterface } from '@web3-starknet-react/core/dist/types'
 import { useEffect, useMemo, useState } from 'react'
-import { isMobile } from 'react-device-detect'
 import { argentX, braavosWallet } from '../connectors'
-import { NetworkContextName, SUPPORTED_WALLETS } from '../constants'
-import { BraavosConnector } from '@web3-starknet-react/braavos-connector'
 import { InjectedConnector, useConnectors, useAccount } from '@starknet-react/core'
 
 // deprecating this hook because we don't require it anymore
@@ -26,7 +19,6 @@ export const useAccountDetails = () => {
 }
 
 export function useEagerConnect() {
-  const { active } = useStarknetReactCore() // specifically using useStarknetReactCore because of what this hook does
   const [tried, setTried] = useState(false)
   const { connect } = useConnectors()
 
@@ -68,13 +60,6 @@ export function useEagerConnect() {
   //   }, 100)
   // }, [activate, connector]) // intentionally only running on mount (make sure it's only mounted once :))
 
-  // if the connection worked, wait until we get confirmation of that to flip the flag
-  useEffect(() => {
-    if (active) {
-      setTried(true)
-    }
-  }, [active])
-
   return tried
 }
 
@@ -83,14 +68,13 @@ export function useEagerConnect() {
  * and out after checking what network theyre on
  */
 export function useInactiveListener(suppress = false) {
-  const { active, error, activate } = useStarknetReactCore() // specifically using useStarknetReact because of what this hook does
   const { connector } = useAccountDetails()
   const { connect } = useConnectors()
 
   useEffect(() => {
     const { starknet, starknet_braavos } = window
 
-    if (starknet && !active && !error && !suppress && connector) {
+    if (starknet && !suppress && connector) {
       const activeConnector = connector instanceof InjectedConnector ? argentX : braavosWallet
 
       const handleChainChanged = () => {
@@ -120,5 +104,5 @@ export function useInactiveListener(suppress = false) {
       }
     }
     return undefined
-  }, [active, error, suppress, activate, connector])
+  }, [suppress, connector])
 }
