@@ -893,15 +893,15 @@
   resolved "https://registry.yarnpkg.com/@humanwhocodes/object-schema/-/object-schema-1.2.1.tgz#b520529ec21d8e5945a1851dfd1c32e94e39ff45"
   integrity sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==
 
-"@jediswap/sdk@^2.3.3":
-  version "2.3.3"
-  resolved "https://registry.yarnpkg.com/@jediswap/sdk/-/sdk-2.3.3.tgz#eac594b350b670debb4ea4a03082686c72454352"
-  integrity sha512-1sEh7eimrArd/Y7xPo28T+SWKgvYWao7nmOOKh6ryJhVk2OmlI6U+8jWgBICMUKm3u5qWGIz26VCsNjwG4tdGQ==
+"@jediswap/sdk@^2.3.4":
+  version "2.3.4"
+  resolved "https://registry.yarnpkg.com/@jediswap/sdk/-/sdk-2.3.4.tgz#803e49c19dfca5c7c72dd808636d4a554f6186f5"
+  integrity sha512-7lRNqDCHTe68mWG1Obzvg4cde1nvwra8R3qN0m5Ye610uNeBmOISub42wGicTgQzdHV6QLbLrKNf/MhAK8pYlA==
   dependencies:
     big.js "^5.2.2"
     decimal.js-light "^2.5.0"
     jsbi "^3.1.1"
-    starknet "^4.3.0"
+    starknet "4.22.0"
     tiny-invariant "^1.1.0"
     tiny-warning "^1.0.3"
     toformat "^2.0.0"
@@ -6802,7 +6802,7 @@ sshpk@^1.14.1:
     safer-buffer "^2.0.2"
     tweetnacl "~0.14.0"
 
-starknet@4.22.0, starknet@4.4.2, starknet@^4.22.0, starknet@^4.3.0:
+starknet@4.22.0, starknet@4.4.2, starknet@^4.22.0:
   version "4.22.0"
   resolved "https://registry.yarnpkg.com/starknet/-/starknet-4.22.0.tgz#8d0c628e2a8e868ee9b4757afe89f07b05ec55ff"
   integrity sha512-jC9Taxb6a/ht9zmS1LU/DSLfwJKpgCJnE9AktVksc5SE/+jQMpqxsq6fm7PRiqupjiqRC1DOS8N47cj+KaGv4Q==
