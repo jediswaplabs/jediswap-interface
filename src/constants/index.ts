@@ -21,27 +21,21 @@ export const domainURL = (chainId: starknetChainId) => {
     : "https://goerli.app.starknet.id/api/indexer/addr_to_domain?addr=";
 };
 
-export const ROUTER_ADDRESS: { [chainId in starknetChainId]: string } = {
+export const ROUTER_ADDRESS: { [chainId in starknetChainId]?: string } = {
   [StarknetChainId.MAINNET]: validateAndParseAddress(
     "0x41fd22b238fa21cfcf5dd45a8548974d8263b3a531a60388411c5e230f97023"
   ),
   [StarknetChainId.TESTNET]: validateAndParseAddress(
     "0x2bcc885342ebbcbcd170ae6cafa8a4bed22bb993479f49806e72d96af94c965"
-  ),
-  [StarknetChainId.TESTNET2]: validateAndParseAddress(
-    "0x2bcc885342ebbcbcd170ae6cafa8a4bed22bb993479f49806e72d96af94c965"
   )
 };
 
-export const ZAP_IN_ADDRESS: { [chainId in starknetChainId]: string } = {
+export const ZAP_IN_ADDRESS: { [chainId in starknetChainId]?: string } = {
   [StarknetChainId.MAINNET]: validateAndParseAddress(
     "0x29a303b928b9391ce797ec27d011d3937054bee783ca7831df792bae00c925c"
   ),
   [StarknetChainId.TESTNET]: validateAndParseAddress(
     "0x73e3ccd627283aed4fa3940aa2bdb4d2c702e8e44c99b6851c019222558310f"
-  ),
-  [StarknetChainId.TESTNET2]: validateAndParseAddress(
-    "0x2bcc885342ebbcbcd170ae6cafa8a4bed22bb993479f49806e72d96af94c965"
   )
 };
 
@@ -50,20 +44,12 @@ export const ZERO_ADDRESS =
 
 // a list of tokens by chain
 type ChainTokenList = {
-  readonly [chainId in starknetChainId]: Token[];
+  readonly [chainId in starknetChainId]?: Token[];
 };
 
 export const DAI = {
   [StarknetChainId.TESTNET]: new Token(
     StarknetChainId.TESTNET,
-    "0x03e85bfbb8e2a42b7bead9e88e9a1b19dbccf661471061807292120462396ec9",
-    18,
-    "DAI",
-    "Dai Stablecoin",
-    "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x6B175474E89094C44Da98b954EedeAC495271d0F/logo.png"
-  ),
-  [StarknetChainId.TESTNET2]: new Token(
-    StarknetChainId.TESTNET2,
     "0x03e85bfbb8e2a42b7bead9e88e9a1b19dbccf661471061807292120462396ec9",
     18,
     "DAI",
@@ -82,14 +68,6 @@ export const DAI = {
 export const USDC = {
   [StarknetChainId.TESTNET]: new Token(
     StarknetChainId.TESTNET,
-    "0x005a643907b9a4bc6a55e9069c4fd5fd1f5c79a22470690f75556c4736e34426",
-    6,
-    "USDC",
-    "USD//C",
-    "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png"
-  ),
-  [StarknetChainId.TESTNET2]: new Token(
-    StarknetChainId.TESTNET2,
     "0x005a643907b9a4bc6a55e9069c4fd5fd1f5c79a22470690f75556c4736e34426",
     6,
     "USDC",
@@ -115,14 +93,6 @@ export const USDT = {
     "Tether USD",
     "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png"
   ),
-  [StarknetChainId.TESTNET2]: new Token(
-    StarknetChainId.TESTNET2,
-    "0x386e8d061177f19b3b485c20e31137e6f6bc497cc635ccdfcab96fadf5add6a",
-    6,
-    "USDT",
-    "Tether USD",
-    "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png"
-  ),
   [StarknetChainId.MAINNET]: new Token(
     StarknetChainId.MAINNET,
     "0x068f5c6a61780768455de69077e07e89787839bf8166decfbf92b645209c0fb8",
@@ -142,14 +112,6 @@ export const WBTC = {
     "Wrapped BTC",
     "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599/logo.png"
   ),
-  [StarknetChainId.TESTNET2]: new Token(
-    StarknetChainId.TESTNET2,
-    "0x12D537dC323c439DC65c976FAD242D5610D27cFb5f31689A0A319B8be7F3D56",
-    8,
-    "WBTC",
-    "Wrapped BTC",
-    "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599/logo.png"
-  ),
   [StarknetChainId.MAINNET]: new Token(
     StarknetChainId.MAINNET,
     "0x03fe2B97c1Fd336e750087d68B9B867997Fd64a2661fF3CA5a7C771641E8e7Ac",
@@ -163,14 +125,6 @@ export const WBTC = {
 export const wstETH = {
   [StarknetChainId.TESTNET]: new Token(
     StarknetChainId.TESTNET,
-    "0x12D537dC323c439DC65c976FAD242D5610D27cFb5f31689A0A319B8be7F3D56",
-    18,
-    "USDT",
-    "Tether USD",
-    "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png"
-  ),
-  [StarknetChainId.TESTNET2]: new Token(
-    StarknetChainId.TESTNET2,
     "0x12D537dC323c439DC65c976FAD242D5610D27cFb5f31689A0A319B8be7F3D56",
     18,
     "USDT",
@@ -198,9 +152,11 @@ export const PROPOSAL_LENGTH_IN_DAYS = 7;
 
 const WETH_ONLY: ChainTokenList = {
   [StarknetChainId.MAINNET]: [WETH[StarknetChainId.MAINNET]],
-  [StarknetChainId.TESTNET]: [WETH[StarknetChainId.TESTNET]],
-  [StarknetChainId.TESTNET2]: [WETH[StarknetChainId.TESTNET2]]
+  [StarknetChainId.TESTNET]: [WETH[StarknetChainId.TESTNET]]
 };
+
+const WETH_ONLY_TESTNET = WETH_ONLY[StarknetChainId.TESTNET] || [];
+const WETH_ONLY_MAINNET = WETH_ONLY[StarknetChainId.MAINNET] || [];
 
 // const TOKEN0_ONLY: ChainTokenList = {
 //   [StarknetChainId.TESTNET]: [TOKEN0],
@@ -211,22 +167,16 @@ const WETH_ONLY: ChainTokenList = {
 // }
 
 // used to construct intermediary pairs for trading
-export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
+export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList | [] = {
   ...WETH_ONLY,
   [StarknetChainId.TESTNET]: [
-    ...WETH_ONLY[StarknetChainId.TESTNET],
+    ...WETH_ONLY_TESTNET,
     DAI[StarknetChainId.TESTNET],
     USDC[StarknetChainId.TESTNET],
     USDT[StarknetChainId.TESTNET]
   ],
-  [StarknetChainId.TESTNET2]: [
-    ...WETH_ONLY[StarknetChainId.TESTNET2],
-    DAI[StarknetChainId.TESTNET2],
-    USDC[StarknetChainId.TESTNET2],
-    USDT[StarknetChainId.TESTNET2]
-  ],
   [StarknetChainId.MAINNET]: [
-    ...WETH_ONLY[StarknetChainId.MAINNET],
+    ...WETH_ONLY_MAINNET,
     DAI[StarknetChainId.MAINNET],
     USDC[StarknetChainId.MAINNET],
     USDT[StarknetChainId.MAINNET]
@@ -246,22 +196,16 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
 // }
 
 // used for display in the default list when adding liquidity
-export const SUGGESTED_BASES: ChainTokenList = {
+export const SUGGESTED_BASES: ChainTokenList | {} = {
   ...WETH_ONLY,
   [StarknetChainId.TESTNET]: [
-    ...WETH_ONLY[StarknetChainId.TESTNET],
+    ...WETH_ONLY_TESTNET,
     DAI[StarknetChainId.TESTNET],
     USDC[StarknetChainId.TESTNET],
     USDT[StarknetChainId.TESTNET]
   ],
-  [StarknetChainId.TESTNET2]: [
-    ...WETH_ONLY[StarknetChainId.TESTNET2],
-    DAI[StarknetChainId.TESTNET2],
-    USDC[StarknetChainId.TESTNET2],
-    USDT[StarknetChainId.TESTNET2]
-  ],
   [StarknetChainId.MAINNET]: [
-    ...WETH_ONLY[StarknetChainId.MAINNET],
+    ...WETH_ONLY_MAINNET,
     DAI[StarknetChainId.MAINNET],
     USDC[StarknetChainId.MAINNET],
     USDT[StarknetChainId.MAINNET]
@@ -272,23 +216,15 @@ export const SUGGESTED_BASES: ChainTokenList = {
 export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
   ...WETH_ONLY,
   [StarknetChainId.TESTNET]: [
-    ...WETH_ONLY[StarknetChainId.TESTNET],
+    ...WETH_ONLY_TESTNET,
     DAI[StarknetChainId.TESTNET],
     USDC[StarknetChainId.TESTNET],
     USDT[StarknetChainId.TESTNET]
     // WBTC[StarknetChainId.TESTNET],
     // wstETH[StarknetChainId.TESTNET]
   ],
-  [StarknetChainId.TESTNET2]: [
-    ...WETH_ONLY[StarknetChainId.TESTNET2],
-    DAI[StarknetChainId.TESTNET2],
-    USDC[StarknetChainId.TESTNET2],
-    USDT[StarknetChainId.TESTNET2]
-    // WBTC[StarknetChainId.TESTNET],
-    // wstETH[StarknetChainId.TESTNET]
-  ],
   [StarknetChainId.MAINNET]: [
-    ...WETH_ONLY[StarknetChainId.MAINNET],
+    ...WETH_ONLY_MAINNET,
     DAI[StarknetChainId.MAINNET],
     USDC[StarknetChainId.MAINNET],
     USDT[StarknetChainId.MAINNET],
@@ -297,26 +233,18 @@ export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
   ]
 };
 
-export const BASES_TO_BUILD_ZAPPER_LIST_AGAINST: ChainTokenList = {
+export const BASES_TO_BUILD_ZAPPER_LIST_AGAINST: ChainTokenList | {} = {
   ...WETH_ONLY,
   [StarknetChainId.TESTNET]: [
-    ...WETH_ONLY[StarknetChainId.TESTNET],
+    ...WETH_ONLY_TESTNET,
     DAI[StarknetChainId.TESTNET],
     USDC[StarknetChainId.TESTNET],
     USDT[StarknetChainId.TESTNET]
     // WBTC[StarknetChainId.TESTNET],
     // wstETH[StarknetChainId.TESTNET]
   ],
-  [StarknetChainId.TESTNET2]: [
-    ...WETH_ONLY[StarknetChainId.TESTNET2],
-    DAI[StarknetChainId.TESTNET2],
-    USDC[StarknetChainId.TESTNET2],
-    USDT[StarknetChainId.TESTNET2]
-    // WBTC[StarknetChainId.TESTNET],
-    // wstETH[StarknetChainId.TESTNET]
-  ],
   [StarknetChainId.MAINNET]: [
-    ...WETH_ONLY[StarknetChainId.MAINNET],
+    ...WETH_ONLY_MAINNET,
     DAI[StarknetChainId.MAINNET],
     USDC[StarknetChainId.MAINNET],
     USDT[StarknetChainId.MAINNET],
@@ -331,10 +259,6 @@ export const PINNED_PAIRS: {
   [StarknetChainId.TESTNET]: [
     [WETH[StarknetChainId.TESTNET], DAI[StarknetChainId.TESTNET]],
     [WETH[StarknetChainId.TESTNET], USDC[StarknetChainId.TESTNET]]
-  ],
-  [StarknetChainId.TESTNET2]: [
-    [WETH[StarknetChainId.TESTNET2], DAI[StarknetChainId.TESTNET2]],
-    [WETH[StarknetChainId.TESTNET2], USDC[StarknetChainId.TESTNET2]]
   ],
   [StarknetChainId.MAINNET]: [
     [WETH[StarknetChainId.MAINNET], DAI[StarknetChainId.MAINNET]],

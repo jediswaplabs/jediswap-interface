@@ -9,6 +9,7 @@ import styled from "styled-components";
 import MetamaskIcon from "../../assets/images/metamask.png";
 import { ReactComponent as Close } from "../../assets/images/x.svg";
 import {
+  allowedChains,
   isProductionChainId,
   isProductionEnvironment,
   isTestnetChainId,
@@ -173,7 +174,7 @@ export default function WalletModal({
       if (
         (isProductionEnvironment() && !isProductionChainId(chainId)) ||
         (isTestnetEnvironment() && !isTestnetChainId(chainId)) ||
-        !Object.values(StarknetChainId).includes(chainId)
+        !allowedChains.includes(chainId)
       ) {
         setChainError(true);
       }

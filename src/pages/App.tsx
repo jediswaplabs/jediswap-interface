@@ -25,6 +25,7 @@ import Footer from "../components/Footer";
 import useFetchAllPairsCallback from "../hooks/useFetchAllPairs";
 import { MainnetWarningModal } from "../components/MainnetWarningModal";
 import {
+  allowedChains,
   isProductionChainId,
   isProductionEnvironment,
   isStagingEnvironment,
@@ -86,7 +87,7 @@ export default function App() {
       if (
         (isProductionEnvironment() && !isProductionChainId(chainId)) ||
         (isTestnetEnvironment() && !isTestnetChainId(chainId)) ||
-        !Object.values(StarknetChainId).includes(chainId)
+        !allowedChains.includes(chainId)
       ) {
         disconnect();
       }

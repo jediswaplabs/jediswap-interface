@@ -46,8 +46,10 @@ export const isProductionChainId = (id: string) => {
 };
 
 export const isTestnetChainId = (id: string) => {
-  return id === StarknetChainId.TESTNET || StarknetChainId.TESTNET2;
+  return id === StarknetChainId.TESTNET;
 };
+
+export const allowedChains = ["0x534e5f4d41494e", "0x534e5f474f45524c49"];
 
 export const webWalletUrl = isTestnetEnvironment()
   ? "https://web.hydrogen.argent47.net/"

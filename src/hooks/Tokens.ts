@@ -88,7 +88,7 @@ function parseStringFromArgs(
 // otherwise returns the token
 export function useToken(tokenAddress?: string): Token | undefined | null {
   const { account, chainId } = useAccountDetails();
-  const currencyTokens = useAllTokens(chainId as StarknetChainId);
+  const currencyTokens = useAllTokens(chainId as starknetChainId);
   const lpTokens = useJediLPTokens();
 
   const tokens = { ...currencyTokens, ...lpTokens };
