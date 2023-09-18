@@ -1,9 +1,9 @@
-import { StarknetChainId, starknetChainId } from "../..";
+import { StarknetChainId, ChainIdStarknet } from "../..";
 import FACTORY_ABI from "./abi.json";
 
 //change ABI and Contracts
 
-const FACTORY_ADDRESS: { [chainId in starknetChainId]?: string } = {
+const FACTORY_ADDRESS: { [chainId in ChainIdStarknet]?: string } = {
   [StarknetChainId.MAINNET]:
     "0xdad44c139a476c7a17fc8141e6db680e9abc9f56fe249a105094c44382c2fd",
   [StarknetChainId.TESTNET]:

@@ -1,7 +1,7 @@
-import { StarknetChainId, starknetChainId } from "../..";
+import { StarknetChainId, ChainIdStarknet } from "../..";
 import MULTICALL_ABI from "./abi.json";
 
-const MULTICALL_NETWORKS: { [chainId in starknetChainId]?: string } = {
+const MULTICALL_NETWORKS: { [chainId in ChainIdStarknet]?: string } = {
   [StarknetChainId.MAINNET]:
     "0x477dde12a2737a67d2c3c6820a48ae5ed2cf7257c8c44a61e39d1c118e6f468",
   [StarknetChainId.TESTNET]:

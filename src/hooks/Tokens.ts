@@ -9,10 +9,10 @@ import { isAddress } from "../utils";
 import { useTokenContract } from "./useContract";
 import { useSingleCallResult } from "../state/multicall/hooks";
 import { NEVER_RELOAD } from "../state/multicall/hooks";
-import { DEFAULT_CHAIN_ID, starknetChainId } from "../constants";
+import { DEFAULT_CHAIN_ID, ChainIdStarknet } from "../constants";
 import { useAccountDetails } from ".";
 export function useAllTokens(
-  chainId: starknetChainId
+  chainId: ChainIdStarknet
 ): { [address: string]: Token } {
   const userAddedTokens = useUserAddedTokens();
   const allTokens = useSelectedTokenList();
@@ -88,7 +88,7 @@ function parseStringFromArgs(
 // otherwise returns the token
 export function useToken(tokenAddress?: string): Token | undefined | null {
   const { account, chainId } = useAccountDetails();
-  const currencyTokens = useAllTokens(chainId as starknetChainId);
+  const currencyTokens = useAllTokens(chainId as ChainIdStarknet);
   const lpTokens = useJediLPTokens();
 
   const tokens = { ...currencyTokens, ...lpTokens };

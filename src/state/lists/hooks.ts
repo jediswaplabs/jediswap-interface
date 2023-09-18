@@ -1,7 +1,7 @@
 import {
   BASES_TO_BUILD_ZAPPER_LIST_AGAINST,
   StarknetChainId,
-  starknetChainId
+  ChainIdStarknet
 } from "./../../constants/index";
 import { LPToken, Pair, Token } from "@jediswap/sdk";
 import { Tags, TokenInfo, TokenList } from "@jediswap/token-lists";
@@ -100,7 +100,7 @@ export class WrappedLPTokenInfo extends LPToken {
   public readonly tags: TagInfo[];
 
   constructor(
-    chainId: starknetChainId,
+    chainId: ChainIdStarknet,
     token0Info: WrappedTokenInfo,
     token1Info: WrappedTokenInfo,
     tags: TagInfo[]
@@ -139,7 +139,7 @@ export class WrappedLPTokenInfo extends LPToken {
 
 export type TokenAddressMap = Readonly<
   {
-    [chainId in starknetChainId]?: Readonly<{
+    [chainId in ChainIdStarknet]?: Readonly<{
       [tokenAddress: string]: WrappedTokenInfo;
     }>;
   }
@@ -147,7 +147,7 @@ export type TokenAddressMap = Readonly<
 
 export type LPTokenAddressMap = Readonly<
   {
-    [chainId in starknetChainId]?: Readonly<{
+    [chainId in ChainIdStarknet]?: Readonly<{
       [lpTokenAddress: string]: WrappedLPTokenInfo;
     }>;
   }

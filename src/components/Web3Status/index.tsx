@@ -13,7 +13,7 @@ import { argentX, braavosWallet } from "../../connectors";
 import {
   NetworkContextName,
   domainURL,
-  starknetChainId
+  ChainIdStarknet
 } from "../../constants";
 import { useWalletModalToggle } from "../../state/application/hooks";
 import {
@@ -278,7 +278,7 @@ export default function Web3Status() {
   const [domain, setDomain] = useState<string>("");
 
   useEffect(() => {
-    const url = domainURL(chainId as starknetChainId);
+    const url = domainURL(chainId as ChainIdStarknet);
     fetch(url + number.hexToDecimalString(address ?? ""))
       .then(response => response.json())
       .then((data: DomainToAddrData) => {

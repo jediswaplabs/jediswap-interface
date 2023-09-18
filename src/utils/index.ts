@@ -8,7 +8,7 @@ import {
   number
 } from "starknet";
 import { BigNumber } from "@ethersproject/bignumber";
-import { StarknetChainId, ZERO_ADDRESS, starknetChainId } from "../constants";
+import { StarknetChainId, ZERO_ADDRESS, ChainIdStarknet } from "../constants";
 import {
   JSBI,
   Percent,
@@ -33,18 +33,18 @@ export function isAddress(addr: string | null | undefined): string | false {
   }
 }
 
-const VOYAGER_PREFIXES: { [chainId in starknetChainId]?: string } = {
+const VOYAGER_PREFIXES: { [chainId in ChainIdStarknet]?: string } = {
   [StarknetChainId.MAINNET]: "",
   [StarknetChainId.TESTNET]: "goerli."
 };
 
-const STARKSCAN_PREFIXES: { [chainId in starknetChainId]?: string } = {
+const STARKSCAN_PREFIXES: { [chainId in ChainIdStarknet]?: string } = {
   [StarknetChainId.MAINNET]: "",
   [StarknetChainId.TESTNET]: "testnet."
 };
 
 export function getVoyagerLink(
-  chainId: starknetChainId,
+  chainId: ChainIdStarknet,
   data: string,
   type: "transaction" | "block" | "contract"
 ): string {
@@ -66,7 +66,7 @@ export function getVoyagerLink(
 }
 
 export function getStarkscanLink(
-  chainId: starknetChainId,
+  chainId: ChainIdStarknet,
   data: string,
   type: "transaction" | "block" | "contract"
 ): string {

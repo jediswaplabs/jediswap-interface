@@ -5,7 +5,7 @@ import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import {
   BASES_TO_TRACK_LIQUIDITY_FOR,
   PINNED_PAIRS,
-  starknetChainId
+  ChainIdStarknet
 } from "../../constants";
 import { useAllTokens } from "../../hooks/Tokens";
 import { AppDispatch, AppState } from "../index";
@@ -158,7 +158,7 @@ export function useUserAddedTokens(): Token[] {
   return useMemo(() => {
     if (!chainId) return [];
     return Object.values(
-      serializedTokensMap[(chainId as unknown) as starknetChainId] ?? {}
+      serializedTokensMap[(chainId as unknown) as ChainIdStarknet] ?? {}
     ).map(deserializeToken);
   }, [serializedTokensMap, chainId]);
 }
@@ -210,7 +210,7 @@ export function getLiquidityToken([tokenA, tokenB]: [Token, Token]): Token {
  */
 export function useTrackedTokenPairs(): [Token, Token][] {
   const { chainId } = useAccountDetails();
-  const tokens = useAllTokens(chainId as starknetChainId);
+  const tokens = useAllTokens(chainId as ChainIdStarknet);
   // pinned pairs
   const pinnedPairs = useMemo(
     () => (chainId ? PINNED_PAIRS[chainId] ?? [] : []),

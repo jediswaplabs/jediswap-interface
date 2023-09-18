@@ -18,7 +18,7 @@ import {
   useMultipleContractSingleData,
   useSingleCallResult
 } from "../multicall/hooks";
-import { DEFAULT_CHAIN_ID, starknetChainId } from "../../constants";
+import { DEFAULT_CHAIN_ID, ChainIdStarknet } from "../../constants";
 import { useAccountDetails } from "../../hooks";
 
 /**
@@ -215,7 +215,7 @@ export function useAllTokenBalances(): {
   [tokenAddress: string]: TokenAmount | undefined;
 } {
   const { address, chainId } = useAccountDetails();
-  const allTokens = useAllTokens(chainId as starknetChainId);
+  const allTokens = useAllTokens(chainId as ChainIdStarknet);
   const allTokensArray = useMemo(() => Object.values(allTokens ?? {}), [
     allTokens
   ]);

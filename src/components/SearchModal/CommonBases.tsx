@@ -3,7 +3,7 @@ import { Text } from "rebass";
 import { Currency, currencyEquals, ETHER, Token } from "@jediswap/sdk";
 import styled from "styled-components";
 
-import { starknetChainId, SUGGESTED_BASES } from "../../constants";
+import { ChainIdStarknet, SUGGESTED_BASES } from "../../constants";
 import { AutoColumn } from "../Column";
 import QuestionHelper from "../QuestionHelper";
 import { AutoRow } from "../Row";
@@ -31,7 +31,7 @@ export default function CommonBases({
   onSelect,
   selectedCurrency
 }: {
-  chainId?: starknetChainId;
+  chainId?: ChainIdStarknet;
   selectedCurrency?: Currency | null;
   onSelect: (currency: Currency) => void;
 }) {

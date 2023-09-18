@@ -1,9 +1,9 @@
-import { StarknetChainId, starknetChainId } from "../..";
+import { StarknetChainId, ChainIdStarknet } from "../..";
 import ROUTER_ABI from "./abi.json";
 
 //update abi
 
-const ROUTER_ADDRESS: { [chainId in starknetChainId]?: string } = {
+const ROUTER_ADDRESS: { [chainId in ChainIdStarknet]?: string } = {
   [StarknetChainId.MAINNET]:
     "0x41fd22b238fa21cfcf5dd45a8548974d8263b3a531a60388411c5e230f97023",
   [StarknetChainId.TESTNET]:

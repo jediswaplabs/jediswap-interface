@@ -30,7 +30,7 @@ import { useTokenComparator } from "./sorting";
 import { PaddedColumn, SearchInput, Separator } from "./styleds";
 import AutoSizer from "react-virtualized-auto-sizer";
 import { wrappedCurrency } from "../../utils/wrappedCurrency";
-import { DEFAULT_CHAIN_ID, starknetChainId } from "../../constants";
+import { DEFAULT_CHAIN_ID, ChainIdStarknet } from "../../constants";
 import { useAccountDetails } from "../../hooks";
 
 interface CurrencySearchProps {
@@ -60,7 +60,7 @@ export function CurrencySearch({
   const fixedList = useRef<FixedSizeList>();
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [invertSearchOrder, setInvertSearchOrder] = useState<boolean>(false);
-  const allTokens = useAllTokens(chainId as starknetChainId);
+  const allTokens = useAllTokens(chainId as ChainIdStarknet);
   const jediLPTokens = useJediLPTokens();
 
   // if they input an address, use it

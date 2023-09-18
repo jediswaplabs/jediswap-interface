@@ -12,7 +12,7 @@ import { AutoColumn } from "../Column";
 import { AlertTriangle } from "react-feather";
 import { ButtonError } from "../Button";
 import { useAccountDetails } from "../../hooks";
-import { starknetChainId } from "../../constants";
+import { ChainIdStarknet } from "../../constants";
 
 const Wrapper = styled.div<{ error: boolean }>`
   background: ${({ theme }) => transparentize(0.6, theme.bg3)};
@@ -44,7 +44,7 @@ function TokenWarningCard({ token }: TokenWarningCardProps) {
   const tokenSymbol = token?.symbol?.toLowerCase() ?? "";
   const tokenName = token?.name?.toLowerCase() ?? "";
 
-  const allTokens = useAllTokens(chainId as starknetChainId);
+  const allTokens = useAllTokens(chainId as ChainIdStarknet);
 
   const duplicateNameOrSymbol = useMemo(() => {
     if (!token || !chainId) return false;

@@ -13,7 +13,7 @@ import Circle from "../../assets/jedi/loadingCircle.svg";
 import { getStarkscanLink } from "../../utils";
 import openInBrowser from "../../assets/jedi/openInBrowser.svg";
 import { useAccountDetails } from "../../hooks";
-import { starknetChainId } from "../../constants";
+import { ChainIdStarknet } from "../../constants";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -113,7 +113,7 @@ function TransactionSubmittedContent({
 }: {
   onDismiss: () => void;
   hash: string | undefined;
-  chainId: starknetChainId;
+  chainId: ChainIdStarknet;
 }) {
   const theme = useContext(ThemeContext);
 

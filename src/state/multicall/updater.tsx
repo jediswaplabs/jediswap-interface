@@ -16,7 +16,7 @@ import {
 import BN from "bn.js";
 import { useAccountDetails } from "../../hooks";
 import { useBlockNumber } from "../application/hooks";
-import { starknetChainId } from "../../constants";
+import { ChainIdStarknet } from "../../constants";
 
 // chunk calls so we do not exceed the gas limit
 const CALL_CHUNK_SIZE = 500;
@@ -76,7 +76,7 @@ async function fetchChunk(
  */
 export function activeListeningKeys(
   allListeners: AppState["multicall"]["callListeners"],
-  chainId?: starknetChainId
+  chainId?: ChainIdStarknet
 ): { [callKey: string]: number } {
   if (!allListeners || !chainId) return {};
   const listeners = allListeners[chainId];
@@ -111,7 +111,7 @@ export function activeListeningKeys(
 export function outdatedListeningKeys(
   callResults: AppState["multicall"]["callResults"],
   listeningKeys: { [callKey: string]: number },
-  chainId: starknetChainId | undefined,
+  chainId: ChainIdStarknet | undefined,
   latestBlockNumber: number | undefined
 ): string[] {
   if (!chainId || !latestBlockNumber) return [];
