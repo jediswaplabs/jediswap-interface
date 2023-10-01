@@ -212,6 +212,12 @@ function Web3StatusInner({ starkID }: { starkID?: string }) {
   const toggleWalletModal = useWalletModalToggle()
 
   if (address) {
+    let displayStarkID: string | undefined
+    if (starkID && starkID.length > 21) {
+      displayStarkID = `${starkID.substring(0, 6)}...${starkID.substring(starkID.length - 12)}`
+    } else {
+      displayStarkID = starkID
+    }
     return (
       <Web3StatusConnected id="web3-status-connected" onClick={toggleWalletModal} pending={hasPendingTransactions}>
         {!hasPendingTransactions && connector && <StatusIcon connector={connector} />}
@@ -220,7 +226,7 @@ function Web3StatusInner({ starkID }: { starkID?: string }) {
             <Text>{pending?.length} Pending</Text> <Loader stroke="white" />
           </RowBetween>
         ) : (
-          <Text>{starkID ? starkID : shortenAddress(address)}</Text>
+          <Text>{starkID ? displayStarkID : shortenAddress(address)}</Text>
         )}
       </Web3StatusConnected>
     )
