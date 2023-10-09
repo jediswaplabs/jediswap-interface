@@ -81,6 +81,13 @@ export function shortenAddress(address: string, chars = 4): string {
   return `${parsed.substring(0, chars + 2)}...${parsed.substring(63 - chars)}`
 }
 
+export function shortenStarkID(starkID: string): string {
+  if (starkID.length <= 21) {
+    return starkID
+  }
+  return `${starkID.substring(0, 6)}...${starkID.substring(starkID.length - 12)}`
+}
+
 // add 10%
 export function calculateGasMargin(value: BigNumber): BigNumber {
   return value.mul(BigNumber.from(10000).add(BigNumber.from(1000))).div(BigNumber.from(10000))
