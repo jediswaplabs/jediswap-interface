@@ -194,7 +194,6 @@ function Web3StatusInner({ starkID }: { starkID?: string }) {
   const { t } = useTranslation()
   const { error } = useStarknetReact()
   const { address, connector } = useAccountDetails()
-  starkID = 'lxhgldfsflgldthtlxhgldfsflgldthtlxhgldfsflgldthtlxhgldfsflgldthtlxhgldfsflgldtht'
   // console.log('🚀 ~ file: index.tsx:198 ~ Web3StatusInner ~ provider:', provider.get)
 
   const allTransactions = useAllTransactions()

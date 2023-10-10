@@ -82,6 +82,9 @@ export function shortenAddress(address: string, chars = 4): string {
 }
 
 export function shortenStarkID(starkID: string): string {
+  if (!starkID?.length) {
+    return ''
+  }
   if (starkID.length <= 21) {
     return starkID
   }
