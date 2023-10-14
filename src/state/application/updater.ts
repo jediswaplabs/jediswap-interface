@@ -1,64 +1,95 @@
-import { useCallback, useEffect, useState } from 'react'
-import useDebounce from '../../hooks/useDebounce'
-import useIsWindowVisible from '../../hooks/useIsWindowVisible'
-import { updateBlockNumber } from './actions'
-import { useDispatch } from 'react-redux'
-
-import { StarknetChainId } from 'starknet/dist/constants'
-import { useAccountDetails } from '../../hooks'
+import { useCallback, useEffect, useState } from "react";
+import useDebounce from "../../hooks/useDebounce";
+import useIsWindowVisible from "../../hooks/useIsWindowVisible";
+import { updateBlockNumber } from "./actions";
+import { useDispatch } from "react-redux";
+import { useAccountDetails } from "../../hooks";
+import { ChainIdStarknet } from "../../constants";
 
 export default function Updater(): null {
-  const { account, chainId } = useAccountDetails()
-  const dispatch = useDispatch()
+  const { account, chainId } = useAccountDetails();
+  const dispatch = useDispatch();
 
-  const windowVisible = useIsWindowVisible()
+  const windowVisible = useIsWindowVisible();
 
-  const [state, setState] = useState<{ chainId: StarknetChainId | undefined; blockNumber: number | null }>({
+  const [state, setState] = useState<{
+    chainId: ChainIdStarknet | undefined;
+    blockNumber: number | null;
+  }>({
     chainId,
     blockNumber: null
-  })
+  });
 
   const blockNumberCallback = useCallback(
     (blockNumber: number) => {
       setState(state => {
         if (chainId === state.chainId) {
-          if (typeof state.blockNumber !== 'number') return { chainId, blockNumber }
-          return { chainId, blockNumber: Math.max(blockNumber, state.blockNumber) }
+          if (typeof state.blockNumber !== "number")
+            return { chainId, blockNumber };
+          return {
+            chainId,
+            blockNumber: Math.max(blockNumber, state.blockNumber)
+          };
         }
-        return state
-      })
+        return state;
+      });
     },
     [chainId, setState]
-  )
+  );
 
   // attach/detach listeners
   useEffect(() => {
-    if (!account || !chainId || !windowVisible) return undefined
+    if (!account || !chainId || !windowVisible) return undefined;
 
-    setState({ chainId, blockNumber: null })
+    setState({ chainId, blockNumber: null });
 
     account
-      .getBlock('latest')
+      .getBlock("latest")
       .then(block => blockNumberCallback(Number(block.block_number)))
-      .catch(error => console.error(`Failed to get block number for chainId: ${chainId}`, error))
+      .catch(error =>
+        console.error(
+          `Failed to get block number for chainId: ${chainId}`,
+          error
+        )
+      );
 
     const interval = setInterval(() => {
       account
-        .getBlock('latest')
+        .getBlock("latest")
         .then(block => blockNumberCallback(Number(block.block_number)))
-        .catch(error => console.error(`Failed to get block number for chainId: ${chainId}`, error))
-    }, 15000)
+        .catch(error =>
+          console.error(
+            `Failed to get block number for chainId: ${chainId}`,
+            error
+          )
+        );
+    }, 15000);
     return () => {
-      clearInterval(interval)
-    }
-  }, [dispatch, chainId, account, blockNumberCallback, windowVisible])
+      clearInterval(interval);
+    };
+  }, [dispatch, chainId, account, blockNumberCallback, windowVisible]);
 
-  const debouncedState = useDebounce(state, 100)
+  const debouncedState = useDebounce(state, 100);
 
   useEffect(() => {
-    if (!debouncedState.chainId || !debouncedState.blockNumber || !windowVisible) return
-    dispatch(updateBlockNumber({ chainId: debouncedState.chainId, blockNumber: debouncedState.blockNumber }))
-  }, [windowVisible, dispatch, debouncedState.blockNumber, debouncedState.chainId])
+    if (
+      !debouncedState.chainId ||
+      !debouncedState.blockNumber ||
+      !windowVisible
+    )
+      return;
+    dispatch(
+      updateBlockNumber({
+        chainId: debouncedState.chainId,
+        blockNumber: debouncedState.blockNumber
+      })
+    );
+  }, [
+    windowVisible,
+    dispatch,
+    debouncedState.blockNumber,
+    debouncedState.chainId
+  ]);
 
-  return null
+  return null;
 }

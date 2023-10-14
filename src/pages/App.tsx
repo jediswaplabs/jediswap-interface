@@ -1,53 +1,54 @@
-import React, { Suspense, useEffect } from 'react'
-import { Route, Switch } from 'react-router-dom'
-import styled from 'styled-components'
-import Header from '../components/Header'
-import Popups from '../components/Popups'
-import Web3ReactManager from '../components/Web3ReactManager'
-import DarkModeQueryParamReader from '../theme/DarkModeQueryParamReader'
+import React, { Suspense, useEffect } from "react";
+import { Route, Switch } from "react-router-dom";
+import styled from "styled-components";
+import Header from "../components/Header";
+import Popups from "../components/Popups";
+import Web3ReactManager from "../components/Web3ReactManager";
+import DarkModeQueryParamReader from "../theme/DarkModeQueryParamReader";
 
-import Swap from './Swap'
-import { RedirectPathToSwapOnly, RedirectToSwap } from './Swap/redirects'
+import Swap from "./Swap";
+import { RedirectPathToSwapOnly, RedirectToSwap } from "./Swap/redirects";
 
-import Pool from './Pool'
+import Pool from "./Pool";
 
-import RemoveLiquidity from './RemoveLiquidity'
+import RemoveLiquidity from "./RemoveLiquidity";
 import {
   RedirectDuplicateTokenIds,
   RedirectOldAddLiquidityPathStructure,
   RedirectToAddLiquidity
-} from './AddLiquidity/redirects'
+} from "./AddLiquidity/redirects";
 
-import Zap from './Zap'
-import ComingSoon from './ComingSoon'
-import Maintenance from './Maintenance'
-import Footer from '../components/Footer'
-import useFetchAllPairsCallback from '../hooks/useFetchAllPairs'
-import { MainnetWarningModal } from '../components/MainnetWarningModal'
-import { Web3ReactProvider } from '@web3-react/core'
+import Zap from "./Zap";
+import ComingSoon from "./ComingSoon";
+import Maintenance from "./Maintenance";
+import Footer from "../components/Footer";
+import useFetchAllPairsCallback from "../hooks/useFetchAllPairs";
+import { MainnetWarningModal } from "../components/MainnetWarningModal";
+import { Web3ReactProvider } from "@web3-react/core";
 import {
+  allowedChains,
   isProductionChainId,
   isProductionEnvironment,
   isStagingEnvironment,
   isTestnetChainId,
   isTestnetEnvironment
-} from '../connectors'
-import { useAccount, useConnectors } from '@starknet-react/core'
-import { StarknetChainId } from 'starknet/dist/constants'
-import { useAccountDetails } from '../hooks'
+} from "../connectors";
+import { useAccount, useConnectors } from "@starknet-react/core";
+import { useAccountDetails } from "../hooks";
+import { StarknetChainId } from "../constants";
 
 const AppWrapper = styled.div`
   display: flex;
   flex-flow: column;
   align-items: flex-start;
   overflow-x: hidden;
-`
+`;
 
 const HeaderWrapper = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
   width: 100%;
   justify-content: space-between;
-`
+`;
 
 const BodyWrapper = styled.div`
   display: flex;
@@ -66,33 +67,33 @@ const BodyWrapper = styled.div`
   `};
 
   z-index: 1;
-`
+`;
 
 const Marginer = styled.div`
   margin-top: 5rem;
-`
+`;
 
 export default function App() {
-  const fetchAllPairs = useFetchAllPairsCallback()
-  const { disconnect } = useConnectors()
-  const { status, chainId } = useAccountDetails()
+  const fetchAllPairs = useFetchAllPairsCallback();
+  const { disconnect } = useConnectors();
+  const { status, chainId } = useAccountDetails();
 
   useEffect(() => {
-    fetchAllPairs()
-  }, [fetchAllPairs])
+    fetchAllPairs();
+  }, [fetchAllPairs]);
 
   useEffect(() => {
     //Ensure that environment and chainId are compatible with one another.
-    if (status === 'connected' && chainId) {
+    if (status === "connected" && chainId) {
       if (
         (isProductionEnvironment() && !isProductionChainId(chainId)) ||
         (isTestnetEnvironment() && !isTestnetChainId(chainId)) ||
-        !Object.values(StarknetChainId).includes(chainId)
+        !allowedChains.includes(chainId)
       ) {
-        disconnect()
+        disconnect();
       }
     }
-  }, [status])
+  }, [status]);
 
   return (
     <Suspense fallback={null}>
@@ -109,18 +110,48 @@ export default function App() {
             <Web3ReactProvider getLibrary={web3 => web3}>
               <Switch>
                 <Route exact strict path="/swap" component={Swap} />
-                <Route exact strict path="/swap/:outputCurrency" component={RedirectToSwap} />
+                <Route
+                  exact
+                  strict
+                  path="/swap/:outputCurrency"
+                  component={RedirectToSwap}
+                />
                 <Route exact strict path="/pool" component={Pool} />
                 <Route exact path="/add" component={RedirectToAddLiquidity} />
-                <Route exact path="/add/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />
-                <Route exact path="/add/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
-                <Route exact path="/create" component={RedirectToAddLiquidity} />
-                <Route exact path="/create/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />
-                <Route exact path="/create/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
+                <Route
+                  exact
+                  path="/add/:currencyIdA"
+                  component={RedirectOldAddLiquidityPathStructure}
+                />
+                <Route
+                  exact
+                  path="/add/:currencyIdA/:currencyIdB"
+                  component={RedirectDuplicateTokenIds}
+                />
+                <Route
+                  exact
+                  path="/create"
+                  component={RedirectToAddLiquidity}
+                />
+                <Route
+                  exact
+                  path="/create/:currencyIdA"
+                  component={RedirectOldAddLiquidityPathStructure}
+                />
+                <Route
+                  exact
+                  path="/create/:currencyIdA/:currencyIdB"
+                  component={RedirectDuplicateTokenIds}
+                />
                 <Route exact path="/zap" component={Zap} />
                 {/* <Route exact path="/bridge" component={Bridge} /> */}
                 <Route exact path="/stake" component={ComingSoon} />
-                <Route exact strict path="/remove/:currencyIdA/:currencyIdB" component={RemoveLiquidity} />
+                <Route
+                  exact
+                  strict
+                  path="/remove/:currencyIdA/:currencyIdB"
+                  component={RemoveLiquidity}
+                />
                 <Route component={RedirectPathToSwapOnly} />
               </Switch>
             </Web3ReactProvider>
@@ -130,5 +161,5 @@ export default function App() {
         <Footer />
       </AppWrapper>
     </Suspense>
-  )
+  );
 }

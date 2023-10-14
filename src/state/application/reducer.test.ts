@@ -1,7 +1,7 @@
 import { createStore, Store } from 'redux'
 import { addPopup, ApplicationModal, removePopup, setOpenModal, updateBlockNumber } from './actions'
 import reducer, { ApplicationState } from './reducer'
-import { StarknetChainId } from 'starknet/dist/constants'
+import { StarknetChainId } from '../../constants'
 
 describe('application reducer', () => {
   let store: Store<ApplicationState>

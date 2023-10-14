@@ -1,28 +1,28 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from "react";
 // import { Text } from 'rebass'
-import { NavLink, withRouter } from 'react-router-dom'
-import { darken } from 'polished'
-import { useTranslation } from 'react-i18next'
+import { NavLink, withRouter } from "react-router-dom";
+import { darken } from "polished";
+import { useTranslation } from "react-i18next";
 
-import styled from 'styled-components'
+import styled from "styled-components";
 
-import Logo from '../../assets/jedi/logo.png'
+import Logo from "../../assets/jedi/logo.png";
 // import LogoDark from '../../assets/svg/logo_white.svg'
 // import { useDarkModeManager } from '../../state/user/hooks'
 // import { useETHBalances } from '../../state/wallet/hooks'
-import { ExternalLink, TYPE } from '../../theme'
+import { ExternalLink, TYPE } from "../../theme";
 // import { ExternalLink } from '../../theme'
 
-import { YellowCard } from '../Card'
+import { YellowCard } from "../Card";
 // import Settings from '../Settings'
 // import Menu from '../Menu'
 
-import Row from '../Row'
+import Row from "../Row";
 // import { RowFixed } from '../Row'
-import Web3Status from '../Web3Status'
-import { transparentize } from 'polished'
-import { useAccountDetails } from '../../hooks'
-import { StarknetChainId } from 'starknet/dist/constants'
+import Web3Status from "../Web3Status";
+import { transparentize } from "polished";
+import { useAccountDetails } from "../../hooks";
+import { StarknetChainId } from "../../constants";
 
 const HeaderFrame = styled.div`
   display: grid;
@@ -35,7 +35,8 @@ const HeaderFrame = styled.div`
   height: 76px;
   top: 0;
   position: relative;
-  border-bottom: 1.25px solid ${({ theme }) => transparentize(0.75, theme.jediGrey)};
+  border-bottom: 1.25px solid
+    ${({ theme }) => transparentize(0.75, theme.jediGrey)};
   z-index: 2;
   padding: 1rem 64px;
 
@@ -50,7 +51,7 @@ const HeaderFrame = styled.div`
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
         padding: 0.5rem 1rem;
   `}
-`
+`;
 
 const HeaderControls = styled.div`
   display: flex;
@@ -74,7 +75,7 @@ const HeaderControls = styled.div`
     border-radius: 12px 12px 0 0;
     background-color: ${({ theme }) => theme.bg1};
   `};
-`
+`;
 
 const HeaderElement = styled.div`
   display: flex;
@@ -85,7 +86,7 @@ const HeaderElement = styled.div`
    flex-direction: row-reverse;
     align-items: center;
   `};
-`
+`;
 
 // const HeaderElementWrap = styled.div`
 //   display: flex;
@@ -108,14 +109,15 @@ const HeaderLinks = styled(Row)`
 `};
   /* gap: 38px;
    */
-`
+`;
 
 const AccountElement = styled.div<{ active: boolean }>`
   display: flex;
   flex: 0;
   flex-direction: row;
   align-items: center;
-  // background-color: ${({ theme, active }) => (!active ? theme.bg1 : theme.bg3)};
+  // background-color: ${({ theme, active }) =>
+    !active ? theme.bg1 : theme.bg3};
   border-radius: 12px;
   white-space: nowrap;
   width: 100%;
@@ -125,9 +127,10 @@ const AccountElement = styled.div<{ active: boolean }>`
     border: 1px solid blue;
   }
   /* :hover {
-    background-color: ${({ theme, active }) => (!active ? theme.bg2 : theme.bg4)};
+    background-color: ${({ theme, active }) =>
+      !active ? theme.bg2 : theme.bg4};
   } */
-`
+`;
 
 const UNIAmount = styled(AccountElement)`
   color: white;
@@ -135,8 +138,13 @@ const UNIAmount = styled(AccountElement)`
   height: 36px;
   font-weight: 500;
   background-color: ${({ theme }) => theme.bg3};
-  background: radial-gradient(174.47% 188.91% at 1.84% 0%, #ff007a 0%, #2172e5 100%), #edeef2;
-`
+  background: radial-gradient(
+      174.47% 188.91% at 1.84% 0%,
+      #ff007a 0%,
+      #2172e5 100%
+    ),
+    #edeef2;
+`;
 
 const UNIWrapper = styled.span`
   width: fit-content;
@@ -150,13 +158,13 @@ const UNIWrapper = styled.span`
   :active {
     opacity: 0.9;
   }
-`
+`;
 
 const HideSmall = styled.div`
   ${({ theme }) => theme.mediaWidth.upToSmall`
     display: none;
   `};
-`
+`;
 
 const NetworkCard = styled(YellowCard)`
   border-radius: 8px;
@@ -176,7 +184,7 @@ const NetworkCard = styled(YellowCard)`
     text-overflow: ellipsis;
     flex-shrink: 0;
   `};
-`
+`;
 
 const NetworkSelect = styled.select`
   border-radius: 8px;
@@ -196,7 +204,7 @@ const NetworkSelect = styled.select`
     text-overflow: ellipsis;
     flex-shrink: 0;
   `};
-`
+`;
 
 // const BalanceText = styled(Text)`
 //   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
@@ -216,16 +224,16 @@ const Title = styled.a`
   :hover {
     cursor: pointer;
   }
-`
+`;
 
 const JediIcon = styled.div`
   transition: transform 0.3s ease;
   :hover {
     transform: rotate(-5deg);
   }
-`
+`;
 
-const activeClassName = 'ACTIVE'
+const activeClassName = "ACTIVE";
 
 const StyledNavLink = styled(NavLink).attrs({
   activeClassName
@@ -282,7 +290,7 @@ const StyledNavLink = styled(NavLink).attrs({
     // color: ${({ theme }) => darken(0.1, theme.text1)};
     color:rgba(255, 255, 255, 0.8);
   }
-`
+`;
 
 const StyledExternalLink = styled(ExternalLink).attrs({
   activeClassName
@@ -310,7 +318,7 @@ const StyledExternalLink = styled(ExternalLink).attrs({
     color:rgba(255, 255, 255, 0.8);
     text-decoration: none;
   }
-`
+`;
 const StarkNetCard = styled.div`
   height: 38px;
   width: 124px;
@@ -320,22 +328,22 @@ const StarkNetCard = styled.div`
   align-items: center;
   justify-content: center;
   border-radius: 8px;
-  font-family: 'DM Sans', sans-serif;
+  font-family: "DM Sans", sans-serif;
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
   line-height: 20px;
   // text-align: center;
-`
+`;
 
 interface window {
-  starknet: any
+  starknet: any;
 }
 
 function Header({ history }: { history: any }) {
-  const { address, status, chainId } = useAccountDetails()
-  const { t } = useTranslation()
-  const isNetworkMainnet = chainId === StarknetChainId.MAINNET
+  const { address, status, chainId } = useAccountDetails();
+  const { t } = useTranslation();
+  const isNetworkMainnet = chainId === StarknetChainId.MAINNET;
 
   // async function changeNetwork(e) {
   //   e.preventDefault()
@@ -354,27 +362,35 @@ function Header({ history }: { history: any }) {
     <HeaderFrame>
       <Title href="." style={{}}>
         <JediIcon>
-          <img width={'195px'} height={'32px'} src={Logo} alt="logo" />
+          <img width={"195px"} height={"32px"} src={Logo} alt="logo" />
         </JediIcon>
       </Title>
       {/* <HeaderRow> */}
       <HeaderLinks>
-        <StyledNavLink id={`swap-nav-link`} to={'/swap'} isActive={() => history.location.pathname.includes('/swap')}>
-          {t('Trade')}
+        <StyledNavLink
+          id={`swap-nav-link`}
+          to={"/swap"}
+          isActive={() => history.location.pathname.includes("/swap")}
+        >
+          {t("Trade")}
         </StyledNavLink>
         <StyledNavLink
           id={`pool-nav-link`}
-          to={'/pool'}
+          to={"/pool"}
           isActive={() =>
-            history.location.pathname.includes('/pool') ||
-            history.location.pathname.includes('/add') ||
-            history.location.pathname.includes('/remove')
+            history.location.pathname.includes("/pool") ||
+            history.location.pathname.includes("/add") ||
+            history.location.pathname.includes("/remove")
           }
         >
-          {t('Pool')}
+          {t("Pool")}
         </StyledNavLink>
-        <StyledNavLink id={`swap-nav-link`} to={'/zap'} isActive={() => history.location.pathname.includes('/zap')}>
-          {t('Zap')}
+        <StyledNavLink
+          id={`swap-nav-link`}
+          to={"/zap"}
+          isActive={() => history.location.pathname.includes("/zap")}
+        >
+          {t("Zap")}
         </StyledNavLink>
         {/* <StyledNavLink
           id={`swap-nav-link`}
@@ -384,7 +400,10 @@ function Header({ history }: { history: any }) {
           {t('Bridge')}
         </StyledNavLink> */}
 
-        <StyledExternalLink id={`stake-nav-link`} href={'https://info.jediswap.xyz'}>
+        <StyledExternalLink
+          id={`stake-nav-link`}
+          href={"https://info.jediswap.xyz"}
+        >
           Dashboard
         </StyledExternalLink>
 
@@ -407,11 +426,15 @@ function Header({ history }: { history: any }) {
         {/* <StarkNetCard>Starknet</StarkNetCard> */}
         <HeaderElement>
           <HideSmall>
-            {status === 'connected' ? (
+            {status === "connected" ? (
               isNetworkMainnet ? (
-                <NetworkCard title={'Starknet Mainnet'}>{'Starknet Mainnet'}</NetworkCard>
+                <NetworkCard title={"Starknet Mainnet"}>
+                  {"Starknet Mainnet"}
+                </NetworkCard>
               ) : (
-                <NetworkCard title={'Starknet Görli'}>{'Starknet Görli'}</NetworkCard>
+                <NetworkCard title={"Starknet Görli"}>
+                  {"Starknet Görli"}
+                </NetworkCard>
               )
             ) : null}
             {/*<NetworkSelect onChange={changeNetwork}>*/}
@@ -419,7 +442,7 @@ function Header({ history }: { history: any }) {
             {/*  <option value="SN_GOERLI">Starknet-Görli</option>*/}
             {/*</NetworkSelect>*/}
           </HideSmall>
-          <AccountElement active={!!address} style={{ pointerEvents: 'auto' }}>
+          <AccountElement active={!!address} style={{ pointerEvents: "auto" }}>
             <Web3Status />
           </AccountElement>
         </HeaderElement>
@@ -429,7 +452,7 @@ function Header({ history }: { history: any }) {
         </HeaderElementWrap> */}
       </HeaderControls>
     </HeaderFrame>
-  )
+  );
 }
 
-export default withRouter(Header)
+export default withRouter(Header);
