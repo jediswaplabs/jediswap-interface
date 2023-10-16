@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux'
 import styled, { ThemeContext } from 'styled-components'
 import { AppDispatch } from '../../state'
 import { clearAllTransactions } from '../../state/transactions/actions'
-import { shortenAddress } from '../../utils'
+import { shortenAddress, shortenStarkID } from '../../utils'
 import { AutoRow } from '../Row'
 import Copy from './Copy'
 import Transaction from './Transaction'
@@ -340,7 +340,7 @@ export default function AccountDetails({
                           <>
                             <div>
                               {getStatusIcon()}
-                              <p> {ENSName}</p>
+                              <p> {shortenStarkID(ENSName)}</p>
                             </div>
                           </>
                         ) : (
