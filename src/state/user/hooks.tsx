@@ -17,7 +17,7 @@ import {
   updateUserSlippageTolerance,
   toggleURLWarning
 } from './actions'
-import { StarknetChainId } from 'starknet/dist/constants'
+import { ChainId } from '@jediswap/sdk'
 import { useAccountDetails } from '../../hooks'
 
 function serializeToken(token: Token): SerializedToken {
@@ -139,7 +139,7 @@ export function useUserAddedTokens(): Token[] {
 
   return useMemo(() => {
     if (!chainId) return []
-    return Object.values(serializedTokensMap[(chainId as unknown) as StarknetChainId] ?? {}).map(deserializeToken)
+    return Object.values(serializedTokensMap[(chainId as unknown) as ChainId] ?? {}).map(deserializeToken)
   }, [serializedTokensMap, chainId])
 }
 
@@ -184,7 +184,7 @@ export function getLiquidityToken([tokenA, tokenB]: [Token, Token]): Token {
  */
 export function useTrackedTokenPairs(): [Token, Token][] {
   const { chainId } = useAccountDetails()
-  const tokens = useAllTokens(chainId as StarknetChainId)
+  const tokens = useAllTokens(chainId as ChainId)
   // pinned pairs
   const pinnedPairs = useMemo(() => (chainId ? PINNED_PAIRS[chainId] ?? [] : []), [chainId])
 

@@ -17,7 +17,7 @@ import Option from './Option'
 import PendingView from './PendingView'
 import { useConnectors } from '@starknet-react/core'
 import { getStarknet } from 'get-starknet-core'
-import { StarknetChainId } from 'starknet/dist/constants'
+import { ChainId } from '@jediswap/sdk'
 import { useAccountDetails } from '../../hooks'
 
 const CloseIcon = styled.div`
@@ -159,7 +159,7 @@ export default function WalletModal({
       if (
         (isProductionEnvironment() && !isProductionChainId(chainId)) ||
         (isTestnetEnvironment() && !isTestnetChainId(chainId)) ||
-        !Object.values(StarknetChainId).includes(chainId)
+        !Object.values(ChainId).includes(chainId)
       ) {
         setChainError(true)
       }

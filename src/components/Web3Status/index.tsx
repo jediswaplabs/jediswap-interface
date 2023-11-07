@@ -19,10 +19,10 @@ import Loader from '../Loader'
 import { RowBetween } from '../Row'
 import WalletModal from '../WalletModal'
 import WrongNetwork from '../../assets/jedi/WrongNetwork.svg'
-import { hexToDecimalString } from 'starknet/dist/utils/number'
 import { InjectedConnector } from '@starknet-react/core'
-import { StarknetChainId } from 'starknet/dist/constants'
+import { ChainId } from '@jediswap/sdk'
 import { useAccountDetails } from '../../hooks'
+import { num } from 'starknet'
 
 const IconWrapper = styled.div<{ size?: number }>`
   ${({ theme }) => theme.flexColumnNoWrap};
@@ -249,8 +249,8 @@ export default function Web3Status() {
   const [domain, setDomain] = useState<string>('')
 
   useEffect(() => {
-    const url = domainURL(chainId as StarknetChainId)
-    fetch(url + hexToDecimalString(address ?? ''))
+    const url = domainURL(chainId as ChainId)
+    fetch(url + num.hexToDecimalString(address ?? ''))
       .then(response => response.json())
       .then((data: DomainToAddrData) => {
         setDomain(data.domain)

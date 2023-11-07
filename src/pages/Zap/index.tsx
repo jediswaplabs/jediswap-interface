@@ -19,7 +19,7 @@ import { useTransactionAdder } from '../../state/transactions/hooks'
 import { currencyAmountToPreciseFloat, formatTransactionAmount } from '../../utils/formatNumber'
 import { useJediLPTokens } from '../../hooks/Tokens'
 import { useAccountDetails } from '../../hooks'
-import { StarknetChainId } from 'starknet/dist/constants'
+import { ChainId } from '@jediswap/sdk'
 
 export const StyledAppBody = styled(BodyWrapper)`
   padding: 0rem;
@@ -97,7 +97,7 @@ export default function Zap() {
   const lpTokensArr = Object.keys(lpTokens)
 
   useEffect(() => {
-    if (!snChainId || snChainId === StarknetChainId.MAINNET) {
+    if (!snChainId || snChainId === ChainId.SN_MAIN) {
       setFromTokens([
         {
           chainId: 15366,

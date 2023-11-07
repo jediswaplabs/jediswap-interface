@@ -1,5 +1,4 @@
-import { Contract, FunctionAbi, number, hash, uint256 } from 'starknet'
-import { toBN } from 'starknet/dist/utils/number'
+import { Contract, FunctionAbi, hash, uint256, num, BigNumberish } from 'starknet'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useMulticallContract } from '../../hooks/useContract'
@@ -16,7 +15,7 @@ import {
 } from './actions'
 import BN from 'bn.js'
 
-import { StarknetChainId } from 'starknet/dist/constants'
+import { ChainId } from '@jediswap/sdk'
 import { useBlockNumber } from '../application/hooks'
 import { useAccountDetails } from '../../hooks'
 
@@ -33,7 +32,7 @@ async function fetchChunk(
   multicallContract: Contract,
   chunk: Call[],
   minBlockNumber: number
-): Promise<{ results: BN[]; blockNumber: number }> {
+): Promise<{ results: BigNumberish[]; blockNumber: number }> {
   console.debug('Fetching chunk', multicallContract, chunk, minBlockNumber)
   let resultsBlockNumber, returnData_len, returnData
 
@@ -58,11 +57,11 @@ async function fetchChunk(
     console.debug('Failed to fetch chunk inside retry', error)
     throw error
   }
-  if (toBN(resultsBlockNumber).toNumber() < minBlockNumber) {
+  if (Number(num.toBigInt(resultsBlockNumber)) < minBlockNumber) {
     console.debug(`Fetched results for old block number: ${resultsBlockNumber.toString()} vs. ${minBlockNumber}`)
     throw new RetryableError('Fetched for old block number')
   }
-  return { results: returnData, blockNumber: toBN(resultsBlockNumber).toNumber() }
+  return { results: returnData, blockNumber: Number(num.toBigInt(resultsBlockNumber)) }
 }
 
 /**
@@ -73,7 +72,7 @@ async function fetchChunk(
  */
 export function activeListeningKeys(
   allListeners: AppState['multicall']['callListeners'],
-  chainId?: StarknetChainId
+  chainId?: ChainId
 ): { [callKey: string]: number } {
   if (!allListeners || !chainId) return {}
   const listeners = allListeners[chainId]
@@ -105,7 +104,7 @@ export function activeListeningKeys(
 export function outdatedListeningKeys(
   callResults: AppState['multicall']['callResults'],
   listeningKeys: { [callKey: string]: number },
-  chainId: StarknetChainId | undefined,
+  chainId: ChainId | undefined,
   latestBlockNumber: number | undefined
 ): string[] {
   if (!chainId || !latestBlockNumber) return []
@@ -185,7 +184,7 @@ export function parseReturnData(
 
             return {
               ...memo,
-              [entry.name]: number.toHex(uint256.uint256ToBN(uint256ReturnData))
+              [entry.name]: num.toHex(uint256.uint256ToBN(uint256ReturnData))
             }
           } else {
             return {
@@ -216,7 +215,7 @@ export function parseReturnData(
           high: returnDataIterator.next().value
         }
 
-        const parsedReturnData = number.toHex(uint256.uint256ToBN(uint256Result))
+        const parsedReturnData = num.toHex(uint256.uint256ToBN(uint256Result))
 
         return parsedReturnData
       }
@@ -286,7 +285,7 @@ export default function Updater(): null {
 
             const uint256ReturnData: Array<string> = []
 
-            const bnToHexArray = returnData.map(data => number.toHex(data))
+            const bnToHexArray = returnData.map(data => num.toHex(data))
 
             const returnDataIterator = bnToHexArray.flat()[Symbol.iterator]()
 

@@ -2,7 +2,7 @@ import { WebWalletConnector } from '@argent/starknet-react-webwallet-connector'
 import { InjectedConnector } from '@starknet-react/core'
 import { ArgentXConnector } from '@web3-starknet-react/argentx-connector'
 import { BraavosConnector } from '@web3-starknet-react/braavos-connector'
-import { StarknetChainId } from 'starknet/dist/constants'
+import { ChainId } from '@jediswap/sdk'
 
 export const NETWORK_CHAIN_ID: number = parseInt(process.env.REACT_APP_CHAIN_ID ?? '5')
 
@@ -40,11 +40,11 @@ export const isProductionEnvironment = () => {
 }
 
 export const isProductionChainId = (id: string) => {
-  return id === StarknetChainId.MAINNET
+  return id === ChainId.SN_MAIN
 }
 
 export const isTestnetChainId = (id: string) => {
-  return id === StarknetChainId.TESTNET
+  return id === ChainId.SN_GOERLI
 }
 
 export const webWalletUrl = isTestnetEnvironment() ? 'https://web.hydrogen.argent47.net/' : 'https://web.argent.xyz/'

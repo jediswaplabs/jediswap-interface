@@ -6,7 +6,7 @@ import { JSBI, Percent, Token, CurrencyAmount, Currency, ETHER } from '@jediswap
 import { LPTokenAddressMap, TokenAddressMap } from '../state/lists/hooks'
 import isZero from './isZero'
 import { InjectedConnector } from '@starknet-react/core'
-import { StarknetChainId } from 'starknet/dist/constants'
+import { ChainId } from '@jediswap/sdk'
 
 // returns the checksummed address if the address is valid, otherwise returns false
 export function isAddress(addr: string | null | undefined): string | false {
@@ -20,21 +20,17 @@ export function isAddress(addr: string | null | undefined): string | false {
   }
 }
 
-const VOYAGER_PREFIXES: { [chainId in StarknetChainId]: string } = {
-  [StarknetChainId.MAINNET]: '',
-  [StarknetChainId.TESTNET]: 'goerli.'
+const VOYAGER_PREFIXES: { [chainId in ChainId]: string } = {
+  [ChainId.SN_MAIN]: '',
+  [ChainId.SN_GOERLI]: 'goerli.'
 }
 
-const STARKSCAN_PREFIXES: { [chainId in StarknetChainId]: string } = {
-  [StarknetChainId.MAINNET]: '',
-  [StarknetChainId.TESTNET]: 'testnet.'
+const STARKSCAN_PREFIXES: { [chainId in ChainId]: string } = {
+  [ChainId.SN_MAIN]: '',
+  [ChainId.SN_GOERLI]: 'testnet.'
 }
 
-export function getVoyagerLink(
-  chainId: StarknetChainId,
-  data: string,
-  type: 'transaction' | 'block' | 'contract'
-): string {
+export function getVoyagerLink(chainId: ChainId, data: string, type: 'transaction' | 'block' | 'contract'): string {
   const prefix = `https://${VOYAGER_PREFIXES[chainId] || VOYAGER_PREFIXES[1]}voyager.online`
 
   switch (type) {
@@ -51,11 +47,7 @@ export function getVoyagerLink(
   }
 }
 
-export function getStarkscanLink(
-  chainId: StarknetChainId,
-  data: string,
-  type: 'transaction' | 'block' | 'contract'
-): string {
+export function getStarkscanLink(chainId: ChainId, data: string, type: 'transaction' | 'block' | 'contract'): string {
   const prefix = `https://${STARKSCAN_PREFIXES[chainId] || STARKSCAN_PREFIXES['0x534e5f4d41494e']}starkscan.co`
 
   switch (type) {
