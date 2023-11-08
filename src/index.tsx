@@ -18,7 +18,8 @@ import TransactionUpdater from './state/transactions/updater'
 import UserUpdater from './state/user/updater'
 import ThemeProvider, { FixedGlobalStyle, ThemedGlobalStyle } from './theme'
 import getLibrary from './utils/getLibrary'
-import { InjectedConnector, StarknetConfig } from '@starknet-react/core'
+import { InjectedConnector } from '@starknet-react/core'
+import { StarknetConfig, publicProvider, argent, braavos, useInjectedConnectors } from '@starknet-react/core'
 import { StarknetReactProvider, createStarknetReactRoot } from '@web3-starknet-react/core'
 import './components/analytics'
 import { WebWalletConnector } from '@argent/starknet-react-webwallet-connector'
@@ -60,19 +61,17 @@ function Updaters() {
 ReactDOM.render(
   <StrictMode>
     <FixedGlobalStyle />
-    <StarknetConfig connectors={connectors as any} autoConnect>
-      <StarknetProvider>
-        <Provider store={store}>
-          <Updaters />
-          <ThemeProvider>
-            <ThemedGlobalStyle />
-            <HashRouter>
-              <App />
-            </HashRouter>
-          </ThemeProvider>
-        </Provider>
-      </StarknetProvider>
-    </StarknetConfig>
+    <StarknetProvider>
+      <Provider store={store}>
+        <Updaters />
+        <ThemeProvider>
+          <ThemedGlobalStyle />
+          <HashRouter>
+            <App />
+          </HashRouter>
+        </ThemeProvider>
+      </Provider>
+    </StarknetProvider>
   </StrictMode>,
   document.getElementById('root')
 )

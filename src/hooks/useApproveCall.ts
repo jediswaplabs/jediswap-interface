@@ -1,6 +1,6 @@
 import { CurrencyAmount, Token, ETHER, TokenAmount, Trade, WETH } from '@jediswap/sdk'
 import { useCallback, useMemo } from 'react'
-import { Call, RawArgs, stark, uint256 } from 'starknet'
+import { Call, CallData, RawArgs, stark, uint256 } from 'starknet'
 import { DEFAULT_CHAIN_ID, ROUTER_ADDRESS, ZAP_IN_ADDRESS } from '../constants'
 import { Field as SwapField } from '../state/swap/actions'
 import { Field as ZapField } from '../state/zap/actions'
@@ -40,7 +40,7 @@ export function useApprovalCall(amountToApprove?: CurrencyAmount, spender?: stri
       amount: { type: 'struct', ...uint256AmountToApprove }
     }
 
-    const approveCalldata = stark.compileCalldata(approveArgs)
+    const approveCalldata = CallData.compile(approveArgs)
 
     const approveCall: Call = {
       contractAddress: token.address,

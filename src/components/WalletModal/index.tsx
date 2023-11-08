@@ -15,7 +15,7 @@ import AccountDetails from '../AccountDetails'
 import Modal from '../Modal'
 import Option from './Option'
 import PendingView from './PendingView'
-import { useConnectors } from '@starknet-react/core'
+import { useConnect } from '@starknet-react/core'
 import { getStarknet } from 'get-starknet-core'
 import { ChainId } from '@jediswap/sdk'
 import { useAccountDetails } from '../../hooks'
@@ -131,7 +131,7 @@ export default function WalletModal({
 }) {
   // important that these are destructed from the account-specific web3-react context
   const { active, error } = useStarknetReact()
-  const { connect } = useConnectors()
+  const { connect } = useConnect()
   const { getAvailableWallets } = getStarknet()
 
   const { account, chainId, connector, status } = useAccountDetails()

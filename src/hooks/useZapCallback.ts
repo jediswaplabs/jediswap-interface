@@ -1,5 +1,5 @@
 import { BigNumber } from '@ethersproject/bignumber'
-import { Contract, uint256, RawArgs, stark, Call } from 'starknet'
+import { Contract, uint256, RawArgs, stark, Call, CallData } from 'starknet'
 import { JSBI, Percent, Router, SwapParameters as ZapParameters, TokenAmount, Trade, TradeType } from '@jediswap/sdk'
 import { useMemo } from 'react'
 import { BIPS_BASE, INITIAL_ALLOWED_SLIPPAGE } from '../constants'
@@ -176,7 +176,7 @@ export function useZapCallback(
           transfer_residual: '0'
         }
 
-        const zapCalldata = stark.compileCalldata(zapArgs)
+        const zapCalldata = CallData.compile(zapArgs)
 
         const zapCall: Call = {
           contractAddress: contract.address,

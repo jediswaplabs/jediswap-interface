@@ -1,5 +1,5 @@
 import { BigNumber } from '@ethersproject/bignumber'
-import { Contract, uint256, stark, RawArgs, Call } from 'starknet'
+import { Contract, uint256, stark, RawArgs, Call, CallData } from 'starknet'
 import { JSBI, Percent, Router, SwapParameters, Trade, TradeType } from '@jediswap/sdk'
 import { useMemo } from 'react'
 import { BIPS_BASE, INITIAL_ALLOWED_SLIPPAGE } from '../constants'
@@ -207,7 +207,7 @@ export function useSwapCallback(
 
         // const swapCalldata = [...Object.values(uint256AmountIn), ...Object.values(uint256AmountOut), path, to, deadline]
 
-        const swapCalldata = stark.compileCalldata(swapArgs)
+        const swapCalldata = CallData.compile(swapArgs)
 
         const swapCall: Call = {
           contractAddress: contract.address,

@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useState } from 'react'
-import { Call, RawArgs, stark } from 'starknet'
+import { Call, CallData, RawArgs, stark } from 'starknet'
 import { Currency, CurrencyAmount, currencyEquals, JSBI, LPToken, Token, ETHER, TokenAmount, WETH } from '@jediswap/sdk'
 import { Plus } from 'react-feather'
 import ReactGA from 'react-ga4'
@@ -234,7 +234,7 @@ export default function AddLiquidity({
 
     // value = null
 
-    const calldata = stark.compileCalldata(args)
+    const calldata = CallData.compile(args)
 
     const addLiquidityCall: Call = {
       contractAddress: router.address,

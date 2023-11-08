@@ -1,8 +1,8 @@
-import { Abi, Calldata, stark, FunctionAbi, RawArgs } from 'starknet'
+import { Abi, Calldata, stark, FunctionAbi, RawArgs, CallData } from 'starknet'
 export function computeCallDataProps(args: RawArgs = {}): { calldata_len: number | string; calldata: Calldata } {
-  const { compileCalldata } = stark
-
-  const calldata = compileCalldata(args)
+  console.log('🚀 ~ file: utils.ts:3 ~ computeCallDataProps ~ args:', args)
+  const calldata = CallData.compile(args)
+  console.log('🚀 ~ file: utils.ts:5 ~ computeCallDataProps ~ calldata:', calldata)
 
   if (Array.isArray(args)) {
     return {

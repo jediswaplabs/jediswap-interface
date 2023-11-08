@@ -7,7 +7,7 @@ import { isMobile } from 'react-device-detect'
 import { argentX, braavosWallet } from '../connectors'
 import { NetworkContextName, SUPPORTED_WALLETS } from '../constants'
 import { BraavosConnector } from '@web3-starknet-react/braavos-connector'
-import { InjectedConnector, useConnectors, useAccount } from '@starknet-react/core'
+import { InjectedConnector, useConnect, useAccount } from '@starknet-react/core'
 
 // deprecating this hook because we don't require it anymore
 
@@ -28,7 +28,7 @@ export const useAccountDetails = () => {
 export function useEagerConnect() {
   const { active } = useStarknetReactCore() // specifically using useStarknetReactCore because of what this hook does
   const [tried, setTried] = useState(false)
-  const { connect } = useConnectors()
+  const { connect } = useConnect()
 
   const injected = localStorage.getItem('auto-injected-wallet')
 
@@ -85,7 +85,7 @@ export function useEagerConnect() {
 export function useInactiveListener(suppress = false) {
   const { active, error, activate } = useStarknetReactCore() // specifically using useStarknetReact because of what this hook does
   const { connector } = useAccountDetails()
-  const { connect } = useConnectors()
+  const { connect } = useConnect()
 
   useEffect(() => {
     const { starknet, starknet_braavos } = window

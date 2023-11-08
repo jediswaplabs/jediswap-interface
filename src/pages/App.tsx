@@ -32,7 +32,7 @@ import {
   isTestnetChainId,
   isTestnetEnvironment
 } from '../connectors'
-import { useAccount, useConnectors } from '@starknet-react/core'
+import { useAccount, useConnect } from '@starknet-react/core'
 import { ChainId } from '@jediswap/sdk'
 import { useAccountDetails } from '../hooks'
 
@@ -74,7 +74,7 @@ const Marginer = styled.div`
 
 export default function App() {
   const fetchAllPairs = useFetchAllPairsCallback()
-  const { disconnect } = useConnectors()
+  const { disconnect } = useConnect()
   const { status, chainId } = useAccountDetails()
 
   useEffect(() => {

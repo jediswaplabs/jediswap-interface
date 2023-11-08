@@ -1418,6 +1418,11 @@
   resolved "https://registry.npmjs.org/@sindresorhus/is/-/is-4.6.0.tgz"
   integrity sha512-t09vSN3MdfsyCHoFcTRCH/iUtG7OJ0CsjzB8cjAmKc/va/kIgeDI/TxsigdncE/4be734m0cvIYwNaV4i2XqAw==
 
+"@starknet-react/chains@^0.1.0-next.1":
+  version "0.1.0-next.1"
+  resolved "https://registry.yarnpkg.com/@starknet-react/chains/-/chains-0.1.0-next.1.tgz#bb10bf1b5b2cf2b4376a3cec5e39bbf186cdac88"
+  integrity sha512-4/aYmckYXSbmkLJvc5NsM3WBDCH/0zrUGmF0dJMeET+rQv1YfxRY2IMV3u6ulha+19MELsuO0FmYaAWI1L5k2A==
+
 "@starknet-react/core@^0.17.0":
   version "0.17.6"
   resolved "https://registry.yarnpkg.com/@starknet-react/core/-/core-0.17.6.tgz#721f787795ed849132891bc50c0c4e68c7a66989"
@@ -1429,16 +1434,16 @@
     react "^18.2.0"
     starknet "^4.22.0"
 
-"@starknet-react/core@^0.18.0":
-  version "0.18.0"
-  resolved "https://registry.yarnpkg.com/@starknet-react/core/-/core-0.18.0.tgz#cf02d47a0ab5daf16f8f5da3153a1c4aebc9f6df"
-  integrity sha512-UiVh80D/S0wRDERT3r38iR88CKR81pMs8cpAE92oapFZnyy4zxG3mdf+GSUcknsRNFKnCElMJorVG424jvLpiw==
+"@starknet-react/core@^2.0.0-next.5":
+  version "2.0.0-next.5"
+  resolved "https://registry.yarnpkg.com/@starknet-react/core/-/core-2.0.0-next.5.tgz#71fc261a0ba414df5131b7f1ef9242af352a5e4c"
+  integrity sha512-8W1EgVcK5fmB1OI/dj4pVljL09HG73/pGuaGSUI3nB4QPrKQVSxp5DuSNswkm/g6VIu+XSQWvE36rNDm0Q1Acw==
   dependencies:
-    "@tanstack/react-query" "^4.29.12"
-    get-starknet-core "^2.1.0"
-    immutable "^4.3.0"
-    react "^18.2.0"
-    starknet "^4.22.0"
+    "@starknet-react/chains" "^0.1.0-next.1"
+    "@tanstack/react-query" "^4.35.3"
+    eventemitter3 "^5.0.1"
+    immutable "^4.3.4"
+    zod "^3.22.2"
 
 "@styled-system/background@^5.1.2":
   version "5.1.2"
@@ -1641,12 +1646,25 @@
   resolved "https://registry.npmjs.org/@tanstack/query-core/-/query-core-4.29.19.tgz"
   integrity sha512-uPe1DukeIpIHpQi6UzIgBcXsjjsDaLnc7hF+zLBKnaUlh7jFE/A+P8t4cU4VzKPMFB/C970n/9SxtpO5hmIRgw==
 
+"@tanstack/query-core@4.36.1":
+  version "4.36.1"
+  resolved "https://registry.yarnpkg.com/@tanstack/query-core/-/query-core-4.36.1.tgz#79f8c1a539d47c83104210be2388813a7af2e524"
+  integrity sha512-DJSilV5+ytBP1FbFcEJovv4rnnm/CokuVvrBEtW/Va9DvuJ3HksbXUJEpI0aV1KtuL4ZoO9AVE6PyNLzF7tLeA==
+
 "@tanstack/react-query@^4.29.12":
   version "4.29.19"
   resolved "https://registry.npmjs.org/@tanstack/react-query/-/react-query-4.29.19.tgz"
   integrity sha512-XiTIOHHQ5Cw1WUlHaD4fmVUMhoWjuNJlAeJGq7eM4BraI5z7y8WkZO+NR8PSuRnQGblpuVdjClQbDFtwxTtTUw==
   dependencies:
     "@tanstack/query-core" "4.29.19"
+    use-sync-external-store "^1.2.0"
+
+"@tanstack/react-query@^4.35.3":
+  version "4.36.1"
+  resolved "https://registry.yarnpkg.com/@tanstack/react-query/-/react-query-4.36.1.tgz#acb589fab4085060e2e78013164868c9c785e5d2"
+  integrity sha512-y7ySVHFyyQblPl3J3eQBWpXZkliroki3ARnBKsdJchlgt7yJLRDUcf4B8soufgiYt3pEQIkBWBx1N9/ZPIeUWw==
+  dependencies:
+    "@tanstack/query-core" "4.36.1"
     use-sync-external-store "^1.2.0"
 
 "@testing-library/dom@^7.11.0":
@@ -4559,6 +4577,11 @@ eventemitter3@4.0.4:
   resolved "https://registry.npmjs.org/eventemitter3/-/eventemitter3-4.0.4.tgz"
   integrity sha512-rlaVLnVxtxvoyLsQQFBx53YmXHDxRIzzTLbdfxqi4yocpSjAxXwkU0cScM5JgSKMqEhrZpnvQ2D9gjylR0AimQ==
 
+eventemitter3@^5.0.1:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-5.0.1.tgz#53f5ffd0a492ac800721bb42c66b841de96423c4"
+  integrity sha512-GWkBvjiSZK87ELrYOSESUYeVIc9mvLLf/nXalMOS5dYrgZq9o5OVkbZAVM06CVxYsCwH9BDZFPlQTlPA1j4ahA==
+
 events@^3.3.0:
   version "3.3.0"
   resolved "https://registry.npmjs.org/events/-/events-3.3.0.tgz"
@@ -5512,6 +5535,11 @@ immutable@^4.3.0:
   version "4.3.0"
   resolved "https://registry.npmjs.org/immutable/-/immutable-4.3.0.tgz"
   integrity sha512-0AOCmOip+xgJwEVTQj1EfiDDOkPmuyllDuTuEX+DDXUgapLAsBIfkg3sxCYyCEA8mQqZrrxPUGjcOQ2JS3WLkg==
+
+immutable@^4.3.4:
+  version "4.3.4"
+  resolved "https://registry.yarnpkg.com/immutable/-/immutable-4.3.4.tgz#2e07b33837b4bb7662f288c244d1ced1ef65a78f"
+  integrity sha512-fsXeu4J4i6WNWSikpI88v/PcVflZz+6kMhUfIwc5SY+poQRPnaf5V7qds6SUyUN3cVxEzuCab7QIoLOQ+DQ1wA==
 
 import-fresh@^3.0.0, import-fresh@^3.1.0, import-fresh@^3.2.1:
   version "3.3.0"
@@ -8358,7 +8386,7 @@ sshpk@^1.14.1, sshpk@^1.7.0:
     safer-buffer "^2.0.2"
     tweetnacl "~0.14.0"
 
-starknet@4.4.2, starknet@5.19.5, starknet@^4.17.1, starknet@^4.22.0:
+starknet@4.4.2, starknet@5.19.5, starknet@^4.17.1, starknet@^4.22.0, starknet@^5.19.5:
   version "5.19.5"
   resolved "https://registry.yarnpkg.com/starknet/-/starknet-5.19.5.tgz#59a2e0f707dc1f64fbe9894195984ae97f623449"
   integrity sha512-S7V4ifyYd+ApsIwYTd7YA5U2Px+NZkCsQPnmgY/wkc5LLFKhYMNpzHQ5nIA15p70AwtSXCcsEBnHNRBOuci13Q==
@@ -9957,3 +9985,8 @@ yauzl@^2.10.0:
   dependencies:
     buffer-crc32 "~0.2.3"
     fd-slicer "~1.1.0"
+
+zod@^3.22.2:
+  version "3.22.4"
+  resolved "https://registry.yarnpkg.com/zod/-/zod-3.22.4.tgz#f31c3a9386f61b1f228af56faa9255e845cf3fff"
+  integrity sha512-iC+8Io04lddc+mVqQ9AZ7OQ2MrUKGN+oIQyq1vemgt46jwCwLfhq7/pwnBnNXXXZb8VTVLKwp9EDkx+ryxIWmg==

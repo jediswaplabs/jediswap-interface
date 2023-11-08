@@ -1,4 +1,4 @@
-import { Contract, InvokeFunctionResponse, stark, Call, RawArgs } from 'starknet'
+import { Contract, InvokeFunctionResponse, stark, Call, RawArgs, CallData } from 'starknet'
 import { Currency, currencyEquals, ETHER, Percent, WETH } from '@jediswap/sdk'
 import React, { useCallback, useContext, useMemo, useState } from 'react'
 import { ArrowDown, Plus } from 'react-feather'
@@ -158,7 +158,7 @@ export default function RemoveLiquidity({
       deadline: deadline.toHexString()
     }
 
-    const removeLiquidityCalldata = stark.compileCalldata(removeLiquidityArgs)
+    const removeLiquidityCalldata = CallData.compile(removeLiquidityArgs)
 
     const removeLiquidityCall: Call = {
       contractAddress: router.address,
