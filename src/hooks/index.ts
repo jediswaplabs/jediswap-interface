@@ -5,9 +5,10 @@ import { StarknetReactContextInterface } from '@web3-starknet-react/core/dist/ty
 import { useEffect, useMemo, useState } from 'react'
 import { isMobile } from 'react-device-detect'
 import { argentX, braavosWallet } from '../connectors'
-import { NetworkContextName, SUPPORTED_WALLETS } from '../constants'
+import { DEFAULT_CHAIN_ID, NetworkContextName, SUPPORTED_WALLETS } from '../constants'
 import { BraavosConnector } from '@web3-starknet-react/braavos-connector'
-import { InjectedConnector, useConnect, useAccount } from '@starknet-react/core'
+import { Connector, useConnect, useAccount, useProvider, argent, braavos } from '@starknet-react/core'
+import { ChainId } from '@jediswap/sdk'
 
 // deprecating this hook because we don't require it anymore
 
@@ -19,9 +20,9 @@ import { InjectedConnector, useConnect, useAccount } from '@starknet-react/core'
 
 export const useAccountDetails = () => {
   const { account, address, connector, status } = useAccount()
-  const chainId = account?.chainId || account?.provider?.chainId
+  const chainId = ChainId.SN_MAIN
   return useMemo(() => {
-    return { address, connector, account, chainId, status }
+    return { address, connector, chainId, account, status }
   }, [account])
 }
 
@@ -32,17 +33,17 @@ export function useEagerConnect() {
 
   const injected = localStorage.getItem('auto-injected-wallet')
 
-  let connector: InjectedConnector | undefined
+  let connector: Connector | undefined
 
   if (injected === 'argentX') {
-    connector = argentX
+    connector = argent()
   } else if (injected === 'braavos') {
-    connector = braavosWallet
+    connector = braavos()
   }
 
   useEffect(() => {
     if (connector) {
-      connect(connector)
+      connect({ connector })
     }
   }, [connector])
 
@@ -82,7 +83,7 @@ export function useEagerConnect() {
  * Use for network and argentX - logs user in
  * and out after checking what network theyre on
  */
-export function useInactiveListener(suppress = false) {
+/* export function useInactiveListener(suppress = false) {
   const { active, error, activate } = useStarknetReactCore() // specifically using useStarknetReact because of what this hook does
   const { connector } = useAccountDetails()
   const { connect } = useConnect()
@@ -91,7 +92,7 @@ export function useInactiveListener(suppress = false) {
     const { starknet, starknet_braavos } = window
 
     if (starknet && !active && !error && !suppress && connector) {
-      const activeConnector = connector instanceof InjectedConnector ? argentX : braavosWallet
+      const activeConnector = connector instanceof Connector ? argentX : braavosWallet
 
       const handleChainChanged = () => {
         // eat errors
@@ -121,4 +122,4 @@ export function useInactiveListener(suppress = false) {
     }
     return undefined
   }, [active, error, suppress, activate, connector])
-}
+} */

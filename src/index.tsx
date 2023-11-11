@@ -18,20 +18,13 @@ import TransactionUpdater from './state/transactions/updater'
 import UserUpdater from './state/user/updater'
 import ThemeProvider, { FixedGlobalStyle, ThemedGlobalStyle } from './theme'
 import getLibrary from './utils/getLibrary'
-import { InjectedConnector } from '@starknet-react/core'
+import { Connector } from '@starknet-react/core'
 import { StarknetConfig, publicProvider, argent, braavos, useInjectedConnectors } from '@starknet-react/core'
 import { StarknetReactProvider, createStarknetReactRoot } from '@web3-starknet-react/core'
 import './components/analytics'
 import { WebWalletConnector } from '@argent/starknet-react-webwallet-connector'
 import { isTestnetEnvironment } from './connectors'
 import { StarknetProvider } from './context/StarknetProvider'
-const connectors = [
-  new InjectedConnector({ options: { id: 'argentX' } }),
-  new InjectedConnector({ options: { id: 'braavos' } }),
-  new WebWalletConnector({
-    url: isTestnetEnvironment() ? 'https://web.hydrogen.argent47.net/' : 'https://web.argent.xyz/'
-  })
-]
 
 const StarknetProviderNetwork = createStarknetReactRoot(NetworkContextName)
 

@@ -1,11 +1,11 @@
-import { BigNumberish } from 'starknet/dist/utils/number'
-import { validateAndParseAddress, Abi, Provider, uint256, Contract, AccountInterface } from 'starknet'
+// import { BigNumberish } from 'starknet/dist/utils/number'
+import { validateAndParseAddress, Abi, Provider, uint256, Contract, AccountInterface, BigNumberish } from 'starknet'
 import { BigNumber } from '@ethersproject/bignumber'
 import { ZERO_ADDRESS } from '../constants'
 import { JSBI, Percent, Token, CurrencyAmount, Currency, ETHER } from '@jediswap/sdk'
 import { LPTokenAddressMap, TokenAddressMap } from '../state/lists/hooks'
 import isZero from './isZero'
-import { InjectedConnector } from '@starknet-react/core'
+import { Connector } from '@starknet-react/core'
 import { ChainId } from '@jediswap/sdk'
 
 // returns the checksummed address if the address is valid, otherwise returns false
@@ -107,7 +107,7 @@ export function getContract(
   address: string,
   ABI: any,
   library: AccountInterface,
-  connector?: InjectedConnector,
+  connector?: Connector,
   account?: string
 ): Contract {
   const parsedAddress = isAddress(address)

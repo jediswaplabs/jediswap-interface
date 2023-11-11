@@ -19,7 +19,7 @@ import Loader from '../Loader'
 import { RowBetween } from '../Row'
 import WalletModal from '../WalletModal'
 import WrongNetwork from '../../assets/jedi/WrongNetwork.svg'
-import { InjectedConnector } from '@starknet-react/core'
+import { Connector } from '@starknet-react/core'
 import { ChainId } from '@jediswap/sdk'
 import { useAccountDetails } from '../../hooks'
 import { num } from 'starknet'
@@ -144,7 +144,7 @@ const SOCK = (
 )
 
 // eslint-disable-next-line react/prop-types
-function StatusIcon({ connector }: { connector: InjectedConnector }) {
+function StatusIcon({ connector }: { connector: Connector }) {
   // if (connector === injected) {
   //   return <Identicon />
   // } else if (connector === walletconnect) {
@@ -172,7 +172,7 @@ function StatusIcon({ connector }: { connector: InjectedConnector }) {
   //     </IconWrapper>
   //   )
   // }
-  if (connector.id() === 'argentX' || connector.id() === 'argentWebWallet') {
+  if (connector.id === 'argentX' || connector.id === 'argentWebWallet') {
     return (
       <IconWrapper size={20}>
         <img src={ArgentXIcon} alt="ArgentX" />
@@ -180,7 +180,7 @@ function StatusIcon({ connector }: { connector: InjectedConnector }) {
     )
   }
 
-  if (connector.id() === 'braavos') {
+  if (connector.id === 'braavos') {
     return (
       <IconWrapper size={20}>
         <img src={braavosIcon} alt="myBraavos" />
@@ -248,17 +248,17 @@ export default function Web3Status() {
 
   const [domain, setDomain] = useState<string>('')
 
-  useEffect(() => {
-    const url = domainURL(chainId as ChainId)
-    fetch(url + num.hexToDecimalString(address ?? ''))
-      .then(response => response.json())
-      .then((data: DomainToAddrData) => {
-        setDomain(data.domain)
-      })
-      .catch(error => {
-        console.error(error)
-      })
-  }, [address, chainId])
+  // useEffect(() => {
+  //   const url = domainURL(chainId as ChainId)
+  //   fetch(url + num.hexToDecimalString(address ?? ''))
+  //     .then(response => response.json())
+  //     .then((data: DomainToAddrData) => {
+  //       setDomain(data.domain)
+  //     })
+  //     .catch(error => {
+  //       console.error(error)
+  //     })
+  // }, [address, chainId])
 
   const allTransactions = useAllTransactions()
 
@@ -282,7 +282,7 @@ export default function Web3Status() {
   return (
     <>
       <Web3StatusInner starkID={domain} />
-      <WalletModal pendingTransactions={pending} confirmedTransactions={confirmed} ENSName={domain} />
+      <WalletModal pendingTransactions={pending} confirmedTransactions={confirmed} ENSName={''} />
     </>
   )
 }

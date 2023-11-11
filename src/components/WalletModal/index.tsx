@@ -6,7 +6,7 @@ import styled from 'styled-components'
 import MetamaskIcon from '../../assets/images/metamask.png'
 import { ReactComponent as Close } from '../../assets/images/x.svg'
 import { isProductionChainId, isProductionEnvironment, isTestnetChainId, isTestnetEnvironment } from '../../connectors'
-import { SUPPORTED_WALLETS, WalletInfo } from '../../constants'
+import { SUPPORTED_WALLETS } from '../../constants'
 import usePrevious from '../../hooks/usePrevious'
 import { ApplicationModal } from '../../state/application/actions'
 import { useModalOpen, useWalletModalToggle } from '../../state/application/hooks'
@@ -15,10 +15,11 @@ import AccountDetails from '../AccountDetails'
 import Modal from '../Modal'
 import Option from './Option'
 import PendingView from './PendingView'
-import { useConnect } from '@starknet-react/core'
+import { useConnect, Connector } from '@starknet-react/core'
 import { getStarknet } from 'get-starknet-core'
 import { ChainId } from '@jediswap/sdk'
 import { useAccountDetails } from '../../hooks'
+import { WebWalletConnector } from '@argent/starknet-react-webwallet-connector'
 
 const CloseIcon = styled.div`
   position: absolute;
@@ -131,16 +132,16 @@ export default function WalletModal({
 }) {
   // important that these are destructed from the account-specific web3-react context
   const { active, error } = useStarknetReact()
-  const { connect } = useConnect()
+  const { connectors, connect } = useConnect()
   const { getAvailableWallets } = getStarknet()
 
-  const { account, chainId, connector, status } = useAccountDetails()
+  const { account, chainId, connector: connector, status } = useAccountDetails()
 
   // const connectStarknet = useStarknetConnector({ showModal: true })
 
   const [walletView, setWalletView] = useState(WALLET_VIEWS.ACCOUNT)
 
-  const [pendingWallet, setPendingWallet] = useState<WalletInfo>()
+  const [pendingWallet, setPendingWallet] = useState<Connector>()
 
   const [availableWallets, setAvailableWallets] = useState<any>()
 
@@ -200,40 +201,39 @@ export default function WalletModal({
     }
   }, [setWalletView, active, error, connector, walletModalOpen, activePrevious, connectorPrevious])
 
-  const tryActivation = async (option: WalletInfo) => {
+  const tryActivation = async (option: Connector) => {
     if (!option) return
-    const { connector, id } = option
+    const { id } = option
     if (id === 'argentWebWallet') {
-      handleWalletConnect(connector, option)
+      handleWalletConnect(option)
       return
     }
-
     //check if selected wallet is installed
-    const checkIfWalletExists = availableWallets.find(wallet => wallet.id === connector?.id())
+    const checkIfWalletExists = availableWallets.find(wallet => wallet.id === id)
     if (checkIfWalletExists) {
-      handleWalletConnect(connector, option)
+      handleWalletConnect(option)
     } else {
       setWalletView(WALLET_VIEWS.PENDING)
-      setPendingError(connector?.id())
+      setPendingError(connector?.id)
     }
   }
 
-  const handleWalletConnect = (connector, option: WalletInfo) => {
-    // log selected wallet
-    ReactGA.event({
-      category: 'Wallet',
-      action: 'Change Wallet',
-      label: (connector && SUPPORTED_WALLETS[connector.id()].name) || ''
-    })
-    setPendingWallet(option) // set wallet for pending view
+  const handleWalletConnect = (connector: Connector) => {
+    // // log selected wallet
+    // ReactGA.event({
+    //   category: 'Wallet',
+    //   action: 'Change Wallet',
+    //   label: (connector && SUPPORTED_WALLETS[connector.id].name) || ''
+    // })
+    setPendingWallet(connector) // set wallet for pending view
     setWalletView(WALLET_VIEWS.PENDING)
     try {
       if (connector) {
-        connect(connector)
+        connect({ connector })
         toggleWalletModal()
-        if (connector.id() === 'argentX') {
+        if (connector.id === 'argentX') {
           localStorage.setItem('auto-injected-wallet', 'argentX')
-        } else if (connector.id() === 'braavos') {
+        } else if (connector.id === 'braavos') {
           localStorage.setItem('auto-injected-wallet', 'braavos')
         } else {
           localStorage.removeItem('auto-injected-wallet')
@@ -249,22 +249,21 @@ export default function WalletModal({
 
   // get wallets user can switch too, depending on device/browser
   function getOptions() {
-    return Object.keys(SUPPORTED_WALLETS).map(key => {
-      const option = SUPPORTED_WALLETS[key]
+    return connectors.map((option: Connector) => {
       return (
         <Option
-          id={`connect-${key}`}
+          id={`connect-${option.id}`}
           onClick={() => {
-            option.connector === connector ? setWalletView(WALLET_VIEWS.ACCOUNT) : !option.href && tryActivation(option)
+            option === connector ? setWalletView(WALLET_VIEWS.ACCOUNT) : tryActivation(option)
           }}
-          key={key}
-          subheader={key === 'argentWebWallet' && 'Powered by Argent'}
-          active={option.connector === connector}
-          color={option.color}
-          link={option.href}
-          header={option.name}
-          icon={option.icon}
-          size={option.size ?? null}
+          key={option.id}
+          subheader={option.id === 'argentWebWallet' && 'Powered by Argent'}
+          active={connector === connector}
+          color={option.id === 'argentX' ? '#FF875B' : '#E0B137'}
+          link={null}
+          header={'test'}
+          icon={''}
+          size={null}
         />
       )
     })

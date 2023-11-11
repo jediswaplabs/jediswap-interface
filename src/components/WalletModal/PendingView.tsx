@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import styled from 'styled-components'
 import Option from './Option'
-import { SUPPORTED_WALLETS, WalletInfo } from '../../constants'
+import { SUPPORTED_WALLETS } from '../../constants'
 // import { injected } from '../../connectors'
 import { darken } from 'polished'
 import Loader from '../Loader'
@@ -12,7 +12,7 @@ import { WALLET_VIEWS } from '.'
 import { AutoColumn } from '../Column'
 import { ButtonOutlined } from '../Button'
 import { RowStart } from '../Row'
-import { InjectedConnector } from '@starknet-react/core'
+import { Connector } from '@starknet-react/core'
 
 const PendingSection = styled.div`
   ${({ theme }) => theme.flexColumnNoWrap};
@@ -110,11 +110,11 @@ export default function PendingView({
   setWalletView,
   tryActivation
 }: {
-  connector?: WalletInfo
+  connector?: Connector
   error?: any
   setPendingError: (error: boolean) => void
   setWalletView: (walletView: string) => void
-  tryActivation: (option: WalletInfo) => void
+  tryActivation: (option: Connector) => void
 }) {
   const isArgentXProviderError = error === 'argentX'
 

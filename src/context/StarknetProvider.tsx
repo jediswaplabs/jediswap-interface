@@ -46,7 +46,7 @@ export function StarknetProvider({ children }: { children: React.ReactNode }) {
   })
 
   return (
-    <StarknetConfig chains={chains} connectors={connectors} providers={providers}>
+    <StarknetConfig chains={chains} connectors={connectors} providers={providers} autoConnect>
       {children}
     </StarknetConfig>
   )

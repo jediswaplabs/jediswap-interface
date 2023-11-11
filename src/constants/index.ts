@@ -6,7 +6,7 @@ import { argentX, braavosWallet, argentWebWallet } from '../connectors'
 import ARGENTX_ICON from '../assets/images/argentx.png'
 import EMAIL_ICON from '../assets/images/mail.png'
 import BRAAVOS_ICON from '../assets/svg/Braavos.svg'
-import { InjectedConnector } from '@starknet-react/core'
+import { Connector } from '@starknet-react/core'
 import { WebWalletConnector } from '@argent/starknet-react-webwallet-connector'
 
 export const DEFAULT_CHAIN_ID = ChainId.SN_MAIN
@@ -239,7 +239,7 @@ export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } 
 }
 
 export interface WalletInfo {
-  connector?: InjectedConnector | WebWalletConnector
+  connector: Connector | WebWalletConnector
   name: string
   icon: string
   description: string
