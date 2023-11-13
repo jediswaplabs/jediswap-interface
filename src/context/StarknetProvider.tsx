@@ -32,10 +32,17 @@ import React from 'react'
 import { goerli, mainnet } from '@starknet-react/chains'
 import { StarknetConfig, publicProvider, argent, braavos, useInjectedConnectors } from '@starknet-react/core'
 import rpcProvider from '../utils/getLibrary'
+import { RpcProvider } from 'starknet'
 
 export function StarknetProvider({ children }: { children: React.ReactNode }) {
   const chains = [goerli, mainnet]
-  const providers = [publicProvider()]
+  // const providers = [
+  //   new RpcProvider({
+  //     nodeUrl: 'https://limited-rpc.nethermind.io/mainnet-juno'
+  //   })
+  // ]
+  const providers = [rpcProvider]
+  console.log('🚀 ~ file: StarknetProvider.tsx:45 ~ StarknetProvider ~ providers:', providers)
   const { connectors } = useInjectedConnectors({
     // Show these connectors if the user has no connector installed.
     recommended: [argent(), braavos()],

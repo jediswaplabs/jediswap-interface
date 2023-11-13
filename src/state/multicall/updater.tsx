@@ -33,7 +33,7 @@ async function fetchChunk(
   chunk: Call[],
   minBlockNumber: number
 ): Promise<{ results: BigNumberish[]; blockNumber: number }> {
-  console.debug('Fetching chunk', multicallContract, chunk, minBlockNumber)
+  console.log('🚀 ~ file: updater.tsx:36 ~ chunk:', chunk)
   let resultsBlockNumber, returnData_len, returnData
 
   const { getSelectorFromName } = hash
@@ -45,10 +45,13 @@ async function fetchChunk(
       obj.calldata_len,
       ...obj.calldata
     ])
+    console.log('🚀 ~ file: updater.tsx:47 ~ calls:', calls)
 
     // Keep it here for multicall debugging
     const dateTime = new Date().getTime()
-    const response = await multicallContract.aggregate(calls)
+    // const response = await multicallContract.aggregate([calls])
+    const response = { block_number: 230, result_len: 3, result: 39 }
+    console.log('🚀 ~ file: updater.tsx:52 ~ response:', response)
 
     resultsBlockNumber = response.block_number
     returnData_len = response.result_len
@@ -57,11 +60,11 @@ async function fetchChunk(
     console.debug('Failed to fetch chunk inside retry', error)
     throw error
   }
-  if (Number(num.toBigInt(resultsBlockNumber)) < minBlockNumber) {
+  if (Number(BigInt(resultsBlockNumber)) < minBlockNumber) {
     console.debug(`Fetched results for old block number: ${resultsBlockNumber.toString()} vs. ${minBlockNumber}`)
     throw new RetryableError('Fetched for old block number')
   }
-  return { results: returnData, blockNumber: Number(num.toBigInt(resultsBlockNumber)) }
+  return { results: returnData, blockNumber: Number(BigInt(resultsBlockNumber)) }
 }
 
 /**
