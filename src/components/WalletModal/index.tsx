@@ -261,7 +261,7 @@ export default function WalletModal({
           active={connector === connector}
           color={option.id === 'argentX' ? '#FF875B' : '#E0B137'}
           link={null}
-          header={'test'}
+          header={option.name}
           icon={''}
           size={null}
         />
