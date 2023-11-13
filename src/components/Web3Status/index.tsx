@@ -10,7 +10,7 @@ import { NetworkContextName, domainURL } from '../../constants'
 import { useWalletModalToggle } from '../../state/application/hooks'
 import { isTransactionRecent, useAllTransactions } from '../../state/transactions/hooks'
 import { TransactionDetails } from '../../state/transactions/reducer'
-import { shortenAddress } from '../../utils'
+import { shortenAddress, shortenStarkID } from '../../utils'
 import { ButtonSecondary } from '../Button'
 
 import Identicon from '../Identicon'
@@ -212,6 +212,7 @@ function Web3StatusInner({ starkID }: { starkID?: string }) {
   const toggleWalletModal = useWalletModalToggle()
 
   if (address) {
+    const displayAddress = starkID ? shortenStarkID(starkID) : shortenAddress(address)
     return (
       <Web3StatusConnected id="web3-status-connected" onClick={toggleWalletModal} pending={hasPendingTransactions}>
         {!hasPendingTransactions && connector && <StatusIcon connector={connector} />}
@@ -220,7 +221,7 @@ function Web3StatusInner({ starkID }: { starkID?: string }) {
             <Text>{pending?.length} Pending</Text> <Loader stroke="white" />
           </RowBetween>
         ) : (
-          <Text>{starkID ? starkID : shortenAddress(address)}</Text>
+          <Text>{displayAddress}</Text>
         )}
       </Web3StatusConnected>
     )
