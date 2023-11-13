@@ -1423,6 +1423,17 @@
   resolved "https://registry.yarnpkg.com/@starknet-react/chains/-/chains-0.1.0-next.1.tgz#bb10bf1b5b2cf2b4376a3cec5e39bbf186cdac88"
   integrity sha512-4/aYmckYXSbmkLJvc5NsM3WBDCH/0zrUGmF0dJMeET+rQv1YfxRY2IMV3u6ulha+19MELsuO0FmYaAWI1L5k2A==
 
+"@starknet-react/core@2.0.0-next.6":
+  version "2.0.0-next.6"
+  resolved "https://registry.yarnpkg.com/@starknet-react/core/-/core-2.0.0-next.6.tgz#32e35f29078acea9d95fa86407907e5d86d05656"
+  integrity sha512-yleXhaklEbcaFsOEEuA97IO+/JlsTLbQ4/G8yx2j2nvOiK8/dHWcJSxUF2T3pZKsZVTai/XqgXSDa+qhaZDISg==
+  dependencies:
+    "@starknet-react/chains" "^0.1.0-next.1"
+    "@tanstack/react-query" "^4.35.3"
+    eventemitter3 "^5.0.1"
+    immutable "^4.3.4"
+    zod "^3.22.2"
+
 "@starknet-react/core@^0.17.0":
   version "0.17.6"
   resolved "https://registry.yarnpkg.com/@starknet-react/core/-/core-0.17.6.tgz#721f787795ed849132891bc50c0c4e68c7a66989"
@@ -1433,17 +1444,6 @@
     immutable "^4.3.0"
     react "^18.2.0"
     starknet "^4.22.0"
-
-"@starknet-react/core@^2.0.0-next.5":
-  version "2.0.0-next.5"
-  resolved "https://registry.yarnpkg.com/@starknet-react/core/-/core-2.0.0-next.5.tgz#71fc261a0ba414df5131b7f1ef9242af352a5e4c"
-  integrity sha512-8W1EgVcK5fmB1OI/dj4pVljL09HG73/pGuaGSUI3nB4QPrKQVSxp5DuSNswkm/g6VIu+XSQWvE36rNDm0Q1Acw==
-  dependencies:
-    "@starknet-react/chains" "^0.1.0-next.1"
-    "@tanstack/react-query" "^4.35.3"
-    eventemitter3 "^5.0.1"
-    immutable "^4.3.4"
-    zod "^3.22.2"
 
 "@styled-system/background@^5.1.2":
   version "5.1.2"

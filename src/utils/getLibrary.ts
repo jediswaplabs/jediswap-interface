@@ -3,7 +3,7 @@ import { Chain } from '@starknet-react/chains'
 
 function rpc(chain: Chain) {
   return {
-    http: 'https://starknet-mainnet-rpc.dwellir.com/dd28e566-3260-4d8d-8180-6ef1a161e41c'
+    nodeUrl: 'https://starknet-mainnet-rpc.dwellir.com/dd28e566-3260-4d8d-8180-6ef1a161e41c'
   }
 }
 
