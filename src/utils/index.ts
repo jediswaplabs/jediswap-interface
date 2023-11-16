@@ -1,5 +1,5 @@
 // import { BigNumberish } from 'starknet/dist/utils/number'
-import { validateAndParseAddress, Abi, Provider, uint256, Contract, AccountInterface, BigNumberish } from 'starknet'
+import { validateAndParseAddress, Abi, uint256, Contract, AccountInterface, BigNumberish } from 'starknet'
 import { BigNumber } from '@ethersproject/bignumber'
 import { ZERO_ADDRESS } from '../constants'
 import { JSBI, Percent, Token, CurrencyAmount, Currency, ETHER } from '@jediswap/sdk'
