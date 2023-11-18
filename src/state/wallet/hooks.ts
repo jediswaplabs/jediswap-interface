@@ -57,11 +57,11 @@ import { useAccountDetails } from '../../hooks'
 export function useToken0Balance(uncheckedAddress?: string): CurrencyAmount | undefined {
   const { account, chainId } = useAccountDetails()
 
-  const tokenContract = useTokenContract(WETH[chainId ?? DEFAULT_CHAIN_ID]?.address)
+  const tokenContract = useTokenContract('0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7')
 
   const address = useAddressNormalizer(uncheckedAddress)
 
-  const balance = useSingleCallResult(tokenContract, 'balanceOf', { account: address ?? '' })
+  const balance = useSingleCallResult(tokenContract, 'balanceOf', { account: address ?? '0' })
 
   const uint256Balance: uint256.Uint256 = useMemo(() => ({ low: balance?.result?.[0], high: balance?.result?.[1] }), [
     balance?.result
@@ -89,7 +89,7 @@ export function useTokenBalancesWithLoadingIndicator(
   const validatedTokenAddresses = useMemo(() => validatedTokens.map(vt => vt.address), [validatedTokens])
 
   const balances = useMultipleContractSingleData(validatedTokenAddresses, ERC20_ABI as Abi, 'balanceOf', {
-    account: address ?? ''
+    account: address ?? '0'
   })
 
   const anyLoading: boolean = useMemo(() => balances.some(callState => callState.loading), [balances])

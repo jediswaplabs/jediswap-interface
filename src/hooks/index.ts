@@ -25,7 +25,7 @@ export const useAccountDetails = () => {
   }, [account])
 }
 
-export function useEagerConnect() {
+/* export function useEagerConnect() {
   const { active } = useStarknetReactCore() // specifically using useStarknetReactCore because of what this hook does
   const [tried, setTried] = useState(false)
   const { connect } = useConnect()
@@ -76,7 +76,7 @@ export function useEagerConnect() {
   }, [active])
 
   return tried
-}
+} */
 
 /**
  * Use for network and argentX - logs user in

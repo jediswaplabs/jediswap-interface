@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Abi, number, FunctionAbi, validateAndParseAddress, hash, RawArgs, Contract } from 'starknet'
+import { Abi, number, FunctionAbi, validateAndParseAddress, hash, RawArgs, Contract, CallData } from 'starknet'
 import { BigNumber } from '@ethersproject/bignumber'
 import { AppDispatch, AppState } from '../index'
 import {
@@ -193,6 +193,9 @@ export function useSingleContractMultipleData(
         : [],
     [callInputs, contract, methodName]
   )
+
+  // console.log(calls, 'useSingleContractMultipleData')
+
   const methodAbi = useValidatedMethodAbi(contract?.abi, methodName)
 
   const results = useCallsData(calls, methodAbi, options)
@@ -213,10 +216,9 @@ export function useMultipleContractSingleData(
   options?: ListenerOptions
 ): CallState[] {
   const selector = useMemo(() => hash.getSelectorFromName(methodName), [methodName])
-  const callDataProps = useMemo(() => computeCallDataProps(callInputs), [callInputs])
-
-  const callDataLength = callDataProps?.calldata_len.toString()
-  const callData = callDataProps?.calldata
+  const callData = useMemo(() => CallData.toCalldata(callInputs), [callInputs])
+  const callDataLength = callData.length.toString()
+  // const callData = callDataProps?.calldata
 
   const calls = useMemo(
     () =>
@@ -234,6 +236,8 @@ export function useMultipleContractSingleData(
         : [],
     [addresses, callData, callDataLength, callInputs, methodName, selector]
   )
+
+  // console.log(calls, 'useMultipleContractSingleData')
 
   const methodAbi = useValidatedMethodAbi(contractInterface, methodName)
 
@@ -256,22 +260,22 @@ export function useSingleCallResult(
   //   const fragment = useMemo(() => contract?.interface?.getFunction(methodName), [contract, methodName])
 
   const selector = useMemo(() => hash.getSelectorFromName(methodName), [methodName])
-  const { calldata_len, calldata } = useMemo(() => computeCallDataProps(inputs), [inputs])
-
+  const calldata = useMemo(() => CallData.toCalldata(inputs), [inputs])
   const calls = useMemo<Call[]>(() => {
     return contract && selector && isValidMethodArgs(inputs)
       ? [
           {
             address: validateAndParseAddress(contract.address),
             methodName,
-            calldata_len: calldata_len.toString(),
+            calldata_len: calldata.length.toString(),
             calldata
           }
         ]
       : []
-  }, [calldata, calldata_len, contract, inputs, methodName, selector])
+  }, [calldata, contract, inputs, methodName, selector])
 
   const methodAbi = useValidatedMethodAbi(contract?.abi, methodName)
+  console.log(calls, 'useSingleCallResult')
 
   const result = useCallsData(calls, methodAbi, options)[0]
 

@@ -38,11 +38,15 @@ async function fetchChunk(
   const { getSelectorFromName } = hash
 
   // try {
-  const calls = chunk.flatMap(obj => [obj.address, getSelectorFromName(obj.methodName), obj.calldata_len, ...['0']])
+  const calls = chunk.flatMap(obj => {
+    const calldata_obj = Number(obj.calldata_len) > 1 ? obj.calldata : []
+    return [obj.address, getSelectorFromName(obj.methodName), obj.calldata_len, ...calldata_obj]
+  })
 
   // Keep it here for multicall debugging
   const dateTime = new Date().getTime()
   const response = await multicallContract.aggregate(calls)
+  console.log('🚀 ~ file: updater.tsx:49 ~ response:', response)
 
   resultsBlockNumber = response.block_number
   returnData_len = response.result_len
