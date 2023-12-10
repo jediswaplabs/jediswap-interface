@@ -158,7 +158,8 @@ export default function RemoveLiquidity({
       deadline: deadline.toHexString()
     }
 
-    const removeLiquidityCalldata = CallData.compile(removeLiquidityArgs)
+    const contractCallData = new CallData(router.abi);
+    const removeLiquidityCalldata = contractCallData.compile('remove_liquidity', removeLiquidityArgs);
 
     const removeLiquidityCall: Call = {
       contractAddress: router.address,

@@ -275,7 +275,6 @@ export function useSingleCallResult(
   }, [calldata, contract, inputs, methodName, selector])
 
   const methodAbi = useValidatedMethodAbi(contract?.abi, methodName)
-  console.log(calls, 'useSingleCallResult')
 
   const result = useCallsData(calls, methodAbi, options)[0]
 

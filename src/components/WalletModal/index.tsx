@@ -262,7 +262,7 @@ export default function WalletModal({
           color={option.id === 'argentX' ? '#FF875B' : '#E0B137'}
           link={null}
           header={option.name}
-          icon={''}
+          icon={option.icon.dark}
           size={null}
         />
       )

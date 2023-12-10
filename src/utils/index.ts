@@ -1,11 +1,11 @@
 // import { BigNumberish } from 'starknet/dist/utils/number'
-import { validateAndParseAddress, Abi, uint256, Contract, AccountInterface, BigNumberish } from 'starknet'
+import {validateAndParseAddress, Abi, uint256, Contract, AccountInterface, BigNumberish, cairo} from 'starknet'
 import { BigNumber } from '@ethersproject/bignumber'
 import { ZERO_ADDRESS } from '../constants'
 import { JSBI, Percent, Token, CurrencyAmount, Currency, ETHER } from '@jediswap/sdk'
 import { LPTokenAddressMap, TokenAddressMap } from '../state/lists/hooks'
 import isZero from './isZero'
-import { Connector } from '@starknet-react/core'
+import {Connector, useProvider} from '@starknet-react/core'
 import { ChainId } from '@jediswap/sdk'
 
 // returns the checksummed address if the address is valid, otherwise returns false
@@ -106,25 +106,14 @@ export function calculateSlippageAmount(value: CurrencyAmount, slippage: number)
 export function getContract(
   address: string,
   ABI: any,
-  library: AccountInterface,
-  connector?: Connector,
-  account?: string
+  account: any
 ): Contract {
   const parsedAddress = isAddress(address)
-
   if (!parsedAddress || parsedAddress === ZERO_ADDRESS) {
     throw Error(`Invalid 'address' parameter '${address}'.`)
   }
-
-  // const providerOrSigner = getProviderOrSigner(library, connector, account)
-
-  return new Contract(ABI as Abi, address, library)
+  return new Contract(ABI as Abi, address, account)
 }
-
-// account is optional
-// export function getRouterContract(_: number, library: any, account?: string): Contract {
-//   return getContract(ROUTER_ADDRESS[chainId ?? DEFAULT_CHAIN_ID], JediSwapRouterABI, library, account)
-// }
 
 export function escapeRegExp(string: string): string {
   return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') // $& means the whole matched string
@@ -136,5 +125,5 @@ export function isTokenOnList(defaultTokens: TokenAddressMap | LPTokenAddressMap
 }
 
 export const parsedAmountToUint256Args = (amount: JSBI): { [k: string]: BigNumberish; type: 'struct' } => {
-  return { type: 'struct', ...uint256.bnToUint256(amount.toString()) }
+  return { type: 'struct', ...cairo.uint256(amount.toString()) }
 }

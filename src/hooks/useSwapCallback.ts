@@ -1,5 +1,5 @@
 import { BigNumber } from '@ethersproject/bignumber'
-import { Contract, uint256, stark, RawArgs, Call, CallData } from 'starknet'
+import {Contract, uint256, stark, RawArgs, Call, CallData, cairo} from 'starknet'
 import { JSBI, Percent, Router, SwapParameters, Trade, TradeType } from '@jediswap/sdk'
 import { useMemo } from 'react'
 import { BIPS_BASE, INITIAL_ALLOWED_SLIPPAGE } from '../constants'
@@ -11,6 +11,7 @@ import useTransactionDeadline from './useTransactionDeadline'
 // import useENS from './useENS'
 import { useApprovalCallFromTrade } from './useApproveCall'
 import { useAccountDetails } from '.'
+import {useContractWrite, useProvider} from "@starknet-react/core";
 
 export enum SwapCallbackState {
   INVALID,
@@ -98,14 +99,13 @@ export function useSwapCallback(
   recipientAddressOrName: string | null // the ENS name or address of the recipient of the trade, or null if swap should be returned to sender
 ): { state: SwapCallbackState; callback: null | (() => Promise<string>); error: string | null } {
   const { account, chainId } = useAccountDetails()
+  const { provider } = useProvider()
 
   const approvalCallback = useApprovalCallFromTrade(trade, allowedSlippage)
   const swapCalls = useSwapCallArguments(trade, allowedSlippage, recipientAddressOrName)
 
   const addTransaction = useTransactionAdder()
   const recipient = recipientAddressOrName === null ? account : recipientAddressOrName
-
-  // const { address: recipientAddress } = useENS(recipientAddressOrName)
 
   return useMemo(() => {
     if (!trade || !account || !chainId) {
@@ -119,10 +119,6 @@ export function useSwapCallback(
       }
     }
 
-    // if (!approvalCall) {
-    //   return { state: SwapCallbackState.INVALID, callback: null, error: 'Missing approval call' }
-    // }
-
     return {
       state: SwapCallbackState.VALID,
       callback: async function onSwap(): Promise<string> {
@@ -133,51 +129,8 @@ export function useSwapCallback(
             } = call
 
             return { call }
-
-            // return contract.estimateGas[methodName](...args, options)
-            //   .then(gasEstimate => {
-            //     return {
-            //       call,
-            //       gasEstimate
-            //     }
-            //   })
-            //   .catch(gasError => {
-            //     console.debug('Gas estimate failed, trying eth_call to extract error', call)
-
-            //     return contract.callStatic[methodName](...args, options)
-            //       .then(result => {
-            //         console.debug('Unexpected successful call after failed estimate gas', call, gasError, result)
-            //         return { call, error: new Error('Unexpected issue with estimating the gas. Please try again.') }
-            //       })
-            //       .catch(callError => {
-            //         console.debug('Call threw error', call, callError)
-            //         let errorMessage: string
-            //         switch (callError.reason) {
-            //           case 'UniswapV2Router: INSUFFICIENT_OUTPUT_AMOUNT':
-            //           case 'UniswapV2Router: EXCESSIVE_INPUT_AMOUNT':
-            //             errorMessage =
-            //               'This transaction will not succeed either due to price movement or fee on transfer. Try increasing your slippage tolerance.'
-            //             break
-            //           default:
-            //             errorMessage = `The transaction cannot succeed due to error: ${callError.reason}. This is probably an issue with one of the tokens you are swapping.`
-            //         }
-            //         return { call, error: new Error(errorMessage) }
-            //       })
-            //   })
           })
         )
-
-        // a successful estimation is a bignumber gas estimate and the next call is also a bignumber gas estimate
-        // const successfulEstimation = estimatedCalls.find(
-        //   (el, ix, list): el is SuccessfulCall =>
-        //     'gasEstimate' in el && (ix === list.length - 1 || 'gasEstimate' in list[ix + 1])
-        // )
-
-        // if (!successfulEstimation) {
-        //   const errorCalls = estimatedCalls.filter((call): call is FailedCall => 'error' in call)
-        //   if (errorCalls.length > 0) throw errorCalls[errorCalls.length - 1].error
-        //   throw new Error('Unexpected error. Please contact support: none of the calls threw an error')
-        // }
 
         const approval = approvalCallback()
 
@@ -194,20 +147,37 @@ export function useSwapCallback(
 
         const [amountIn, amountOut, path, to, deadline] = args
 
-        const uint256AmountIn = uint256.bnToUint256(amountIn as string)
-        const uint256AmountOut = uint256.bnToUint256(amountOut as string)
+        const uint256AmountIn = cairo.uint256(amountIn as string)
+        const uint256AmountOut = cairo.uint256(amountOut as string)
 
-        const swapArgs: RawArgs = {
-          amountIn: { type: 'struct', ...uint256AmountIn },
-          amountOutMin: { type: 'struct', ...uint256AmountOut },
+        let swapArgs: RawArgs = {
           path,
           to,
           deadline
         }
 
-        // const swapCalldata = [...Object.values(uint256AmountIn), ...Object.values(uint256AmountOut), path, to, deadline]
+        switch (methodName) {
+          case 'swap_tokens_for_exact_tokens': {
+            swapArgs = {
+              ...swapArgs,
+              amountInMax: { type: 'struct', ...uint256AmountOut },
+              amountOut: { type: 'struct', ...uint256AmountIn },
+            }
+            break;
+          }
+          case 'swap_exact_tokens_for_tokens':
+          default: {
+            swapArgs = {
+              ...swapArgs,
+              amountIn: { type: 'struct', ...uint256AmountIn },
+              amountOutMin: { type: 'struct', ...uint256AmountOut },
+            }
+            break;
+          }
+        }
 
-        const swapCalldata = CallData.compile(swapArgs)
+        const contractCallData = new CallData(contract.abi);
+        const swapCalldata = contractCallData.compile(methodName, swapArgs);
 
         const swapCall: Call = {
           contractAddress: contract.address,

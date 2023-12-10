@@ -206,21 +206,6 @@ export default function AddLiquidity({
       [Field.CURRENCY_B]: calculateSlippageAmount(parsedAmountB, noLiquidity ? 0 : allowedSlippage)[0]
     }
 
-    // let estimate,
-
-    // estimate = router.estimateGas.addLiquidity
-
-    // args = [
-    //   wrappedCurrency(currencyA, chainId)?.address ?? '',
-    //   wrappedCurrency(currencyB, chainId)?.address ?? '',
-    //   parsedAmountA.raw.toString(),
-    //   parsedAmountB.raw.toString(),
-    //   amountsMin[Field.CURRENCY_A].toString(),
-    //   amountsMin[Field.CURRENCY_B].toString(),
-    //   account,
-    //   deadline.toHexString()
-    // ]
-
     const args: RawArgs = {
       tokenA: wrappedCurrency(currencyA, chainId)?.address ?? '',
       tokenB: wrappedCurrency(currencyB, chainId)?.address ?? '',
@@ -234,7 +219,9 @@ export default function AddLiquidity({
 
     // value = null
 
-    const calldata = CallData.compile(args)
+    const contractCallData = new CallData(router.abi);
+    const calldata = contractCallData.compile('add_liquidity', args);
+
 
     const addLiquidityCall: Call = {
       contractAddress: router.address,

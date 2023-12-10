@@ -57,13 +57,13 @@ import { useAccountDetails } from '../../hooks'
 export function useToken0Balance(uncheckedAddress?: string): CurrencyAmount | undefined {
   const { account, chainId } = useAccountDetails()
 
-  const tokenContract = useTokenContract('0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7')
+    const tokenContract = useTokenContract(WETH[chainId ?? DEFAULT_CHAIN_ID]?.address)
 
   const address = useAddressNormalizer(uncheckedAddress)
 
   const balance = useSingleCallResult(tokenContract, 'balanceOf', { account: address ?? '0' })
 
-  const uint256Balance: uint256.Uint256 = useMemo(() => ({ low: balance?.result?.[0], high: balance?.result?.[1] }), [
+  const uint256Balance: uint256.Uint256 = useMemo(() => ({ low: balance?.result?.[0] ?? '0x0', high: balance?.result?.[1] ?? '0x0' }), [
     balance?.result
   ])
 

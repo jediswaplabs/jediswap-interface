@@ -111,7 +111,7 @@ export default function Option({
   color: string
   header: React.ReactNode
   subheader: React.ReactNode | null
-  icon: string
+  icon: string | undefined
   active?: boolean
   id: string
 }) {

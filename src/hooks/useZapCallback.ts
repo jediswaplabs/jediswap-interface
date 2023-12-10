@@ -1,5 +1,5 @@
 import { BigNumber } from '@ethersproject/bignumber'
-import { Contract, uint256, RawArgs, stark, Call, CallData } from 'starknet'
+import {Contract, uint256, RawArgs, stark, Call, CallData, cairo} from 'starknet'
 import { JSBI, Percent, Router, SwapParameters as ZapParameters, TokenAmount, Trade, TradeType } from '@jediswap/sdk'
 import { useMemo } from 'react'
 import { BIPS_BASE, INITIAL_ALLOWED_SLIPPAGE } from '../constants'
@@ -50,7 +50,6 @@ function useZapCallArguments(
 ): ZapCall[] {
   const { address, account, chainId } = useAccountDetails()
 
-  // const { address: recipientAddress } = useENS(recipientAddressOrName)
   const recipient = recipientAddressOrName === null ? address : recipientAddressOrName
 
   const deadline = useTransactionDeadline()
@@ -130,10 +129,6 @@ export function useZapCallback(
       return { state: ZapCallbackState.INVALID, callback: null, error: 'Input Token Missing' }
     }
 
-    // if (!approvalCall) {
-    //   return { state: ZapCallbackState.INVALID, callback: null, error: 'Missing approval call' }
-    // }
-
     return {
       state: ZapCallbackState.VALID,
       callback: async function onZap(): Promise<string> {
@@ -164,8 +159,8 @@ export function useZapCallback(
 
         const [amountIn, amountOut, path, to, deadline] = args
 
-        const uint256AmountIn = uint256.bnToUint256(amountIn as string)
-        const uint256_LP_AmountOut = uint256.bnToUint256(minLPAmountOut?.raw.toString())
+        const uint256AmountIn = cairo.uint256(amountIn as string)
+        const uint256_LP_AmountOut = cairo.uint256(minLPAmountOut?.raw.toString())
 
         const zapArgs: RawArgs = {
           from_token_address: inputToken.address,
@@ -176,7 +171,8 @@ export function useZapCallback(
           transfer_residual: '0'
         }
 
-        const zapCalldata = CallData.compile(zapArgs)
+        const contractCallData = new CallData(contract.abi);
+        const zapCalldata = contractCallData.compile('zap_in', zapArgs);
 
         const zapCall: Call = {
           contractAddress: contract.address,

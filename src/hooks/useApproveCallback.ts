@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from 'react'
-import { InvokeFunctionResponse, Args, uint256 } from 'starknet'
+import {InvokeFunctionResponse, Args, uint256, cairo} from 'starknet'
 import { MaxUint256 } from '@ethersproject/constants'
 import { Trade, TokenAmount, CurrencyAmount, ETHER, WETH, Token } from '@jediswap/sdk'
 
@@ -85,7 +85,7 @@ export function useApproveCallback(
     //   return tokenContract.estimateGas.approve(spender, amountToApprove.raw.toString())
     // })
 
-    const uint256AmountToApprove = uint256.bnToUint256(amountToApprove.raw.toString())
+    const uint256AmountToApprove = cairo.uint256(amountToApprove.raw.toString())
 
     const approveArgs: Args = {
       spender,
