@@ -248,17 +248,18 @@ export default function Web3Status() {
 
   const [domain, setDomain] = useState<string>('')
 
-  // useEffect(() => {
-  //   const url = domainURL(chainId as ChainId)
-  //   fetch(url + num.hexToDecimalString(address ?? ''))
-  //     .then(response => response.json())
-  //     .then((data: DomainToAddrData) => {
-  //       setDomain(data.domain)
-  //     })
-  //     .catch(error => {
-  //       console.error(error)
-  //     })
-  // }, [address, chainId])
+  useEffect(() => {
+    const url = domainURL(chainId as ChainId)
+    if (!address) { return };
+    fetch(url + num.hexToDecimalString(address ?? ''))
+      .then(response => response.json())
+      .then((data: DomainToAddrData) => {
+        setDomain(data.domain)
+      })
+      .catch(error => {
+        console.error(error)
+      })
+  }, [address, chainId])
 
   const allTransactions = useAllTransactions()
 
@@ -275,14 +276,10 @@ export default function Web3Status() {
     .filter(tx => tx.receipt && tx.receipt.status !== 'PENDING' && tx.receipt.status !== 'RECEIVED')
     .map(tx => tx.hash)
 
-  // if (!contextNetwork.active && !active) {
-  //   return null
-  // }
-
   return (
     <>
       <Web3StatusInner starkID={domain} />
-      <WalletModal pendingTransactions={pending} confirmedTransactions={confirmed} ENSName={''} />
+      <WalletModal pendingTransactions={pending} confirmedTransactions={confirmed} ENSName={domain} />
     </>
   )
 }

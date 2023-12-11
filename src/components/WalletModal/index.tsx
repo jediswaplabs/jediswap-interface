@@ -1,9 +1,6 @@
 import { UnsupportedChainIdError, useStarknetReact } from '@web3-starknet-react/core'
 import React, { useEffect, useState } from 'react'
-import { isMobile } from 'react-device-detect'
-import ReactGA from 'react-ga4'
 import styled from 'styled-components'
-import MetamaskIcon from '../../assets/images/metamask.png'
 import { ReactComponent as Close } from '../../assets/images/x.svg'
 import { isProductionChainId, isProductionEnvironment, isTestnetChainId, isTestnetEnvironment } from '../../connectors'
 import { SUPPORTED_WALLETS } from '../../constants'
@@ -19,7 +16,6 @@ import { useConnect, Connector } from '@starknet-react/core'
 import { getStarknet } from 'get-starknet-core'
 import { ChainId } from '@jediswap/sdk'
 import { useAccountDetails } from '../../hooks'
-import { WebWalletConnector } from '@argent/starknet-react-webwallet-connector'
 
 const CloseIcon = styled.div`
   position: absolute;
@@ -137,8 +133,6 @@ export default function WalletModal({
 
   const { account, chainId, connector: connector, status } = useAccountDetails()
 
-  // const connectStarknet = useStarknetConnector({ showModal: true })
-
   const [walletView, setWalletView] = useState(WALLET_VIEWS.ACCOUNT)
 
   const [pendingWallet, setPendingWallet] = useState<Connector>()
@@ -214,7 +208,7 @@ export default function WalletModal({
       handleWalletConnect(option)
     } else {
       setWalletView(WALLET_VIEWS.PENDING)
-      setPendingError(connector?.id)
+      setPendingError(option?.id)
     }
   }
 
@@ -250,20 +244,20 @@ export default function WalletModal({
   // get wallets user can switch too, depending on device/browser
   function getOptions() {
     return connectors.map((option: Connector) => {
+      const wallet = SUPPORTED_WALLETS[option.id] ?? option;
       return (
         <Option
-          id={`connect-${option.id}`}
+          id={`connect-${wallet.id}`}
+          key={wallet.id}
+          header={wallet.name}
+          icon={wallet.icon}
           onClick={() => {
             option === connector ? setWalletView(WALLET_VIEWS.ACCOUNT) : tryActivation(option)
           }}
-          key={option.id}
-          subheader={option.id === 'argentWebWallet' && 'Powered by Argent'}
           active={connector === connector}
-          color={option.id === 'argentX' ? '#FF875B' : '#E0B137'}
-          link={null}
-          header={option.name}
-          icon={option.icon.dark}
-          size={null}
+          color={wallet.id === 'argentX' ? '#FF875B' : '#E0B137'}
+          link={wallet?.href}
+          size={wallet?.size ?? null}
         />
       )
     })
@@ -341,8 +335,8 @@ export default function WalletModal({
           )}
           {walletView !== WALLET_VIEWS.PENDING && (
             <Blurb>
-              <span>New to Ethereum? &nbsp;</span>{' '}
-              <ExternalLink href="https://ethereum.org/wallets/">Learn more about wallets</ExternalLink>
+              <span>New to Starknet? &nbsp;</span>{' '}
+              <ExternalLink href="https://www.starknet.io/en/ecosystem/wallets">Learn more about wallets</ExternalLink>
             </Blurb>
           )}
         </ContentWrapper>

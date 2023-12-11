@@ -99,7 +99,6 @@ export function useSwapCallback(
   recipientAddressOrName: string | null // the ENS name or address of the recipient of the trade, or null if swap should be returned to sender
 ): { state: SwapCallbackState; callback: null | (() => Promise<string>); error: string | null } {
   const { account, chainId } = useAccountDetails()
-  const { provider } = useProvider()
 
   const approvalCallback = useApprovalCallFromTrade(trade, allowedSlippage)
   const swapCalls = useSwapCallArguments(trade, allowedSlippage, recipientAddressOrName)

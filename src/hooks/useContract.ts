@@ -19,7 +19,6 @@ import { useAccountDetails } from '.'
 function useContract(address: string | undefined, ABI: any, withSignerIfPossible = true): Contract | null {
   const { connector } = useAccountDetails()
   const { account, chainId } = useAccountDetails()
-  const { provider } = useProvider()
   return useMemo(() => {
     if (!address || !ABI || !account) return null
 
