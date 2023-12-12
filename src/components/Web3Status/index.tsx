@@ -192,7 +192,7 @@ function StatusIcon({ connector }: { connector: Connector }) {
 
 function Web3StatusInner({ starkID }: { starkID?: string }) {
   const { t } = useTranslation()
-  const { error } = useStarknetReact()
+  const { error } = useStarknetReact(NetworkContextName)
   const { address, connector } = useAccountDetails()
   // console.log('🚀 ~ file: index.tsx:198 ~ Web3StatusInner ~ provider:', provider.get)
 

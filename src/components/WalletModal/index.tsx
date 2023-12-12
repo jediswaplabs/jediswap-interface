@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { ReactComponent as Close } from '../../assets/images/x.svg'
 import { isProductionChainId, isProductionEnvironment, isTestnetChainId, isTestnetEnvironment } from '../../connectors'
-import { SUPPORTED_WALLETS } from '../../constants'
+import {NetworkContextName, SUPPORTED_WALLETS} from '../../constants'
 import usePrevious from '../../hooks/usePrevious'
 import { ApplicationModal } from '../../state/application/actions'
 import { useModalOpen, useWalletModalToggle } from '../../state/application/hooks'
@@ -127,7 +127,7 @@ export default function WalletModal({
   ENSName?: string
 }) {
   // important that these are destructed from the account-specific web3-react context
-  const { active, error } = useStarknetReact()
+  const { active, error } = useStarknetReact(NetworkContextName)
   const { connectors, connect } = useConnect()
   const { getAvailableWallets } = getStarknet()
 
