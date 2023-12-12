@@ -194,8 +194,6 @@ export function useSingleContractMultipleData(
     [callInputs, contract, methodName]
   )
 
-  // console.log(calls, 'useSingleContractMultipleData')
-
   const methodAbi = useValidatedMethodAbi(contract?.abi, methodName)
 
   const results = useCallsData(calls, methodAbi, options)
@@ -218,7 +216,6 @@ export function useMultipleContractSingleData(
   const selector = useMemo(() => hash.getSelectorFromName(methodName), [methodName])
   const callData = useMemo(() => CallData.toCalldata(callInputs), [callInputs])
   const callDataLength = callData.length.toString()
-  // const callData = callDataProps?.calldata
 
   const calls = useMemo(
     () =>

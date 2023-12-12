@@ -1,7 +1,6 @@
 import { validateAndParseAddress, constants } from 'starknet'
 import { ChainId, JSBI, Percent, Token, WETH } from '@jediswap/sdk'
 
-// import { fortmatic, injected, portis, walletconnect, walletlink, argentX } from '../connectors'
 import { argentX, braavosWallet, argentWebWallet } from '../connectors'
 import ARGENTX_ICON from '../assets/images/argentx.png'
 import EMAIL_ICON from '../assets/images/mail.png'
@@ -128,12 +127,6 @@ export const wstETH = {
   )
 }
 
-// export const USDT = new Token(ChainId.SN_MAIN, '0xdAC17F958D2ee523a2206206994597C13D831ec7', 6, 'USDT', 'Tether USD')
-// export const COMP = new Token(ChainId.SN_MAIN, '0xc00e94Cb662C3520282E6f5717214004A7f26888', 18, 'COMP', 'Compound')
-// export const MKR = new Token(ChainId.SN_MAIN, '0x9f8F72aA9304c8B593d555F12eF6589cC3A579A2', 18, 'MKR', 'Maker')
-// export const AMPL = new Token(ChainId.SN_MAIN, '0xD46bA6D942050d489DBd938a2C909A5d5039A161', 9, 'AMPL', 'Ampleforth')
-// export const WBTC = new Token(ChainId.SN_MAIN, '0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599', 18, 'WBTC', 'Wrapped BTC')
-
 // TODO this is only approximate, it's actually based on blocks
 export const PROPOSAL_LENGTH_IN_DAYS = 7
 
@@ -141,14 +134,6 @@ const WETH_ONLY: ChainTokenList = {
   [ChainId.SN_MAIN]: [WETH[ChainId.SN_MAIN]],
   [ChainId.SN_GOERLI]: [WETH[ChainId.SN_GOERLI]]
 }
-
-// const TOKEN0_ONLY: ChainTokenList = {
-//   [ChainId.SN_GOERLI]: [TOKEN0],
-//   [ChainId.SN_MAIN]: [TOKEN0],
-//   [ChainId.KOVAN]: [TOKEN0],
-//   [ChainId.ROPSTEN]: [TOKEN0],
-//   [ChainId.RINKEBY]: [TOKEN0]
-// }
 
 // used to construct intermediary pairs for trading
 export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
@@ -160,19 +145,7 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
     USDT[ChainId.SN_GOERLI]
   ],
   [ChainId.SN_MAIN]: [...WETH_ONLY[ChainId.SN_MAIN], DAI[ChainId.SN_MAIN], USDC[ChainId.SN_MAIN], USDT[ChainId.SN_MAIN]]
-  // [ChainId.SN_GOERLI]: [TOKEN0]
-  // [ChainId.SN_MAIN]: [TOKEN0, TOKEN1],
 }
-
-/**
- * Some tokens can only be swapped via certain pairs, so we override the list of bases that are considered for these
- * tokens.
- */
-// export const CUSTOM_BASES: { [chainId in ChainId]?: { [tokenAddress: string]: Token[] } } = {
-//   [ChainId.SN_MAIN]: {
-//     [AMPL.address]: [DAI, WETH[ChainId.SN_MAIN]]
-//   }
-// }
 
 // used for display in the default list when adding liquidity
 export const SUGGESTED_BASES: ChainTokenList = {
@@ -194,8 +167,6 @@ export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
     DAI[ChainId.SN_GOERLI],
     USDC[ChainId.SN_GOERLI],
     USDT[ChainId.SN_GOERLI]
-    // WBTC[ChainId.SN_GOERLI],
-    // wstETH[ChainId.SN_GOERLI]
   ],
   [ChainId.SN_MAIN]: [
     ...WETH_ONLY[ChainId.SN_MAIN],
@@ -214,8 +185,6 @@ export const BASES_TO_BUILD_ZAPPER_LIST_AGAINST: ChainTokenList = {
     DAI[ChainId.SN_GOERLI],
     USDC[ChainId.SN_GOERLI],
     USDT[ChainId.SN_GOERLI]
-    // WBTC[ChainId.SN_GOERLI],
-    // wstETH[ChainId.SN_GOERLI]
   ],
   [ChainId.SN_MAIN]: [
     ...WETH_ONLY[ChainId.SN_MAIN],
@@ -305,9 +274,9 @@ export const ALLOWED_PRICE_IMPACT_MEDIUM: Percent = new Percent(JSBI.BigInt(300)
 export const ALLOWED_PRICE_IMPACT_HIGH: Percent = new Percent(JSBI.BigInt(500), BIPS_BASE) // 5%
 // if the price slippage exceeds this number, force the user to type 'confirm' to execute
 export const PRICE_IMPACT_WITHOUT_FEE_CONFIRM_MIN: Percent = new Percent(JSBI.BigInt(1000), BIPS_BASE) // 10%
-// for non expert mode disable swaps above this
+// for non-expert mode disable swaps above this
 export const BLOCKED_PRICE_IMPACT_NON_EXPERT: Percent = new Percent(JSBI.BigInt(1500), BIPS_BASE) // 15%
 
-// used to ensure the user doesn't send so much ETH so they end up with <.01
+// used to ensure the user doesn't send so much ETH, so they end up with <.01
 export const MIN_ETH: JSBI = JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(16)) // .01 ETH
 export const BETTER_TRADE_LINK_THRESHOLD = new Percent(JSBI.BigInt(75), JSBI.BigInt(10000))

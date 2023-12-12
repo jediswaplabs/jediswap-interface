@@ -1,4 +1,4 @@
-import { UnsupportedChainIdError, useStarknetReact } from '@web3-starknet-react/core'
+import { useStarknetReact } from '@web3-starknet-react/core'
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { ReactComponent as Close } from '../../assets/images/x.svg'
@@ -213,12 +213,6 @@ export default function WalletModal({
   }
 
   const handleWalletConnect = (connector: Connector) => {
-    // // log selected wallet
-    // ReactGA.event({
-    //   category: 'Wallet',
-    //   action: 'Change Wallet',
-    //   label: (connector && SUPPORTED_WALLETS[connector.id].name) || ''
-    // })
     setPendingWallet(connector) // set wallet for pending view
     setWalletView(WALLET_VIEWS.PENDING)
     try {
@@ -251,6 +245,7 @@ export default function WalletModal({
           key={wallet.id}
           header={wallet.name}
           icon={wallet.icon}
+          subheader={''}
           onClick={() => {
             option === connector ? setWalletView(WALLET_VIEWS.ACCOUNT) : tryActivation(option)
           }}

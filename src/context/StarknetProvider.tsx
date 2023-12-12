@@ -6,7 +6,7 @@ import { StarknetConfig, argent, braavos, useInjectedConnectors } from '@starkne
 import rpcProvider from '../utils/getLibrary'
 
 export function StarknetProvider({ children }: { children: React.ReactNode }) {
-  const chains = [goerli, mainnet]
+  const chains = [mainnet, goerli]
   const { connectors } = useInjectedConnectors({
     // Show these connectors if the user has no connector installed.
     recommended: [argent(), braavos()],

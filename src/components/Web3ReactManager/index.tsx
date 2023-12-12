@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { useStarknetReact } from '@web3-starknet-react/core'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
@@ -15,7 +15,6 @@ const MessageWrapper = styled.div`
 const Message = styled.h2`
   color: ${({ theme }) => theme.secondary1};
 `
-
 export default function Web3ReactManager({ children }: { children: JSX.Element }) {
   const { t } = useTranslation()
   const { active } = useStarknetReact()
