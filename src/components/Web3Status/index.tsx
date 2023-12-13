@@ -251,6 +251,7 @@ export default function Web3Status() {
   useEffect(() => {
     const url = domainURL(chainId as ChainId)
     if (!address) { return };
+    setDomain('');
     fetch(url + num.hexToDecimalString(address ?? ''))
       .then(response => response.json())
       .then((data: DomainToAddrData) => {
