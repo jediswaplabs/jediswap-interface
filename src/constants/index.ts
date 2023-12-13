@@ -228,7 +228,6 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
     icon: ARGENTX_ICON,
     connector: argentX,
     color: '#FF875B',
-
     description: 'Starknet Browser Wallet',
     href: null,
     mobile: true

@@ -143,6 +143,7 @@
     "@web3-react/injected-connector": "^6.0.7",
     "events": "^3.3.0",
     "get-starknet-core": "^3.2.0",
+    "starknetkit": "^1.0.22",
     "vite-plugin-svgr": "^2.2.0",
     "wido-widget": "1.5.3"
   }

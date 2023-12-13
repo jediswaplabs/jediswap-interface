@@ -245,12 +245,12 @@ export default function WalletModal({
           key={wallet.id}
           header={wallet.name}
           icon={wallet.icon}
-          subheader={''}
+          subheader={wallet.id === 'argentWebWallet' && 'Powered by Argent'}
           onClick={() => {
             option === connector ? setWalletView(WALLET_VIEWS.ACCOUNT) : tryActivation(option)
           }}
           active={connector === connector}
-          color={wallet.id === 'argentX' ? '#FF875B' : '#E0B137'}
+          color={wallet?.color}
           link={wallet?.href}
           size={wallet?.size ?? null}
         />
