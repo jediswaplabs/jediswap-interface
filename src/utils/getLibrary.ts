@@ -1,9 +1,25 @@
 import {jsonRpcProvider} from "@starknet-react/core";
+import {isLocalEnvironment} from "../connectors";
 
 const provider = jsonRpcProvider({
     rpc: (chain) => {
+        let nodeUrl;
+        switch (true) {
+            case (isLocalEnvironment()): {
+                nodeUrl = 'https://rpc.starknet.lava.build/';
+                break;
+            }
+            case (chain.network === 'mainnet'): {
+                nodeUrl = 'https://rpc-proxy.jediswap.xyz/api/';
+                break;
+            }
+            default: {
+                nodeUrl = 'https://rpc-proxy.testnet.jediswap.xyz/api/';
+            }
+        }
+
         return {
-            nodeUrl: chain.network === 'goerli' ? 'https://rpc.starknet-testnet.lava.build' : `https://starknet-${chain.network}-rpc.dwellir.com/dd28e566-3260-4d8d-8180-6ef1a161e41c`
+            nodeUrl
         }
     }
 })

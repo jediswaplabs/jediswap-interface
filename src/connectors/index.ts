@@ -37,6 +37,17 @@ export const isProductionEnvironment = () => {
   return host === 'app.jediswap.xyz'
 }
 
+export const isLocalEnvironment = () => {
+  if (!location) {
+    return false
+  }
+  if (String(location) === '//') {
+    return false
+  }
+  const hostname = new URL(String(location))?.hostname || ''
+  return hostname === 'localhost'
+}
+
 export const isProductionChainId = (id: string) => {
   return id === ChainId.SN_MAIN
 }
