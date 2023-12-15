@@ -19,7 +19,10 @@ const provider = jsonRpcProvider({
         }
 
         return {
-            nodeUrl
+            nodeUrl,
+            headers: {
+                "Content-Type": "application/json"
+            }
         }
     }
 })
