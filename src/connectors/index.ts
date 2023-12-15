@@ -1,5 +1,5 @@
-import { WebWalletConnector } from '@argent/starknet-react-webwallet-connector'
-import { InjectedConnector } from '@starknet-react/core'
+import { WebWalletConnector } from "starknetkit/webwallet";
+import { InjectedConnector } from "starknetkit/injected"
 import { ChainId } from '@jediswap/sdk'
 
 export const NETWORK_CHAIN_ID: number = parseInt(process.env.REACT_APP_CHAIN_ID ?? '5')

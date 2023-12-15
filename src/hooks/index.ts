@@ -9,5 +9,5 @@ export const useAccountDetails = () => {
 
   return useMemo(() => {
     return { address, connector, chainId, account, status }
-  }, [account])
+  }, [account, chainId])
 }
