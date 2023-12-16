@@ -19,10 +19,10 @@ import Loader from '../Loader'
 import { RowBetween } from '../Row'
 import WalletModal from '../WalletModal'
 import WrongNetwork from '../../assets/jedi/WrongNetwork.svg'
-import { hexToDecimalString } from 'starknet/dist/utils/number'
-import { InjectedConnector } from '@starknet-react/core'
-import { StarknetChainId } from 'starknet/dist/constants'
+import { Connector } from '@starknet-react/core'
+import { ChainId } from '@jediswap/sdk'
 import { useAccountDetails } from '../../hooks'
+import { num } from 'starknet'
 
 const IconWrapper = styled.div<{ size?: number }>`
   ${({ theme }) => theme.flexColumnNoWrap};
@@ -144,7 +144,7 @@ const SOCK = (
 )
 
 // eslint-disable-next-line react/prop-types
-function StatusIcon({ connector }: { connector: InjectedConnector }) {
+function StatusIcon({ connector }: { connector: Connector }) {
   // if (connector === injected) {
   //   return <Identicon />
   // } else if (connector === walletconnect) {
@@ -172,7 +172,7 @@ function StatusIcon({ connector }: { connector: InjectedConnector }) {
   //     </IconWrapper>
   //   )
   // }
-  if (connector.id() === 'argentX' || connector.id() === 'argentWebWallet') {
+  if (connector.id === 'argentX' || connector.id === 'argentWebWallet') {
     return (
       <IconWrapper size={20}>
         <img src={ArgentXIcon} alt="ArgentX" />
@@ -180,7 +180,7 @@ function StatusIcon({ connector }: { connector: InjectedConnector }) {
     )
   }
 
-  if (connector.id() === 'braavos') {
+  if (connector.id === 'braavos') {
     return (
       <IconWrapper size={20}>
         <img src={braavosIcon} alt="myBraavos" />
@@ -192,7 +192,7 @@ function StatusIcon({ connector }: { connector: InjectedConnector }) {
 
 function Web3StatusInner({ starkID }: { starkID?: string }) {
   const { t } = useTranslation()
-  const { error } = useStarknetReact()
+  const { error } = useStarknetReact(NetworkContextName)
   const { address, connector } = useAccountDetails()
   // console.log('🚀 ~ file: index.tsx:198 ~ Web3StatusInner ~ provider:', provider.get)
 
@@ -250,8 +250,10 @@ export default function Web3Status() {
   const [domain, setDomain] = useState<string>('')
 
   useEffect(() => {
-    const url = domainURL(chainId as StarknetChainId)
-    fetch(url + hexToDecimalString(address ?? ''))
+    const url = domainURL(chainId as ChainId)
+    if (!address) { return };
+    setDomain('');
+    fetch(url + num.hexToDecimalString(address ?? ''))
       .then(response => response.json())
       .then((data: DomainToAddrData) => {
         setDomain(data.domain)
@@ -275,10 +277,6 @@ export default function Web3Status() {
   const confirmed = sortedRecentTransactions
     .filter(tx => tx.receipt && tx.receipt.status !== 'PENDING' && tx.receipt.status !== 'RECEIVED')
     .map(tx => tx.hash)
-
-  // if (!contextNetwork.active && !active) {
-  //   return null
-  // }
 
   return (
     <>

@@ -11,7 +11,7 @@ import {
   calculateGasMargin,
   basisPointsToPercent
 } from '.'
-import { StarknetChainId } from 'starknet/dist/constants'
+import { ChainId } from '@jediswap/sdk'
 
 describe('utils', () => {
   describe('#getVoyagerLink', () => {
@@ -31,7 +31,7 @@ describe('utils', () => {
       expect(getVoyagerLink(3, 'abc', 'contract')).toEqual('https://ropsten.voyager.online/contract/abc')
     })
     it('enum', () => {
-      expect(getVoyagerLink(StarknetChainId.TESTNET, 'abc', 'contract')).toEqual(
+      expect(getVoyagerLink(ChainId.SN_GOERLI, 'abc', 'contract')).toEqual(
         'https://rinkeby.voyager.online/contract/abc'
       )
     })
@@ -54,7 +54,7 @@ describe('utils', () => {
       expect(getStarkscanLink(3, 'abc', 'contract')).toEqual('https://testnet.starkscan.co/contract/abc')
     })
     it('enum', () => {
-      expect(getStarkscanLink(StarknetChainId.TESTNET, 'abc', 'contract')).toEqual(
+      expect(getStarkscanLink(ChainId.SN_GOERLI, 'abc', 'contract')).toEqual(
         'https://testnet.starkscan.co/contract/abc'
       )
     })
@@ -62,7 +62,7 @@ describe('utils', () => {
 
   describe('#calculateSlippageAmount', () => {
     it('bounds are correct', () => {
-      const tokenAmount = new TokenAmount(new Token(StarknetChainId.MAINNET, AddressZero, 0), '100')
+      const tokenAmount = new TokenAmount(new Token(ChainId.SN_MAIN, AddressZero, 0), '100')
       expect(() => calculateSlippageAmount(tokenAmount, -1)).toThrow()
       expect(calculateSlippageAmount(tokenAmount, 0).map(bound => bound.toString())).toEqual(['100', '100'])
       expect(calculateSlippageAmount(tokenAmount, 100).map(bound => bound.toString())).toEqual(['99', '101'])

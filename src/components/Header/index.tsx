@@ -22,7 +22,7 @@ import Row from '../Row'
 import Web3Status from '../Web3Status'
 import { transparentize } from 'polished'
 import { useAccountDetails } from '../../hooks'
-import { StarknetChainId } from 'starknet/dist/constants'
+import { ChainId } from '@jediswap/sdk'
 
 const HeaderFrame = styled.div`
   display: grid;
@@ -335,7 +335,7 @@ interface window {
 function Header({ history }: { history: any }) {
   const { address, status, chainId } = useAccountDetails()
   const { t } = useTranslation()
-  const isNetworkMainnet = chainId === StarknetChainId.MAINNET
+  const isNetworkMainnet = chainId === ChainId.SN_MAIN
 
   // async function changeNetwork(e) {
   //   e.preventDefault()

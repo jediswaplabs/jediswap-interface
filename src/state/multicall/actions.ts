@@ -1,7 +1,7 @@
 import { FunctionAbi, Calldata } from 'starknet'
 import { createAction } from '@reduxjs/toolkit'
 import { isAddress } from '../../utils'
-import { StarknetChainId } from 'starknet/dist/constants'
+import { ChainId } from '@jediswap/sdk'
 
 export interface Call {
   address: string
@@ -56,28 +56,28 @@ export interface ListenerOptions {
 }
 
 export const addMulticallListeners = createAction<{
-  chainId: StarknetChainId
+  chainId: ChainId
   calls: Call[]
   methodAbi: FunctionAbi | undefined
   options?: ListenerOptions
 }>('multicall/addMulticallListeners')
 export const removeMulticallListeners = createAction<{
-  chainId: StarknetChainId
+  chainId: ChainId
   calls: Call[]
   options?: ListenerOptions
 }>('multicall/removeMulticallListeners')
 export const fetchingMulticallResults = createAction<{
-  chainId: StarknetChainId
+  chainId: ChainId
   calls: Call[]
   fetchingBlockNumber: number
 }>('multicall/fetchingMulticallResults')
 export const errorFetchingMulticallResults = createAction<{
-  chainId: StarknetChainId
+  chainId: ChainId
   calls: Call[]
   fetchingBlockNumber: number
 }>('multicall/errorFetchingMulticallResults')
 export const updateMulticallResults = createAction<{
-  chainId: StarknetChainId
+  chainId: ChainId
   blockNumber: number
   results: {
     [callKey: string]: string | null

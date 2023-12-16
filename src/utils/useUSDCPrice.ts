@@ -18,8 +18,8 @@
 //         chainId && wrapped && currencyEquals(WETH[chainId], wrapped) ? undefined : currency,
 //         chainId ? WETH[chainId] : undefined
 //       ],
-//       [wrapped?.equals(USDC) ? undefined : wrapped, chainId === ChainId.MAINNET ? USDC : undefined],
-//       [chainId ? WETH[chainId] : undefined, chainId === ChainId.MAINNET ? USDC : undefined]
+//       [wrapped?.equals(USDC) ? undefined : wrapped, chainId === ChainId.SN_MAIN ? USDC : undefined],
+//       [chainId ? WETH[chainId] : undefined, chainId === ChainId.SN_MAIN ? USDC : undefined]
 //     ],
 //     [chainId, currency, wrapped]
 //   )

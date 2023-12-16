@@ -1,7 +1,30 @@
-import { Provider } from 'starknet'
+import {jsonRpcProvider} from "@starknet-react/core";
+import {isLocalEnvironment} from "../connectors";
 
-export default function getLibrary(provider: any): Provider {
-  const library = new Provider(provider)
-  // library.pollingInterval = 15000
-  return library
-}
+const provider = jsonRpcProvider({
+    rpc: (chain) => {
+        let nodeUrl;
+        switch (true) {
+            case (isLocalEnvironment()): {
+                nodeUrl = 'https://rpc.starknet.lava.build/';
+                break;
+            }
+            case (chain.network === 'mainnet'): {
+                nodeUrl = 'https://rpc-proxy.jediswap.xyz/api/';
+                break;
+            }
+            default: {
+                nodeUrl = 'https://rpc-proxy.testnet.jediswap.xyz/api/';
+            }
+        }
+
+        return {
+            nodeUrl,
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }
+    }
+})
+
+export default provider

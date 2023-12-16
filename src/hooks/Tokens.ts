@@ -10,9 +10,9 @@ import { useTokenContract } from './useContract'
 import { useSingleCallResult } from '../state/multicall/hooks'
 import { NEVER_RELOAD } from '../state/multicall/hooks'
 import { DEFAULT_CHAIN_ID } from '../constants'
-import { StarknetChainId } from 'starknet/dist/constants'
+import { ChainId } from '@jediswap/sdk'
 import { useAccountDetails } from '.'
-export function useAllTokens(chainId: StarknetChainId): { [address: string]: Token } {
+export function useAllTokens(chainId: ChainId): { [address: string]: Token } {
   const userAddedTokens = useUserAddedTokens()
   const allTokens = useSelectedTokenList()
 
@@ -80,7 +80,7 @@ function parseStringFromArgs(data: any, isHexNumber?: boolean): string | undefin
 // otherwise returns the token
 export function useToken(tokenAddress?: string): Token | undefined | null {
   const { account, chainId } = useAccountDetails()
-  const currencyTokens = useAllTokens(chainId as StarknetChainId)
+  const currencyTokens = useAllTokens(chainId as ChainId)
   const lpTokens = useJediLPTokens()
 
   const tokens = { ...currencyTokens, ...lpTokens }

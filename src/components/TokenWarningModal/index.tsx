@@ -11,7 +11,7 @@ import { AutoRow, RowBetween } from '../Row'
 import { AutoColumn } from '../Column'
 import { AlertTriangle } from 'react-feather'
 import { ButtonError } from '../Button'
-import { StarknetChainId } from 'starknet/dist/constants'
+import { ChainId } from '@jediswap/sdk'
 import { useAccountDetails } from '../../hooks'
 
 const Wrapper = styled.div<{ error: boolean }>`
@@ -44,7 +44,7 @@ function TokenWarningCard({ token }: TokenWarningCardProps) {
   const tokenSymbol = token?.symbol?.toLowerCase() ?? ''
   const tokenName = token?.name?.toLowerCase() ?? ''
 
-  const allTokens = useAllTokens(chainId as StarknetChainId)
+  const allTokens = useAllTokens(chainId as ChainId)
 
   const duplicateNameOrSymbol = useMemo(() => {
     if (!token || !chainId) return false

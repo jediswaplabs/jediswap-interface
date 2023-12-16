@@ -1,11 +1,11 @@
 import { JSBI, Pair, Route, Token, TokenAmount, Trade, TradeType } from '@jediswap/sdk'
 import { computeTradePriceBreakdown } from './prices'
-import { StarknetChainId } from 'starknet/dist/constants'
+import { ChainId } from '@jediswap/sdk'
 
 describe('prices', () => {
-  const token1 = new Token(StarknetChainId.MAINNET, '0x0000000000000000000000000000000000000001', 18)
-  const token2 = new Token(StarknetChainId.MAINNET, '0x0000000000000000000000000000000000000002', 18)
-  const token3 = new Token(StarknetChainId.MAINNET, '0x0000000000000000000000000000000000000003', 18)
+  const token1 = new Token(ChainId.SN_MAIN, '0x0000000000000000000000000000000000000001', 18)
+  const token2 = new Token(ChainId.SN_MAIN, '0x0000000000000000000000000000000000000002', 18)
+  const token3 = new Token(ChainId.SN_MAIN, '0x0000000000000000000000000000000000000003', 18)
 
   const pair12 = new Pair(new TokenAmount(token1, JSBI.BigInt(10000)), new TokenAmount(token2, JSBI.BigInt(20000)))
   const pair23 = new Pair(new TokenAmount(token2, JSBI.BigInt(20000)), new TokenAmount(token3, JSBI.BigInt(30000)))

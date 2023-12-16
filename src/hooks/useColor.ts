@@ -3,10 +3,10 @@ import { shade } from 'polished'
 import Vibrant from 'node-vibrant'
 import { hex } from 'wcag-contrast'
 import { Token } from '@jediswap/sdk'
-import { StarknetChainId } from 'starknet/dist/constants'
+import { ChainId } from '@jediswap/sdk'
 
 async function getColorFromToken(token: Token): Promise<string | null> {
-  if (token.chainId === StarknetChainId.TESTNET && token.address === '0xc7AD46e0b8a400Bb3C915120d284AafbA8fc4735') {
+  if (token.chainId === ChainId.SN_GOERLI && token.address === '0xc7AD46e0b8a400Bb3C915120d284AafbA8fc4735') {
     return Promise.resolve('#FAAB14')
   }
 

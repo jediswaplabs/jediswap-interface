@@ -18,7 +18,7 @@ import { ButtonSecondary } from '../Button'
 import { ExternalLink as LinkIcon } from 'react-feather'
 import { ExternalLink, LinkStyledButton, TYPE } from '../../theme'
 import { AutoColumn } from '../Column'
-import { useConnectors } from '@starknet-react/core'
+import { useConnect, useDisconnect } from '@starknet-react/core'
 import { useAccountDetails } from '../../hooks'
 import { webWalletUrl } from '../../connectors'
 
@@ -269,9 +269,9 @@ export default function AccountDetails({
   ENSName,
   openOptions
 }: AccountDetailsProps) {
-  const { disconnect } = useConnectors()
+  const { disconnect } = useDisconnect()
   const { account, chainId, address, connector } = useAccountDetails()
-  const connectorType = connector?.id()
+  const connectorType = connector?.id
   const theme = useContext(ThemeContext)
   const dispatch = useDispatch<AppDispatch>()
 
@@ -279,9 +279,7 @@ export default function AccountDetails({
     return (
       <WalletName>
         {connector &&
-          `Connected with ${
-            connectorType === 'argentWebWallet' ? 'Web Wallet' : SUPPORTED_WALLETS[connector.id()].name
-          }`}
+          `Connected with ${connectorType === 'argentWebWallet' ? 'Web Wallet' : SUPPORTED_WALLETS[connector.id].name}`}
       </WalletName>
     )
   }

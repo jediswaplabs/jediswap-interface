@@ -9,7 +9,7 @@ import { useTokenContract } from '../../hooks/useContract'
 import { useMultipleContractSingleData, useSingleCallResult } from '../multicall/hooks'
 import { DEFAULT_CHAIN_ID } from '../../constants'
 
-import { StarknetChainId } from 'starknet/dist/constants'
+import { ChainId } from '@jediswap/sdk'
 import { useAccountDetails } from '../../hooks'
 
 /**
@@ -57,13 +57,13 @@ import { useAccountDetails } from '../../hooks'
 export function useToken0Balance(uncheckedAddress?: string): CurrencyAmount | undefined {
   const { account, chainId } = useAccountDetails()
 
-  const tokenContract = useTokenContract(WETH[chainId ?? DEFAULT_CHAIN_ID]?.address)
+    const tokenContract = useTokenContract(WETH[chainId ?? DEFAULT_CHAIN_ID]?.address)
 
   const address = useAddressNormalizer(uncheckedAddress)
 
-  const balance = useSingleCallResult(tokenContract, 'balanceOf', { account: address ?? '' })
+  const balance = useSingleCallResult(tokenContract, 'balanceOf', { account: address ?? '0' })
 
-  const uint256Balance: uint256.Uint256 = useMemo(() => ({ low: balance?.result?.[0], high: balance?.result?.[1] }), [
+  const uint256Balance: uint256.Uint256 = useMemo(() => ({ low: balance?.result?.[0] ?? '0x0', high: balance?.result?.[1] ?? '0x0' }), [
     balance?.result
   ])
 
@@ -89,7 +89,7 @@ export function useTokenBalancesWithLoadingIndicator(
   const validatedTokenAddresses = useMemo(() => validatedTokens.map(vt => vt.address), [validatedTokens])
 
   const balances = useMultipleContractSingleData(validatedTokenAddresses, ERC20_ABI as Abi, 'balanceOf', {
-    account: address ?? ''
+    account: address ?? '0'
   })
 
   const anyLoading: boolean = useMemo(() => balances.some(callState => callState.loading), [balances])
@@ -165,7 +165,7 @@ export function useCurrencyBalance(account?: string, currency?: Currency): Curre
 // mimics useAllBalances
 export function useAllTokenBalances(): { [tokenAddress: string]: TokenAmount | undefined } {
   const { address, chainId } = useAccountDetails()
-  const allTokens = useAllTokens(chainId as StarknetChainId)
+  const allTokens = useAllTokens(chainId as ChainId)
   const allTokensArray = useMemo(() => Object.values(allTokens ?? {}), [allTokens])
   const balances = useTokenBalances(address ?? undefined, allTokensArray)
   return balances ?? {}

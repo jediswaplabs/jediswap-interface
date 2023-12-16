@@ -5,7 +5,7 @@ import { useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { AppState } from '../index'
 import { useAllPairs } from '../pairs/hooks'
-import { StarknetChainId } from 'starknet/dist/constants'
+import { ChainId } from '@jediswap/sdk'
 
 type TagDetails = Tags[keyof Tags]
 export interface TagInfo extends TagDetails {
@@ -89,7 +89,7 @@ export class WrappedLPTokenInfo extends LPToken {
   public readonly token1Info: WrappedTokenInfo
   public readonly tags: TagInfo[]
 
-  constructor(chainId: StarknetChainId, token0Info: WrappedTokenInfo, token1Info: WrappedTokenInfo, tags: TagInfo[]) {
+  constructor(chainId: ChainId, token0Info: WrappedTokenInfo, token1Info: WrappedTokenInfo, tags: TagInfo[]) {
     const token0 = new Token(
       token0Info.chainId,
       token0Info.address,
@@ -118,28 +118,26 @@ export class WrappedLPTokenInfo extends LPToken {
   }
 }
 
-export type TokenAddressMap = Readonly<
-  { [chainId in StarknetChainId]: Readonly<{ [tokenAddress: string]: WrappedTokenInfo }> }
->
+export type TokenAddressMap = Readonly<{ [chainId in ChainId]: Readonly<{ [tokenAddress: string]: WrappedTokenInfo }> }>
 
 export type LPTokenAddressMap = Readonly<
-  { [chainId in StarknetChainId]: Readonly<{ [lpTokenAddress: string]: WrappedLPTokenInfo }> }
+  { [chainId in ChainId]: Readonly<{ [lpTokenAddress: string]: WrappedLPTokenInfo }> }
 >
 
 /**
  * An empty result, useful as a default.
  */
 const EMPTY_LIST: TokenAddressMap = {
-  [StarknetChainId.TESTNET]: {},
-  [StarknetChainId.MAINNET]: {}
+  [ChainId.SN_GOERLI]: {},
+  [ChainId.SN_MAIN]: {}
 }
 
 /**
  * An empty Pair result, useful as a default.
  */
 const EMPTY_PAIR_LIST: LPTokenAddressMap = {
-  [StarknetChainId.TESTNET]: {},
-  [StarknetChainId.MAINNET]: {}
+  [ChainId.SN_GOERLI]: {},
+  [ChainId.SN_MAIN]: {}
 }
 
 const listCache: WeakMap<TokenList, TokenAddressMap> | null =

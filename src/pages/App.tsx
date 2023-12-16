@@ -32,8 +32,8 @@ import {
   isTestnetChainId,
   isTestnetEnvironment
 } from '../connectors'
-import { useAccount, useConnectors } from '@starknet-react/core'
-import { StarknetChainId } from 'starknet/dist/constants'
+import { useAccount, useConnect, useDisconnect } from '@starknet-react/core'
+import { ChainId } from '@jediswap/sdk'
 import { useAccountDetails } from '../hooks'
 
 const AppWrapper = styled.div`
@@ -74,7 +74,7 @@ const Marginer = styled.div`
 
 export default function App() {
   const fetchAllPairs = useFetchAllPairsCallback()
-  const { disconnect } = useConnectors()
+  const { disconnect } = useDisconnect()
   const { status, chainId } = useAccountDetails()
 
   useEffect(() => {
@@ -87,7 +87,7 @@ export default function App() {
       if (
         (isProductionEnvironment() && !isProductionChainId(chainId)) ||
         (isTestnetEnvironment() && !isTestnetChainId(chainId)) ||
-        !Object.values(StarknetChainId).includes(chainId)
+        !Object.values(ChainId).includes(chainId)
       ) {
         disconnect()
       }
@@ -106,24 +106,22 @@ export default function App() {
           <MainnetWarningModal />
 
           <Web3ReactManager>
-            <Web3ReactProvider getLibrary={web3 => web3}>
-              <Switch>
-                <Route exact strict path="/swap" component={Swap} />
-                <Route exact strict path="/swap/:outputCurrency" component={RedirectToSwap} />
-                <Route exact strict path="/pool" component={Pool} />
-                <Route exact path="/add" component={RedirectToAddLiquidity} />
-                <Route exact path="/add/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />
-                <Route exact path="/add/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
-                <Route exact path="/create" component={RedirectToAddLiquidity} />
-                <Route exact path="/create/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />
-                <Route exact path="/create/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
-                <Route exact path="/zap" component={Zap} />
-                {/* <Route exact path="/bridge" component={Bridge} /> */}
-                <Route exact path="/stake" component={ComingSoon} />
-                <Route exact strict path="/remove/:currencyIdA/:currencyIdB" component={RemoveLiquidity} />
-                <Route component={RedirectPathToSwapOnly} />
-              </Switch>
-            </Web3ReactProvider>
+            <Switch>
+              <Route exact strict path="/swap" component={Swap} />
+              <Route exact strict path="/swap/:outputCurrency" component={RedirectToSwap} />
+              <Route exact strict path="/pool" component={Pool} />
+              <Route exact path="/add" component={RedirectToAddLiquidity} />
+              <Route exact path="/add/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />
+              <Route exact path="/add/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
+              <Route exact path="/create" component={RedirectToAddLiquidity} />
+              <Route exact path="/create/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />
+              <Route exact path="/create/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
+              <Route exact path="/zap" component={Zap} />
+              {/* <Route exact path="/bridge" component={Bridge} /> */}
+              <Route exact path="/stake" component={ComingSoon} />
+              <Route exact strict path="/remove/:currencyIdA/:currencyIdB" component={RemoveLiquidity} />
+              <Route component={RedirectPathToSwapOnly} />
+            </Switch>
           </Web3ReactManager>
           <Marginer />
         </BodyWrapper>

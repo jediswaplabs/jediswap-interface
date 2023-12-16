@@ -1,12 +1,14 @@
 import { CurrencyAmount, Token, ETHER, TokenAmount, Trade, WETH } from '@jediswap/sdk'
 import { useCallback, useMemo } from 'react'
-import { Call, RawArgs, stark, uint256 } from 'starknet'
+import { Call, CallData, RawArgs, stark, uint256, cairo, BigNumberish } from 'starknet'
 import { DEFAULT_CHAIN_ID, ROUTER_ADDRESS, ZAP_IN_ADDRESS } from '../constants'
 import { Field as SwapField } from '../state/swap/actions'
 import { Field as ZapField } from '../state/zap/actions'
 import { computeSlippageAdjustedAmounts } from '../utils/prices'
 import { TradeType } from './useApproveCallback'
 import { useAccountDetails } from '.'
+import {useTokenContract} from "./useContract";
+import ERC20_ABI from "../constants/abis/erc20.json";
 
 export function useApprovalCall(amountToApprove?: CurrencyAmount, spender?: string): () => Call | null {
   const { account, chainId } = useAccountDetails()
@@ -33,14 +35,15 @@ export function useApprovalCall(amountToApprove?: CurrencyAmount, spender?: stri
       return null
     }
 
-    const uint256AmountToApprove = uint256.bnToUint256(amountToApprove.raw.toString())
+    const uint256AmountToApprove = cairo.uint256(amountToApprove.raw.toString())
 
     const approveArgs: RawArgs = {
       spender,
       amount: { type: 'struct', ...uint256AmountToApprove }
     }
 
-    const approveCalldata = stark.compileCalldata(approveArgs)
+    const contractCallData = new CallData(ERC20_ABI);
+    const approveCalldata = contractCallData.compile('approve', approveArgs);
 
     const approveCall: Call = {
       contractAddress: token.address,

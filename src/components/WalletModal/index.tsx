@@ -1,12 +1,9 @@
-import { UnsupportedChainIdError, useStarknetReact } from '@web3-starknet-react/core'
+import { useStarknetReact } from '@web3-starknet-react/core'
 import React, { useEffect, useState } from 'react'
-import { isMobile } from 'react-device-detect'
-import ReactGA from 'react-ga4'
 import styled from 'styled-components'
-import MetamaskIcon from '../../assets/images/metamask.png'
 import { ReactComponent as Close } from '../../assets/images/x.svg'
 import { isProductionChainId, isProductionEnvironment, isTestnetChainId, isTestnetEnvironment } from '../../connectors'
-import { SUPPORTED_WALLETS, WalletInfo } from '../../constants'
+import {NetworkContextName, SUPPORTED_WALLETS} from '../../constants'
 import usePrevious from '../../hooks/usePrevious'
 import { ApplicationModal } from '../../state/application/actions'
 import { useModalOpen, useWalletModalToggle } from '../../state/application/hooks'
@@ -15,9 +12,9 @@ import AccountDetails from '../AccountDetails'
 import Modal from '../Modal'
 import Option from './Option'
 import PendingView from './PendingView'
-import { useConnectors } from '@starknet-react/core'
+import { useConnect, Connector } from '@starknet-react/core'
 import { getStarknet } from 'get-starknet-core'
-import { StarknetChainId } from 'starknet/dist/constants'
+import { ChainId } from '@jediswap/sdk'
 import { useAccountDetails } from '../../hooks'
 
 const CloseIcon = styled.div`
@@ -130,17 +127,15 @@ export default function WalletModal({
   ENSName?: string
 }) {
   // important that these are destructed from the account-specific web3-react context
-  const { active, error } = useStarknetReact()
-  const { connect } = useConnectors()
+  const { active, error } = useStarknetReact(NetworkContextName)
+  const { connectors, connect } = useConnect()
   const { getAvailableWallets } = getStarknet()
 
-  const { account, chainId, connector, status } = useAccountDetails()
-
-  // const connectStarknet = useStarknetConnector({ showModal: true })
+  const { account, chainId, connector: connector, status } = useAccountDetails()
 
   const [walletView, setWalletView] = useState(WALLET_VIEWS.ACCOUNT)
 
-  const [pendingWallet, setPendingWallet] = useState<WalletInfo>()
+  const [pendingWallet, setPendingWallet] = useState<Connector>()
 
   const [availableWallets, setAvailableWallets] = useState<any>()
 
@@ -159,7 +154,7 @@ export default function WalletModal({
       if (
         (isProductionEnvironment() && !isProductionChainId(chainId)) ||
         (isTestnetEnvironment() && !isTestnetChainId(chainId)) ||
-        !Object.values(StarknetChainId).includes(chainId)
+        !Object.values(ChainId).includes(chainId)
       ) {
         setChainError(true)
       }
@@ -200,40 +195,33 @@ export default function WalletModal({
     }
   }, [setWalletView, active, error, connector, walletModalOpen, activePrevious, connectorPrevious])
 
-  const tryActivation = async (option: WalletInfo) => {
+  const tryActivation = async (option: Connector) => {
     if (!option) return
-    const { connector, id } = option
+    const { id } = option
     if (id === 'argentWebWallet') {
-      handleWalletConnect(connector, option)
+      handleWalletConnect(option)
       return
     }
-
     //check if selected wallet is installed
-    const checkIfWalletExists = availableWallets.find(wallet => wallet.id === connector?.id())
+    const checkIfWalletExists = availableWallets.find(wallet => wallet.id === id)
     if (checkIfWalletExists) {
-      handleWalletConnect(connector, option)
+      handleWalletConnect(option)
     } else {
       setWalletView(WALLET_VIEWS.PENDING)
-      setPendingError(connector?.id())
+      setPendingError(option?.id)
     }
   }
 
-  const handleWalletConnect = (connector, option: WalletInfo) => {
-    // log selected wallet
-    ReactGA.event({
-      category: 'Wallet',
-      action: 'Change Wallet',
-      label: (connector && SUPPORTED_WALLETS[connector.id()].name) || ''
-    })
-    setPendingWallet(option) // set wallet for pending view
+  const handleWalletConnect = (connector: Connector) => {
+    setPendingWallet(connector) // set wallet for pending view
     setWalletView(WALLET_VIEWS.PENDING)
     try {
       if (connector) {
-        connect(connector)
+        connect({ connector })
         toggleWalletModal()
-        if (connector.id() === 'argentX') {
+        if (connector.id === 'argentX') {
           localStorage.setItem('auto-injected-wallet', 'argentX')
-        } else if (connector.id() === 'braavos') {
+        } else if (connector.id === 'braavos') {
           localStorage.setItem('auto-injected-wallet', 'braavos')
         } else {
           localStorage.removeItem('auto-injected-wallet')
@@ -249,22 +237,22 @@ export default function WalletModal({
 
   // get wallets user can switch too, depending on device/browser
   function getOptions() {
-    return Object.keys(SUPPORTED_WALLETS).map(key => {
-      const option = SUPPORTED_WALLETS[key]
+    return connectors.map((option: Connector) => {
+      const wallet = SUPPORTED_WALLETS[option.id] ?? option;
       return (
         <Option
-          id={`connect-${key}`}
+          id={`connect-${wallet.id}`}
+          key={wallet.id}
+          header={wallet.name}
+          icon={wallet.icon}
+          subheader={wallet.id === 'argentWebWallet' && 'Powered by Argent'}
           onClick={() => {
-            option.connector === connector ? setWalletView(WALLET_VIEWS.ACCOUNT) : !option.href && tryActivation(option)
+            option === connector ? setWalletView(WALLET_VIEWS.ACCOUNT) : tryActivation(option)
           }}
-          key={key}
-          subheader={key === 'argentWebWallet' && 'Powered by Argent'}
-          active={option.connector === connector}
-          color={option.color}
-          link={option.href}
-          header={option.name}
-          icon={option.icon}
-          size={option.size ?? null}
+          active={connector === connector}
+          color={wallet?.color}
+          link={wallet?.href}
+          size={wallet?.size ?? null}
         />
       )
     })
@@ -342,8 +330,8 @@ export default function WalletModal({
           )}
           {walletView !== WALLET_VIEWS.PENDING && (
             <Blurb>
-              <span>New to Ethereum? &nbsp;</span>{' '}
-              <ExternalLink href="https://ethereum.org/wallets/">Learn more about wallets</ExternalLink>
+              <span>New to Starknet? &nbsp;</span>{' '}
+              <ExternalLink href="https://www.starknet.io/en/ecosystem/wallets">Learn more about wallets</ExternalLink>
             </Blurb>
           )}
         </ContentWrapper>
