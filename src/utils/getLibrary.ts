@@ -14,7 +14,8 @@ const provider = jsonRpcProvider({
                 break;
             }
             default: {
-                nodeUrl = 'https://rpc-proxy.testnet.jediswap.xyz/api/';
+                // nodeUrl = 'https://rpc-proxy.testnet.jediswap.xyz/api/';
+                nodeUrl = 'https://rpc.starknet-testnet.lava.build/';
             }
         }
 
