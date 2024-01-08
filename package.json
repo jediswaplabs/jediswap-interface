@@ -136,7 +136,7 @@
   "license": "GPL-3.0-or-later",
   "dependencies": {
     "@argent/starknet-react-webwallet-connector": "^6.4.2",
-    "@sentry/react": "^7.53.1",
+    "@sentry/react": "^7.92.0",
     "@starknet-react/chains": "^0.1.0-next.1",
     "@starknet-react/core": "2.0.0-next.6",
     "@web3-react/core": "^6.1.9",
