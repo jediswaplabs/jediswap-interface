@@ -388,6 +388,10 @@ function Header({ history }: { history: any }) {
           Dashboard
         </StyledExternalLink>
 
+        <StyledExternalLink id={`jedi-v2-link`} href={'https://app.v2.jediswap.xyz/'}>
+          V2
+        </StyledExternalLink>
+
         {/* <StyledNavLink id={`stake-nav-link`} to={'/uni'} isActive={() => history.location.pathname.includes('/uni')}>
             UNI
           </StyledNavLink> */}
