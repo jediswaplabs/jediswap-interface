@@ -206,13 +206,14 @@ export function useTrackedTokenPairs(): [Token, Token][] {
                     return [base, token]
                   }
                 })
-                .filter((p): p is [Token, Token] => p !== null)
+                .filter((p): p is [Token, Token] => {
+                  return p !== null
+                })
             )
           })
         : [],
     [tokens, chainId]
   )
-
   // pairs saved by users
   const savedSerializedPairs = useSelector<AppState, AppState['user']['pairs']>(({ user: { pairs } }) => pairs)
 
