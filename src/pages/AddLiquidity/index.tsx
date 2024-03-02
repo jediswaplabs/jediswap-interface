@@ -391,19 +391,19 @@ export default function AddLiquidity({
                   &bull; It might take a <span style={{ fontWeight: 700 }}>few minutes</span> for pool to reflect and
                   enable swap.{' '}
                 </div>
-                <div style={{ fontWeight: 500, marginTop: '15px' }}>
+                {/* <div style={{ fontWeight: 500, marginTop: '15px' }}>
                   Don&apos;t have token pairs?{' '}
                   <StyledNavLink to={'/zap'}>Add liquidity with a single token on the zap page.</StyledNavLink>
-                </div>
+                </div> */}
               </HeaderNote>
             ) : (
               <HeaderNote>
                 Note: When you add liquidity, you will receive pool tokens representing your position. These tokens
                 automatically earn fees proportional to your share of the pool, and can be redeemed at any time.
-                <div style={{ fontWeight: 500, marginTop: '15px' }}>
+                {/* <div style={{ fontWeight: 500, marginTop: '15px' }}>
                   Don&apos;t have token pairs?{' '}
                   <StyledNavLink to={'/zap'}>Add liquidity with a single token on the zap page.</StyledNavLink>
-                </div>
+                </div> */}
               </HeaderNote>
             )}
 
