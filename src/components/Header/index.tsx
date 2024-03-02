@@ -246,7 +246,9 @@ const StyledNavLink = styled(NavLink).attrs({
   line-height: 100%;
   text-align: center;
   text-transform: uppercase;
-
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    font-size: 14px;
+  `};
 
   &.${activeClassName} {
     
@@ -303,7 +305,10 @@ const StyledExternalLink = styled(ExternalLink).attrs({
   line-height: 100%;
   text-align: center;
   text-transform: uppercase;
-
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    font-size: 14px;
+    margin: 0 7px;
+  `};
   :hover,
   :focus {
       // color: ${({ theme }) => darken(0.1, theme.text1)};
@@ -373,9 +378,9 @@ function Header({ history }: { history: any }) {
         >
           {t('Pool')}
         </StyledNavLink>
-        <StyledNavLink id={`swap-nav-link`} to={'/zap'} isActive={() => history.location.pathname.includes('/zap')}>
+        {/* <StyledNavLink id={`swap-nav-link`} to={'/zap'} isActive={() => history.location.pathname.includes('/zap')}>
           {t('Zap')}
-        </StyledNavLink>
+        </StyledNavLink> */}
         {/* <StyledNavLink
           id={`swap-nav-link`}
           to={'/bridge'}
@@ -390,6 +395,10 @@ function Header({ history }: { history: any }) {
 
         <StyledExternalLink id={`jedi-v2-link`} href={'https://app.v2.jediswap.xyz/'}>
           V2
+        </StyledExternalLink>
+
+        <StyledExternalLink id={`rewards-link`} href={'https://rewards.jediswap.xyz/'}>
+          Rewards
         </StyledExternalLink>
 
         {/* <StyledNavLink id={`stake-nav-link`} to={'/uni'} isActive={() => history.location.pathname.includes('/uni')}>
