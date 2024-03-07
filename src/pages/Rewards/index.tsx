@@ -364,32 +364,28 @@ export default function Rewards() {
   //fetch Token Ids
   useEffect(() => {
     const getAllocation = async () => {
-      try {
-        const allocation = await fetch(
-          `https://allocations.jediswap.xyz/get_allocation_amount?address=0x06F48BFD3e348dCac1d397349d98E84408339f25Dc019bcAdB1Ccad6efE3C7c3`,
-          {
+      if (address) {
+        try {
+          const allocation = await fetch(`https://allocations.jediswap.xyz/get_allocation_amount?address=${address}`, {
             headers: {
               accept: 'application/json'
             },
             method: 'GET'
-          }
-        ).then(res => res.json())
-        const totalAllocation = CurrencyAmount.ether(allocation)
-        setAllocations(totalAllocation)
+          }).then(res => res.json())
+          const totalAllocation = CurrencyAmount.ether(allocation)
+          setAllocations(totalAllocation)
 
-        const call_data = await fetch(
-          `https://allocations.jediswap.xyz/get_calldata?address=0x06F48BFD3e348dCac1d397349d98E84408339f25Dc019bcAdB1Ccad6efE3C7c3`,
-          {
+          const call_data = await fetch(`https://allocations.jediswap.xyz/get_calldata?address=${address}`, {
             headers: {
               accept: 'application/json'
             },
             method: 'GET'
-          }
-        ).then(res => res.json())
-        const updateCallData = { ...claimData, calldata: CallData.compile(call_data) }
-        setClaimData(updateCallData)
-      } catch (e) {
-        console.error(e)
+          }).then(res => res.json())
+          const updateCallData = { ...claimData, calldata: CallData.compile(call_data) }
+          setClaimData(updateCallData)
+        } catch (e) {
+          console.error(e)
+        }
       }
     }
 
