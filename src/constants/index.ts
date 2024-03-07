@@ -10,7 +10,7 @@ import { WebWalletConnector } from '@argent/starknet-react-webwallet-connector'
 
 export const DEFAULT_CHAIN_ID = ChainId.SN_MAIN
 
-export const STRK_REWARDS_ADDRESS = '0x068ac72f603dd6321ea25ed55a4c4cec0ca22b766e7688161c665dc1cd3a75db'
+export const STRK_REWARDS_ADDRESS = '0x01ba23f54ae0f830068314e8d3e9d3623e83ced3832d20ac61f598a969425747'
 
 export const domainURL = (chainId: ChainId) => {
   return chainId === ChainId.SN_MAIN

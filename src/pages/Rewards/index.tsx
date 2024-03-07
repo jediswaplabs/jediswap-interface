@@ -39,48 +39,11 @@ const LiquidityWrapperCard = styled(DataCard)`
   background: rgba(255, 255, 255, 0.05);
 `
 
-const ResponsiveButtonPrimary = styled(ButtonPrimary)`
-  width: fit-content;
-  ${({ theme }) => theme.mediaWidth.upToSmall`
-    width: 48%;
-  `};
-`
-
 const ResponsiveButtonSecondary = styled(ButtonSecondary)`
   width: fit-content;
   ${({ theme }) => theme.mediaWidth.upToSmall`
     width: 48%;
   `};
-`
-
-const CreatePoolButton = styled(ResponsiveButtonSecondary)`
-  padding: 9px 27px;
-  border: 2px solid ${({ theme }) => theme.jediWhite};
-  font-size: 16px;
-  line-height: 20px;
-  color: ${({ theme }) => theme.jediWhite};
-  border-radius: 8px;
-  text-transform: uppercase;
-
-  :hover {
-    border: 2px solid ${({ theme }) => theme.jediBlue};
-    /* color: ${({ theme }) => theme.jediBlue}; */
-  }
-`
-
-const CreatePoolButtonAlt = styled(CreatePoolButton)`
-  font-size: 18px;
-  line-height: 30px;
-`
-
-const EmptyProposals = styled.div`
-  border: 1px solid ${({ theme }) => theme.text4};
-  padding: 16px 12px;
-  border-radius: 12px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
 `
 
 const ResponsiveRow = styled(RowFixed)`
@@ -274,8 +237,8 @@ const ClaimWrapper = styled.div`
 
 const ClaimButtonGradient = styled(ButtonGradient)`
   display: flex;
-  width: 130px;
-  padding: 7.579px 16.832px 4.421px 15.168px;
+  width: 160px;
+  padding: 8px 16px;
   justify-content: center;
   align-items: center;
   flex-shrink: 0;
@@ -347,6 +310,7 @@ export const injected = new InjectedConnector({})
 export default function Rewards() {
   const { address } = useAccountDetails()
   const [allocations, setAllocations] = useState<CurrencyAmount>()
+  const [allocated, setAllocated] = useState(false)
   const [claimData, setClaimData] = useState<Call>({
     contractAddress: STRK_REWARDS_ADDRESS,
     entrypoint: 'claim',
@@ -361,6 +325,8 @@ export default function Rewards() {
   const [txPending, setTxPending] = useState(false)
   const [attemptingTxn, setAttemptingTxn] = useState(false)
 
+  const toggleWalletModal = useWalletModalToggle()
+
   //fetch Token Ids
   useEffect(() => {
     const getAllocation = async () => {
@@ -374,7 +340,8 @@ export default function Rewards() {
           }).then(res => res.json())
           const totalAllocation = CurrencyAmount.ether(allocation)
           setAllocations(totalAllocation)
-
+          const isAllocatedMoreThanZero = !totalAllocation.equalTo('0')
+          setAllocated(isAllocatedMoreThanZero)
           const call_data = await fetch(`https://allocations.jediswap.xyz/get_calldata?address=${address}`, {
             headers: {
               accept: 'application/json'
@@ -417,6 +384,8 @@ export default function Rewards() {
     setCallData([claimData])
   }
 
+  const onConnect = () => {}
+
   const { data: claimed_rewards } = useContractRead({
     functionName: 'amount_already_claimed',
     args: [address as any],
@@ -426,15 +395,14 @@ export default function Rewards() {
   })
 
   const formattedClaimRewards: CurrencyAmount = useMemo(() => {
-    if (!claimed_rewards) return CurrencyAmount.ether('0')
+    if (claimed_rewards === null || claimed_rewards === undefined) return CurrencyAmount.ether('0')
     return CurrencyAmount.ether(claimed_rewards.toString())
-  }, [claimed_rewards])
+  }, [claimed_rewards, address, allocations])
 
   const unclaimed_rewards = useMemo(() => {
-    if (!formattedClaimRewards) return 0
+    if (claimed_rewards === null || claimed_rewards === undefined || !allocated) return 0
     return allocations?.subtract(formattedClaimRewards).toExact()
-  }, [formattedClaimRewards])
-
+  }, [claimed_rewards, address, allocations])
   const totalRewardsClaimed = allocations?.equalTo(formattedClaimRewards)
 
   const handleConfirmDismiss = () => {
@@ -447,7 +415,10 @@ export default function Rewards() {
     () => (claimError ? <TransactionErrorContent onDismiss={handleConfirmDismiss} message={claimError} /> : <></>),
     [claimError]
   )
-  console.log(txHash, 'txhash')
+
+  const buttonText =
+    (totalRewardsClaimed && 'Claimed') || (unclaimed_rewards && 'Claim STRK') || (attemptingTxn && 'Claiming...')
+
   return (
     <PageWrapper>
       <TransactionConfirmationModal
@@ -596,14 +567,16 @@ export default function Rewards() {
                   </HeaderText>
                   <ClaimWrapper>
                     <AmountText>{unclaimed_rewards ?? 0}</AmountText>
-                    <ClaimButtonGradient
-                      onClick={onClaim}
-                      disabled={!allocations || attemptingTxn || totalRewardsClaimed}
-                    >
-                      <ClaimText>
-                        {attemptingTxn ? 'Claiming...' : totalRewardsClaimed ? 'Claimed' : 'Claim STRK'}
-                      </ClaimText>
-                    </ClaimButtonGradient>
+
+                    {!address ? (
+                      <ClaimButtonGradient onClick={toggleWalletModal} disabled={attemptingTxn || totalRewardsClaimed}>
+                        <ClaimText>Connect Wallet</ClaimText>
+                      </ClaimButtonGradient>
+                    ) : allocated && allocations && (totalRewardsClaimed || unclaimed_rewards || attemptingTxn) ? (
+                      <ClaimButtonGradient onClick={onClaim} disabled={attemptingTxn || totalRewardsClaimed}>
+                        <ClaimText>{buttonText}</ClaimText>
+                      </ClaimButtonGradient>
+                    ) : null}
                   </ClaimWrapper>
                 </ResponsiveColumn>
               </RowFixed>
