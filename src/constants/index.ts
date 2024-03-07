@@ -10,10 +10,12 @@ import { WebWalletConnector } from '@argent/starknet-react-webwallet-connector'
 
 export const DEFAULT_CHAIN_ID = ChainId.SN_MAIN
 
+export const STRK_REWARDS_ADDRESS = '0x068ac72f603dd6321ea25ed55a4c4cec0ca22b766e7688161c665dc1cd3a75db'
+
 export const domainURL = (chainId: ChainId) => {
   return chainId === ChainId.SN_MAIN
     ? 'https://api.starknet.id/addr_to_domain?addr='
-    : 'https://goerli.api.starknet.id/addr_to_domain?addr='
+    : 'https://sepolia.api.starknet.id/addr_to_domain?addr='
 }
 
 export const ROUTER_ADDRESS: { [chainId in ChainId]: string } = {
@@ -110,12 +112,12 @@ export const WBTC = {
 
 export const STRK = {
   [ChainId.SN_MAIN]: new Token(
-      ChainId.SN_MAIN,
-      '0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d',
-      18,
-      'STRK',
-      'Starknet',
-      'https://static.jediswap.xyz/tokens-list/assets/STRK.png'
+    ChainId.SN_MAIN,
+    '0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d',
+    18,
+    'STRK',
+    'Starknet',
+    'https://static.jediswap.xyz/tokens-list/assets/STRK.png'
   )
 }
 

@@ -397,9 +397,9 @@ function Header({ history }: { history: any }) {
           V2
         </StyledExternalLink>
 
-        <StyledExternalLink id={`rewards-link`} href={'https://rewards.jediswap.xyz/'}>
+        <StyledNavLink id={`rewards-link`} to={'/rewards'}>
           Rewards
-        </StyledExternalLink>
+        </StyledNavLink>
 
         {/* <StyledNavLink id={`stake-nav-link`} to={'/uni'} isActive={() => history.location.pathname.includes('/uni')}>
             UNI

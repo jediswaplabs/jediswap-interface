@@ -1,11 +1,11 @@
 // import { BigNumberish } from 'starknet/dist/utils/number'
-import {validateAndParseAddress, Abi, uint256, Contract, AccountInterface, BigNumberish, cairo} from 'starknet'
+import { validateAndParseAddress, Abi, uint256, Contract, AccountInterface, BigNumberish, cairo } from 'starknet'
 import { BigNumber } from '@ethersproject/bignumber'
 import { ZERO_ADDRESS } from '../constants'
 import { JSBI, Percent, Token, CurrencyAmount, Currency, ETHER } from '@jediswap/sdk'
 import { LPTokenAddressMap, TokenAddressMap } from '../state/lists/hooks'
 import isZero from './isZero'
-import {Connector, useProvider} from '@starknet-react/core'
+import { Connector, useProvider } from '@starknet-react/core'
 import { ChainId } from '@jediswap/sdk'
 
 // returns the checksummed address if the address is valid, otherwise returns false
@@ -22,7 +22,7 @@ export function isAddress(addr: string | null | undefined): string | false {
 
 const VOYAGER_PREFIXES: { [chainId in ChainId]: string } = {
   [ChainId.SN_MAIN]: '',
-  [ChainId.SN_GOERLI]: 'goerli.'
+  [ChainId.SN_GOERLI]: 'sepolia.'
 }
 
 const STARKSCAN_PREFIXES: { [chainId in ChainId]: string } = {
@@ -113,11 +113,7 @@ export function calculateSlippageAmount(value: CurrencyAmount, slippage: number)
 // }
 
 // account is optional
-export function getContract(
-  address: string,
-  ABI: any,
-  account: any
-): Contract {
+export function getContract(address: string, ABI: any, account: any): Contract {
   const parsedAddress = isAddress(address)
   if (!parsedAddress || parsedAddress === ZERO_ADDRESS) {
     throw Error(`Invalid 'address' parameter '${address}'.`)

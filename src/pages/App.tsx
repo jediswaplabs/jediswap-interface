@@ -19,6 +19,7 @@ import {
 } from './AddLiquidity/redirects'
 
 import Zap from './Zap'
+import Rewards from './Rewards'
 import ComingSoon from './ComingSoon'
 import Maintenance from './Maintenance'
 import Footer from '../components/Footer'
@@ -83,15 +84,15 @@ export default function App() {
 
   useEffect(() => {
     //Ensure that environment and chainId are compatible with one another.
-    if (status === 'connected' && chainId) {
-      if (
-        (isProductionEnvironment() && !isProductionChainId(chainId)) ||
-        (isTestnetEnvironment() && !isTestnetChainId(chainId)) ||
-        !Object.values(ChainId).includes(chainId)
-      ) {
-        disconnect()
-      }
-    }
+    // if (status === 'connected' && chainId) {
+    //   if (
+    //     (isProductionEnvironment() && !isProductionChainId(chainId)) ||
+    //     (isTestnetEnvironment() && !isTestnetChainId(chainId)) ||
+    //     !Object.values(ChainId).includes(chainId)
+    //   ) {
+    //     disconnect()
+    //   }
+    // }
   }, [status])
 
   return (
@@ -117,6 +118,7 @@ export default function App() {
               <Route exact path="/create/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />
               <Route exact path="/create/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
               <Route exact path="/zap" component={Zap} />
+              <Route exact path="/rewards" component={Rewards} />
               {/* <Route exact path="/bridge" component={Bridge} /> */}
               <Route exact path="/stake" component={ComingSoon} />
               <Route exact strict path="/remove/:currencyIdA/:currencyIdB" component={RemoveLiquidity} />
