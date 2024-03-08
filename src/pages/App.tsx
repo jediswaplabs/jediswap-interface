@@ -83,16 +83,16 @@ export default function App() {
   }, [fetchAllPairs])
 
   useEffect(() => {
-    //Ensure that environment and chainId are compatible with one another.
-    // if (status === 'connected' && chainId) {
-    //   if (
-    //     (isProductionEnvironment() && !isProductionChainId(chainId)) ||
-    //     (isTestnetEnvironment() && !isTestnetChainId(chainId)) ||
-    //     !Object.values(ChainId).includes(chainId)
-    //   ) {
-    //     disconnect()
-    //   }
-    // }
+    // Ensure that environment and chainId are compatible with one another.
+    if (status === 'connected' && chainId) {
+      if (
+        (isProductionEnvironment() && !isProductionChainId(chainId)) ||
+        (isTestnetEnvironment() && !isTestnetChainId(chainId)) ||
+        !Object.values(ChainId).includes(chainId)
+      ) {
+        disconnect()
+      }
+    }
   }, [status])
 
   return (

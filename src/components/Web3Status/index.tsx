@@ -249,21 +249,21 @@ export default function Web3Status() {
 
   const [domain, setDomain] = useState<string>('')
 
-  // useEffect(() => {
-  //   const url = domainURL(chainId as ChainId)
-  //   if (!address) {
-  //     return
-  //   }
-  //   setDomain('')
-  //   fetch(url + num.hexToDecimalString(address ?? ''))
-  //     .then(response => response.json())
-  //     .then((data: DomainToAddrData) => {
-  //       setDomain(data.domain)
-  //     })
-  //     .catch(error => {
-  //       console.error(error)
-  //     })
-  // }, [address, chainId])
+  useEffect(() => {
+    const url = domainURL(chainId as ChainId)
+    if (!address) {
+      return
+    }
+    setDomain('')
+    fetch(url + num.hexToDecimalString(address ?? ''))
+      .then(response => response.json())
+      .then((data: DomainToAddrData) => {
+        setDomain(data.domain)
+      })
+      .catch(error => {
+        console.error(error)
+      })
+  }, [address, chainId])
 
   const allTransactions = useAllTransactions()
 

@@ -4,7 +4,7 @@
 import React, { useMemo } from 'react'
 
 import { goerli, mainnet, sepolia } from '@starknet-react/chains'
-import { StarknetConfig, publicProvider } from '@starknet-react/core'
+import { StarknetConfig } from '@starknet-react/core'
 import { WebWalletConnector } from 'starknetkit/webwallet'
 import { InjectedConnector } from 'starknetkit/injected'
 import rpcProvider from '../utils/getLibrary'
