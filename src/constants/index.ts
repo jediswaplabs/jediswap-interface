@@ -1,7 +1,7 @@
 import { validateAndParseAddress, constants } from 'starknet'
 import { ChainId, JSBI, Percent, Token, WETH } from '@jediswap/sdk'
 
-import { argentX, braavosWallet, argentWebWallet } from '../connectors'
+import { argentX, braavosWallet, argentWebWallet, isProductionEnvironment, isTestnetEnvironment } from '../connectors'
 import ARGENTX_ICON from '../assets/images/argentx.png'
 import EMAIL_ICON from '../assets/images/mail.png'
 import BRAAVOS_ICON from '../assets/svg/Braavos.svg'
@@ -11,6 +11,16 @@ import { WebWalletConnector } from '@argent/starknet-react-webwallet-connector'
 export const DEFAULT_CHAIN_ID = ChainId.SN_MAIN
 
 export const STRK_REWARDS_ADDRESS = '0x01ba23f54ae0f830068314e8d3e9d3623e83ced3832d20ac61f598a969425747'
+export const STARKNET_REWARDS_API_URL =
+  'https://kx58j6x5me.execute-api.us-east-1.amazonaws.com//starknet/fetchFile?file=qa_strk_grant.json'
+export const STRK_PRICE_API_URL = 'https://api.binance.com/api/v3/ticker/price?symbol=STRKUSDT'
+
+export const getApiUrl = () => {
+  if (isTestnetEnvironment()) {
+    return 'https://api.goerli.jediswap.xyz/graphql'
+  }
+  return 'https://api.jediswap.xyz/graphql'
+}
 
 export const domainURL = (chainId: ChainId) => {
   return chainId === ChainId.SN_MAIN

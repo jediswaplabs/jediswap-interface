@@ -18,9 +18,13 @@ import { DMSansText, TYPE } from '../../theme'
 import { Button as RebassButton, ButtonProps } from 'rebass/styled-components'
 import { useContractRead, useContractWrite } from '@starknet-react/core'
 import { Call, CallData } from 'starknet'
-import { STRK_REWARDS_ADDRESS } from '../../constants'
+import { STARKNET_REWARDS_API_URL, STRK_PRICE_API_URL, STRK_REWARDS_ADDRESS } from '../../constants'
 import REWARDS_ABI from '../../constants/abis/strk-rewards.json'
 import TransactionConfirmationModal, { TransactionErrorContent } from '../../components/TransactionConfirmationModal'
+import { jediSwapClient } from '../../apollo/client'
+import { PAIRS_DATA_FOR_REWARDS } from '../../apollo/queries'
+import { isEmpty } from 'lodash'
+import { formattedPercent } from '../../utils'
 
 export const StyledAppBody = styled(BodyWrapper)`
   padding: 0rem;
@@ -305,9 +309,108 @@ const TokenAPR = styled(APRWrapper)`
   font-weight: 400;
   line-height: 26px; /* 216.667% */
 `
-export const injected = new InjectedConnector({})
+
+const pairs = [
+  {
+    rewardName: 'USDC/USDT',
+    poolAddress: '0x5801bdad32f343035fb242e98d1e9371ae85bc1543962fedea16c59b35bd19b',
+    token0: {
+      tokenAddress: '0x53c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8',
+      symbol: 'USDC'
+    },
+    token1: {
+      tokenAddress: '0x68f5c6a61780768455de69077e07e89787839bf8166decfbf92b645209c0fb8',
+      symbol: 'USDT'
+    }
+  },
+  {
+    rewardName: 'STRK/ETH',
+    poolAddress: '0x2ed66297d146ecd91595c3174da61c1397e8b7fcecf25d423b1ba6717b0ece9',
+    token0: {
+      tokenAddress: '0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d',
+      symbol: 'STRK'
+    },
+    token1: {
+      tokenAddress: '0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7',
+      symbol: 'ETH'
+    }
+  },
+  {
+    rewardName: 'ETH/USDC',
+    poolAddress: '0x4d0390b777b424e43839cd1e744799f3de6c176c7e32c1812a41dbd9c19db6a',
+    token0: {
+      tokenAddress: '0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7',
+      symbol: 'ETH'
+    },
+    token1: {
+      tokenAddress: '0x53c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8',
+      symbol: 'USDC'
+    }
+  },
+  {
+    rewardName: 'STRK/USDC',
+    poolAddress: '0x5726725e9507c3586cc0516449e2c74d9b201ab2747752bb0251aaa263c9a26',
+    token0: {
+      tokenAddress: '0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d',
+      symbol: 'STRK'
+    },
+    token1: {
+      tokenAddress: '0x53c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8',
+      symbol: 'USDC'
+    }
+  }
+]
 
 export default function Rewards() {
+  const [pairsData, setPairsData] = useState([])
+  useEffect(() => {
+    const pairIds = pairs.map(pair => pair.poolAddress)
+
+    async function getPairsData() {
+      const pairsResp = await jediSwapClient.query({
+        query: PAIRS_DATA_FOR_REWARDS({
+          pairIds
+        }),
+        fetchPolicy: 'cache-first'
+      })
+      const rewardsResp = await fetch(STARKNET_REWARDS_API_URL).then(res => res.json())
+      const priceResp = await fetch(STRK_PRICE_API_URL).then(res => res.json())
+
+      const strkPrice = parseFloat(priceResp.price)
+      const jediRewards = rewardsResp.Jediswap_v1
+      const rewardsPositions: any = []
+      for (const pair of pairs) {
+        const rewardsData = jediRewards[pair.rewardName].pop()
+        const recentDate = rewardsData.date
+        const pairDayData = pairsResp.data.pairDayDatas.find(
+          dayData => dayData.pairId === pair.poolAddress && dayData.date === recentDate + 'T00:00:00'
+        )
+        const aprFee = ((pairDayData.dailyVolumeUSD * 0.003) / pairDayData.reserveUSD) * 365 * 100
+        const aprStarknet = (rewardsData.allocation / pairDayData.reserveUSD) * 365 * 100 * strkPrice
+        rewardsPositions.push({
+          ...pair,
+          reserveUSD: pairDayData.reserveUSD,
+          aprFee,
+          aprStarknet
+        })
+      }
+      const sortedRewardsPositions = rewardsPositions.sort((a, b) => {
+        if (a.aprFee + a.aprStarknet > b.aprFee + b.aprStarknet) {
+          return -1
+        }
+        if (a.aprFee + a.aprStarknet < b.aprFee + b.aprStarknet) {
+          return 1
+        }
+      })
+
+      setPairsData(sortedRewardsPositions)
+    }
+
+    if (!pairsData.length) {
+      getPairsData()
+    }
+  }, [pairsData])
+
   const { address } = useAccountDetails()
   const [allocations, setAllocations] = useState<CurrencyAmount>()
   const [allocated, setAllocated] = useState(false)
@@ -418,6 +521,37 @@ export default function Rewards() {
   const buttonText =
     (totalRewardsClaimed && 'Claimed') || (unclaimed_rewards && 'Claim STRK') || (attemptingTxn && 'Claiming...')
 
+  const PairListItem = ({ pair }: { pair: any }) => {
+    const cleanedAprFee = isNaN(pair.aprFee) || !isFinite(pair.aprFee) ? 0 : pair.aprFee
+    const displayAprFee = formattedPercent(cleanedAprFee, true, false)
+
+    const cleanedAprStarknet = isNaN(pair.aprStarknet) || !isFinite(pair.aprStarknet) ? 0 : pair.aprStarknet
+    const displayAprStarknet = formattedPercent(cleanedAprStarknet, true, false)
+
+    const cleanedAprCommon = cleanedAprFee + cleanedAprStarknet
+    const displayAprCommon = formattedPercent(cleanedAprCommon, true, false)
+
+    return (
+      <RowFixed style={{ marginRight: 5 }}>
+        <ResponsiveColumn>
+          <PairName>STRK-USDC</PairName>
+          <TotalAPR>
+            <div>Total APR:</div>
+            <div>{displayAprCommon}</div>
+          </TotalAPR>
+          <TokenAPR>
+            <div>Fee APR:</div>
+            <div>{displayAprFee}</div>
+          </TokenAPR>
+          <TokenAPR>
+            <div>STRK APR:</div>
+            <div>{displayAprStarknet}</div>
+          </TokenAPR>
+        </ResponsiveColumn>
+      </RowFixed>
+    )
+  }
+
   return (
     <PageWrapper>
       <TransactionConfirmationModal
@@ -447,74 +581,9 @@ export default function Rewards() {
                 <DefiSpringTitle>Earn STRK incentives by providing liquidity to these pools:</DefiSpringTitle>
                 <RowFixed>
                   <ResponsiveRow>
-                    <RowFixed style={{ marginRight: 5 }}>
-                      <ResponsiveColumn>
-                        <PairName>STRK-USDC</PairName>
-                        <TotalAPR>
-                          <div>Total APR:</div>
-                          <div>30.96%</div>
-                        </TotalAPR>
-                        <TokenAPR>
-                          <div>Fee APR:</div>
-                          <div>20.61%</div>
-                        </TokenAPR>
-                        <TokenAPR>
-                          <div>STRK APR:</div>
-                          <div>10.35%</div>
-                        </TokenAPR>
-                      </ResponsiveColumn>
-                    </RowFixed>
-                    <RowFixed style={{ marginRight: 5 }}>
-                      <ResponsiveColumn>
-                        <PairName>STRK-ETH</PairName>
-                        <TotalAPR>
-                          <div>Total APR:</div>
-                          <div>30.96%</div>
-                        </TotalAPR>
-                        <TokenAPR>
-                          <div>Fee APR:</div>
-                          <div>20.61%</div>
-                        </TokenAPR>
-                        <TokenAPR>
-                          <div>STRK APR:</div>
-                          <div>10.35%</div>
-                        </TokenAPR>
-                      </ResponsiveColumn>
-                    </RowFixed>
-                    <RowFixed style={{ marginRight: 5 }}>
-                      <ResponsiveColumn>
-                        <PairName>ETH-USDC</PairName>
-                        <TotalAPR>
-                          <div>Total APR:</div>
-                          <div>30.96%</div>
-                        </TotalAPR>
-                        <TokenAPR>
-                          <div>Fee APR:</div>
-                          <div>20.61%</div>
-                        </TokenAPR>
-                        <TokenAPR>
-                          <div>STRK APR:</div>
-                          <div>10.35%</div>
-                        </TokenAPR>
-                      </ResponsiveColumn>
-                    </RowFixed>
-                    <RowFixed>
-                      <ResponsiveColumn>
-                        <PairName>USDC-USDT</PairName>
-                        <TotalAPR>
-                          <div>Total APR:</div>
-                          <div>30.96%</div>
-                        </TotalAPR>
-                        <TokenAPR>
-                          <div>Fee APR:</div>
-                          <div>20.61%</div>
-                        </TokenAPR>
-                        <TokenAPR>
-                          <div>STRK APR:</div>
-                          <div>10.35%</div>
-                        </TokenAPR>
-                      </ResponsiveColumn>
-                    </RowFixed>
+                    {pairsData.map(pair => (
+                      <PairListItem key={pair} pair={pair} />
+                    ))}
                   </ResponsiveRow>
                 </RowFixed>
               </div>
