@@ -384,8 +384,6 @@ export default function Rewards() {
     setCallData([claimData])
   }
 
-  const onConnect = () => {}
-
   const { data: claimed_rewards } = useContractRead({
     functionName: 'amount_already_claimed',
     args: [address as any],
@@ -400,9 +398,10 @@ export default function Rewards() {
   }, [claimed_rewards, address, allocations])
 
   const unclaimed_rewards = useMemo(() => {
-    if (claimed_rewards === null || claimed_rewards === undefined || !allocated) return 0
+    if (formattedClaimRewards === null || formattedClaimRewards === undefined || !allocated || !allocations) return 0
     return allocations?.subtract(formattedClaimRewards).toExact()
-  }, [claimed_rewards, address, allocations])
+  }, [formattedClaimRewards, claimed_rewards, address, allocations, allocated])
+
   const totalRewardsClaimed = allocations?.equalTo(formattedClaimRewards)
 
   const handleConfirmDismiss = () => {
