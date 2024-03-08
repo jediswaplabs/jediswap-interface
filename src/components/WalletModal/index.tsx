@@ -150,15 +150,15 @@ export default function WalletModal({
   const previousAccount = usePrevious(account)
 
   useEffect(() => {
-    if (status === 'connected' && chainId) {
-      if (
-        (isProductionEnvironment() && !isProductionChainId(chainId)) ||
-        (isTestnetEnvironment() && !isTestnetChainId(chainId)) ||
-        !Object.values(ChainId).includes(chainId)
-      ) {
-        setChainError(true)
-      }
-    }
+    // if (status === 'connected' && chainId) {
+    //   if (
+    //     (isProductionEnvironment() && !isProductionChainId(chainId)) ||
+    //     (isTestnetEnvironment() && !isTestnetChainId(chainId)) ||
+    //     !Object.values(ChainId).includes(chainId)
+    //   ) {
+    //     setChainError(true)
+    //   }
+    // }
   }, [status])
 
   useEffect(() => {
