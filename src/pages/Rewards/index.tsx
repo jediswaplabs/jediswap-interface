@@ -363,7 +363,9 @@ const pairs = [
 
 export default function Rewards() {
   const [pairsData, setPairsData] = useState([])
+  const [pairsLoading, setPairsLoading] = useState(false)
   useEffect(() => {
+    setPairsLoading(true)
     const pairIds = pairs.map(pair => pair.poolAddress)
 
     async function getPairsData() {
@@ -404,6 +406,7 @@ export default function Rewards() {
       })
 
       setPairsData(sortedRewardsPositions)
+      setPairsLoading(false)
     }
 
     if (!pairsData.length) {
@@ -542,7 +545,7 @@ export default function Rewards() {
             margin
           /> */}
           <PairName>
-            {pair.token0.symbol}-{pair.token1.symbol}
+            {pair?.token0?.symbol}-{pair?.token1?.symbol}
           </PairName>
           <TotalAPR>
             <div>Total APR:</div>
@@ -560,6 +563,8 @@ export default function Rewards() {
       </RowFixed>
     )
   }
+
+  console.log(pairsData, 'pairsData')
 
   return (
     <PageWrapper>
@@ -590,9 +595,7 @@ export default function Rewards() {
                 <DefiSpringTitle>Earn STRK incentives by providing liquidity to these pools:</DefiSpringTitle>
                 <RowFixed>
                   <ResponsiveRow>
-                    {pairsData.map(pair => (
-                      <PairListItem key={pair} pair={pair} />
-                    ))}
+                    {pairsData.length ? pairsData.map(pair => <PairListItem key={pair} pair={pair} />) : 'Loading'}
                   </ResponsiveRow>
                 </RowFixed>
               </div>

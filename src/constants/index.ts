@@ -17,7 +17,7 @@ export const STRK_PRICE_API_URL = 'https://api.binance.com/api/v3/ticker/price?s
 
 export const getApiUrl = () => {
   if (isTestnetEnvironment()) {
-    return 'https://api.goerli.jediswap.xyz/graphql'
+    return 'https://api.jediswap.xyz/graphql'
   }
   return 'https://api.jediswap.xyz/graphql'
 }
