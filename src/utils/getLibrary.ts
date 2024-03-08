@@ -1,31 +1,46 @@
-import {jsonRpcProvider} from "@starknet-react/core";
-import {isLocalEnvironment} from "../connectors";
+import { ChainId } from '@jediswap/sdk'
+import { jsonRpcProvider } from '@starknet-react/core'
+import { RpcProvider } from 'starknet'
+
+interface NetworkTypes {
+  [key: string]: string
+}
+
+const networks: NetworkTypes = {
+  Starknet: 'mainnet',
+  'Starknet Goerli Testnet': 'goerli',
+  'Starknet Sepolia Testnet': 'sepolia'
+}
 
 const provider = jsonRpcProvider({
-    rpc: (chain) => {
-        let nodeUrl;
-        switch (true) {
-            case (isLocalEnvironment()): {
-                nodeUrl = 'https://rpc.starknet.lava.build/';
-                break;
-            }
-            case (chain.network === 'mainnet'): {
-                nodeUrl = 'https://rpc-proxy.jediswap.xyz/api/';
-                break;
-            }
-            default: {
-                // nodeUrl = 'https://rpc-proxy.testnet.jediswap.xyz/api/';
-                nodeUrl = 'https://rpc.starknet-testnet.lava.build/';
-            }
-        }
+  rpc: chain => {
+    const chainType: string = networks[chain.name]
 
-        return {
-            nodeUrl,
-            headers: {
-                "Content-Type": "application/json"
-            }
-        }
+    let nodeUrl = 'https://rpc.starknet-testnet.lava.build/'
+    if (chainType === 'sepolia') {
+      nodeUrl = 'https://starknet-sepolia.public.blastapi.io'
+    } else if (chainType === 'mainnet') {
+      nodeUrl = 'https://api-starknet-jediswap.dwellir.com'
+    } else if (chainType === 'goerli') {
+      nodeUrl = 'https://rpc.starknet-testnet.lava.build/'
     }
+
+    return {
+      nodeUrl,
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
+  }
 })
+
+export const providerInstance = (chainId: string) => {
+  return new RpcProvider({
+    nodeUrl:
+      chainId === ChainId.SN_GOERLI
+        ? 'https://starknet-testnet.public.blastapi.io/rpc/v0_6'
+        : 'https://api-starknet-jediswap.dwellir.com'
+  })
+}
 
 export default provider

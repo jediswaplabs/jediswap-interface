@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { ReactComponent as Close } from '../../assets/images/x.svg'
 import { isProductionChainId, isProductionEnvironment, isTestnetChainId, isTestnetEnvironment } from '../../connectors'
-import {NetworkContextName, SUPPORTED_WALLETS} from '../../constants'
+import { NetworkContextName, SUPPORTED_WALLETS } from '../../constants'
 import usePrevious from '../../hooks/usePrevious'
 import { ApplicationModal } from '../../state/application/actions'
 import { useModalOpen, useWalletModalToggle } from '../../state/application/hooks'
@@ -150,15 +150,15 @@ export default function WalletModal({
   const previousAccount = usePrevious(account)
 
   useEffect(() => {
-    if (status === 'connected' && chainId) {
-      if (
-        (isProductionEnvironment() && !isProductionChainId(chainId)) ||
-        (isTestnetEnvironment() && !isTestnetChainId(chainId)) ||
-        !Object.values(ChainId).includes(chainId)
-      ) {
-        setChainError(true)
-      }
-    }
+    // if (status === 'connected' && chainId) {
+    //   if (
+    //     (isProductionEnvironment() && !isProductionChainId(chainId)) ||
+    //     (isTestnetEnvironment() && !isTestnetChainId(chainId)) ||
+    //     !Object.values(ChainId).includes(chainId)
+    //   ) {
+    //     setChainError(true)
+    //   }
+    // }
   }, [status])
 
   useEffect(() => {
@@ -238,7 +238,7 @@ export default function WalletModal({
   // get wallets user can switch too, depending on device/browser
   function getOptions() {
     return connectors.map((option: Connector) => {
-      const wallet = SUPPORTED_WALLETS[option.id] ?? option;
+      const wallet = SUPPORTED_WALLETS[option.id] ?? option
       return (
         <Option
           id={`connect-${wallet.id}`}

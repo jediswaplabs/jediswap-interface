@@ -25,6 +25,8 @@ import './components/analytics'
 import { WebWalletConnector } from '@argent/starknet-react-webwallet-connector'
 import { isTestnetEnvironment } from './connectors'
 import { StarknetProvider } from './context/StarknetProvider'
+import { ApolloProvider } from 'react-apollo'
+import { jediSwapClient } from './apollo/client'
 
 const StarknetProviderNetwork = createStarknetReactRoot(NetworkContextName)
 
@@ -45,13 +47,15 @@ ReactDOM.render(
     <FixedGlobalStyle />
     <StarknetProvider>
       <Provider store={store}>
-        <Updaters />
-        <ThemeProvider>
-          <ThemedGlobalStyle />
-          <HashRouter>
-            <App />
-          </HashRouter>
-        </ThemeProvider>
+        <ApolloProvider client={jediSwapClient}>
+          <Updaters />
+          <ThemeProvider>
+            <ThemedGlobalStyle />
+            <HashRouter>
+              <App />
+            </HashRouter>
+          </ThemeProvider>
+        </ApolloProvider>
       </Provider>
     </StarknetProvider>
   </StrictMode>,
