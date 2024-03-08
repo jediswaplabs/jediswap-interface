@@ -4,7 +4,7 @@ import { BodyWrapper } from '../AppBody'
 import { Backdrop, HeaderRow } from '../Swap/styleds'
 import { useWalletModalToggle } from '../../state/application/hooks'
 import { darkTheme, WidoWidget, isStarknetChain, Transaction } from 'wido-widget'
-import styled, { ThemeContext } from 'styled-components'
+import styled, { ThemeContext, css, keyframes } from 'styled-components'
 import { InjectedConnector } from '@web3-react/injected-connector'
 import { AutoColumn } from '../../components/Column'
 import StarkIcon from '../../assets/jedi/stark-logo.svg'
@@ -310,6 +310,38 @@ const TokenAPR = styled(APRWrapper)`
   line-height: 26px; /* 216.667% */
 `
 
+export const loadingAnimation = keyframes`
+  0% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+`
+
+const shimmerMixin = css`
+  animation: ${loadingAnimation} 1.5s infinite;
+  animation-fill-mode: both;
+  background: linear-gradient(
+    to left,
+    ${({ theme }) => theme.jediNavyBlue} 25%,
+    ${({ theme }) => theme.bg3} 50%,
+    ${({ theme }) => theme.jediNavyBlue} 75%
+  );
+  background-size: 400%;
+  will-change: background-position;
+`
+
+export const LoadingRows = styled.div`
+  display: grid;
+
+  & > div {
+    ${shimmerMixin}
+    border-radius: 12px;
+    height: 2.4em;
+  }
+`
+
 const pairs = [
   {
     rewardName: 'USDC/USDT',
@@ -416,6 +448,7 @@ export default function Rewards() {
 
   const { address } = useAccountDetails()
   const [allocations, setAllocations] = useState<CurrencyAmount>()
+  const [allocationsLoading, setAllocationsLoading] = useState(false)
   const [allocated, setAllocated] = useState(false)
   const [claimData, setClaimData] = useState<Call>({
     contractAddress: STRK_REWARDS_ADDRESS,
@@ -438,6 +471,7 @@ export default function Rewards() {
     const getAllocation = async () => {
       if (address) {
         try {
+          setAllocationsLoading(true)
           const allocation = await fetch(`https://allocations.jediswap.xyz/get_allocation_amount?address=${address}`, {
             headers: {
               accept: 'application/json'
@@ -456,7 +490,9 @@ export default function Rewards() {
           }).then(res => res.json())
           const updateCallData = { ...claimData, calldata: CallData.compile(call_data) }
           setClaimData(updateCallData)
+          setAllocationsLoading(false)
         } catch (e) {
+          setAllocationsLoading(false)
           console.error(e)
         }
       }
@@ -564,106 +600,117 @@ export default function Rewards() {
     )
   }
 
-  console.log(pairsData, 'pairsData')
-
   return (
     <PageWrapper>
-      <TransactionConfirmationModal
-        isOpen={txPending}
-        onDismiss={handleConfirmDismiss}
-        attemptingTxn={attemptingTxn}
-        hash={txHash}
-        content={confirmationContent}
-        pendingText={''}
-      />
-      <LiquidityWrapperCard style={{ marginBottom: 14 }}>
-        <CardSection>
-          <AutoColumn gap="md">
-            <ResponsiveRow>
-              <RowFixed style={{ width: '35%' }}>
-                <DefiSpringWrapper>
-                  <DefiSpringTitle>StarkNet DeFi Spring</DefiSpringTitle>
-                  <DefiSpringSubTitle>
-                    40M <img src={StarkIcon} alt="starknet_logo" /> STRK
-                  </DefiSpringSubTitle>
-                  <IncentivesText>
-                    JediSwap users will receive STRK incentives as part of the StarkNet DeFi Spring Program.
-                  </IncentivesText>
-                </DefiSpringWrapper>
-              </RowFixed>
-              <div>
-                <DefiSpringTitle>Earn STRK incentives by providing liquidity to these pools:</DefiSpringTitle>
-                <RowFixed>
-                  <ResponsiveRow>
-                    {pairsData.length ? pairsData.map(pair => <PairListItem key={pair} pair={pair} />) : 'Loading'}
-                  </ResponsiveRow>
-                </RowFixed>
-              </div>
-            </ResponsiveRow>
-          </AutoColumn>
-        </CardSection>
-      </LiquidityWrapperCard>
-      <LiquidityWrapperCard>
-        <RowBetween>
-          <ClaimHeader>
-            <ClaimHeaderText>Next claim available on March 09</ClaimHeaderText>
-          </ClaimHeader>
-        </RowBetween>
-        <CardSection>
-          <AutoColumn gap="md">
+      {!pairsData.length || allocationsLoading ? (
+        <LoadingRows>
+          <div style={{ height: 450 }} />
+        </LoadingRows>
+      ) : (
+        <>
+          <TransactionConfirmationModal
+            isOpen={txPending}
+            onDismiss={handleConfirmDismiss}
+            attemptingTxn={attemptingTxn}
+            hash={txHash}
+            content={confirmationContent}
+            pendingText={''}
+          />
+          <LiquidityWrapperCard style={{ marginBottom: 14 }}>
+            <CardSection>
+              <AutoColumn gap="md">
+                <ResponsiveRow>
+                  <RowFixed style={{ width: '35%' }}>
+                    <DefiSpringWrapper>
+                      <DefiSpringTitle>StarkNet DeFi Spring</DefiSpringTitle>
+                      <DefiSpringSubTitle>
+                        40M <img src={StarkIcon} alt="starknet_logo" /> STRK
+                      </DefiSpringSubTitle>
+                      <IncentivesText>
+                        JediSwap users will receive STRK incentives as part of the StarkNet DeFi Spring Program.
+                      </IncentivesText>
+                    </DefiSpringWrapper>
+                  </RowFixed>
+                  <div>
+                    <DefiSpringTitle>Earn STRK incentives by providing liquidity to these pools:</DefiSpringTitle>
+                    <RowFixed>
+                      <ResponsiveRow>
+                        {pairsData.map(pair => (
+                          <PairListItem key={pair} pair={pair} />
+                        ))}
+                      </ResponsiveRow>
+                    </RowFixed>
+                  </div>
+                </ResponsiveRow>
+              </AutoColumn>
+            </CardSection>
+          </LiquidityWrapperCard>
+          <LiquidityWrapperCard>
             <RowBetween>
-              <StarkRewardsText>Your STRK Rewards</StarkRewardsText>
+              <ClaimHeader>
+                <ClaimHeaderText>Next claim available on March 09</ClaimHeaderText>
+              </ClaimHeader>
             </RowBetween>
-            <ResponsiveRow>
-              <RowFixed style={{ width: '25%' }}>
-                <ResponsiveColumn>
-                  <HeaderText>
-                    <>
-                      <img src={StarkIcon} style={{ marginRight: 5 }} />
-                      STRK ALLOCATED
-                    </>
-                  </HeaderText>
-                  <AmountText>{allocations?.toExact() ?? 0}</AmountText>
-                </ResponsiveColumn>
-              </RowFixed>
-              <RowFixed style={{ width: '25%' }}>
-                <ResponsiveColumn>
-                  <HeaderText>
-                    <>
-                      <img src={StarkIcon} style={{ marginRight: 5 }} />
-                      STRK CLAIMED
-                    </>
-                  </HeaderText>
-                  <AmountText>{formattedClaimRewards.toExact() ?? 0}</AmountText>
-                </ResponsiveColumn>
-              </RowFixed>
-              <RowFixed style={{ width: '40%' }}>
-                <ResponsiveColumn>
-                  <HeaderText>
-                    <>
-                      <img src={StarkIcon} style={{ marginRight: 5 }} />
-                      STRK UNCLAIMED
-                    </>
-                  </HeaderText>
-                  <ClaimWrapper>
-                    <AmountText>{unclaimed_rewards ?? 0}</AmountText>
+            <CardSection>
+              <AutoColumn gap="md">
+                <RowBetween>
+                  <StarkRewardsText>Your STRK Rewards</StarkRewardsText>
+                </RowBetween>
+                <ResponsiveRow>
+                  <RowFixed style={{ width: '25%' }}>
+                    <ResponsiveColumn>
+                      <HeaderText>
+                        <>
+                          <img src={StarkIcon} style={{ marginRight: 5 }} />
+                          STRK ALLOCATED
+                        </>
+                      </HeaderText>
+                      <AmountText>{allocations?.toExact() ?? 0}</AmountText>
+                    </ResponsiveColumn>
+                  </RowFixed>
+                  <RowFixed style={{ width: '25%' }}>
+                    <ResponsiveColumn>
+                      <HeaderText>
+                        <>
+                          <img src={StarkIcon} style={{ marginRight: 5 }} />
+                          STRK CLAIMED
+                        </>
+                      </HeaderText>
+                      <AmountText>{formattedClaimRewards.toExact() ?? 0}</AmountText>
+                    </ResponsiveColumn>
+                  </RowFixed>
+                  <RowFixed style={{ width: '40%' }}>
+                    <ResponsiveColumn>
+                      <HeaderText>
+                        <>
+                          <img src={StarkIcon} style={{ marginRight: 5 }} />
+                          STRK UNCLAIMED
+                        </>
+                      </HeaderText>
+                      <ClaimWrapper>
+                        <AmountText>{unclaimed_rewards ?? 0}</AmountText>
 
-                    {!address ? (
-                      <ClaimButtonGradient onClick={toggleWalletModal} disabled={attemptingTxn || totalRewardsClaimed}>
-                        <ClaimText>Connect Wallet</ClaimText>
-                      </ClaimButtonGradient>
-                    ) : allocated && allocations && (totalRewardsClaimed || unclaimed_rewards || attemptingTxn) ? (
-                      <ClaimButtonGradient onClick={onClaim} disabled={attemptingTxn || totalRewardsClaimed}>
-                        <ClaimText>{buttonText}</ClaimText>
-                      </ClaimButtonGradient>
-                    ) : null}
-                  </ClaimWrapper>
-                </ResponsiveColumn>
-              </RowFixed>
-            </ResponsiveRow>
-          </AutoColumn>
-        </CardSection>
-      </LiquidityWrapperCard>
+                        {!address ? (
+                          <ClaimButtonGradient
+                            onClick={toggleWalletModal}
+                            disabled={attemptingTxn || totalRewardsClaimed}
+                          >
+                            <ClaimText>Connect Wallet</ClaimText>
+                          </ClaimButtonGradient>
+                        ) : allocated && allocations && (totalRewardsClaimed || unclaimed_rewards || attemptingTxn) ? (
+                          <ClaimButtonGradient onClick={onClaim} disabled={attemptingTxn || totalRewardsClaimed}>
+                            <ClaimText>{buttonText}</ClaimText>
+                          </ClaimButtonGradient>
+                        ) : null}
+                      </ClaimWrapper>
+                    </ResponsiveColumn>
+                  </RowFixed>
+                </ResponsiveRow>
+              </AutoColumn>
+            </CardSection>
+          </LiquidityWrapperCard>
+        </>
+      )}
     </PageWrapper>
   )
 }

@@ -102,8 +102,6 @@ export default function Swap() {
   // }, [])
 
   const { address, chainId } = useAccountDetails()
-  console.log('🚀 ~ Swap ~ chainId:', chainId)
-  console.log('🚀 ~ Swap ~ address:', address)
 
   const theme = useContext(ThemeContext)
 
