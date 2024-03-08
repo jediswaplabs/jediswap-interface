@@ -10,7 +10,7 @@ import { AutoColumn } from '../../components/Column'
 import StarkIcon from '../../assets/jedi/stark-logo.svg'
 import './style.css'
 import { useAccountDetails } from '../../hooks'
-import { ChainId, CurrencyAmount } from '@jediswap/sdk'
+import { CurrencyAmount } from '@jediswap/sdk'
 import { ButtonGradient, ButtonPrimary, ButtonSecondary } from '../../components/Button'
 import { CardSection, DataCard } from '../Pool/styleds'
 import { RowBetween, RowFixed } from '../../components/Row'
@@ -530,11 +530,20 @@ export default function Rewards() {
 
     const cleanedAprCommon = cleanedAprFee + cleanedAprStarknet
     const displayAprCommon = formattedPercent(cleanedAprCommon, true, false)
-
     return (
       <RowFixed style={{ marginRight: 5 }}>
         <ResponsiveColumn>
-          <PairName>STRK-USDC</PairName>
+          {/* <DoubleCurrencyLogo
+            size={20}
+            a0={pair.token0.tokenAddress}
+            a1={pair.token1.tokenAddress}
+            s0={pair.token0.symbol}
+            s1={pair.token1.symbol}
+            margin
+          /> */}
+          <PairName>
+            {pair.token0.symbol}-{pair.token1.symbol}
+          </PairName>
           <TotalAPR>
             <div>Total APR:</div>
             <div>{displayAprCommon}</div>
