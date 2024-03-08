@@ -10,15 +10,17 @@ import { WebWalletConnector } from '@argent/starknet-react-webwallet-connector'
 
 export const DEFAULT_CHAIN_ID = ChainId.SN_MAIN
 
-export const STRK_REWARDS_ADDRESS = '0x01ba23f54ae0f830068314e8d3e9d3623e83ced3832d20ac61f598a969425747'
+export const getStarkRewardAddress = (chainId: ChainId) => {
+  return chainId === ChainId.SN_MAIN
+    ? '0x027dee8c8c7f28d67bc771afe0c786bfb59d78f0e1ce303a86006b91b98dc3cf'
+    : '0x01ba23f54ae0f830068314e8d3e9d3623e83ced3832d20ac61f598a969425747'
+}
+
 export const STARKNET_REWARDS_API_URL =
   'https://kx58j6x5me.execute-api.us-east-1.amazonaws.com//starknet/fetchFile?file=qa_strk_grant.json'
 export const STRK_PRICE_API_URL = 'https://api.binance.com/api/v3/ticker/price?symbol=STRKUSDT'
 
 export const getApiUrl = () => {
-  if (isTestnetEnvironment()) {
-    return 'https://api.jediswap.xyz/graphql'
-  }
   return 'https://api.jediswap.xyz/graphql'
 }
 

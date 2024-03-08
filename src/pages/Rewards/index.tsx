@@ -5,26 +5,28 @@ import { Backdrop, HeaderRow } from '../Swap/styleds'
 import { useWalletModalToggle } from '../../state/application/hooks'
 import { darkTheme, WidoWidget, isStarknetChain, Transaction } from 'wido-widget'
 import styled, { ThemeContext, css, keyframes } from 'styled-components'
-import { InjectedConnector } from '@web3-react/injected-connector'
 import { AutoColumn } from '../../components/Column'
 import StarkIcon from '../../assets/jedi/stark-logo.svg'
 import './style.css'
 import { useAccountDetails } from '../../hooks'
-import { CurrencyAmount } from '@jediswap/sdk'
+import { CurrencyAmount, Token } from '@jediswap/sdk'
 import { ButtonGradient, ButtonPrimary, ButtonSecondary } from '../../components/Button'
 import { CardSection, DataCard } from '../Pool/styleds'
 import { RowBetween, RowFixed } from '../../components/Row'
 import { DMSansText, TYPE } from '../../theme'
 import { Button as RebassButton, ButtonProps } from 'rebass/styled-components'
 import { useContractRead, useContractWrite } from '@starknet-react/core'
-import { Call, CallData } from 'starknet'
-import { STARKNET_REWARDS_API_URL, STRK_PRICE_API_URL, STRK_REWARDS_ADDRESS } from '../../constants'
+import { Call, CallData, validateAndParseAddress } from 'starknet'
+import { STARKNET_REWARDS_API_URL, STRK_PRICE_API_URL, getStarkRewardAddress } from '../../constants'
 import REWARDS_ABI from '../../constants/abis/strk-rewards.json'
 import TransactionConfirmationModal, { TransactionErrorContent } from '../../components/TransactionConfirmationModal'
 import { jediSwapClient } from '../../apollo/client'
 import { PAIRS_DATA_FOR_REWARDS } from '../../apollo/queries'
 import { isEmpty } from 'lodash'
 import { formattedPercent } from '../../utils'
+import pairs from './RewardPairs'
+import DoubleCurrencyLogo from '../../components/DoubleLogo'
+import { useAllTokens } from '../../hooks/Tokens'
 
 export const StyledAppBody = styled(BodyWrapper)`
   padding: 0rem;
@@ -342,65 +344,18 @@ export const LoadingRows = styled.div`
   }
 `
 
-const pairs = [
-  {
-    rewardName: 'USDC/USDT',
-    poolAddress: '0x5801bdad32f343035fb242e98d1e9371ae85bc1543962fedea16c59b35bd19b',
-    token0: {
-      tokenAddress: '0x53c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8',
-      symbol: 'USDC'
-    },
-    token1: {
-      tokenAddress: '0x68f5c6a61780768455de69077e07e89787839bf8166decfbf92b645209c0fb8',
-      symbol: 'USDT'
-    }
-  },
-  {
-    rewardName: 'STRK/ETH',
-    poolAddress: '0x2ed66297d146ecd91595c3174da61c1397e8b7fcecf25d423b1ba6717b0ece9',
-    token0: {
-      tokenAddress: '0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d',
-      symbol: 'STRK'
-    },
-    token1: {
-      tokenAddress: '0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7',
-      symbol: 'ETH'
-    }
-  },
-  {
-    rewardName: 'ETH/USDC',
-    poolAddress: '0x4d0390b777b424e43839cd1e744799f3de6c176c7e32c1812a41dbd9c19db6a',
-    token0: {
-      tokenAddress: '0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7',
-      symbol: 'ETH'
-    },
-    token1: {
-      tokenAddress: '0x53c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8',
-      symbol: 'USDC'
-    }
-  },
-  {
-    rewardName: 'STRK/USDC',
-    poolAddress: '0x5726725e9507c3586cc0516449e2c74d9b201ab2747752bb0251aaa263c9a26',
-    token0: {
-      tokenAddress: '0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d',
-      symbol: 'STRK'
-    },
-    token1: {
-      tokenAddress: '0x53c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8',
-      symbol: 'USDC'
-    }
-  }
-]
-
 export default function Rewards() {
   const [pairsData, setPairsData] = useState([])
+  const { address, chainId } = useAccountDetails()
   const [pairsLoading, setPairsLoading] = useState(false)
+  const STRK_REWARDS_ADDRESS = getStarkRewardAddress(chainId)
+  const allTokens = useAllTokens(chainId)
+
   useEffect(() => {
-    setPairsLoading(true)
     const pairIds = pairs.map(pair => pair.poolAddress)
 
     async function getPairsData() {
+      setPairsLoading(true)
       const pairsResp = await jediSwapClient.query({
         query: PAIRS_DATA_FOR_REWARDS({
           pairIds
@@ -444,17 +399,12 @@ export default function Rewards() {
     if (!pairsData.length) {
       getPairsData()
     }
-  }, [pairsData])
+  }, [pairsData, address])
 
-  const { address } = useAccountDetails()
   const [allocations, setAllocations] = useState<CurrencyAmount>()
   const [allocationsLoading, setAllocationsLoading] = useState(false)
+  const [claimData, setClaimData] = useState({})
   const [allocated, setAllocated] = useState(false)
-  const [claimData, setClaimData] = useState<Call>({
-    contractAddress: STRK_REWARDS_ADDRESS,
-    entrypoint: 'claim',
-    calldata: []
-  })
   const [callData, setCallData] = useState<Call[]>([])
   const { writeAsync, data: txData } = useContractWrite({
     calls: callData
@@ -488,8 +438,7 @@ export default function Rewards() {
             },
             method: 'GET'
           }).then(res => res.json())
-          const updateCallData = { ...claimData, calldata: CallData.compile(call_data) }
-          setClaimData(updateCallData)
+          setClaimData(call_data)
           setAllocationsLoading(false)
         } catch (e) {
           setAllocationsLoading(false)
@@ -523,7 +472,13 @@ export default function Rewards() {
   const onClaim = () => {
     setAttemptingTxn(true)
     setTxPending(true)
-    setCallData([claimData])
+
+    const call = {
+      contractAddress: STRK_REWARDS_ADDRESS,
+      entrypoint: 'claim',
+      calldata: CallData.compile(claimData)
+    }
+    setCallData([call])
   }
 
   const { data: claimed_rewards } = useContractRead({
@@ -539,9 +494,10 @@ export default function Rewards() {
     return CurrencyAmount.ether(claimed_rewards.toString())
   }, [claimed_rewards, address, allocations])
 
-  const unclaimed_rewards = useMemo(() => {
-    if (formattedClaimRewards === null || formattedClaimRewards === undefined || !allocated || !allocations) return 0
-    return allocations?.subtract(formattedClaimRewards).toExact()
+  const unclaimed_rewards: CurrencyAmount = useMemo(() => {
+    if (formattedClaimRewards === null || formattedClaimRewards === undefined || !allocated || !allocations)
+      return CurrencyAmount.ether('0')
+    return allocations?.subtract(formattedClaimRewards)
   }, [formattedClaimRewards, claimed_rewards, address, allocations, allocated])
 
   const totalRewardsClaimed = allocations?.equalTo(formattedClaimRewards)
@@ -569,17 +525,18 @@ export default function Rewards() {
 
     const cleanedAprCommon = cleanedAprFee + cleanedAprStarknet
     const displayAprCommon = formattedPercent(cleanedAprCommon, true, false)
+
+    const token0 =
+      pair.token0.symbol === 'ETH' ? pair.token0 : allTokens[validateAndParseAddress(pair.token0.tokenAddress)]
+    const token1 =
+      pair.token1.symbol === 'ETH' ? pair.token1 : allTokens[validateAndParseAddress(pair.token1.tokenAddress)]
+
     return (
       <RowFixed style={{ marginRight: 5 }}>
         <ResponsiveColumn>
-          {/* <DoubleCurrencyLogo
-            size={20}
-            a0={pair.token0.tokenAddress}
-            a1={pair.token1.tokenAddress}
-            s0={pair.token0.symbol}
-            s1={pair.token1.symbol}
-            margin
-          /> */}
+          <div style={{ margin: '0 auto' }}>
+            <DoubleCurrencyLogo size={24} currency0={token0} currency1={token1} />
+          </div>
           <PairName>
             {pair?.token0?.symbol}-{pair?.token1?.symbol}
           </PairName>
@@ -602,7 +559,7 @@ export default function Rewards() {
 
   return (
     <PageWrapper>
-      {!pairsData.length || allocationsLoading ? (
+      {allocationsLoading || pairsLoading ? (
         <LoadingRows>
           <div style={{ height: 450 }} />
         </LoadingRows>
@@ -665,7 +622,7 @@ export default function Rewards() {
                           STRK ALLOCATED
                         </>
                       </HeaderText>
-                      <AmountText>{allocations?.toExact() ?? 0}</AmountText>
+                      <AmountText>{allocations?.toSignificant() ?? 0}</AmountText>
                     </ResponsiveColumn>
                   </RowFixed>
                   <RowFixed style={{ width: '25%' }}>
@@ -676,7 +633,7 @@ export default function Rewards() {
                           STRK CLAIMED
                         </>
                       </HeaderText>
-                      <AmountText>{formattedClaimRewards.toExact() ?? 0}</AmountText>
+                      <AmountText>{formattedClaimRewards?.toSignificant() ?? 0}</AmountText>
                     </ResponsiveColumn>
                   </RowFixed>
                   <RowFixed style={{ width: '40%' }}>
@@ -688,7 +645,7 @@ export default function Rewards() {
                         </>
                       </HeaderText>
                       <ClaimWrapper>
-                        <AmountText>{unclaimed_rewards ?? 0}</AmountText>
+                        <AmountText>{unclaimed_rewards.toSignificant() ?? 0}</AmountText>
 
                         {!address ? (
                           <ClaimButtonGradient
