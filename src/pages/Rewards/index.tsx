@@ -216,6 +216,13 @@ const DefiSpringTitle = styled.div`
   margin-bottom: 32px;
 `
 
+const DefiSpringTitleEarn = styled(DefiSpringTitle)`
+  @media (max-width: 768px) {
+    font-size: 16px;
+    margin-bottom: 0;
+  }
+`
+
 const DefiSpringSubTitle = styled.div`
   display: flex; /* Establishes a flex container */
   align-items: center; /* Centers the content vertically */
@@ -656,7 +663,9 @@ export default function Rewards() {
                 </DefiSpringWrapper>
               </FirstColumn>
               <MobileWrapper>
-                <DefiSpringTitle>Earn STRK incentives by providing liquidity to these pools:</DefiSpringTitle>
+                <DefiSpringWrapper>
+                  <DefiSpringTitleEarn>Earn STRK incentives by providing liquidity to these pools:</DefiSpringTitleEarn>
+                </DefiSpringWrapper>
                 <Container>
                   <RowWrapper>
                     {pairsData.map(pair => (
