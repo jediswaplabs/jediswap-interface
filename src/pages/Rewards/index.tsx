@@ -113,6 +113,10 @@ const ClaimHeader = styled.div`
   color: white; /* White text color */
   display: flex;
   align-items: center; /* Vertically centers the content */
+
+  @media (max-width: 768px) {
+    width: fit-content;
+  }
 `
 
 const ClaimHeaderText = styled.div`
@@ -217,9 +221,9 @@ const DefiSpringTitle = styled.div`
 `
 
 const DefiSpringTitleEarn = styled(DefiSpringTitle)`
+  margin-bottom: 0;
   @media (max-width: 768px) {
     font-size: 16px;
-    margin-bottom: 0;
   }
 `
 
@@ -675,24 +679,6 @@ export default function Rewards() {
                 </Container>
               </MobileWrapper>
             </RowContainer>
-            {/* 
-            <CardSection>
-              <AutoColumn gap="md">
-                <ResponsiveRow>
-                  <RowFixed style={{ width: '35%' }}>
-                    <DefiSpringWrapper>
-                      <DefiSpringTitle>StarkNet DeFi Spring</DefiSpringTitle>
-                      <DefiSpringSubTitle>
-                        40M <img src={StarkIcon} alt="starknet_logo" /> STRK
-                      </DefiSpringSubTitle>
-                      <IncentivesText>
-                        JediSwap users will receive STRK incentives as part of the StarkNet DeFi Spring Program.
-                      </IncentivesText>
-                    </DefiSpringWrapper>
-                  </RowFixed>
-                </ResponsiveRow>
-              </AutoColumn>
-            </CardSection> */}
           </LiquidityWrapperCard>
           <LiquidityWrapperCard>
             <RowBetween>
