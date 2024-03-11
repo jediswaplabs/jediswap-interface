@@ -41,6 +41,7 @@ const LiquidityWrapperCard = styled(DataCard)`
   overflow: hidden;
   border: none;
   border-radius: 8px;
+  padding: 18px 0 18px 18px;
   border: 1px solid rgba(160, 160, 160, 0.4);
   background: rgba(255, 255, 255, 0.05);
 `
@@ -344,6 +345,76 @@ export const LoadingRows = styled.div`
   }
 `
 
+const Container = styled.div`
+  display: flex;
+  justify-content: center;
+`
+
+const Row = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px; /* Gap between columns */
+  width: 100%;
+`
+
+const RowWrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px; /* Gap between columns */
+  width: 100%;
+`
+
+const Column = styled.div`
+  flex: 1;
+  padding: 16px;
+  border-radius: 20px;
+  border-radius: 8px;
+  font-family: 'DM Sans', sans-serif;
+  border: 1px solid rgba(160, 160, 160, 0.4);
+  background: rgba(255, 255, 255, 0.05);
+  color: ${({ theme }) => theme.text1};
+  &:focus {
+    box-shadow: 0 0 0 1px ${({ theme }) => theme.bg4};
+  }
+  &:hover {
+    box-shadow: 0 0 0 1px ${({ theme }) => theme.bg4};
+  }
+  &:active {
+    box-shadow: 0 0 0 1px ${({ theme }) => theme.bg4};
+  }
+  width: calc(33.33% - 20px); /* Adjust width and subtract gap */
+
+  @media (max-width: 768px) {
+    width: 100%; /* Each column occupies 100% width on mobile */
+  }
+`
+
+// Main container for the row
+const RowContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -15px; // Assuming you want some spacing
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+`
+
+// Styled component for the first column (40%)
+const FirstColumn = styled.div`
+  width: 30%;
+  padding: 0 15px; // For spacing
+  @media (max-width: 768px) {
+    width: 100%;
+  }
+`
+
+// Styled component for the second column (60%)
+const MobileWrapper = styled.div`
+  @media (max-width: 768px) {
+    padding: 10px;
+  }
+`
+
 export default function Rewards() {
   const [pairsData, setPairsData] = useState([])
   const { address, chainId } = useAccountDetails()
@@ -532,28 +603,26 @@ export default function Rewards() {
       pair.token1.symbol === 'ETH' ? pair.token1 : allTokens[validateAndParseAddress(pair.token1.tokenAddress)]
 
     return (
-      <RowFixed style={{ marginRight: 5 }}>
-        <ResponsiveColumn>
-          <div style={{ margin: '0 auto' }}>
-            <DoubleCurrencyLogo size={24} currency0={token0} currency1={token1} />
-          </div>
-          <PairName>
-            {pair?.token0?.symbol}-{pair?.token1?.symbol}
-          </PairName>
-          <TotalAPR>
-            <div>Total APR:</div>
-            <div>{displayAprCommon}</div>
-          </TotalAPR>
-          <TokenAPR>
-            <div>Fee APR:</div>
-            <div>{displayAprFee}</div>
-          </TokenAPR>
-          <TokenAPR>
-            <div>STRK APR:</div>
-            <div>{displayAprStarknet}</div>
-          </TokenAPR>
-        </ResponsiveColumn>
-      </RowFixed>
+      <Column style={{ padding: 10 }}>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <DoubleCurrencyLogo size={24} currency0={token0} currency1={token1} />
+        </div>
+        <PairName>
+          {pair?.token0?.symbol}-{pair?.token1?.symbol}
+        </PairName>
+        <TotalAPR>
+          <div>Total APR:</div>
+          <div>{displayAprCommon}</div>
+        </TotalAPR>
+        <TokenAPR>
+          <div>Fee APR:</div>
+          <div>{displayAprFee}</div>
+        </TokenAPR>
+        <TokenAPR>
+          <div>STRK APR:</div>
+          <div>{displayAprStarknet}</div>
+        </TokenAPR>
+      </Column>
     )
   }
 
@@ -574,6 +643,30 @@ export default function Rewards() {
             pendingText={''}
           />
           <LiquidityWrapperCard style={{ marginBottom: 14 }}>
+            <RowContainer>
+              <FirstColumn>
+                <DefiSpringWrapper>
+                  <DefiSpringTitle>StarkNet DeFi Spring</DefiSpringTitle>
+                  <DefiSpringSubTitle>
+                    40M <img src={StarkIcon} alt="starknet_logo" /> STRK
+                  </DefiSpringSubTitle>
+                  <IncentivesText>
+                    JediSwap users will receive STRK incentives as part of the StarkNet DeFi Spring Program.
+                  </IncentivesText>
+                </DefiSpringWrapper>
+              </FirstColumn>
+              <MobileWrapper>
+                <DefiSpringTitle>Earn STRK incentives by providing liquidity to these pools:</DefiSpringTitle>
+                <Container>
+                  <RowWrapper>
+                    {pairsData.map(pair => (
+                      <PairListItem key={pair} pair={pair} />
+                    ))}
+                  </RowWrapper>
+                </Container>
+              </MobileWrapper>
+            </RowContainer>
+            {/* 
             <CardSection>
               <AutoColumn gap="md">
                 <ResponsiveRow>
@@ -588,19 +681,9 @@ export default function Rewards() {
                       </IncentivesText>
                     </DefiSpringWrapper>
                   </RowFixed>
-                  <div>
-                    <DefiSpringTitle>Earn STRK incentives by providing liquidity to these pools:</DefiSpringTitle>
-                    <RowFixed>
-                      <ResponsiveRow>
-                        {pairsData.map(pair => (
-                          <PairListItem key={pair} pair={pair} />
-                        ))}
-                      </ResponsiveRow>
-                    </RowFixed>
-                  </div>
                 </ResponsiveRow>
               </AutoColumn>
-            </CardSection>
+            </CardSection> */}
           </LiquidityWrapperCard>
           <LiquidityWrapperCard>
             <RowBetween>
@@ -613,9 +696,10 @@ export default function Rewards() {
                 <RowBetween>
                   <StarkRewardsText>Your STRK Rewards</StarkRewardsText>
                 </RowBetween>
-                <ResponsiveRow>
-                  <RowFixed style={{ width: '25%' }}>
-                    <ResponsiveColumn>
+
+                <Container>
+                  <Row>
+                    <Column>
                       <HeaderText>
                         <>
                           <img src={StarkIcon} style={{ marginRight: 5 }} />
@@ -623,10 +707,8 @@ export default function Rewards() {
                         </>
                       </HeaderText>
                       <AmountText>{allocations?.toSignificant() ?? 0}</AmountText>
-                    </ResponsiveColumn>
-                  </RowFixed>
-                  <RowFixed style={{ width: '25%' }}>
-                    <ResponsiveColumn>
+                    </Column>
+                    <Column>
                       <HeaderText>
                         <>
                           <img src={StarkIcon} style={{ marginRight: 5 }} />
@@ -634,10 +716,8 @@ export default function Rewards() {
                         </>
                       </HeaderText>
                       <AmountText>{formattedClaimRewards?.toSignificant() ?? 0}</AmountText>
-                    </ResponsiveColumn>
-                  </RowFixed>
-                  <RowFixed style={{ width: '40%' }}>
-                    <ResponsiveColumn>
+                    </Column>
+                    <Column>
                       <HeaderText>
                         <>
                           <img src={StarkIcon} style={{ marginRight: 5 }} />
@@ -660,9 +740,9 @@ export default function Rewards() {
                           </ClaimButtonGradient>
                         ) : null}
                       </ClaimWrapper>
-                    </ResponsiveColumn>
-                  </RowFixed>
-                </ResponsiveRow>
+                    </Column>
+                  </Row>
+                </Container>
               </AutoColumn>
             </CardSection>
           </LiquidityWrapperCard>
