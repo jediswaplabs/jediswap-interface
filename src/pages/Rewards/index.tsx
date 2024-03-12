@@ -221,7 +221,7 @@ const DefiSpringTitle = styled.div`
 
 const DefiSpringTitleEarn = styled(DefiSpringTitle)`
   margin-bottom: 12px;
-  @media (max-width: 991px) {
+  @media (max-width: 992px) {
     font-size: 16px;
   }
 `
@@ -392,10 +392,14 @@ const Column = styled.div`
   &:active {
     box-shadow: 0 0 0 1px ${({ theme }) => theme.bg4};
   }
-  width: calc(33.33% - 20px); /* Adjust width and subtract gap */
 
   @media (max-width: 768px) {
-    width: 100%; /* Each column occupies 100% width on mobile */
+    width: calc(50% - 10px);
+    flex: auto;
+  }
+
+  @media (max-width: 400px) {
+    width: calc(100% - 10px);
   }
 `
 
@@ -404,7 +408,7 @@ const SecondColumn = styled.div`
   width: 70%;
   display: flex;
   flex-wrap: wrap;
-  @media (max-width: 991px) {
+  @media (max-width: 992px) {
     width: 100%;
   }
 `
@@ -422,7 +426,7 @@ const RowContainer = styled.div`
 const FirstColumn = styled.div`
   width: 30%;
   padding: 0 15px; // For spacing
-  @media (max-width: 991px) {
+  @media (max-width: 992px) {
     width: 100%;
     padding: 0; // For spacing
   }
