@@ -41,7 +41,7 @@ const LiquidityWrapperCard = styled(DataCard)`
   overflow: hidden;
   border: none;
   border-radius: 8px;
-  padding: 18px 0 18px 18px;
+  padding: 18px;
   border: 1px solid rgba(160, 160, 160, 0.4);
   background: rgba(255, 255, 255, 0.05);
 `
@@ -200,7 +200,6 @@ const ResponsiveColumn = styled(AutoColumn)`
 `
 
 const DefiSpringWrapper = styled.div`
-  padding: 16px;
   border-radius: 20px;
   border-radius: 8px;
   font-family: 'DM Sans', sans-serif;
@@ -221,8 +220,8 @@ const DefiSpringTitle = styled.div`
 `
 
 const DefiSpringTitleEarn = styled(DefiSpringTitle)`
-  margin-bottom: 0;
-  @media (max-width: 768px) {
+  margin-bottom: 12px;
+  @media (max-width: 991px) {
     font-size: 16px;
   }
 `
@@ -277,6 +276,7 @@ const StarkRewardsText = styled.div`
   color: #fff;
   font-family: 'DM Sans';
   font-size: 20px;
+  margin-bottom: 16px;
   font-style: normal;
   font-weight: 700;
   line-height: 20px; /* 100% */
@@ -298,8 +298,7 @@ const APRWrapper = styled.div`
 `
 
 const TotalAPR = styled(APRWrapper)`
-  width: 134px;
-  height: 26px;
+  width: 100%;
   background: #6a2d65;
   border-radius: 4px;
   margin-bottom: 8px;
@@ -312,7 +311,7 @@ const TotalAPR = styled(APRWrapper)`
   font-size: 12px;
   font-style: normal;
   font-weight: 700;
-  line-height: 26px; /* 216.667% */
+  line-height: 18px; /* 216.667% */
 `
 
 const TokenAPR = styled(APRWrapper)`
@@ -400,11 +399,20 @@ const Column = styled.div`
   }
 `
 
+// Styled component for the second column (60%)
+const SecondColumn = styled.div`
+  width: 70%;
+  display: flex;
+  flex-wrap: wrap;
+  @media (max-width: 991px) {
+    width: 100%;
+  }
+`
+
 // Main container for the row
 const RowContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
-  margin: 0 -15px; // Assuming you want some spacing
   @media (max-width: 768px) {
     flex-direction: column;
   }
@@ -414,15 +422,17 @@ const RowContainer = styled.div`
 const FirstColumn = styled.div`
   width: 30%;
   padding: 0 15px; // For spacing
-  @media (max-width: 768px) {
+  @media (max-width: 991px) {
     width: 100%;
+    padding: 0; // For spacing
   }
 `
 
 // Styled component for the second column (60%)
 const MobileWrapper = styled.div`
+  width: 100%;
   @media (max-width: 768px) {
-    padding: 10px;
+    padding: 0px;
   }
 `
 
@@ -666,18 +676,22 @@ export default function Rewards() {
                   </IncentivesText>
                 </DefiSpringWrapper>
               </FirstColumn>
-              <MobileWrapper>
-                <DefiSpringWrapper>
-                  <DefiSpringTitleEarn>Earn STRK incentives by providing liquidity to these pools:</DefiSpringTitleEarn>
-                </DefiSpringWrapper>
-                <Container>
-                  <RowWrapper>
-                    {pairsData.map(pair => (
-                      <PairListItem key={pair} pair={pair} />
-                    ))}
-                  </RowWrapper>
-                </Container>
-              </MobileWrapper>
+              <SecondColumn>
+                <MobileWrapper>
+                  <DefiSpringWrapper>
+                    <DefiSpringTitleEarn>
+                      Earn STRK incentives by providing liquidity to these pools:
+                    </DefiSpringTitleEarn>
+                  </DefiSpringWrapper>
+                  <Container>
+                    <RowWrapper>
+                      {pairsData.map(pair => (
+                        <PairListItem key={pair} pair={pair} />
+                      ))}
+                    </RowWrapper>
+                  </Container>
+                </MobileWrapper>
+              </SecondColumn>
             </RowContainer>
           </LiquidityWrapperCard>
           <LiquidityWrapperCard>
@@ -687,7 +701,7 @@ export default function Rewards() {
               </ClaimHeader>
             </RowBetween>
             <CardSection>
-              <AutoColumn gap="md">
+              <AutoColumn>
                 <RowBetween>
                   <StarkRewardsText>Your STRK Rewards</StarkRewardsText>
                 </RowBetween>
