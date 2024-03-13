@@ -20,7 +20,7 @@ const provider = jsonRpcProvider({
     if (chainType === 'sepolia') {
       nodeUrl = 'https://starknet-sepolia.public.blastapi.io'
     } else if (chainType === 'mainnet') {
-      nodeUrl = 'https://api-starknet-mainnet.dwellir.com/dd28e566-3260-4d8d-8180-6ef1a161e41c'
+      nodeUrl = 'https://api-starknet-jediswap.dwellir.com/'
     } else if (chainType === 'goerli') {
       nodeUrl = 'https://rpc.starknet-testnet.lava.build/'
     }
@@ -39,7 +39,7 @@ export const providerInstance = (chainId: string) => {
     nodeUrl:
       chainId === ChainId.SN_GOERLI
         ? 'https://starknet-testnet.public.blastapi.io/rpc/v0_6'
-        : 'https://api-starknet-mainnet.dwellir.com/dd28e566-3260-4d8d-8180-6ef1a161e41c'
+        : 'https://api-starknet-jediswap.dwellir.com/'
   })
 }
 
