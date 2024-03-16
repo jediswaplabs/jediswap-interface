@@ -154,12 +154,12 @@ export default function WalletModal({
       if (
         (isProductionEnvironment() && !isProductionChainId(chainId)) ||
         (isTestnetEnvironment() && !isTestnetChainId(chainId)) ||
-        !Object.values(ChainId).includes(chainId)
+        !['0x534e5f5345504f4c4941', '0x534e5f4d41494e'].includes(chainId)
       ) {
         setChainError(true)
       }
     }
-  }, [status])
+  }, [status, chainId])
 
   useEffect(() => {
     //check all available wallets from browser
