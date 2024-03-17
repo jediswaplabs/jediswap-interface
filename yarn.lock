@@ -1050,10 +1050,10 @@
   resolved "https://registry.yarnpkg.com/@ioredis/commands/-/commands-1.2.0.tgz#6d61b3097470af1fdbbe622795b8921d42018e11"
   integrity sha512-Sx1pU8EM64o2BrqNpEO1CNLtKQwyhuXuqyfH7oGKCk+1a33d2r5saW8zNwm3j6BTExtjrv2BxTgzzkMwts6vGg==
 
-"@jediswap/sdk@^2.3.5":
-  version "2.3.5"
-  resolved "https://registry.yarnpkg.com/@jediswap/sdk/-/sdk-2.3.5.tgz#bc4a0500f0727231882a6a135a74877d5a01f0ac"
-  integrity sha512-v+iJqZhbmVdkwkGwzd5wvZLYexB2oylm2Xd/eBUIT/x+sEFQr3Qofi7nTx9/IUh5gRDqnAS+J9n6u+lUQj2spA==
+"@jediswap/sdk@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@jediswap/sdk/-/sdk-3.0.0.tgz#c768aced2f25ff92fcd843667dda82dbc36a72b6"
+  integrity sha512-zWwehg4xhXj7Qb8JGoYE7n3HSs2cdkAMy0hUDoC8K9JD+lTfa/ebKwS5jkQVXCTF6vjGrVKbkkn6/3sqCMvXtw==
   dependencies:
     big.js "^5.2.2"
     decimal.js-light "^2.5.0"
