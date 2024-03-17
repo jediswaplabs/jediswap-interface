@@ -424,7 +424,7 @@ function Header({ history }: { history: any }) {
               isNetworkMainnet ? (
                 <NetworkCard title={'Starknet Mainnet'}>{'Starknet Mainnet'}</NetworkCard>
               ) : (
-                <NetworkCard title={'Starknet Görli'}>{'Starknet Görli'}</NetworkCard>
+                <NetworkCard title={'Starknet Sepolia'}>{'Starknet Sepolia'}</NetworkCard>
               )
             ) : null}
             {/*<NetworkSelect onChange={changeNetwork}>*/}
