@@ -11,7 +11,7 @@
     "@argent/get-starknet": "^0.1.4",
     "@babel/types": "^7.18.8",
     "@ethersproject/experimental": "^5.6.3",
-    "@jediswap/sdk": "^3.0.0",
+    "@jediswap/sdk": "^2.3.5",
     "@jediswap/token-lists": "^1.0.0-beta.2",
     "@popperjs/core": "^2.4.4",
     "@reach/dialog": "^0.10.3",
