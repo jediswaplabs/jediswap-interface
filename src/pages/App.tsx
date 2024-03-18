@@ -88,12 +88,12 @@ export default function App() {
       if (
         (isProductionEnvironment() && !isProductionChainId(chainId)) ||
         (isTestnetEnvironment() && !isTestnetChainId(chainId)) ||
-        !['0x534e5f5345504f4c4941', '0x534e5f4d41494e'].includes(chainId)
+        !Object.values(ChainId).includes(chainId)
       ) {
         disconnect()
       }
     }
-  }, [status, chainId])
+  }, [status])
 
   return (
     <Suspense fallback={null}>
