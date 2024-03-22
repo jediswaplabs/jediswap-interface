@@ -462,9 +462,7 @@ export default function Rewards() {
       const rewardsRespStr = await rewardsResp.text()
       const rewardsRespStrClean = rewardsRespStr.replace(/\bNaN\b/g, "null")
       const rewardsRespJson = JSON.parse(rewardsRespStrClean)
-      const priceResp = await fetch(STRK_PRICE_API_URL).then(res => res.json())
 
-      const strkPrice = parseFloat(priceResp.price)
       const jediRewards = rewardsRespJson.Jediswap_v1
       const rewardsPositions: any = []
       for (const pair of pairs) {
@@ -477,7 +475,7 @@ export default function Rewards() {
           dayData => dayData.pairId === pair.poolAddress && dayData.date === recentDate + 'T00:00:00'
         )
         const aprFee = ((pairDayData.dailyVolumeUSD * 0.003) / pairDayData.reserveUSD) * 365 * 100
-        const aprStarknet = (rewardsData.allocation / pairDayData.reserveUSD) * 365 * 100 * strkPrice
+        const aprStarknet = rewardsData.apr * 100
         rewardsPositions.push({
           ...pair,
           reserveUSD: pairDayData.reserveUSD,
