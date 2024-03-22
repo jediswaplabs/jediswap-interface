@@ -458,7 +458,12 @@ export default function Rewards() {
         }),
         fetchPolicy: 'cache-first'
       })
-      const rewardsResp = await fetch(STARKNET_REWARDS_API_URL).then(res => res.json())
+      const rewardsResp = await fetch(STARKNET_REWARDS_API_URL)
+        .then(res => res.text()) // Get the response as text
+        .then(text => {
+          const validJson = text.replace(/NaN/g, 'null') // Replace NaN with null
+          return JSON.parse(validJson) // Parse the corrected string as JSON
+        })
       const priceResp = await fetch(STRK_PRICE_API_URL).then(res => res.json())
 
       const strkPrice = parseFloat(priceResp.price)
