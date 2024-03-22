@@ -458,14 +458,20 @@ export default function Rewards() {
         }),
         fetchPolicy: 'cache-first'
       })
-      const rewardsResp = await fetch(STARKNET_REWARDS_API_URL).then(res => res.json())
+      const rewardsResp = await fetch(STARKNET_REWARDS_API_URL)
+      const rewardsRespStr = await rewardsResp.text()
+      const rewardsRespStrClean = rewardsRespStr.replace(/\bNaN\b/g, "null")
+      const rewardsRespJson = JSON.parse(rewardsRespStrClean)
       const priceResp = await fetch(STRK_PRICE_API_URL).then(res => res.json())
 
       const strkPrice = parseFloat(priceResp.price)
-      const jediRewards = rewardsResp.Jediswap_v1
+      const jediRewards = rewardsRespJson.Jediswap_v1
       const rewardsPositions: any = []
       for (const pair of pairs) {
         const rewardsData = jediRewards[pair.rewardName].pop()
+        if (!rewardsData) {
+          continue
+        }
         const recentDate = rewardsData.date
         const pairDayData = pairsResp.data.pairDayDatas.find(
           dayData => dayData.pairId === pair.poolAddress && dayData.date === recentDate + 'T00:00:00'
@@ -628,7 +634,7 @@ export default function Rewards() {
       pair.token1.symbol === 'ETH' ? pair.token1 : allTokens[validateAndParseAddress(pair.token1.tokenAddress)]
 
     return (
-      <Column style={{ padding: 10 }}>
+      <Column style={{ padding: 10, flexBasis: '32%', flexGrow: 0 }}>
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
           <DoubleCurrencyLogo size={24} currency0={token0} currency1={token1} />
         </div>
