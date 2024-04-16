@@ -705,7 +705,7 @@ export default function Rewards() {
           <LiquidityWrapperCard>
             <RowBetween>
               <ClaimHeader>
-                <ClaimHeaderText>Next claim available on April 04</ClaimHeaderText>
+                <ClaimHeaderText>Next claim available on April 18</ClaimHeaderText>
               </ClaimHeader>
             </RowBetween>
             <CardSection>
