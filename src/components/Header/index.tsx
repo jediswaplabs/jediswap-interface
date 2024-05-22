@@ -393,7 +393,7 @@ function Header({ history }: { history: any }) {
           Dashboard
         </StyledExternalLink>
 
-        <StyledExternalLink id={`jedi-v2-link`} href={'https://app.v2.jediswap.xyz/'}>
+        <StyledExternalLink id={`jedi-v2-link`} href={'https://app.jediswap.xyz/'}>
           V2
         </StyledExternalLink>
 
