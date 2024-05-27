@@ -472,7 +472,8 @@ export default function Rewards() {
         }
         const recentDate = rewardsData.date
         const pairDayData = pairsResp.data.pairDayDatas.find(
-          dayData => dayData.pairId === pair.poolAddress && dayData.date === recentDate + 'T00:00:00'
+          // dayData => dayData.pairId === pair.poolAddress && dayData.date === recentDate + 'T00:00:00'
+          dayData => dayData.pairId === pair.poolAddress //need to find any date from our indexer
         )
         const aprFee = ((pairDayData.dailyVolumeUSD * 0.003) / pairDayData.reserveUSD) * 365 * 100
         const aprStarknet = rewardsData.apr * 100
