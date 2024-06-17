@@ -460,7 +460,7 @@ export default function Rewards() {
       })
       const rewardsResp = await fetch(STARKNET_REWARDS_API_URL)
       const rewardsRespStr = await rewardsResp.text()
-      const rewardsRespStrClean = rewardsRespStr.replace(/\bNaN\b/g, "null")
+      const rewardsRespStrClean = rewardsRespStr.replace(/\bNaN\b/g, 'null')
       const rewardsRespJson = JSON.parse(rewardsRespStrClean)
 
       const jediRewards = rewardsRespJson.Jediswap_v1
@@ -706,7 +706,7 @@ export default function Rewards() {
           <LiquidityWrapperCard>
             <RowBetween>
               <ClaimHeader>
-                <ClaimHeaderText>Next claim available on June 14</ClaimHeaderText>
+                <ClaimHeaderText>Next claim available on June 28</ClaimHeaderText>
               </ClaimHeader>
             </RowBetween>
             <CardSection>
