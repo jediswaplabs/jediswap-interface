@@ -15,19 +15,3 @@ const MessageWrapper = styled.div`
 const Message = styled.h2`
   color: ${({ theme }) => theme.secondary1};
 `
-export default function Web3ReactManager({ children }: { children: JSX.Element }) {
-  const { t } = useTranslation()
-  const { active } = useStarknetReact(NetworkContextName)
-  const { error: networkError } = useStarknetReact(NetworkContextName)
-
-  // if the account context isn't active, and there's an error on the network context, it's an irrecoverable error
-  if (!active && networkError) {
-    return (
-      <MessageWrapper>
-        <Message>{t('unknownError')}</Message>
-      </MessageWrapper>
-    )
-  }
-
-  return children
-}

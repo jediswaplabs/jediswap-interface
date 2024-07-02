@@ -3,7 +3,6 @@ import { Route, Switch } from 'react-router-dom'
 import styled from 'styled-components'
 import Header from '../components/Header'
 import Popups from '../components/Popups'
-import Web3ReactManager from '../components/Web3ReactManager'
 import DarkModeQueryParamReader from '../theme/DarkModeQueryParamReader'
 
 import Swap from './Swap'
@@ -106,25 +105,23 @@ export default function App() {
           <Popups />
           <MainnetWarningModal />
 
-          <Web3ReactManager>
-            <Switch>
-              <Route exact strict path="/swap" component={Swap} />
-              <Route exact strict path="/swap/:outputCurrency" component={RedirectToSwap} />
-              <Route exact strict path="/pool" component={Pool} />
-              <Route exact path="/add" component={RedirectToAddLiquidity} />
-              <Route exact path="/add/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />
-              <Route exact path="/add/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
-              <Route exact path="/create" component={RedirectToAddLiquidity} />
-              <Route exact path="/create/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />
-              <Route exact path="/create/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
-              <Route exact path="/zap" component={Zap} />
-              <Route exact path="/rewards" component={Rewards} />
-              {/* <Route exact path="/bridge" component={Bridge} /> */}
-              <Route exact path="/stake" component={ComingSoon} />
-              <Route exact strict path="/remove/:currencyIdA/:currencyIdB" component={RemoveLiquidity} />
-              <Route component={RedirectPathToSwapOnly} />
-            </Switch>
-          </Web3ReactManager>
+          <Switch>
+            <Route exact strict path="/swap" component={Swap} />
+            <Route exact strict path="/swap/:outputCurrency" component={RedirectToSwap} />
+            <Route exact strict path="/pool" component={Pool} />
+            <Route exact path="/add" component={RedirectToAddLiquidity} />
+            <Route exact path="/add/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />
+            <Route exact path="/add/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
+            <Route exact path="/create" component={RedirectToAddLiquidity} />
+            <Route exact path="/create/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />
+            <Route exact path="/create/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
+            <Route exact path="/zap" component={Zap} />
+            <Route exact path="/rewards" component={Rewards} />
+            {/* <Route exact path="/bridge" component={Bridge} /> */}
+            <Route exact path="/stake" component={ComingSoon} />
+            <Route exact strict path="/remove/:currencyIdA/:currencyIdB" component={RemoveLiquidity} />
+            <Route component={RedirectPathToSwapOnly} />
+          </Switch>
           <Marginer />
         </BodyWrapper>
         <Footer />

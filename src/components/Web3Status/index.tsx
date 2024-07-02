@@ -192,7 +192,6 @@ function StatusIcon({ connector }: { connector: Connector }) {
 
 function Web3StatusInner({ starkID }: { starkID?: string }) {
   const { t } = useTranslation()
-  const { error } = useStarknetReact(NetworkContextName)
   const { address, connector } = useAccountDetails()
   // console.log('🚀 ~ file: index.tsx:198 ~ Web3StatusInner ~ provider:', provider.get)
 
@@ -225,13 +224,6 @@ function Web3StatusInner({ starkID }: { starkID?: string }) {
         )}
       </Web3StatusConnected>
     )
-  } else if (error) {
-    return (
-      <Web3StatusError onClick={toggleWalletModal}>
-        <NetworkIcon src={WrongNetwork} />
-        <Text>{error instanceof UnsupportedChainIdError ? 'Wrong Network' : 'Error'}</Text>
-      </Web3StatusError>
-    )
   } else {
     return (
       <Web3StatusConnect id="connect-wallet" onClick={toggleWalletModal}>
@@ -243,7 +235,6 @@ function Web3StatusInner({ starkID }: { starkID?: string }) {
 
 export default function Web3Status() {
   const { address, chainId } = useAccountDetails()
-  const contextNetwork = useStarknetReact(NetworkContextName)
 
   type DomainToAddrData = { domain: string; domain_expiry: number }
 

@@ -27,8 +27,9 @@ import { isTestnetEnvironment } from './connectors'
 import { StarknetProvider } from './context/StarknetProvider'
 import { ApolloProvider } from 'react-apollo'
 import { jediSwapClient } from './apollo/client'
+import { QueryClient, QueryClientProvider } from 'react-query'
 
-const StarknetProviderNetwork = createStarknetReactRoot(NetworkContextName)
+const queryClient = new QueryClient()
 
 function Updaters() {
   return (
@@ -47,15 +48,17 @@ ReactDOM.render(
     <FixedGlobalStyle />
     <StarknetProvider>
       <Provider store={store}>
-        <ApolloProvider client={jediSwapClient}>
-          <Updaters />
-          <ThemeProvider>
-            <ThemedGlobalStyle />
-            <HashRouter>
-              <App />
-            </HashRouter>
-          </ThemeProvider>
-        </ApolloProvider>
+        <QueryClientProvider client={queryClient}>
+          <ApolloProvider client={jediSwapClient}>
+            <Updaters />
+            <ThemeProvider>
+              <ThemedGlobalStyle />
+              <HashRouter>
+                <App />
+              </HashRouter>
+            </ThemeProvider>
+          </ApolloProvider>
+        </QueryClientProvider>
       </Provider>
     </StarknetProvider>
   </StrictMode>,

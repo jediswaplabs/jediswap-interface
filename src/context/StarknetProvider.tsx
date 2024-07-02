@@ -11,7 +11,7 @@ import rpcProvider from '../utils/getLibrary'
 import { isTestnetEnvironment } from '../connectors'
 
 export function StarknetProvider({ children }: { children: React.ReactNode }) {
-  const chains = [mainnet, goerli, sepolia]
+  const chains = [mainnet]
   const connectors = useMemo(
     () => [
       new InjectedConnector({
