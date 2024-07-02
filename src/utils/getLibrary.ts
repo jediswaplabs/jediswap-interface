@@ -17,13 +17,8 @@ const provider = jsonRpcProvider({
     const chainType: string = networks[chain.name]
 
     let nodeUrl = 'https://rpc.starknet-testnet.lava.build/'
-    if (chainType === 'sepolia') {
-      nodeUrl = 'https://starknet-sepolia.public.blastapi.io'
-    } else if (chainType === 'mainnet') {
+    if (chainType === 'mainnet')
       nodeUrl = 'https://api-starknet-mainnet.dwellir.com/dd28e566-3260-4d8d-8180-6ef1a161e41c'
-    } else if (chainType === 'goerli') {
-      nodeUrl = 'https://rpc.starknet-testnet.lava.build/'
-    }
 
     return {
       nodeUrl,
