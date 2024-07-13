@@ -679,7 +679,7 @@ export default function Rewards() {
                 <DefiSpringWrapper>
                   <DefiSpringTitle>StarkNet DeFi Spring</DefiSpringTitle>
                   <DefiSpringSubTitle>
-                    40M <img src={StarkIcon} alt="starknet_logo" /> STRK
+                    90M <img src={StarkIcon} alt="starknet_logo" /> STRK
                   </DefiSpringSubTitle>
                   <IncentivesText>
                     JediSwap users will receive STRK incentives as part of the StarkNet DeFi Spring Program.
